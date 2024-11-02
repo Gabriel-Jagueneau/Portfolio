@@ -90,12 +90,12 @@ h1 {
 }
 
 section {
+  height: 120vh !important;
   scroll-snap-align: center;
   overflow: hidden;
 }
 
 #header {
-  min-height: 100vh;
   color: var(--primary);
   display: flex;
   align-items: center;
@@ -127,7 +127,6 @@ section {
   flex-direction: column;
   flex-wrap: wrap;
   width: 100vw;
-  height: 100vh;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -182,7 +181,7 @@ section {
       }
     }
     & .project-card:hover {
-      transform: translateY(-5px) rotate(1deg);
+      transform: translateY(-10px) scale(1.02);
       box-shadow: 0 10px 20px rgba(0,0,0,0.2);
       background-color: rgba(0, 0, 0, 0.2);
     }
@@ -233,7 +232,6 @@ section {
   flex-direction: column;
   flex-wrap: wrap;
   width: 100vw;
-  height: 100vh;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -270,7 +268,6 @@ section {
   flex-direction: column;
   flex-wrap: wrap;
   width: 100vw;
-  height: 100vh;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -351,10 +348,26 @@ section {
 }
 
 @media only screen and (width < 810px) {
+  .nav-list {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-link {
+    color: var(--text);
+    text-decoration: none;
+    position: relative;
+    padding: 0.5rem 0;
+    font-weight: 400;
+    font-size: small;
+  }
+
   h1 {
     width: 100%;
     text-align: center;
-    font-size: 3rem;
+    font-size: 2rem;
     margin-bottom: 2rem;
     animation: fadeInUp 1s ease;
   }
@@ -372,7 +385,7 @@ section {
       z-index: 1;
     }
     & p {
-      font-size: 1.5rem;
+      font-size: 0.8rem;
       opacity: 0;
       animation: fadeInUp 1s ease 0.5s forwards;
     }
@@ -396,8 +409,12 @@ section {
     margin: 0 auto;
     justify-content: center;
     align-items: center;
-    gap: 1vh;
+    gap: 0;
     background: var(--gradient-one);
+    & h1 {
+      transition: ease 0.4s;
+      transform: translateY(-25px);
+    }
     & img {
       position: absolute;
       width: 100%;
@@ -415,11 +432,38 @@ section {
       flex-wrap: wrap;
       width: 80%;
       gap: 1rem;
+
+      opacity: 0;
+      animation: fadeInUp 1s ease 0.5s forwards;
+      
       & .project-card {
+        color: var(--text);
+        text-decoration: none;
+        display: flex;
+        justify-content: center;
+        position: relative;
+        border-radius: 15px;
+        overflow: hidden;
         width: 80%;
+        font-size: x-small;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
+        transition: ease 0.4s;
+        transform: translateY(-25px);
+  
+        transition: all 0.3s ease;
+  
+        & .project-content {
+          padding: 1rem;
+        }
         & span {
           display: none;
         }
+      }
+      & .project-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        background-color: rgba(0, 0, 0, 0.2);
       }
     }
     & .geometric-bg {
@@ -480,8 +524,8 @@ section {
       overflow: hidden;
       width: 80%;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      padding: 2rem;
-      font-size: large;
+      padding: 1rem;
+      font-size: x-small;
       font-weight: 500;
   
       opacity: 0;
@@ -494,8 +538,8 @@ section {
       top: 0;
       left: 0;
       overflow: hidden;
-      width: 100vw;
-      height: 100vh;
+      width: 120vw;
+      height: 120vh;
     }
   }
   
@@ -515,13 +559,13 @@ section {
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      gap: 2rem;
-      padding: 2rem;
+      gap: 1rem;
+      padding: 1rem;
       background: rgba(255,255,255,0.6);
       border-radius: 15px;
       overflow: hidden;
       margin-bottom: 2rem;
-      margin-top: 4rem;
+      margin-top: 1rem;
       width: 80%;
   
       opacity: 0;
@@ -534,7 +578,8 @@ section {
         object-fit: cover;
       }
       & p {
-        font-size: larger;
+        font-size: small;
+        font-weight: 500;
       }
     }
     & .social-links {
@@ -546,9 +591,12 @@ section {
       animation: fadeInUp 1s ease 1s forwards;
   
       & a img{
-        height: 75px;
+        height: 50px;
         border-radius: 90px;
       }
     }
+  }
+  .custom-cursor {
+    display: none;
   }
 }
