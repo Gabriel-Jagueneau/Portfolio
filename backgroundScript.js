@@ -6,10 +6,10 @@ var w = window.innerWidth,
     arc = 30,
     time,
     count,
-    size = 25,
+    size = 40,
     speed = 2,
     parts = new Array,
-    colors = ['#84ff6b88', '#cd4ebe88'];
+    colors = ['#84ff6b22', '#cd4ebe22'];
 canvas.setAttribute('width',w);
 canvas.setAttribute('height',h);
 
@@ -38,10 +38,8 @@ function particles() {
     ctx.strokeStyle=li.c;
     if (i%2==0) ctx.stroke();
     else ctx.fill();
-    
     li.x = li.x + li.toX * (time * 0.05);
     li.y = li.y + li.toY * (time * 0.05);
-    
     if(li.x > w) li.x = 0; 
     if(li.y > h) li.y = 0;
     if(li.x < 0) li.x = w; 
