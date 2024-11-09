@@ -19,7 +19,7 @@
         .hero {
             height: 100vh;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
             position: relative;
         }
@@ -46,7 +46,8 @@ main body
 */
 
         .title {
-            font-size: 5rem;
+            font-size: 4rem;
+            margin-left: 5rem;
             text-transform: uppercase;
             letter-spacing: 0.5em;
             opacity: 0;
@@ -54,13 +55,24 @@ main body
             animation: fadeIn 1s ease forwards;
         }
 
-
+        .title2 {
+            font-size: 1rem;
+            margin-left: 5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeIn 1s ease forwards;
+        }
 
         .content-section {
             padding: 100px 10%;
             min-height: 100vh;
             position: relative;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .project-grid {
@@ -126,37 +138,42 @@ main body
 </head>
 <body>
     <nav class="nav">
-        <a href="#home">Accueil</a>
-        <a href="#about">À propos</a>
-        <a href="#projects">Projets</a>
+        <a href="#home">Main</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
     </nav>
 
     <div class="parallax-bg" id="parallaxBg"></div>
 
     <section class="hero" id="home">
-        <h1 class="title">Design Visionnaire</h1>
+        <h1 class="title">Gabriel JAGUENEAU</h1>
+        <h3 class="title2">Junior Web Developer and Designer</h3>
     </section>
 
     <section class="content-section" id="about">
-        <h2>Notre Vision</h2>
-        <p>Nous créons des expériences numériques uniques qui transcendent les attentes.</p>
+        <h1>Hello!</h1>
+        <h3>I’m currently a Biology student with a strong interest in web development.</h3>
+        <p>Alongside my studies, I work on various web development projects, primarily focusing on creating engaging and user-friendly portfolio websites.</p>
+        <p>Over time, I’ve had the opportunity to collaborate with clients and refine my skills in HTML, CSS, and JavaScript, continually improving my designs based on feedback.</p>
+        <p>Each project has allowed me to bring my clients’ visions to life, and the positive feedback I’ve received has been incredibly rewarding.</p>
+        <p>I’m always excited to take on new challenges and further expand my expertise in this field.</p>
     </section>
 
     <section class="content-section" id="projects">
-        <h2>Projets Phares</h2>
+        <h2>My projects</h2>
         <div class="project-grid">
             <div class="project-card">
-                <h3>Projet Alpha</h3>
-                <p>Refonte complète de l'identité visuelle</p>
+                <h3>Meg's Dueling</h3>
+                <p>Simple Website designed to provide documentation and informations about a STARBLAST.io mod</p>
             </div>
             <div class="project-card">
-                <h3>Projet Beta</h3>
-                <p>Experience utilisateur immersive</p>
+                <h3>Rafael Technik</h3>
+                <p>Classic portfolio website that aims at showing the work quality of his company</p>
             </div>
             <div class="project-card">
-                <h3>Projet Gamma</h3>
-                <p>Design système evolutif</p>
+                <h3>Epic Fight Arena</h3>
+                <p>Classic website that was used to showcase a minecraft server</p>
             </div>
         </div>
     </section>
