@@ -90,7 +90,7 @@ h1 {
 }
 
 section {
-  height: 120vh !important;
+  height: 100vh;
   scroll-snap-align: center;
   overflow: hidden;
 }

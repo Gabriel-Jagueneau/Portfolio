@@ -1,0 +1,250 @@
+<html><head><base href="." target="_blank">
+<title>Portfolio Design Futuriste</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #0a0a0a;
+        color: #fff;
+        overflow-x: hidden;
+    }
+
+    .hero {
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .background-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .title {
+        font-size: 5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        opacity: 0;
+        transform: translateY(50px);
+        animation: fadeIn 1s ease-out forwards;
+    }
+
+    .section {
+        min-height: 100vh;
+        padding: 4rem;
+        position: relative;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s ease-out;
+    }
+
+    .section.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .project-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .project-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .nav {
+        position: fixed;
+        top: 2rem;
+        right: 2rem;
+        z-index: 100;
+    }
+
+    .nav a {
+        color: #fff;
+        text-decoration: none;
+        margin-left: 2rem;
+        font-weight: 500;
+        position: relative;
+    }
+
+    .nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #fff;
+        transition: width 0.3s ease;
+    }
+
+    .nav a:hover::after {
+        width: 100%;
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #ff3366, #00ff99);
+        transform-origin: left;
+        transform: scaleX(0);
+        z-index: 1000;
+    }
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="scroll-progress" id="scrollProgress"></div>
+    
+    <nav class="nav">
+        <a href="#home">Accueil</a>
+        <a href="#about">À propos</a>
+        <a href="#projects">Projets</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="background-animation" id="backgroundAnimation"></div>
+
+    <section class="hero" id="home">
+        <h1 class="title">Design Visionnaire</h1>
+    </section>
+
+    <section class="section" id="about">
+        <h2>À propos</h2>
+        <p>Directeur créatif et visionnaire du design, je façonne l'avenir de l'expérience utilisateur.</p>
+    </section>
+
+    <section class="section" id="projects">
+        <h2>Nos Projets</h2>
+        <div class="project-grid">
+            <div class="project-card">
+                <h3>Projet Alpha</h3>
+                <p>Design futuriste pour une application de réalité augmentée</p>
+            </div>
+            <div class="project-card">
+                <h3>Projet Beta</h3>
+                <p>Interface utilisateur immersive pour une plateforme de métaverse</p>
+            </div>
+            <div class="project-card">
+                <h3>Projet Gamma</h3>
+                <p>Design système pour une entreprise de technologie de pointe</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="contact">
+        <h2>Contact</h2>
+        <p>Prêt à repousser les limites du design ensemble ?</p>
+    </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// Animation de fond avec Three.js
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById('backgroundAnimation').appendChild(renderer.domElement);
+
+// Création de particules
+const geometry = new THREE.BufferGeometry();
+const vertices = [];
+for (let i = 0; i < 5000; i++) {
+    vertices.push(
+        Math.random() * 2000 - 1000,
+        Math.random() * 2000 - 1000,
+        Math.random() * 2000 - 1000
+    );
+}
+geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+const material = new THREE.PointsMaterial({ color: 0xffffff, size: 2 });
+const points = new THREE.Points(geometry, material);
+scene.add(points);
+
+camera.position.z = 1000;
+
+// Animation des particules
+function animate() {
+    requestAnimationFrame(animate);
+    points.rotation.x += 0.001;
+    points.rotation.y += 0.001;
+    renderer.render(scene, camera);
+}
+animate();
+
+// Gestion du scroll
+const scrollProgress = document.getElementById('scrollProgress');
+const sections = document.querySelectorAll('.section');
+
+window.addEventListener('scroll', () => {
+    // Mise à jour de la barre de progression
+    const windowHeight = window.innerHeight;
+    const fullHeight = document.documentElement.scrollHeight - windowHeight;
+    const scrolled = window.scrollY;
+    const progress = scrolled / fullHeight;
+    scrollProgress.style.transform = `scaleX(${progress})`;
+
+    // Animation des sections au scroll
+    sections.forEach(section => {
+        const sectionTop = section.getBoundingClientRect().top;
+        if (sectionTop < windowHeight * 0.75) {
+            section.classList.add('visible');
+        }
+    });
+
+    // Parallax effect sur les particules
+    points.rotation.y = scrolled * 0.0003;
+    points.rotation.x = scrolled * 0.0002;
+});
+
+// Redimensionnement
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Animation smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+</body>
+</html>

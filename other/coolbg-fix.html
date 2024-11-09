@@ -1,0 +1,199 @@
+<html><head><base href="." /><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style type="text/css">*, *::before, *::after {margin: 0;padding: 0;box-sizing: border-box;} body {font-family: 'Space Grotesk', sans-serif;background: #0a0a0a;color: #fff;overflow-x: hidden;} 
+ 
+.hero {height: 100vh;display: flex;align-items: center;justify-content: center;position: relative;overflow: hidden;}
+
+.hero-content {z-index: 2;text-align: center;opacity: 0;transform: translateY(50px);animation: fadeIn 1s forwards;}
+
+.background-animation {position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;background: linear-gradient(45deg, #0a0a0a, #2a2a2a);overflow: hidden;}
+
+.particle {position: absolute;background: rgba(255,255,255,0.1);border-radius: 50%;pointer-events: none;}
+
+.scroll-section {min-height: 100vh;padding: 2rem;position: relative;display: flex;align-items: center;justify-content: center;}
+
+.project-card {background: rgba(255,255,255,0.1);backdrop-filter: blur(10px);border-radius: 15px;padding: 2rem;margin: 2rem;transform: translateX(-100%);opacity: 0;transition: all 0.6s ease;}
+
+.project-card.visible {transform: translateX(0);opacity: 1;}
+
+h1 {font-size: 4rem;margin-bottom: 1rem;background: linear-gradient(45deg, #ff3366, #ff6b6b);-webkit-background-clip: text;-webkit-text-fill-color: transparent;}
+
+p {font-size: 1.2rem;line-height: 1.6;max-width: 600px;margin: 0 auto;}
+
+.scroll-indicator {position: fixed;top: 50%;right: 30px;width: 3px;height: 100px;background: rgba(255,255,255,0.2);z-index: 10;}
+
+.scroll-progress {width: 100%;background: #ff3366;position: absolute;bottom: 0;transform-origin: bottom;transition: height 0.1s ease;}
+
+nav {position: fixed;top: 0;width: 100%;padding: 1rem 2rem;z-index: 100;backdrop-filter: blur(10px);background: rgba(10,10,10,0.8);}
+
+.nav-links {display: flex;justify-content: center;gap: 2rem;list-style: none;}
+
+.nav-links a {color: #fff;text-decoration: none;font-size: 1.1rem;position: relative;}
+
+.nav-links a::after {content: '';position: absolute;bottom: -5px;left: 0;width: 0;height: 2px;background: #ff3366;transition: width 0.3s ease;}
+
+.nav-links a:hover::after {width: 100%;}
+
+@keyframes fadeIn {to {opacity: 1;transform: translateY(0);}}
+
+@keyframes float {0% {transform: translateY(0px);}50% {transform: translateY(-20px);}100% {transform: translateY(0px);}}
+
+.social-links {position: fixed;left: 30px;top: 50%;transform: translateY(-50%);display: flex;flex-direction: column;gap: 1rem;z-index: 10;}
+
+.social-links a {color: #fff;font-size: 1.5rem;transition: color 0.3s ease;}
+
+.social-links a:hover {color: #ff3366;}</style>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/ScrollTrigger.min.js"></script>
+<title>Portfolio Design Futuriste</title>
+</head>
+<body>
+
+<nav>
+    <ul class="nav-links">
+        <li><a href="#home">Accueil</a></li>
+        <li><a href="#about">À propos</a></li>
+        <li><a href="#projects">Projets</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<div class="background-animation" id="background"></div>
+<div class="scroll-indicator"><div class="scroll-progress"></div></div>
+
+<div class="social-links">
+    <a href="https://linkedin.com"><i class="fab fa-linkedin"></i></a>
+    <a href="https://twitter.com"><i class="fab fa-twitter"></i></a>
+    <a href="https://behance.net"><i class="fab fa-behance"></i></a>
+</div>
+
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1>Thomas Laurent</h1>
+        <p>Directeur Créatif & Designer d'Innovation</p>
+    </div>
+</section>
+
+<section class="scroll-section" id="about">
+    <div class="project-card">
+        <h2>Notre Vision</h2>
+        <p>Pionnier dans le design d'innovation, nous créons des expériences qui transcendent les frontières du possible.</p>
+    </div>
+</section>
+
+<section class="scroll-section" id="projects">
+    <div class="project-card">
+        <h2>Nos Réalisations</h2>
+        <p>Découvrez notre portfolio de projets innovants qui redéfinissent l'industrie du design.</p>
+    </div>
+</section>
+
+<section class="scroll-section" id="contact">
+    <div class="project-card">
+        <h2>Contactez-nous</h2>
+        <p>Prêt à donner vie à votre vision ? Collaborons ensemble pour créer quelque chose d'extraordinaire.</p>
+    </div>
+</section>
+
+<script>
+// Animation de particules en background
+function createParticles() {
+    const background = document.getElementById('background');
+    for(let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        const size = Math.random() * 5 + 2;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        background.appendChild(particle);
+        
+        animateParticle(particle);
+    }
+}
+
+function animateParticle(particle) {
+    gsap.to(particle, {
+        x: `random(-100, 100, 5)`,
+        y: `random(-100, 100, 5)`,
+        duration: `random(10, 20)`,
+        repeat: -1,
+        ease: "none",
+        yoyo: true
+    });
+}
+
+// Animation au scroll
+function initScrollAnimations() {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // Scroll Progress
+    const updateScrollProgress = () => {
+        const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+        document.querySelector('.scroll-progress').style.height = `${scrollPercentage}%`;
+    };
+    
+    window.addEventListener('scroll', updateScrollProgress);
+    
+    // Project Cards Animation
+    const cards = gsap.utils.toArray('.project-card');
+    cards.forEach(card => {
+        gsap.from(card, {
+            x: -100,
+            opacity: 0,
+            duration: 1,
+            scrollTrigger: {
+                trigger: card,
+                start: "top center",
+                end: "bottom center",
+                toggleActions: "play none none reverse"
+            }
+        });
+    });
+    
+    // Parallax Background
+    gsap.to('.background-animation', {
+        yPercent: 100,
+        ease: "none",
+        scrollTrigger: {
+            trigger: "body",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1
+        }
+    });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    createParticles();
+    initScrollAnimations();
+    
+    // Hero Content Animation
+    gsap.from('.hero-content', {
+        y: 100,
+        opacity: 0,
+        duration: 1.5,
+        ease: "power3.out"
+    });
+});
+
+// Smooth Scroll
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if(target) {
+            window.scrollTo({
+                top: target.offsetTop,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+</script>
+<script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+</body></html>
