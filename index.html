@@ -11,9 +11,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="stylesheet" href="style.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,700,1,200"/>
+
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 </head>
 <body>
     <nav class="nav">
@@ -25,11 +27,11 @@
     <div class="parallax-bg" id="parallaxBg"></div>
 
     <section class="me" id="home">
-        <h1 class="name">Gabriel JAGUENEAU</h1>
-        <h3 class="under-name">Junior Web Developer and Designer</h3>
+        <h1 class="name effect-shine" data-aos="fade-right" data-aos-duration="1600" data-aos-delay="200">Gabriel JAGUENEAU</h1>
+        <h3 class="under-name effect-shine" data-aos="fade-right" data-aos-duration="1600" data-aos-delay="400">Junior Web Developer and Designer</h3>
     </section>
 
-    <section class="content-section" id="about">
+    <section class="content-section" id="about" data-aos="fade-right" data-aos-duration="1000">
         <ttl>Hello!</ttl>
         <h3>I’m currently a Biology student with a strong interest in web development.</h3>
         <p>Alongside my studies, I work on various web development projects, primarily focusing on creating engaging and user-friendly portfolio websites.</p>
@@ -38,24 +40,24 @@
         <p>I’m always excited to take on new challenges and further expand my expertise in this field.</p>
     </section>
 
-    <section class="content-section" id="projects">
+    <section class="content-section" id="projects" data-aos="fade-right" data-aos-duration="1000">
         <ttl>My projects</ttl>
         <div class="project-grid">
-            <div class="project-card">
+            <div class="project-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200" data-tilt>
                 <span>
                     <h2>Meg's Dueling</h2>
                     <p>Simple Website designed to provide documentation and informations about a STARBLAST.io mod</p>
                 </span>
                 <a href="https://thegreatmegalodon.github.io/Megs-Dueling/" target="_blank">See here</a>
             </div>
-            <div class="project-card">
+            <div class="project-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300" data-tilt>
                 <span>
                     <h2>Rafael Technik</h2>
                     <p>Classic portfolio website that aims at showing the work quality of his company</p>
                 </span>
                 <a href="https://www.rafael-technik.com" target="_blank">See here</a>
             </div>
-            <div class="project-card">
+            <div class="project-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400" data-tilt>
                 <span>
                     <h2>Epic Fight Arena</h2>
                     <p>Classic website that was used to showcase a minecraft server</p>
@@ -65,39 +67,51 @@
         </div>
     </section>
 
-    <section class="content-section" id="contact">
+    <section class="content-section" id="contact" data-aos="fade-right" data-aos-duration="1000">
         <ttl>Contact me!</ttl>
 
         <div class="social-links">
-            <div class="project-card">
+            <div class="project-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200" data-tilt>
                 <h2>
-                    <a href="https://github.com/Gabriel-Jagueneau" target="_blank"></a><img src="images/logo/github.png" alt=""></a>
+                    <img onclick="window.open('https://github.com/Gabriel-Jagueneau', '_blank');" src="images/logo/github.png" alt="">
                     GitHub
                 </h2>
                 <p>
                     <span>User name:</span> Gabriel-Jagueneau
                 </p>
             </div>
-            <div class="project-card">
+            <div class="project-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300" data-tilt>
                 <h2>
-                    <a href="" target="_blank"><img src="images/logo/discord.png" alt=""></a>
+                    <a href="" target="_blank"><img onclick="window.open('https://discord.gg/BYabrEqPE9', '_blank');" src="images/logo/discord.png" alt=""></a>
                     Discord
                 </h2>
                 <p>
                     <span>User name:</span> .megalodon <span class="copy" id="copy-D" onclick="copyText('copy-D', '.megalodon')">content_copy</span>
                 </p>
             </div>
-            <div class="project-card">
+            <div class="project-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400" data-tilt>
                 <h2>
-                    <a href="https://fr.fiverr.com/gabrieljag" target="_blank"></a><img src="images/logo/fiverr.png" alt=""></a>
+                    <img onclick="window.open('https://fr.fiverr.com/gabrieljag', '_blank');" src="images/logo/fiverr.png" alt="">
                     Fiverr
                 </h2>
                 <p>
                     <span>User name:</span> gabrieljag
                 </p>
             </div>
+            <div class="project-card" data-aos="fade-up" data-aos-duration="800" data-aos-delay="500" data-tilt>
+                <h2>
+                    <img onclick="window.open('https://www.linkedin.com/in/jagueneau-gabriel-834176178/', '_blank');" src="images/logo/linkedin.png" alt="">
+                    Linkedin
+                </h2>
+                <p>
+                    <span>User name:</span> jagueneau-gabriel
+                </p>
+            </div>
         </div>
     </section>
 
+    <script type="text/javascript" src="tiltCard.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="script.js"></script>
-</body></html>
+</body>
+</html>
