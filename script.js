@@ -39,8 +39,8 @@ function animateCircles() {
     const scrolled = window.pageYOffset;
 
     circles.forEach((circle, index) => {
-        const speed = (index) * 0.5; // Speed adjustment for continuous animation
-        const parallaxSpeed = (index) * 0.025; // Speed adjustment for parallax effect
+        const speed = (index + 0.1) * 0.5; // Speed adjustment for continuous animation
+        const parallaxSpeed = (index + 0.1) * 0.025; // Speed adjustment for parallax effect
         
         const time = Date.now() * 0.001; // Time for smooth animation
         const translateY = Math.sin(time * speed) * 10; // Smooth vertical movement
