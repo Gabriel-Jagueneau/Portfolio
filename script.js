@@ -73,7 +73,6 @@ function handleSmoothScroll() {
 
 // Initialization
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Initializing circles animation...');
   createCircles();
   animateCircles();
   handleSmoothScroll();
