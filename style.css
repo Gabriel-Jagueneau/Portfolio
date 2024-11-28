@@ -3,6 +3,8 @@
     padding: 0;
     box-sizing: border-box;
     cursor: default;
+    scroll-snap-type: both proximity;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -127,6 +129,8 @@ ttl {
     display: flex;
     flex-direction: column;
     gap: 10px;
+
+    scroll-snap-align: center;
 }
 
 #about {
