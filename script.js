@@ -1,7 +1,7 @@
 // Function to create background circles
 function createCircles() {
   const bg = document.getElementById('parallaxBg');
-  const numCircles = 10;
+  const numCircles = 25;
   const columns = Math.ceil(Math.sqrt(numCircles));
   const rows = Math.ceil(numCircles / columns);
 
@@ -10,7 +10,7 @@ function createCircles() {
       circle.classList.add('circle');
 
       // Circle size between 50px and 250px
-      const size = Math.random() * 200 + 50;
+      const size = Math.random() * 200 + 20;
       circle.style.width = `${size}px`;
       circle.style.height = `${size}px`;
 
@@ -39,11 +39,11 @@ function animateCircles() {
 
       circles.forEach((circle, index) => {
           const speed = (index + 1) * 0.2; // Adjusted speed for animation
-          const parallaxSpeed = (index + 1) * 0.01; // Slower parallax effect
+          const parallaxSpeed = (index + (1/5)) * 0.01; // Slower parallax effect
 
           // Time-based vertical oscillation
           const time = Date.now() * 0.001;
-          const oscillation = Math.sin(time * speed) * 15;
+          const oscillation = Math.sin(time * speed) * 50;
           const parallax = scrolled * parallaxSpeed;
 
           // Calculate a smooth and slow rotation angle
@@ -59,48 +59,24 @@ function animateCircles() {
   requestAnimationFrame(animate);
 }
 
-// Smooth scrolling
-function handleSmoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          document.querySelector(this.getAttribute('href')).scrollIntoView({
-              behavior: 'smooth'
-          });
-      });
-  });
+function applyParallaxToText() {
+    const home = document.getElementById('home');
+    const bg = document.getElementById('parallaxBg');
+
+    // Get background from .parallax-bg
+    const bgStyle = window.getComputedStyle(bg).backgroundImage;
+
+    // Apply it to #home
+    home.style.backgroundImage = bgStyle;
+    home.style.backgroundSize = "cover";
+    home.style.backgroundPosition = "center";
 }
+
 
 // Initialization
 document.addEventListener('DOMContentLoaded', () => {
   createCircles();
   animateCircles();
-  handleSmoothScroll();
 });
-
-const nav = document.querySelector('.nav');
-// Custom cursor
-document.addEventListener('mousemove', (e) => {
-    if (e.clientY < 60) nav.classList.add('visible');
-    else if (e.clientY > 70) nav.classList.remove('visible');
-});
-
-var copyText = function(id, text) {
-    const cpy = document.getElementById(id); // get the ID of the container
-    const oldInner = cpy.innerHTML; // stock its content
-    navigator.clipboard.writeText(text)
-        .then(() => { // if the text is copyable, then copy
-            cpy.style = "background-color: lime;";
-            cpy.innerHTML = `done_all`;
-        }).catch(() => { // if not it shows an error
-            cpy.style = "background-color: red;";
-            cpy.innerHTML = `error`;
-        }).finally(() => { // resets to the old stocked value, with 1.5 second delay
-            setTimeout(() => {
-                cpy.style = "";
-                cpy.innerHTML = oldInner;
-            }, 1500);
-        });
-}
 
 AOS.init();
