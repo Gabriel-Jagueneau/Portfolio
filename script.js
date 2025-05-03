@@ -72,11 +72,14 @@ function applyParallaxToText() {
     home.style.backgroundPosition = "center";
 }
 
-
 // Initialization
 document.addEventListener('DOMContentLoaded', () => {
   createCircles();
   animateCircles();
 });
 
+// AOS init
+
 AOS.init();
+
+// tilt init

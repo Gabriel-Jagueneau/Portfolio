@@ -226,7 +226,6 @@ section {
             border-radius: 10px;
             overflow: hidden;
             min-height: 30vh;
-            background: linear-gradient(transparent, rgb(32, 34, 39) 60%);
             border: 4px rgb(32, 34, 39) solid;
             & .bg {
                 position: absolute;
@@ -275,6 +274,16 @@ section {
                     font-style: italic;
                     color: rgba(240, 248, 255, 0.598);
                 }
+            }
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                z-index: -1;
+                background: linear-gradient(transparent, rgb(32, 34, 39) 60%);
             }
         }
     }
