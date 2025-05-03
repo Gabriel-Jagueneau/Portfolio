@@ -97,9 +97,19 @@ section {
     }
     & .imagur {
         display: flex;
+        flex-direction: column;
+        align-items: center;
         position: relative;
         height: 50vh;
         filter: brightness(1.2);
+        gap: 2vh;
+        & .text {
+            font-size: 16px;
+            font-weight: 400;
+            font-style: italic;
+            color: rgba(44, 50, 55, 0.6);
+            text-shadow: 0 0 10px rgba(44, 50, 55, 0.6);
+        }
         &::after {
             content: '';
             position: absolute;
@@ -150,7 +160,7 @@ section {
             gap: 1vw;
             & span {
                 font-weight: 1000;
-                background: linear-gradient(90deg, #eeff00, #00aeff, #ff00f2);
+                background: linear-gradient(0deg, #eeff00, #00aeff, #ff00f2);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
@@ -379,11 +389,27 @@ section {
         }
     }
     & .body {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         background-color: rgba(57, 59, 60, 0.3);
         border: 1px rgba(57, 59, 60, 0.4) solid;
         border-radius: 15px;
         padding: 2vh 3vh;
-        font-size: 22px;
+        font-size: 20px;
+        .hl {
+            margin-left: 5px;
+            font-weight: 600;
+            background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: ease 0.2s;
+            &:hover {
+                margin-left: 10px;
+                margin-right: 5px;
+                transform: scale(1.25);
+            }
+        }
     }
     & .feet {
         display: flex;
@@ -418,13 +444,13 @@ section {
                     border-radius: 10px;
                     padding: 2px 12px;
                     cursor: pointer;
+                    transition: ease 0.2s;
                     & .company {
                         font-size: 22px;
                         font-weight: 600;
                         cursor: pointer;
                     }
                     & .see-website {
-                        transition: ease 0.2s;
                         & .button {
                             font-size: 22px;
                             font-family: 'Material Symbols Rounded';
