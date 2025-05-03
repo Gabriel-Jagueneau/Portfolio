@@ -505,7 +505,7 @@ section {
 /* -----       Phone adaptation       ----- */
 
 @media only screen and (width < 1100px) {
-    #home img {
+    #home .imagur {
         display: none;
     }
     
