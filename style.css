@@ -272,7 +272,7 @@ section {
     align-items: center;
     justify-content: center;
     padding: 20vh;
-    gap: 5vh;
+    gap: 3vw;
     & .head {
         display: flex;
         flex-direction: column;
@@ -439,4 +439,347 @@ section {
     background: linear-gradient(#eeff0088, #00aeff88, #ff00f288);
     filter: blur(100px);
     transition: all 0.3s ease;
+}
+
+/* -----       Phone adaptation       ----- */
+
+@media only screen and (width < 1100px) {
+    #home img {
+        display: none;
+    }
+    
+    #experience, #projects, #about, #contact {
+        padding: 10vh;
+    }
+    
+    #contact .head {
+        width: 70vw;
+    }
+}
+
+@media only screen and (width < 850px) {
+    #experience, #projects, #about .title {
+        & .main {
+            font-size: 38px;
+        }
+        & .desc {
+            font-size: 18px;
+        }
+    }
+    #experience {
+        gap: 2vh;
+        & .dev, .student, .other {
+            font-size: 30px;
+            & .mainer {
+                gap: 1vw;
+            }
+        }
+    
+        & .dev .cards, .student .cards {
+            gap: 2vw;
+            & .card {
+                gap: 1vw;
+                & img {
+                    height: 40px;
+                }
+                & .info {
+                    & .name {
+                        font-size: 20px;
+                    }
+                    & .desc {
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+    
+    #projects {
+        gap: 2vw;
+        & .cards {
+            & .card {
+                border-radius: 15px;
+                min-height: 25vh;
+                border: 2px rgb(32, 34, 39) solid;
+                & .see-website {
+                    & .button {
+                        font-size: 22px;
+                    }
+                }
+                & .info {
+                    & .name {
+                        font-size: 22px;
+                    }
+                    & .desc {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+    
+    #about {
+        gap: 3vw;
+        & .parag {
+            font-size: 18px;
+        }
+    }
+    
+    #contact {
+        gap: 3vw;
+        & .head {
+            width: 80vw;
+        }
+        & .body {
+            font-size: 18px;
+        }
+    }
+}
+
+@media only screen and (width < 600px) {
+    #experience, #projects, #about .title {
+        & .main {
+            font-size: 34px;
+        }
+        & .desc {
+            font-size: 16px;
+        }
+    }
+
+    #experience, #projects, #about, #contact {
+        padding: 5vh;
+    }
+
+    #home {
+        & .quick-desc {
+            gap: 1vh;
+            & .names {
+                font-size: 50px;
+            }
+            & .description {
+                font-size: 20px;
+            }
+        }
+    }
+    
+    #experience {
+        & .dev, .student, .other {
+            font-size: 28px;
+        }
+    
+        & .dev .cards, .student .cards {
+            & .card {
+                gap: 2vw;
+                padding: 2vw;
+                & img {
+                    height: 30px;
+                }
+                & .info {
+                    & .name {
+                        font-size: 20px;
+                    }
+                    & .desc {
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+    
+    #projects {
+        & .cards {
+            & .card {
+                min-height: 20vh;
+                & .see-website {
+                    & .button {
+                        font-size: 18px;
+                    }
+                }
+                & .info {
+                    & .name {
+                        font-size: 18px;
+                    }
+                    & .desc {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+    
+    #about {
+        & .parag {
+            font-size: 16px;
+        }
+    }
+    
+    #contact {
+        & .head {
+            gap: 1vh;
+            padding: 1vh;
+            width: 90vw;
+            & .top {
+                & .photo-de-profile {
+                    height: 100px;
+                }
+                & .info {
+                    & .name {
+                        font-size: 30px;
+                    }
+                    & .work {
+                        font-size: 16px;
+                        color: rgba(240, 248, 255, 0.598);
+                        font-style: italic;
+                    }
+                }
+            }
+            & .bottom {
+                gap: 1vh;
+                & .info {
+                    & .logo, .service, .type {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+        & .body {
+            font-size: 16px;
+        }
+        & .feet {
+            width: 95vw;
+            & .card {
+                padding: 1vh;
+                gap: 1vh;
+                & .links-logo {
+                    height: 40px;
+                }
+                & .infos {
+                    gap: 1vh;
+                    & .name {
+                        gap: 1vh;
+                        padding: 2px 8px;
+                        & .company {
+                            font-size: 20px;
+                        }
+                        & .see-website {
+                            & .button {
+                                font-size: 20px;
+                            }
+                        }
+                    }
+                    & .username {
+                        gap: 1vh;
+                        & .logo {
+                            font-size: 14px;
+                        }
+                        & .namer {
+                            font-size: 14px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (width < 450px) {
+    #experience, #projects, #about .title {
+        & .main {
+            font-size: 30px;
+        }
+        & .desc {
+            font-size: 14px;
+        }
+    }
+
+    #home {
+        & .quick-desc {
+            gap: 1vh;
+            & .names {
+                font-size: 50px;
+            }
+            & .description {
+                font-size: 14px;
+            }
+        }
+    }
+    
+    #experience {
+        & .dev, .student, .other {
+            font-size: 24px;
+        }
+    
+        & .dev .cards, .student .cards {
+            & .card {
+                padding: 1vw 2vw;
+                & .info {
+                    & .name {
+                        font-size: 18px;
+                    }
+                    & .desc {
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+    }
+    
+    #projects {
+        & .cards {
+            & .card {
+                & .info {
+                    & .desc {
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+    
+    #about {
+        & .parag {
+            font-size: 14px;
+        }
+    }
+    
+    #contact {
+        & .head {
+            & .top {
+                & .photo-de-profile {
+                    height: 80px;
+                }
+                & .info {
+                    & .name {
+                        font-size: 24px;
+                    }
+                }
+            }
+            & .bottom {
+                gap: 1vh;
+                & .info {
+                    & .logo, .service, .type {
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+        & .body {
+            text-align: center;
+            font-size: 16px;
+        }
+        & .feet {
+            & .card {
+                width: 70vw;
+                justify-content: space-between;
+                gap: 2vh;
+                & .links-logo {
+                    height: 66px;
+                }
+                & .infos {
+                    gap: 2vh;
+                    width: 100%;
+                }
+            }
+        }
+    }
 }
