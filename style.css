@@ -161,6 +161,7 @@ section {
             & span {
                 font-weight: 1000;
                 background: linear-gradient(0deg, #eeff00, #00aeff, #ff00f2);
+                background-clip: text;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
             }
@@ -259,6 +260,7 @@ section {
                     font-family: 'Material Symbols Rounded';
                     cursor: pointer;
                     background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
+                    background-clip: text;
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                 }
@@ -404,6 +406,7 @@ section {
             margin-left: 5px;
             font-weight: 600;
             background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             transition: ease 0.2s;
@@ -458,6 +461,7 @@ section {
                             font-size: 22px;
                             font-family: 'Material Symbols Rounded';
                             background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
+                            background-clip: text;
                             -webkit-background-clip: text;
                             -webkit-text-fill-color: transparent;
                             cursor: pointer;
