@@ -306,10 +306,77 @@ section {
     flex-direction: column;
     justify-content: center;
     padding: 20vh;
+    padding-bottom: 25vh;
     background-color: rgba(21, 21, 21, 0.6);
     gap: 5vh;
     & .parag {
         font-size: 20px;
+    }
+    & .secondary {
+        font-size: 36px;
+        font-weight: 600;
+        margin-left: 4vw;
+        position: relative;
+        width: fit-content;
+        display: flex;
+        flex-direction: row;
+        gap: 1vw;
+        & span {
+            font-weight: 1000;
+            background: linear-gradient(0deg, #eeff00, #00aeff, #ff00f2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    }
+    & .diplomas {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 2vw;
+        & .diploma {
+            display: flex;
+            flex-direction: column;
+            border-radius: 15px;
+            padding: 2vh 3vh;
+            font-size: 20px;
+            gap: 1vw;
+            background-color: rgba(57, 59, 60, 0.3);
+            & .ttle {
+                font-size: 24px;
+                font-weight: 600;
+            }
+            & .infos {
+                display: flex;
+                flex-direction: column;
+                & .info {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    gap: 1vw;
+                    margin-left: 1vw;
+                    font-weight: 500;
+                    & .logo {
+                        font-size: 26px;
+                        font-family: 'Material Symbols Rounded';
+                        cursor: pointer;
+                        background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
+                        background-clip: text;
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                    }
+                }
+            }
+        }
+        & .brevet {
+            border: 1px rgba(57, 102, 125, 0.4) solid;
+        }
+        & .bac {
+            border: 1px rgba(116, 125, 57, 0.4) solid;
+        }
+        & .eCTS {
+            border: 1px rgba(125, 57, 57, 0.4) solid;
+        }
     }
 }
 
@@ -591,6 +658,25 @@ section {
         & .parag {
             font-size: 18px;
         }
+        & .secondary {
+            font-size: 30px;
+            font-weight: 600;
+        }
+        & .diplomas {
+            & .diploma {
+                font-size: 16px;
+                & .ttle {
+                    font-size: 20px;
+                }
+                & .infos {
+                    & .info {
+                        & .logo {
+                            font-size: 22px;
+                        }
+                    }
+                }
+            }
+        }
     }
     
     #contact {
@@ -678,6 +764,25 @@ section {
     #about {
         & .parag {
             font-size: 16px;
+        }
+        & .secondary {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        & .diplomas {
+            & .diploma {
+                font-size: 14px;
+                & .ttle {
+                    font-size: 16px;
+                }
+                & .infos {
+                    & .info {
+                        & .logo {
+                            font-size: 20px;
+                        }
+                    }
+                }
+            }
         }
     }
     
