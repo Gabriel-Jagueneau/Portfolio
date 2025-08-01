@@ -345,6 +345,13 @@ section {
             & .ttle {
                 font-size: 24px;
                 font-weight: 600;
+                & span {
+                    font-weight: 1000;
+                    background: linear-gradient(0deg, #eeff00, #00aeff, #ff00f2);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
             }
             & .infos {
                 display: flex;
