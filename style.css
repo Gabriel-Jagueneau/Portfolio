@@ -93,7 +93,6 @@ section {
         }
         & .description {
             font-size: 28px;
-            width: 600px;
         }
     }
     & .image-zone {
@@ -458,7 +457,7 @@ section {
                 bottom: 0;
                 left: 0;
             }
-            &:hover, :active {
+            &:hover {
                 transform: scale(1.05);
                 & .container::after{
                     opacity: 0.4;
@@ -703,10 +702,20 @@ section {
 /* -----       Phone adaptation       ----- */
 
 @media only screen and (width < 1100px) {
-    #home .image-zone {
-        display: none;
+    #home {
+        & .quick-desc {
+            & .names {
+                font-size: 60px;
+            }
+            & .description {
+                font-size: 24px;
+            }
+        }
+        & .image-zone {
+            display: none;
+        }
     }
-    
+
     #experience, #projects, #about, #contact {
         padding: 10vh;
     }
@@ -717,6 +726,14 @@ section {
 }
 
 @media only screen and (width < 850px) {
+    #home {
+        display: flex;
+        align-items: center;
+        & .quick-desc {
+            width: 80vw;
+        }
+    }
+
     #experience, #projects, #about .title {
         & .main {
             font-size: 38px;
@@ -725,6 +742,7 @@ section {
             font-size: 18px;
         }
     }
+
     #experience {
         gap: 2vh;
         & .dev, .student, .other {
@@ -756,7 +774,7 @@ section {
     #projects {
         gap: 2vw;
         & .cards {
-            & .card {
+            & .carder {
                 border-radius: 15px;
                 min-height: 25vh;
                 border: 2px rgb(32, 34, 39) solid;
@@ -788,14 +806,16 @@ section {
         }
         & .diplomas {
             & .diploma {
-                font-size: 16px;
-                & .ttle {
-                    font-size: 20px;
-                }
-                & .infos {
-                    & .info {
-                        & .logo {
-                            font-size: 22px;
+                & .container {
+                    font-size: 15px;
+                    & .ttle {
+                        font-size: 18px;
+                    }
+                    & .infos {
+                        & .info {
+                            & .logo {
+                                font-size: 18px;
+                            }
                         }
                     }
                 }
@@ -866,7 +886,7 @@ section {
     
     #projects {
         & .cards {
-            & .card {
+            & .carder {
                 min-height: 20vh;
                 & .see-website {
                     & .button {
@@ -1002,11 +1022,14 @@ section {
     }
     
     #experience {
-        & .dev, .student, .other {
+        & .other, .dev, .student, .other {
             font-size: 24px;
+            & .descri {
+                font-size: 12px;
+            }
         }
     
-        & .dev .cards, .student .cards {
+        & .other .cards, .dev .cards, .student .cards {
             & .card {
                 padding: 1vw 2vw;
                 & .info {
@@ -1023,10 +1046,10 @@ section {
     
     #projects {
         & .cards {
-            & .card {
+            & .carder {
                 & .info {
                     & .desc {
-                        font-size: 14px;
+                        font-size: 12px;
                     }
                 }
             }
@@ -1036,6 +1059,25 @@ section {
     #about {
         & .parag {
             font-size: 14px;
+        }
+        & .diplomas {
+            & .diploma {
+                & .container {
+                    padding: 1vh 1.5vh;
+                    font-size: 12px;
+                    gap: 0.5vh;
+                    & .ttle {
+                        font-size: 16px;
+                    }
+                    & .infos {
+                        & .info {
+                            & .logo {
+                                font-size: 16px;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     
