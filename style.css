@@ -73,7 +73,7 @@ section {
         flex-direction: column;
         gap: 4vh;
         & .names {
-            font-size: 65px;
+            font-size: 70px;
             letter-spacing: 0.5vw;
             font-weight: 600;
             & .name {
@@ -92,67 +92,92 @@ section {
             }
         }
         & .description {
-            font-size: 26px;
+            font-size: 28px;
+            width: 600px;
         }
     }
-    & .imagur {
+    & .image-zone {
         display: flex;
-        flex-direction: column;
-        align-items: center;
         position: relative;
-        height: 50vh;
-        filter: brightness(1.2);
-        gap: 2vh;
-        & .text {
-            font-size: 16px;
-            font-weight: 400;
-            font-style: italic;
-            color: rgba(44, 50, 55, 0.6);
-            text-shadow: 0 0 10px rgba(44, 50, 55, 0.6);
-        }
-        &::after {
-            content: '';
+        & .cards {
             position: absolute;
-            top: calc(50% - 50px);
-            left: calc(50% - 50px);
-            height: 180px;
-            width: 180px;
-            border-radius: 90px;
-            animation: color-carousel 9s infinite ease;
-            z-index: -1;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: visible;
+            & .cardage {
+                position: absolute;
+                background: linear-gradient(45deg, #eeff0020, #00aeff20, #ff00f220);
+                background-size: 200% 400%;
+                animation: gradientShift 16s ease infinite;
+                padding: 1vw;
+                border-radius: 15px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                backdrop-filter: blur(10px);
+                width: 300px;
+                transition: ease 0.3s backdrop-filter;
+                cursor: grab;
+                & div {
+                    cursor: grab;
+                }
+                & .title {
+                    font-size: x-large;
+                    font-weight: 600;
+                }
+                & .note {
+                    font-size: small;
+                    font-style: italic;
+                    color: rgba(240, 248, 255, 0.598);
+                }
+                & .body {
+                    font-size: large;
+                    margin-top: 1vh;
+                }
+                &:hover {
+                    backdrop-filter: blur(25px);
+                }
+                &:active {
+                    cursor: grabbing;
+                    & div {
+                        cursor: grabbing;
+                    }
+                }
+            }
+        }
+        & .imagur {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            height: 45vh;
+            filter: brightness(1.2);
+            gap: 2vh;
+            & .text {
+                font-size: 16px;
+                font-weight: 400;
+                font-style: italic;
+                color: rgba(44, 50, 55, 0.15);
+                text-shadow: 0 0 10px rgba(44, 50, 55, 0.15);
+            }
         }
     }
-}
-
-@keyframes color-carousel {
-    0% {
-        box-shadow: 0 0 1000px #eeff00;
-    }
-    33% {
-        box-shadow: 0 0 1000px #00aeff;
-    }
-    66% {
-        box-shadow: 0 0 1000px #ff00f2;
-    }
-    100% {
-        box-shadow: 0 0 1000px #eeff00;
-    }
-    
 }
 
 #experience {
-    display: flex;
     flex-direction: column;
     justify-content: center;
     padding-left: 5vw;
-    background-color: rgba(21, 21, 21, 0.6);
+    background-color: rgba(21, 21, 21, 0.4);
+    backdrop-filter: blur(100px);
     gap: 5vh;
     padding: 20vh;
     & .dev, .student, .other {
         font-size: 36px;
         font-weight: 600;
+        margin-left: 4vw;
         & .mainer {
-            margin-left: 4vw;
             position: relative;
             width: fit-content;
             display: flex;
@@ -166,19 +191,26 @@ section {
                 -webkit-text-fill-color: transparent;
             }
         }
+        & .descri {
+            margin-left: 2vw;
+            font-size: 18px;
+            font-weight: 400;
+            font-style: italic;
+            color: rgba(240, 248, 255, 0.598);
+        }
     }
 
-    & .dev .cards, .student .cards {
+    & .dev .cards, .student .cards, .other .cards {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         gap: 2vw;
-        padding: 2vw 0.5vw;
+        padding: 1vw 0.5vw;
         & .card {
             display: flex;
             flex-direction: row;
             gap: 1vw;
-            padding: 1vw;
+            padding: 1vw 1.4vw;
             border-radius: 15px;
             align-items: center;
             justify-content: center;
@@ -211,6 +243,11 @@ section {
         background-color: rgba(47, 107, 163, 0.1);
         border: 1px rgba(47, 107, 163, 0.3) solid;
     }
+
+    & .other .cards .card {
+        background-color: rgba(163, 47, 111, 0.1);
+        border: 1px rgba(163, 47, 111, 0.3) solid;
+    }
 }
 
 #projects {
@@ -228,12 +265,12 @@ section {
         flex-wrap: wrap;
         gap: 2vw;
         padding: 2vw 0.5vw;
-        & .card {
+        & .carder {
             position: relative;
             display: flex;
             flex-direction: row;
             gap: 1vw;
-            padding: 1vw;
+            padding: 1vh;
             border-radius: 10px;
             overflow: hidden;
             min-height: 30vh;
@@ -250,8 +287,8 @@ section {
             & .see-website {
                 position: absolute;
                 background-color: rgb(32, 34, 39);
-                top: 1vw;
-                right: 1vw;
+                top: 1vh;
+                right: 1vh;
                 border-radius: 15px;
                 padding: 8px 10px;
                 transition: ease 0.2s;
@@ -307,8 +344,11 @@ section {
     justify-content: center;
     padding: 20vh;
     padding-bottom: 25vh;
-    background-color: rgba(21, 21, 21, 0.6);
-    gap: 5vh;
+    background-color: rgba(21, 21, 21, 0.4);
+    gap: 3vh;
+    & .title {
+        margin-bottom: 1vh;
+    }
     & .parag {
         font-size: 20px;
     }
@@ -316,6 +356,7 @@ section {
         font-size: 36px;
         font-weight: 600;
         margin-left: 4vw;
+        margin-top: 4vh;
         position: relative;
         width: fit-content;
         display: flex;
@@ -335,54 +376,107 @@ section {
         flex-wrap: wrap;
         gap: 2vw;
         & .diploma {
-            display: flex;
-            flex-direction: column;
-            border-radius: 15px;
-            padding: 2vh 3vh;
-            font-size: 20px;
-            gap: 1vw;
-            background-color: rgba(57, 59, 60, 0.3);
-            & .ttle {
-                font-size: 24px;
-                font-weight: 600;
-                & span {
-                    font-weight: 1000;
-                    background: linear-gradient(0deg, #eeff00, #00aeff, #ff00f2);
-                    background-clip: text;
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                }
-            }
-            & .infos {
+            transition: 0.5s ease;
+            position: relative;
+            height: fit-content;
+            & .container {
+                position: relative;
                 display: flex;
                 flex-direction: column;
-                & .info {
+                border-radius: 15px;
+                padding: 2vh 2.5vh;
+                font-size: 20px;
+                gap: 1vh;
+                overflow: hidden;
+                backdrop-filter: blur(25px);
+                white-space: nowrap;
+
+                &::after {
+                    content: '';
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                    width: 100%;
+                    position: absolute;
+                    transition: 0.5s ease;
+                    background: linear-gradient(45deg, #eeff0015, #00aeff15, #ff00f215);
+                    background-size: 200% 400%;
+                    animation: gradientShift 16s ease infinite;
+                }
+                
+                & .ttle {
                     display: flex;
                     flex-direction: row;
-                    align-items: center;
-                    gap: 1vw;
-                    margin-left: 1vw;
-                    font-weight: 500;
-                    & .logo {
-                        font-size: 26px;
-                        font-family: 'Material Symbols Rounded';
-                        cursor: pointer;
-                        background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
+                    gap: 1vh;
+                    font-size: 24px;
+                    font-weight: 600;
+                    & .span {
+                        font-weight: 1000;
+                        background: linear-gradient(0deg, #eeff00, #00aeff, #ff00f2);
                         background-clip: text;
                         -webkit-background-clip: text;
                         -webkit-text-fill-color: transparent;
                     }
                 }
+                & .infos {
+                    display: flex;
+                    flex-direction: column;
+                    & .info {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        gap: 1vw;
+                        margin-left: 1vh;
+                        font-weight: 400;
+                        color: rgba(240, 248, 255, 0.6);
+                        & .logo {
+                            font-size: 26px;
+                            font-family: 'Material Symbols Rounded';
+                        }
+                    }
+                }
             }
-        }
-        & .brevet {
-            border: 1px rgba(57, 102, 125, 0.4) solid;
-        }
-        & .bac {
-            border: 1px rgba(116, 125, 57, 0.4) solid;
-        }
-        & .eCTS {
-            border: 1px rgba(125, 57, 57, 0.4) solid;
+            & span {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                border-radius: 10px;
+                transition: 0.5s ease;
+                opacity: 0;
+                background: linear-gradient(45deg, #eeff0020, #00aeff20, #ff00f220);
+                background-size: 200% 400%;
+                animation: 
+                  animateBubble 4s ease-in-out infinite,
+                  gradientShift 16s ease infinite;
+            }
+            & span:nth-child(1) {
+                top: 0;
+                right: 0;
+                animation-delay: -1.6s;
+            }
+            & span:nth-child(2) {
+                bottom: 0;
+                left: 0;
+            }
+            &:hover, :active {
+                transform: scale(1.05);
+                & .container::after{
+                    opacity: 0.4;
+                }
+                & span {
+                    width: 40%;
+                    height: 40%;
+                    opacity: 1;
+                }
+                & span:nth-child(1) {
+                    top: -15px;
+                    right: -15px;
+                }
+                & span:nth-child(2) {
+                    bottom: -15px;
+                    left: -15px;
+                }
+            }
         }
     }
 }
@@ -398,8 +492,11 @@ section {
         display: flex;
         flex-direction: column;
         gap: 4vh;
-        background-color: rgba(57, 59, 60, 0.3);
-        border: 1px rgba(57, 59, 60, 0.4) solid;
+
+        background-color: rgba(65, 67, 68, 0.1);
+        border: 1px rgba(65, 67, 68, 0.2) solid;
+        backdrop-filter: blur(100px);
+
         border-radius: 15px;
         padding: 2vh;
         width: 50vw;
@@ -447,9 +544,12 @@ section {
             & .info {
                 display: flex;
                 flex-direction: row;
-                background-color: rgba(57, 59, 60, 0.3);
                 padding: 10px 16px;
                 border-radius: 15px;
+
+                background-color: rgba(65, 67, 68, 0.1);
+                border: 1px rgba(65, 67, 68, 0.2) solid;
+
                 gap: 1vw;
                 align-items: center;
                 & .logo {
@@ -470,8 +570,11 @@ section {
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-        background-color: rgba(57, 59, 60, 0.3);
-        border: 1px rgba(57, 59, 60, 0.4) solid;
+
+        background-color: rgba(65, 67, 68, 0.1);
+        border: 1px rgba(65, 67, 68, 0.2) solid;
+        backdrop-filter: blur(50px);
+
         border-radius: 15px;
         padding: 2vh 3vh;
         font-size: 20px;
@@ -501,8 +604,11 @@ section {
         & .card {
             display: flex;
             flex-direction: row;
-            background-color: rgba(57, 59, 60, 0.3);
-            border: 1px rgba(57, 59, 60, 0.4) solid;
+
+            background-color: rgba(65, 67, 68, 0.1);
+            border: 1px rgba(65, 67, 68, 0.2) solid;
+            backdrop-filter: blur(50px);
+
             border-radius: 15px;
             padding: 2vh;
             gap: 2vh;
@@ -563,6 +669,17 @@ section {
     }
 }
 
+@keyframes animateBubble {
+    0%, 100% {transform: translate(5px, -5px)}
+    50% {transform: translate(-5px, 5px)}
+}
+
+@keyframes gradientShift {
+    0% { background-position: 10% 80%; }
+    50% { background-position: 80% 10%; }
+    100% { background-position: 10% 80%; }
+}
+
 /* -- Backgriund circles -- */
 .parallax-bg {
     position: fixed;
@@ -572,21 +689,21 @@ section {
     height: 100vh;
     z-index: -1;
     overflow: hidden;
-    background: black;
+    background: rgb(5, 5, 5);
 }
 
 .circle {
     position: absolute;
     border-radius: 50%;
     background: linear-gradient(#eeff0088, #00aeff88, #ff00f288);
-    filter: blur(100px);
+    filter: blur(110px);
     transition: all 0.3s ease;
 }
 
 /* -----       Phone adaptation       ----- */
 
 @media only screen and (width < 1100px) {
-    #home .imagur {
+    #home .image-zone {
         display: none;
     }
     
