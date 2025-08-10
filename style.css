@@ -418,7 +418,8 @@ section {
         & .line {
             display: flex;
             height: 105%;
-            width: 8px;
+            padding-left: 4px;
+            padding-right: 4px;
             border-radius: 10px;
             background: linear-gradient(180deg, #eeff00 0%, #00aeff 45%, #ff00f2 90%, transparent 100%);
         }
@@ -446,7 +447,7 @@ section {
                 & .parag {
                     font-size: 20px;
                     margin-left: 2vw;
-                    width: 60vw;
+                    width: 70vw;
         
                     & .link {
                         cursor: pointer;
@@ -975,7 +976,25 @@ section {
     #about {
         gap: 3vw;
         & .contained {
-            height: 600px;
+            gap: 40px;
+            height: 650px;
+            & .parags {
+                & .inner {
+                    & .date {
+                        left: -74px;
+                    }
+                    & .parag {
+                        font-size: 18px;
+                        margin-left: 2vw;
+                        & .bigger {
+                            font-size: 26px;
+                        }
+                        & .smaller {
+                            font-size: 15px;
+                        }
+                    }
+                }
+            }
         }
         & .secondary {
             font-size: 30px;
@@ -1085,12 +1104,17 @@ section {
     #about {
         & .contained {
             gap: 30px;
+            height: 650px;
+            & .line {
+                padding-left: 3px;
+                padding-right: 3px;
+            }
             & .parags {
                 & .inner {
                     & .date {
-                        left: -56px;
+                        left: -60px;
                         font-size: 14px;
-                        padding: 2px 6px;
+                        padding: 4px 8px;
                         min-width: 45px;
                     }
                     & .parag {
@@ -1260,7 +1284,7 @@ section {
             & .parags {
                 & .inner {
                     & .date {
-                        left: -57px;
+                        left: -59px;
                         font-size: 12px;
                         padding: 4px 8px;
                         min-width: 50px;
