@@ -414,7 +414,8 @@ section {
     & .contained {
         display: flex;
         flex-direction: row;
-        height: 600px;
+        gap: 20px;
+        height: 700px;
         & .line {
             display: flex;
             height: 105%;
@@ -433,7 +434,7 @@ section {
                 align-items: center;
                 & .date {
                     position: absolute;
-                    left: -34px;
+                    left: -54px;
                     min-width: 60px;
                     padding: 4px 10px;
                     background-color: rgba(81, 82, 83, 0.3);
@@ -445,10 +446,14 @@ section {
                     color: white;
                 }
                 & .parag {
-                    font-size: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
                     margin-left: 2vw;
                     width: 70vw;
-        
+                    & .text {
+                        font-size: 20px;
+                    }
                     & .link {
                         cursor: pointer;
                         color: #0077ff;
@@ -463,6 +468,23 @@ section {
                     & .smaller {
                         font-size: 16px;
                         color: rgba(240, 248, 255, 0.598);
+                    }
+                    & .events {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                        gap: 8px;
+                        & .mention {
+                            display: flex;
+                            flex-direction: row;
+                            background-color: rgba(81, 82, 83, 0.3);
+                            border: 1px rgba(65, 67, 68, 0.15) solid;
+                            backdrop-filter: blur(5px);
+                            width: fit-content;
+                            padding: 3px 8px;
+                            border-radius: 10px;
+                            gap: 5px;
+                        }
                     }
                 }
             }
@@ -871,8 +893,10 @@ section {
                         left: -74px;
                     }
                     & .parag {
-                        font-size: 18px;
                         margin-left: 2vw;
+                        .text {
+                            font-size: 18px;
+                        }
                         & .bigger {
                             font-size: 26px;
                         }
@@ -977,14 +1001,13 @@ section {
         gap: 3vw;
         & .contained {
             gap: 40px;
-            height: 650px;
+            height: 800px;
             & .parags {
                 & .inner {
                     & .date {
                         left: -74px;
                     }
                     & .parag {
-                        font-size: 18px;
                         margin-left: 2vw;
                         & .bigger {
                             font-size: 26px;
@@ -1104,7 +1127,7 @@ section {
     #about {
         & .contained {
             gap: 30px;
-            height: 650px;
+            height: 800px;
             & .line {
                 padding-left: 3px;
                 padding-right: 3px;
@@ -1118,7 +1141,9 @@ section {
                         min-width: 45px;
                     }
                     & .parag {
-                        font-size: 16px;
+                        & .text {
+                            font-size: 16px;
+                        }
                         & .bigger {
                             font-size: 22px;
                         }
@@ -1290,12 +1315,17 @@ section {
                         min-width: 50px;
                     }
                     & .parag {
-                        font-size: 14px;
+                        & .text {
+                            font-size: 14px;
+                        }
                         & .bigger {
                             font-size: 22px;
                         }
                         & .smaller {
-                            font-size: 14px;
+                            font-size: 12px;
+                        }
+                        & .events {
+                            gap: 5px;
                         }
                     }
                 }
