@@ -72,8 +72,9 @@ section {
         display: flex;
         flex-direction: column;
         gap: 4vh;
+        width: 40vw;
         & .names {
-            font-size: 70px;
+            font-size: 65px;
             letter-spacing: 0.5vw;
             font-weight: 600;
             & .name {
@@ -92,7 +93,7 @@ section {
             }
         }
         & .description {
-            font-size: 28px;
+            font-size: 26px;
         }
     }
     & .image-zone {
@@ -157,8 +158,8 @@ section {
                 font-size: 16px;
                 font-weight: 400;
                 font-style: italic;
-                color: rgba(44, 50, 55, 0.15);
-                text-shadow: 0 0 10px rgba(44, 50, 55, 0.15);
+                color: rgba(44, 50, 55, 0.3);
+                text-shadow: 0 0 10px rgba(44, 50, 55, 0.4);
             }
         }
     }
@@ -203,7 +204,7 @@ section {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 2vw;
+        gap: 1.5vw;
         padding: 1vw 0.5vw;
         & .card {
             display: flex;
@@ -272,7 +273,8 @@ section {
             padding: 1vh;
             border-radius: 10px;
             overflow: hidden;
-            min-height: 30vh;
+            min-height: 25vh;
+            min-width: 330px;
             border: 4px rgb(32, 34, 39) solid;
             & .bg {
                 position: absolute;
@@ -292,7 +294,7 @@ section {
                 padding: 8px 10px;
                 transition: ease 0.2s;
                 & .button {
-                    font-size: 26px;
+                    font-size: 25px;
                     font-family: 'Material Symbols Rounded';
                     cursor: pointer;
                     background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
