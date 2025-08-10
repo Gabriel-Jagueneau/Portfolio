@@ -68,15 +68,11 @@ function applyParallaxToText() {
 
 const zone = document.querySelector(".image-zone");
 const cards = document.querySelectorAll(".cardage");
-
-const rect = zone.getBoundingClientRect();
-const centerX = rect.width / 2;
-const centerY = rect.height / 2;
-
 const allCards = Array.from(cards);
+const dragStates = new Map();
 const orbits = allCards.map((_, i) => ({
   baseRadius: 0,
-  targetRadius: rect.width / 3,
+  targetRadius: zone.getBoundingClientRect().width / 3,
   speed: 0,
   targetSpeed: 0.0005,
   angle: (2 * Math.PI * i) / allCards.length,
@@ -84,13 +80,13 @@ const orbits = allCards.map((_, i) => ({
   dragging: false,
   returning: false,
   angleLocked: false,
+
   currentX: 0,
   currentY: 0,
+
   targetX: 0,
   targetY: 0,
 }));
-
-const dragStates = new Map();
 
 function animate() {
   const rect = zone.getBoundingClientRect();
@@ -213,6 +209,33 @@ cards.forEach((card, i) => {
   });
 });
 
+document.getElementById('confetti-generator').addEventListener('click', () => {
+  const end = Date.now() + 1000;
+  const colors = ["#eeff00", "#00aeff", "#ff00f2"];
+
+  (function frame() {
+    confetti({
+      particleCount: 1,
+      angle: 60,
+      spread: 85,
+      origin: { x: 0 },
+      colors: colors
+    });
+
+    confetti({
+      particleCount: 1,
+      angle: 120,
+      spread: 85,
+      origin: { x: 1 },
+      colors: colors
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  })();
+});
+
 // Initialization
 document.addEventListener('DOMContentLoaded', () => {
   createCircles();
@@ -224,5 +247,3 @@ document.addEventListener('DOMContentLoaded', () => {
 // AOS init
 
 AOS.init();
-
-// tilt init
