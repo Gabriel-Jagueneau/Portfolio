@@ -117,7 +117,9 @@ section {
                 justify-content: center;
                 backdrop-filter: blur(10px);
                 width: 300px;
-                transition: ease 0.3s backdrop-filter;
+                transition: 
+                    ease 0.3s backdrop-filter,
+                    ease 0.3s transform;
                 cursor: grab;
                 & div {
                     cursor: grab;
@@ -137,6 +139,7 @@ section {
                 }
                 &:hover {
                     backdrop-filter: blur(25px);
+                    transform: scale(1.05);
                 }
                 &:active {
                     cursor: grabbing;
@@ -322,7 +325,7 @@ section {
                     font-size: 18px;
                     font-weight: 400;
                     font-style: italic;
-                    color: rgba(240, 248, 255, 0.598);
+                    color: rgba(240, 248, 255, 0.7);
                 }
             }
             &::after {
@@ -384,11 +387,9 @@ section {
                 position: relative;
                 display: flex;
                 flex-direction: column;
-                border-radius: 15px;
                 padding: 2vh 2.5vh;
                 font-size: 20px;
                 gap: 1vh;
-                overflow: hidden;
                 backdrop-filter: blur(25px);
                 white-space: nowrap;
 
@@ -399,6 +400,7 @@ section {
                     height: 100%;
                     width: 100%;
                     position: absolute;
+                    border-radius: 15px;
                     transition: 0.5s ease;
                     background: linear-gradient(45deg, #eeff0015, #00aeff15, #ff00f215);
                     background-size: 200% 400%;
@@ -465,8 +467,8 @@ section {
                     opacity: 0.4;
                 }
                 & span {
-                    width: 40%;
-                    height: 40%;
+                    width: 50%;
+                    height: 50%;
                     opacity: 1;
                 }
                 & span:nth-child(1) {
