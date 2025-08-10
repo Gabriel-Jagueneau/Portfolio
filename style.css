@@ -34,6 +34,22 @@ section {
     width: 100vw;
 }
 
+.highlight {
+    font-weight: 600;
+    background: linear-gradient(0deg, #eeff00, #00aeff, #ff00f2);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.highlight-ang {
+    font-weight: 600;
+    background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 #experience, #projects, #about .title {
     display: flex;
     flex-direction: column;
@@ -172,10 +188,13 @@ section {
     flex-direction: column;
     justify-content: center;
     padding-left: 5vw;
-    background-color: rgba(21, 21, 21, 0.4);
-    backdrop-filter: blur(100px);
-    gap: 5vh;
     padding: 20vh;
+
+    padding-bottom: 30vh;
+    padding-top: 30vh;
+    background: linear-gradient(0deg, transparent, rgba(21, 21, 21, 0.5) 15%, rgba(21, 21, 21, 0.5) 85%, transparent);
+
+    gap: 5vh;
     & .block {
         font-size: 36px;
         font-weight: 600;
@@ -186,20 +205,13 @@ section {
             display: flex;
             flex-direction: row;
             gap: 1vw;
-            & span {
-                font-weight: 1000;
-                background: linear-gradient(0deg, #eeff00, #00aeff, #ff00f2);
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
         }
         & .descri {
             margin-left: 2vw;
             font-size: 18px;
             font-weight: 400;
             font-style: italic;
-            color: rgba(240, 248, 255, 0.598);
+            color: rgba(240, 248, 255, 0.6);
         }
     }
 
@@ -209,12 +221,13 @@ section {
         flex-wrap: wrap;
         gap: 1.5vw;
         padding: 1vw 0.5vw;
+        border-radius: 15px;
         & .card {
             position: relative;
             display: flex;
             flex-direction: row;
             gap: 1vw;
-            padding: 1vw 1.4vw;
+            padding: 0.8vw 1vw;
             border-radius: 15px;
             align-items: center;
             justify-content: center;
@@ -224,6 +237,7 @@ section {
             & .info {
                 display: flex;
                 flex-direction: column;
+                border-radius: 15px;
                 & .name {
                     font-size: 26px;
                     font-weight: 600;
@@ -236,47 +250,48 @@ section {
                 }
             }
             &::before {
-                content: '';
+                content: "";
                 position: absolute;
-                top: -1px;
-                left: -1px;
-                width: 100%;
-                height: 100%;
-                z-index: -2;
-                border-radius: 15px;
+                border-radius: 15px; 
+                padding: 2px; 
+                background: linear-gradient(340deg, #262626 50%, rgb(47, 107, 163)); 
+                mask: 
+                  linear-gradient(#000 0 0) content-box,
+                  linear-gradient(#000 0 0);
+                mask-composite: exclude; 
             }
         }
     }
 
     & .agro .cards .card {
-        background: radial-gradient(ellipse at left top, rgba(47, 163, 57, 0.1) 0%, #151419 60% ,#151419 100%);
+        background: radial-gradient(ellipse at left top, rgba(47, 163, 57, 0.4) 0%, #212121 60% ,#212121 100%);
         &::before {
-            border: 1px solid transparent;
-            background: linear-gradient(340deg, #232228, #232228, rgba(47, 163, 57, 1)) border-box border-box;
+            inset: 0;
+            background: linear-gradient(340deg, #212121 50%, rgb(47, 163, 57)); 
         }
     }
 
     & .student .cards .card {
-        background: radial-gradient(ellipse at left top, rgba(47, 107, 163, 0.1) 0%, #151419 60% ,#151419 100%);
+        background: radial-gradient(ellipse at left top, rgba(47, 107, 163, 0.4) 0%, #212121 60% ,#212121 100%);
         &::before {
-            border: 1px solid transparent;
-            background: linear-gradient(340deg, #232228, #232228, rgba(47, 107, 163, 1)) border-box border-box;
+            inset: 0;
+            background: linear-gradient(340deg, #212121 50%, rgb(47, 107, 163)); 
         }
     }
 
     & .dev .cards .card {
-        background: radial-gradient(ellipse at left top, rgba(159, 163, 47, 0.1) 0%, #151419 60% ,#151419 100%);
+        background: radial-gradient(ellipse at left top, rgba(159, 163, 47, 0.4) 0%, #212121 60% ,#212121 100%);
         &::before {
-            border: 1px solid transparent;
-            background: linear-gradient(340deg, #232228, #232228, rgba(159, 163, 47, 1)) border-box border-box;
+            inset: 0;
+            background: linear-gradient(340deg, #212121 50%, rgb(159, 163, 47)); 
         }
     }
 
     & .other .cards .card {
-        background: radial-gradient(ellipse at left top, rgba(163, 47, 111, 0.1) 0%, #151419 60% ,#151419 100%);
+        background: radial-gradient(ellipse at left top, rgba(163, 47, 111, 0.4) 0%, #212121 60% ,#212121 100%);
         &::before {
-            border: 1px solid transparent;
-            background: linear-gradient(340deg, #232228, #232228, rgba(163, 47, 111, 1)) border-box border-box;
+            inset: 0;
+            background: linear-gradient(340deg, #212121 50%, rgb(163, 47, 111)); 
         }
     }
 }
@@ -304,7 +319,7 @@ section {
             border-radius: 15px;
             overflow: hidden;
             min-height: 25vh;
-            border: 4px #151419 solid;
+            border: 4px #212121 solid;
             & .bg {
                 position: absolute;
                 z-index: -1;
@@ -320,7 +335,7 @@ section {
                 justify-content: space-between;
                 height: fit-content;
                 padding: 0.5vh;
-                font-size: 26px;
+                font-size: 24px;
                 & .name {
                     display: flex;
                     align-items: center;
@@ -343,10 +358,12 @@ section {
                     & .button {
                         font-family: 'Material Symbols Rounded';
                         cursor: pointer;
+
                         background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
                         background-clip: text;
                         -webkit-background-clip: text;
                         -webkit-text-fill-color: transparent;
+
                         transition: ease 0.2s;
                         filter: brightness(2) saturate(0);
                     }
@@ -377,7 +394,7 @@ section {
                 width: 100%;
                 z-index: -1;
                 border-radius: 0px;
-                background: linear-gradient(transparent, #151419 60%);
+                background: linear-gradient(transparent, #212121 60%);
             }
         }
     }
@@ -388,15 +405,69 @@ section {
     flex-direction: column;
     justify-content: center;
     padding: 20vh;
-    padding-bottom: 25vh;
-    background-color: rgba(21, 21, 21, 0.4);
-    gap: 3vh;
-    & .title {
-        margin-bottom: 1vh;
+
+    padding-bottom: 30vh;
+    padding-top: 30vh;
+    background: linear-gradient(0deg, transparent, rgba(21, 21, 21, 0.5) 15%, rgba(21, 21, 21, 0.5) 85%, transparent);
+
+    gap: 4vh;
+    & .contained {
+        display: flex;
+        flex-direction: row;
+        height: 600px;
+        & .line {
+            display: flex;
+            height: 105%;
+            width: 8px;
+            border-radius: 10px;
+            background: linear-gradient(180deg, #eeff00 0%, #00aeff 45%, #ff00f2 90%, transparent 100%);
+        }
+        & .parags {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            & .inner {
+                position: relative;
+                display: flex;
+                align-items: center;
+                & .date {
+                    position: absolute;
+                    left: -34px;
+                    min-width: 60px;
+                    padding: 4px 10px;
+                    background-color: rgba(81, 82, 83, 0.3);
+                    border: 1px rgba(65, 67, 68, 0.15) solid;
+                    backdrop-filter: blur(5px);
+                    border-radius: 10px;
+                    text-align: center;
+                    font-weight: 600;
+                    color: white;
+                }
+                & .parag {
+                    font-size: 20px;
+                    margin-left: 2vw;
+                    width: 60vw;
+        
+                    & .link {
+                        cursor: pointer;
+                        color: #0077ff;
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                    & .bigger {
+                        font-size: 28px;
+                        font-weight: 600;
+                    }
+                    & .smaller {
+                        font-size: 16px;
+                        color: rgba(240, 248, 255, 0.598);
+                    }
+                }
+            }
+        }
     }
-    & .parag {
-        font-size: 20px;
-    }
+
     & .secondary {
         font-size: 36px;
         font-weight: 600;
@@ -407,13 +478,6 @@ section {
         display: flex;
         flex-direction: row;
         gap: 1vw;
-        & span {
-            font-weight: 1000;
-            background: linear-gradient(0deg, #eeff00, #00aeff, #ff00f2);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
     }
     & .diplomas {
         display: flex;
@@ -435,7 +499,6 @@ section {
                 gap: 1vh;
                 backdrop-filter: blur(25px);
                 white-space: nowrap;
-
                 &::after {
                     content: '';
                     top: 0;
@@ -449,7 +512,6 @@ section {
                     background-size: 200% 400%;
                     animation: gradientShift 16s ease infinite;
                 }
-
                 &::before {
                     content: '';
                     top: 0;
@@ -469,22 +531,12 @@ section {
                     mask-composite: exclude;
                     animation: gradientShift 16s ease infinite;
                 }
-
-                
-                
                 & .ttle {
                     display: flex;
                     flex-direction: row;
                     gap: 1vh;
                     font-size: 24px;
                     font-weight: 600;
-                    & .span {
-                        font-weight: 1000;
-                        background: linear-gradient(0deg, #eeff00, #00aeff, #ff00f2);
-                        background-clip: text;
-                        -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;
-                    }
                 }
                 & .infos {
                     display: flex;
@@ -562,7 +614,7 @@ section {
 
         background-color: rgba(65, 67, 68, 0.1);
         border: 1px rgba(65, 67, 68, 0.2) solid;
-        backdrop-filter: blur(100px);
+        backdrop-filter: blur(50px);
 
         border-radius: 15px;
         padding: 2vh;
@@ -657,9 +709,11 @@ section {
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
+
         background-color: rgba(65, 67, 68, 0.1);
         border: 1px rgba(65, 67, 68, 0.2) solid;
         backdrop-filter: blur(50px);
+
         gap: 5px;
         border-radius: 15px;
         padding: 2vh 3vh;
@@ -806,6 +860,42 @@ section {
     #experience, #projects, #about, #contact {
         padding: 10vh;
     }
+
+    #about {
+        & .contained {
+            gap: 40px;
+            & .parags {
+                & .inner {
+                    & .date {
+                        left: -74px;
+                    }
+                    & .parag {
+                        font-size: 18px;
+                        margin-left: 2vw;
+                        & .bigger {
+                            font-size: 26px;
+                        }
+                        & .smaller {
+                            font-size: 15px;
+                        }
+                    }
+                }
+            }
+        }
+        & .secondary {
+            font-size: 34px;
+        }
+        & .diplomas {
+            & .diploma {
+                & .container {
+                    font-size: 16px;
+                    & .ttle {
+                        font-size: 22px;
+                    }
+                }
+            }
+        }
+    }
     
     #contact .head {
         width: 70vw;
@@ -884,8 +974,8 @@ section {
     
     #about {
         gap: 3vw;
-        & .parag {
-            font-size: 18px;
+        & .contained {
+            height: 600px;
         }
         & .secondary {
             font-size: 30px;
@@ -993,8 +1083,27 @@ section {
     }
     
     #about {
-        & .parag {
-            font-size: 16px;
+        & .contained {
+            gap: 30px;
+            & .parags {
+                & .inner {
+                    & .date {
+                        left: -56px;
+                        font-size: 14px;
+                        padding: 2px 6px;
+                        min-width: 45px;
+                    }
+                    & .parag {
+                        font-size: 16px;
+                        & .bigger {
+                            font-size: 22px;
+                        }
+                        & .smaller {
+                            font-size: 14px;
+                        }
+                    }
+                }
+            }
         }
         & .secondary {
             font-size: 24px;
@@ -1113,6 +1222,7 @@ section {
             font-size: 24px;
             & .descri {
                 font-size: 12px;
+                margin-bottom: 1vh;
             }
         }
     
@@ -1120,6 +1230,7 @@ section {
             & .card {
                 padding: 1vw 2vw;
                 & .info {
+                    padding: 1vw;
                     & .name {
                         font-size: 18px;
                     }
@@ -1134,6 +1245,8 @@ section {
     #projects {
         & .cards {
             & .carder {
+                padding: 1vw;
+                gap: 8vh;
                 & .desc {
                     font-size: 12px;
                 }
@@ -1142,8 +1255,27 @@ section {
     }
     
     #about {
-        & .parag {
-            font-size: 14px;
+        & .contained {
+            gap: 30px;
+            & .parags {
+                & .inner {
+                    & .date {
+                        left: -57px;
+                        font-size: 12px;
+                        padding: 4px 8px;
+                        min-width: 50px;
+                    }
+                    & .parag {
+                        font-size: 14px;
+                        & .bigger {
+                            font-size: 22px;
+                        }
+                        & .smaller {
+                            font-size: 14px;
+                        }
+                    }
+                }
+            }
         }
         & .diplomas {
             & .diploma {

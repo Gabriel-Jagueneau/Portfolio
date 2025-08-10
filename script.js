@@ -218,7 +218,7 @@ document.getElementById('confetti-generator').addEventListener('click', () => {
       particleCount: 1,
       angle: 60,
       spread: 85,
-      origin: { x: 0 },
+      origin: { x: 0 , y: 1 },
       colors: colors
     });
 
@@ -226,7 +226,7 @@ document.getElementById('confetti-generator').addEventListener('click', () => {
       particleCount: 1,
       angle: 120,
       spread: 85,
-      origin: { x: 1 },
+      origin: { x: 1 , y: 1 },
       colors: colors
     });
 
