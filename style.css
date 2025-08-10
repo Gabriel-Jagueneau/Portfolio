@@ -382,6 +382,7 @@ section {
             transition: 0.5s ease;
             position: relative;
             height: fit-content;
+            border-radius: 15px;
             & .container {
                 position: relative;
                 display: flex;
