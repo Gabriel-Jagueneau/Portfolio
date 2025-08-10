@@ -277,7 +277,6 @@ section {
             border-radius: 10px;
             overflow: hidden;
             min-height: 25vh;
-            min-width: 330px;
             border: 4px rgb(32, 34, 39) solid;
             & .bg {
                 position: absolute;
