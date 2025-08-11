@@ -215,7 +215,7 @@ document.getElementById('confetti-generator').addEventListener('click', () => {
 
   (function frame() {
     confetti({
-      particleCount: 1,
+      particleCount: 2,
       angle: 60,
       spread: 85,
       origin: { x: 0 , y: 1 },
@@ -223,7 +223,7 @@ document.getElementById('confetti-generator').addEventListener('click', () => {
     });
 
     confetti({
-      particleCount: 1,
+      particleCount: 2,
       angle: 120,
       spread: 85,
       origin: { x: 1 , y: 1 },
