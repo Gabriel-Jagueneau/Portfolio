@@ -296,8 +296,6 @@ section {
     }
 }
 
-
-
 #projects {
     display: flex;
     flex-direction: column;
@@ -660,6 +658,7 @@ section {
     align-items: center;
     justify-content: center;
     gap: 3vw;
+    padding: 20vh;
     & .head {
         display: flex;
         flex-direction: column;
@@ -671,7 +670,7 @@ section {
 
         border-radius: 15px;
         padding: 2vh;
-        width: 50vw;
+        width: 60vw;
         & .top {
             display: flex;
             flex-direction: row;
@@ -762,11 +761,9 @@ section {
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-
         background-color: rgba(65, 67, 68, 0.1);
         border: 1px rgba(65, 67, 68, 0.2) solid;
         backdrop-filter: blur(50px);
-
         gap: 5px;
         border-radius: 15px;
         padding: 2vh 3vh;
@@ -789,7 +786,7 @@ section {
         flex-wrap: wrap;
         justify-content: center;
         gap: 2vw;
-        width: 55vw;
+        width: 60vw;
         & .card {
             display: flex;
             flex-direction: row;
