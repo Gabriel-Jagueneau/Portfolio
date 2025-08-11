@@ -389,8 +389,8 @@ section {
                     flex-direction: row;
                     gap: 5px;
                     & .comp {
-                        background-color: rgba(80, 82, 83, 0.75);
-                        border: 1px rgba(65, 67, 68, 0.3) solid;
+                        background-color: rgba(200, 200, 200, 0.4);
+                        border: 1px rgba(200, 200, 200, 0.2) solid;
                         padding: 3px 8px;
                         border-radius: 10px;
                         font-size: 16px;
@@ -458,6 +458,7 @@ section {
             & .inner {
                 position: relative;
                 display: flex;
+                flex-direction: row;
                 align-items: center;
                 & .date {
                     position: absolute;
@@ -1174,8 +1175,9 @@ section {
                 & .inner {
                     & .date {
                         left: -60px;
+                        top: 0px;
                         font-size: 14px;
-                        padding: 4px 8px;
+                        padding: 3px 8px;
                         min-width: 45px;
                     }
                     & .parag {
@@ -1257,7 +1259,7 @@ section {
                     gap: 1vh;
                     & .name {
                         gap: 1vh;
-                        padding: 2px 8px;
+                        padding: 3px 8px;
                         & .company {
                             font-size: 20px;
                         }
@@ -1359,7 +1361,6 @@ section {
                     & .date {
                         left: -58px;
                         font-size: 12px;
-                        padding: 4px 8px;
                         min-width: 50px;
                     }
                     & .parag {
