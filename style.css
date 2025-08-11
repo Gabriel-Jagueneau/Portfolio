@@ -239,11 +239,11 @@ section {
                 flex-direction: column;
                 border-radius: 15px;
                 & .name {
-                    font-size: 26px;
+                    font-size: 22px;
                     font-weight: 600;
                 }
                 & .desc {
-                    font-size: 18px;
+                    font-size: 16px;
                     font-weight: 400;
                     font-style: italic;
                     color: rgba(240, 248, 255, 0.598);
@@ -253,8 +253,7 @@ section {
                 content: "";
                 position: absolute;
                 border-radius: 15px; 
-                padding: 2px; 
-                background: linear-gradient(340deg, #262626 50%, rgb(47, 107, 163)); 
+                padding: 1px; 
                 mask: 
                   linear-gradient(#000 0 0) content-box,
                   linear-gradient(#000 0 0);
@@ -317,10 +316,10 @@ section {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
             gap: 6vh;
-            transition: ease 0.5s;
+            transition: ease 0.4s;
             border: 2px rgba(65, 67, 68, 0.4) solid;
             & .bg {
                 position: absolute;
@@ -408,10 +407,10 @@ section {
                 z-index: -1;
                 height: 101%;
                 backdrop-filter: blur(100px);
-                mask-image: linear-gradient(to bottom, transparent 60%, #212121);
+                mask-image: linear-gradient(to bottom, transparent 40%, #212121);
                 mask-repeat: no-repeat;
                 mask-size: cover;
-                transition: ease 0.4s;
+                transition: ease 0.2s;
             }
             &:hover {
                 gap: 8vh;
@@ -567,8 +566,8 @@ section {
                     content: '';
                     top: 0;
                     left: 0;
-                    height: 100%;
-                    width: 100%;
+                    height: calc(100% - 1px);
+                    width: calc(100% - 1px);
                     position: absolute;
                     border-radius: 15px;
                     border: 1px solid transparent;
@@ -1320,10 +1319,10 @@ section {
                 & .info {
                     padding: 1vw;
                     & .name {
-                        font-size: 18px;
+                        font-size: 16px;
                     }
                     & .desc {
-                        font-size: 12px;
+                        font-size: 10px;
                     }
                 }
             }
