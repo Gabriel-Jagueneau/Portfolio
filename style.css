@@ -353,7 +353,7 @@ section {
                 & .see-website {
                     display: flex;
                     padding: 8px 10px;
-                    transition: ease 0.2s;
+                    transition: ease 0.2s; 
                     & .button {
                         font-family: 'Material Symbols Rounded';
                         background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
