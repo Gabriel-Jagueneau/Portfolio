@@ -198,8 +198,8 @@ section {
     & .block {
         font-size: 36px;
         font-weight: 600;
-        margin-left: 4vw;
         & .mainer {
+            margin-left: 4vw;
             position: relative;
             width: fit-content;
             display: flex;
@@ -207,7 +207,7 @@ section {
             gap: 1vw;
         }
         & .descri {
-            margin-left: 2vw;
+            margin-left: 4vw;
             font-size: 18px;
             font-weight: 400;
             font-style: italic;
@@ -216,12 +216,13 @@ section {
     }
 
     & .block .cards {
+        position: relative;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         gap: 1.5vw;
         padding: 1vw 0.5vw;
-        border-radius: 15px;
+        width: 100%;
         & .card {
             position: relative;
             display: flex;
@@ -1176,18 +1177,18 @@ section {
     #about {
         & .contained {
             gap: 30px;
-            height: 850px;
+            height: 900px;
             & .line {
                 padding-left: 3px;
                 padding-right: 3px;
+                height: 100%;
             }
             & .parags {
                 & .inner {
                     & .date {
                         left: -60px;
-                        top: 0px;
                         font-size: 14px;
-                        padding: 3px 8px;
+                        padding: 4px 8px;
                         min-width: 45px;
                     }
                     & .parag {
@@ -1296,6 +1297,8 @@ section {
 
 @media only screen and (width < 450px) {
     #experience, #projects, #about .title {
+        padding-top: 15vh;
+        padding-bottom: 15vh;
         & .main {
             font-size: 30px;
         }
@@ -1319,22 +1322,30 @@ section {
     #experience {
         & .block {
             font-size: 24px;
+            margin-top: 2vh;
             & .descri {
                 font-size: 12px;
-                margin-bottom: 1vh;
+                margin-bottom: 2vh;
             }
         }
     
         & .block .cards {
+            left: -6vw;
+            gap: 1vw;
+            width: 90vw;
             & .card {
-                padding: 1vw 2vw;
+                padding: 0.5vw 1.5vw;
+                gap: 1vw;
+                & img {
+                    height: 25px;
+                }
                 & .info {
                     padding: 1vw;
                     & .name {
-                        font-size: 16px;
+                        font-size: 13px;
                     }
                     & .desc {
-                        font-size: 10px;
+                        font-size: 9px;
                     }
                 }
             }
@@ -1344,7 +1355,7 @@ section {
     #projects {
         & .cards {
             & .carder {
-                padding: 1vw;
+                padding: 0.5vw;
                 gap: 6vh;
                 & .desc {
                     & .knoledge {
