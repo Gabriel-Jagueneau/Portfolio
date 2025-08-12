@@ -1100,10 +1100,10 @@ section {
 @media only screen and (width < 600px) {
     #experience, #projects, #about .title {
         & .main {
-            font-size: 34px;
+            font-size: 32px;
         }
         & .desc {
-            font-size: 16px;
+            font-size: 15px;
         }
     }
 
@@ -1132,6 +1132,7 @@ section {
             & .card {
                 gap: 2vw;
                 padding: 2vw;
+                border-radius: 10px;
                 & img {
                     height: 30px;
                 }
@@ -1142,6 +1143,9 @@ section {
                     & .desc {
                         font-size: 14px;
                     }
+                }
+                &::before {
+                    border-radius: 10px;
                 }
             }
         }
@@ -1259,10 +1263,10 @@ section {
             font-size: 16px;
         }
         & .feet {
-            width: 95vw;
+            width: 70vw;
             & .card {
+                width: 100%;
                 padding: 1vh;
-                gap: 1vh;
                 & .links-logo {
                     height: 40px;
                 }
@@ -1272,11 +1276,11 @@ section {
                         gap: 1vh;
                         padding: 3px 8px;
                         & .company {
-                            font-size: 20px;
+                            font-size: 16px;
                         }
                         & .see-website {
                             & .button {
-                                font-size: 20px;
+                                font-size: 18px;
                             }
                         }
                     }
@@ -1286,7 +1290,7 @@ section {
                             font-size: 14px;
                         }
                         & .namer {
-                            font-size: 14px;
+                            font-size: 12px;
                         }
                     }
                 }
@@ -1297,14 +1301,17 @@ section {
 
 @media only screen and (width < 450px) {
     #experience, #projects, #about .title {
-        padding-top: 15vh;
-        padding-bottom: 15vh;
+        padding-top: 25vh;
         & .main {
-            font-size: 30px;
+            font-size: 26px;
         }
         & .desc {
-            font-size: 14px;
+            font-size: 12px;
         }
+    }
+
+    #contact {
+        padding-top: 20vh;
     }
 
     #home {
@@ -1449,11 +1456,9 @@ section {
         }
         & .feet {
             & .card {
-                width: 70vw;
                 justify-content: space-between;
-                gap: 2vh;
                 & .links-logo {
-                    height: 60px;
+                    height: 35px;
                 }
                 & .infos {
                     gap: 1vh;
