@@ -354,22 +354,14 @@ section {
                     display: flex;
                     padding: 8px 10px;
                     transition: ease 0.2s;
-                    cursor: pointer;
                     & .button {
                         font-family: 'Material Symbols Rounded';
-                        cursor: pointer;
                         background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
                         background-clip: text;
                         -webkit-background-clip: text;
                         -webkit-text-fill-color: transparent;
                         transition: ease 0.2s;
                         filter: brightness(2) saturate(0);
-                    }
-                    &:hover {
-                        backdrop-filter: blur(15px);
-                        & .button {
-                            filter: brightness(1) saturate(1);
-                        }
                     }
                 }
             }
@@ -384,7 +376,9 @@ section {
                 font-style: normal;
                 color: rgb(240, 248, 255);
                 transition: ease 0.4s;
+                cursor: pointer;
                 & .knoledge {
+                    cursor: pointer;
                     display: flex;
                     flex-direction: row;
                     gap: 5px;
@@ -394,10 +388,12 @@ section {
                         padding: 3px 8px;
                         border-radius: 10px;
                         font-size: 16px;
+                        cursor: pointer;
                     }
                 }
                 & .text {
                     font-size: 18px;
+                    cursor: pointer;
                 }
             }
             &::after {
@@ -414,12 +410,26 @@ section {
             }
             &:hover {
                 gap: 8vh;
+                cursor: pointer;
+                & .head {
+                    cursor: pointer;
+                    & .see-website {
+                        cursor: pointer;
+                        backdrop-filter: blur(15px);
+                        & .button {
+                            cursor: pointer;
+                            filter: brightness(1) saturate(1);
+                        }
+                    }
+                }
                 & .desc {
+                    cursor: pointer;
                     opacity: 0;
                     filter: blur(25px);
                     transform: translateY(50px);
                 }
                 &::after {
+                    cursor: pointer;
                     backdrop-filter: blur(0);
                 }
             }
