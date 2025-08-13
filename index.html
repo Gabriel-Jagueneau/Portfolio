@@ -33,8 +33,28 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 </head>
 
-<header>
-    
+<header id="navBar">
+    <div class="title">My Portfolio</div>
+    <div class="cetegories">
+        <div class="container">
+            <div class="sub" href="#home">Home</div>
+            <div class="sub" href="#experience">Experience</div>
+            <div class="sub" href="#projects">Projects</div>
+            <div class="sub" href="#about">About me</div>
+            <div class="sub" href="#contact">Contact</div>
+        </div>
+    </div>
+    <div class="contact">
+        <img src="images/logo/discord.png" onclick="window.open('https://discord.gg/BYabrEqPE9', '_blank');" class="links-logo">
+        <img src="images/logo/github.png" onclick="window.open('https://github.com/Gabriel-Jagueneau', '_blank');" class="links-logo">
+        <img src="images/logo/linkedin.png" onclick="window.open('https://www.linkedin.com/in/jagueneau-gabriel-834176178/', '_blank');" class="links-logo">
+        <img src="images/logo/fiverr.png" onclick="window.open('https://fr.fiverr.com/gabrieljag', '_blank');" class="links-logo">
+    </div>
+    <div id="nav-show">
+        <div class="border"></div>
+        <div class="background"></div>
+        <div class="shadow"></div>
+    </div>
 </header>
 
 <body>
@@ -53,7 +73,7 @@
             <div class="cards">
                 <div class="cardage">
                     <div class="title">Fun fact</div>
-                    <div class="body">I spent 5 days cutting wood (I live in a city).</div>
+                    <div class="body">I spent 5 days doing Forestry (under 34°C).</div>
                     <div class="note">Summer 2025</div>
                 </div>
                 <div class="cardage">
@@ -198,6 +218,13 @@
                     <div class="info">
                         <div class="name">Python</div>
                         <div class="desc">General-purpose language.</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="images/codding/coffeescript.png" alt="">
+                    <div class="info">
+                        <div class="name">CoffeeScript</div>
+                        <div class="desc">Readable simplified JavaScript.</div>
                     </div>
                 </div>
                 <div class="card">
@@ -383,8 +410,8 @@
                     <div class="date">2019</div>
                     <div class="parag">
                         <div class="text">
-                            I started getting interested in coding in the early 2019, with a game called <i class="link" onclick="window.open('https://starblast.io/', '_blank');">Starblast.io</i>.  <br>
-                            This game allows users to create custom game modes using a proprietary JavaScript editor.  <br>
+                            I started getting interested in coding in the early 2019, with a game called <i class="link" onclick="window.open('https://starblast.io/', '_blank');">Starblast.io</i>.
+                            This game allows users to create custom game modes using a proprietary JavaScript editor.
                             This is where I developed much of my foundational knowledge in programming.
                         </div>
                         <div class="events">
@@ -392,13 +419,24 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="inner">
                     <div class="date">2022</div>
                     <div class="parag">
                         <div class="text">
-                            Around 2022, I started messing around websites for the first time.  <br>
-                            This is where my passion for web development really started.  <br>
+                            Around 2022, I started messing around websites for the first time.
+                            This is where my passion for web development really started.
+                            Since then, I’ve built numerous websites, including several commissioned by friends of mine.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="inner">
+                    <div class="date">2022</div>
+                    <div class="parag">
+                        <div class="text">
+                            Around 2022, I started messing around websites for the first time.
+                            This is where my passion for web development really started.
                             Since then, I’ve built numerous websites, including several commissioned by friends of mine.
                         </div>
                     </div>
@@ -417,29 +455,29 @@
                     <div class="date">2024</div>
                     <div class="parag">
                         <div class="events">
-                            <div class="mention smaller"><div class="highlight">60</div> eCTS Credit Certificate</div>
+                            <div class="mention smaller">60 eCTS Credit Certificate</div>
                         </div>
                     </div>
                 </div>
-        
+
                 <div class="inner">
                     <div class="date">2025</div>
                     <div class="parag">
                         <div class="text">
-                            In July 2025, after successfully passing my preparatory exams and enrolling in an engineering school in Bordeaux.  <br>
+                            In July 2025, after successfully passing my preparatory exams and enrolling in an engineering school in Bordeaux.
                             My goal is to earn a double degree after my 3 years: an engineering diploma and a master’s degree in biology.
                         </div>
                         <div class="events">
-                            <div class="mention smaller"><div class="highlight">120</div> eCTS Credit Certificate</div>
+                            <div class="mention smaller">120 eCTS Credit Certificate</div>
                         </div>
                     </div>
                 </div>
-        
+
                 <div class="inner">
                     <div class="date">2028</div>
                     <div class="parag">
                         <div class="text">
-                            I wish in the future, after my getting my double degree,  <br>
+                            I wish in the future, after my getting my double degree,
                             to continue both programming and agronomy, to achieve my ambitious goals.
                         </div>
                     </div>
@@ -447,64 +485,91 @@
             </div>
         </div>
 
-        <div class="secondary"><span class="highlight">My</span>Diplomas</div>
-
+        <div class="secondary"><span class="highlight">My</span>Diplomas<span class="highlight">&</span>Formations</div>
         <div class="diplomas">
-            <div class="diploma brevet">
+            <div class="diploma">
                 <span></span>
                 <span></span>
                 <div class="container">
-                    <div class="ttle">National Brevet Diploma</div>
+                    <div class="ttle">
+                        <a>2025-2028</a>
+                        Bordeaux Sciences Agro
+                    </div> 
                     <div class="infos">
                         <div class="info">
                             <div class="logo">id_card</div>
-                            <div class="name">General</div>
+                            <div class="name">Engineering Degree</div>
                         </div>
                         <div class="info">
-                            <div class="logo">social_leaderboard</div>
-                            <div class="name">Honors (Assez bien)</div>
+                            <div class="logo">alt_route</div>
+                            <div class="name">Soil Science Agronomy</div>
                         </div>
                         <div class="info">
-                            <div class="logo">calendar_month</div>
-                            <div class="name">2019-2020</div>
+                            <div class="logo">category</div>
+                            <div class="name">Information Communication Technology (AgroTIC)</div>
+                        </div>
+                        <br>
+                        <div class="info">
+                            <div class="logo">crown</div>
+                            <div class="name">Results in 2028</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="diploma bac">
+            <div class="diploma">
                 <span></span>
                 <span></span>
                 <div class="container">
-                    <div class="ttle">French Baccalauréat</div> 
+                    <div class="ttle">
+                        <a>2023-2025</a>
+                        Lycée Jean Rostand
+                    </div> 
                     <div class="infos">
                         <div class="info">
                             <div class="logo">id_card</div>
+                            <div class="name">Preparatory Classes Engineering (CPGE)</div>
+                        </div>
+                        <div class="info">
+                            <div class="logo">alt_route</div>
+                            <div class="name">120 eCTS Credit Certificate</div>
+                        </div>
+                        <div class="info">
+                            <div class="logo">category</div>
+                            <div class="name">Biological Technology</div>
+                        </div>
+                        <br>
+                        <div class="info">
+                            <div class="logo">crown</div>
+                            <div class="name">Top 83 National Competitions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="diploma">
+                <span></span>
+                <span></span>
+                <div class="container">
+                    <div class="ttle">
+                        <a>2021-2023</a>
+                        Lycée Parc Des Loges
+                    </div> 
+                    <div class="infos">
+                        <div class="info">
+                            <div class="logo">id_card</div>
+                            <div class="name">French Highschool Diploma</div>
+                        </div>
+                        <div class="info">
+                            <div class="logo">alt_route</div>
                             <div class="name">Laboratory science and technology</div>
                         </div>
                         <div class="info">
-                            <div class="logo">social_leaderboard</div>
+                            <div class="logo">category</div>
+                            <div class="name">Biotechnology Biology Biochemistry</div>
+                        </div>
+                        <br>
+                        <div class="info">
+                            <div class="logo">crown</div>
                             <div class="name">High honors (Bien)</div>
-                        </div>
-                        <div class="info">
-                            <div class="logo">calendar_month</div>
-                            <div class="name">2021-2023</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="diploma eCTS">
-                <span></span>
-                <span></span>
-                <div class="container">
-                    <div class="ttle"><div class="highlight">120</div> eCTS Credit Certificate</div> 
-                    <div class="infos">
-                        <div class="info">
-                            <div class="logo">id_card</div>
-                            <div class="name">Equivalent of Biology undergraduate, 2nd year</div>
-                        </div>
-                        <div class="info">
-                            <div class="logo">calendar_month</div>
-                            <div class="name">2023-2025</div>
                         </div>
                     </div>
                 </div>
@@ -531,9 +596,13 @@
                     <div class="logo">location_on</div>
                     <div class="type">Europe, France</div>
                 </div>
+                <div class="info special">
+                    <div class="logo">school</div>
+                    <div class="type">Bordeaux Science Agro</div>
+                </div>
                 <div class="info">
                     <div class="service">Future Agronomy Engineer</div>
-                    <div class="type">Since 2025</div>
+                    <div class="type">For 2028</div>
                 </div>
                 <div class="info">
                     <div class="service">Junior Developper</div>
@@ -617,7 +686,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script type="text/javascript" src="vanilla-tilt.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

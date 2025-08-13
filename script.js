@@ -236,12 +236,59 @@ document.getElementById('confetti-generator').addEventListener('click', () => {
   })();
 });
 
+// Nav & scroll
+
+const sections = document.querySelectorAll('section');
+const navItems = document.querySelectorAll('.container .sub');
+let isClickScrolling = false;
+
+const navBar = document.getElementById('navBar');
+const navShow = document.getElementById('nav-show');
+
+const observer = new IntersectionObserver((entries) => {
+    if (isClickScrolling) return;
+
+    entries.forEach(entry => {
+        const index = Array.from(sections).indexOf(entry.target);
+        if (entry.intersectionRatio >= 0.5) {
+            navItems.forEach(item => item.classList.remove('growed'));
+            navItems[index].classList.add('growed');
+        } 
+    });
+}, {threshold: [0, 0.5, 1]});
+
+function observeScroll() {
+  sections.forEach(section => observer.observe(section));
+  navItems.forEach((link, index) => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetSection = sections[index];
+
+        isClickScrolling = true;
+
+        navItems.forEach(item => item.classList.remove('growed'));
+        link.classList.add('growed');
+
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+
+        setTimeout(() => {
+            isClickScrolling = false;
+        }, 1000);
+    });
+  });
+}
+
+navShow.addEventListener('click', () => {
+  navBar.classList.toggle('hidden');
+});
+
 // Initialization
+
 document.addEventListener('DOMContentLoaded', () => {
   createCircles();
   animateCircles();
-  
   animate();
+  observeScroll();
 });
 
 // AOS init

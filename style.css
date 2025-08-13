@@ -3,7 +3,6 @@
     padding: 0;
     box-sizing: border-box;
     cursor: default;
-    scroll-snap-type: both proximity;
     scroll-behavior: smooth;
 }
 
@@ -17,21 +16,19 @@ body {
 
 header {
     position: fixed;
-    display: flex;
-    flex-direction: row;
+    z-index: 10;
     width: 100vw;
-    padding: 1vh;
-    align-items: center;
-    justify-content: space-around;
-    font-size: medium;
-    font-weight: 600;
-    background-color: #00000000;
+    padding: 1vh 2vh;
+    background-color: rgba(65, 67, 68, 0.2);
+    backdrop-filter: blur(25px);
 }
 
 section {
     min-height: 100vh;
     width: 100vw;
 }
+
+/* -- global -- */
 
 .highlight {
     font-weight: 600;
@@ -48,6 +45,154 @@ section {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+/* -- nav bar -- */
+
+#navBar.hidden {
+    transform: translateY(-80px);
+    background-color: rgba(0, 0, 0, 0);
+    & .title, .cetegories, .contact, :after {
+        filter: blur(10px);
+        opacity: 0;
+    }
+}
+
+#navBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    filter: blur(0px);
+    opacity: 1;
+    transition: ease 0.4s;
+    #nav-show {
+        position: absolute;
+        left: calc(50vw - (4px / 2) - 40px);
+        bottom: -15px;
+        padding: 4px;
+        width: 80px;
+        border-radius: 10px;
+        transition: ease 0.25s;
+        cursor: pointer;
+        & .shadow {
+            background: linear-gradient(45deg, #eeff00ff, #00aeffff, #ff00f2ff);
+            filter: brightness(0) blur(5px);
+            transition: ease 0.25s;
+            cursor: pointer;
+        }
+        & .background, .shadow {
+            content: '';
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            border-radius: 15px;
+            transition: 0.5s ease;
+            background: linear-gradient(45deg, #eeff0020, #00aeff20, #ff00f220);
+            background-size: 200% 400%;
+            animation: gradientShift 8s ease infinite;
+            cursor: pointer;
+        }
+        & .border {
+            content: '';
+            top: 0;
+            left: 0;
+            height: calc(100% - 1px);
+            width: calc(100% - 1px);
+            position: absolute;
+            border-radius: 15px;
+            border: 1px solid transparent;
+            background: linear-gradient(45deg, #eeff0020, #00aeff20, #ff00f220);
+            background-size: 200% 400%;
+            mask: linear-gradient(#fff 0 0) padding-box,
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            animation: gradientShift 8s ease infinite;
+            cursor: pointer;
+        }
+        &:hover {
+            width: 110px;
+            padding: 6px;
+            bottom: calc(-15px - 3px);
+            left: calc(50vw - (4px / 2) - 55px);
+            & .shadow {
+                opacity: 1;
+                filter: brightness(1) blur(5px);
+            }
+        }
+    }
+    & .title {
+        position: relative;
+        font-size: 45px;
+        font-weight: 600;
+        width: fit-content;
+        transition: ease 0.2s;
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 8%;
+            left: 0;
+            height: 6%;
+            width: 100%;
+            border-radius: 90px;
+            background: linear-gradient(90deg, #eeff0088, #00aeff88, #ff00f288);
+        }
+    }
+    & .cetegories {
+        position: absolute;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100vw;
+        transition: ease 0.2s;
+        & .container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+            width: 50vw;
+            gap: 1vw;
+            & .sub {
+                background-color: rgba(80, 82, 83, 0.2);
+                border: 1px rgba(65, 67, 68, 0.1) solid;
+                border-radius: 15px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0.7vh 2vh;
+                transition: ease 0.5s;
+                cursor: pointer;
+                font-size: 18px;
+                font-weight: 600;
+                &:hover {
+                    flex-grow: 1;
+                }
+            }
+            & .growed {
+                flex-grow: 1;
+            }
+        }
+    }
+    & .contact {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        z-index: 2;
+        transition: ease 0.2s;
+        & .links-logo {
+            height: 35px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+    }
+}
+
+/* -- Main pages -- */
 
 #experience, #projects, #about .title {
     display: flex;
@@ -74,8 +219,6 @@ section {
         font-style: italic;
     }
 }
-
-/* -- Main pages -- */
 
 #home {
     display: flex;
@@ -188,11 +331,8 @@ section {
     justify-content: center;
     padding-left: 5vw;
     padding: 20vh;
-
     padding-bottom: 30vh;
-    padding-top: 30vh;
     background: linear-gradient(0deg, transparent, rgba(21, 21, 21, 0.5) 15%, rgba(21, 21, 21, 0.5) 85%, transparent);
-
     gap: 5vh;
     & .block {
         font-size: 36px;
@@ -219,7 +359,7 @@ section {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 1.5vw;
+        gap: 1vw;
         padding: 1vw 0.5vw;
         width: 100%;
         & .card {
@@ -359,9 +499,8 @@ section {
                         background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
                         background-clip: text;
                         -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;
+                        -webkit-text-fill-color: white;
                         transition: ease 0.2s;
-                        filter: brightness(2) saturate(0);
                     }
                 }
             }
@@ -418,7 +557,7 @@ section {
                         backdrop-filter: blur(15px);
                         & .button {
                             cursor: pointer;
-                            filter: brightness(1) saturate(1);
+                            -webkit-text-fill-color: transparent;
                         }
                     }
                 }
@@ -442,19 +581,18 @@ section {
     flex-direction: column;
     justify-content: center;
     padding: 20vh;
-
     padding-bottom: 30vh;
-    padding-top: 30vh;
     background: linear-gradient(0deg, transparent, rgba(21, 21, 21, 0.5) 15%, rgba(21, 21, 21, 0.5) 85%, transparent);
-
     gap: 4vh;
     & .contained {
         display: flex;
         flex-direction: row;
         gap: 20px;
-        height: 750px;
+        height: 800px;
         & .line {
+            position: relative;
             display: flex;
+            justify-content: center;
             height: 105%;
             padding-left: 4px;
             padding-right: 4px;
@@ -488,7 +626,7 @@ section {
                     flex-direction: column;
                     gap: 5px;
                     margin-left: 2vw;
-                    width: 70vw;
+                    width: 50vw;
                     & .text {
                         font-size: 20px;
                     }
@@ -515,8 +653,8 @@ section {
                         & .mention {
                             display: flex;
                             flex-direction: row;
-                            background-color: rgba(81, 82, 83, 0.3);
-                            border: 1px rgba(65, 67, 68, 0.15) solid;
+                            background-color: rgba(81, 82, 83, 0.25);
+                            border: 1px rgba(65, 67, 68, 0.1) solid;
                             backdrop-filter: blur(5px);
                             width: fit-content;
                             padding: 3px 8px;
@@ -593,9 +731,20 @@ section {
                 & .ttle {
                     display: flex;
                     flex-direction: row;
+                    align-items: center;
                     gap: 1vh;
                     font-size: 24px;
                     font-weight: 600;
+                    & a {
+                        display: flex;
+                        align-items: center;
+                        font-size: 18px;
+                        border-radius: 10px;
+                        padding: 4px 10px;
+                        background-color: rgba(80, 82, 83, 0.2);
+                        border: 1px rgba(65, 67, 68, 0.15) solid;
+                        backdrop-filter: blur(10px);
+                    }
                 }
                 & .infos {
                     display: flex;
@@ -612,6 +761,12 @@ section {
                             font-size: 26px;
                             font-family: 'Material Symbols Rounded';
                         }
+                        & .name {
+                            display: flex;
+                            flex-direction: row;
+                            font-size: 19px;
+                            gap: 5px;
+                        }
                     }
                 }
             }
@@ -622,7 +777,7 @@ section {
                 border-radius: 10px;
                 transition: 0.5s ease;
                 opacity: 0;
-                background: linear-gradient(45deg, #eeff0020, #00aeff20, #ff00f220);
+                background: linear-gradient(45deg, #eeff0015, #00aeff15, #ff00f215);
                 background-size: 200% 400%;
             }
             & span:nth-child(1) {
@@ -737,8 +892,7 @@ section {
                     font-size: larger;
                 }
                 & .service {
-                    font-weight: 500;
-                    text-decoration: underline;
+                    font-weight: 600;
                 }
             }
             & .special {
@@ -754,7 +908,7 @@ section {
         
                     border: 1px solid transparent;
         
-                    background: linear-gradient(45deg, #eeff0020, #00aeff20, #ff00f220);
+                    background: linear-gradient(45deg, #eeff0030, #00aeff30, #ff00f230);
                     background-size: 200% 400%;
                     mask: linear-gradient(#fff 0 0) padding-box,
                         linear-gradient(#fff 0 0);
@@ -833,21 +987,20 @@ section {
                         cursor: pointer;
                     }
                     & .see-website {
-                            font-size: 25px;
-                            font-family: 'Material Symbols Rounded';
-                            cursor: pointer;
-                            transition: ease 0.2s;
-                            background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
-                            background-clip: text;
-                            -webkit-background-clip: text;
-                            -webkit-text-fill-color: transparent;
-                            filter: brightness(2) saturate(0);
+                        font-size: 25px;
+                        font-family: 'Material Symbols Rounded';
+                        cursor: pointer;
+                        transition: ease 0.2s;
+                        background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
+                        background-clip: text;
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: white;
                         
                     }
                     &:hover {
                         background-color: rgba(57, 59, 60, 0.5);
                         & .see-website {
-                            filter: brightness(1) saturate(1);
+                            -webkit-text-fill-color: transparent;
                         }
                     }
                 }
@@ -869,6 +1022,8 @@ section {
     }
 }
 
+/* -- animations -- */
+
 @keyframes animateBubble {
     0%, 100% { transform: translate(0px, 0px) }
     50% { transform: translate(-5px, 5px) }
@@ -880,7 +1035,7 @@ section {
     100% { background-position: 10% 80%; }
 }
 
-/* -- Backgriund circles -- */
+/* -- Background circles -- */
 
 .parallax-bg {
     position: fixed;
@@ -901,9 +1056,31 @@ section {
     transition: all 0.3s ease;
 }
 
-/* -----       Phone adaptation       ----- */
+/* -- phone adapt -- */
 
 @media only screen and (width < 1100px) {
+    #navBar {
+        & .title {
+            display: none;
+        }
+        & .cetegories {
+            position: relative;
+            & .container {
+                width: 70vw;
+                & .sub {
+                    padding: 0.75vw 1.5vw;
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+            }
+        }
+        & .contact {
+            & .links-logo {
+                height: 30px;
+            }
+        }
+    }
+
     #home {
         & .quick-desc {
             & .names {
@@ -932,6 +1109,7 @@ section {
                     }
                     & .parag {
                         margin-left: 2vw;
+                        width: 70vw;
                         .text {
                             font-size: 18px;
                         }
@@ -948,12 +1126,16 @@ section {
         & .secondary {
             font-size: 34px;
         }
-        & .diplomas {
+        & .diplomas{
             & .diploma {
                 & .container {
                     font-size: 16px;
                     & .ttle {
                         font-size: 22px;
+                        & a {
+                            font-size: 16px;
+                            padding: 4px 8px;
+                        }
                     }
                 }
             }
@@ -966,20 +1148,20 @@ section {
 }
 
 @media only screen and (width < 850px) {
-    #home {
-        display: flex;
-        align-items: center;
-        & .quick-desc {
-            width: 80vw;
-        }
-    }
-
     #experience, #projects, #about .title {
         & .main {
             font-size: 38px;
         }
         & .desc {
             font-size: 18px;
+        }
+    }
+
+    #home {
+        display: flex;
+        align-items: center;
+        & .quick-desc {
+            width: 80vw;
         }
     }
 
@@ -1045,8 +1227,9 @@ section {
         gap: 3vw;
         & .contained {
             gap: 40px;
-            height: 800px;
+            height: 900px;
             & .parags {
+                width: 60vw;
                 & .inner {
                     & .date {
                         left: -74px;
@@ -1070,9 +1253,14 @@ section {
         & .diplomas {
             & .diploma {
                 & .container {
+                    padding: 1.5vh;
                     font-size: 15px;
                     & .ttle {
                         font-size: 18px;
+                        & a {
+                            font-size: 14px;
+                            padding: 4px 8px;
+                        }
                     }
                     & .infos {
                         & .info {
@@ -1098,9 +1286,29 @@ section {
 }
 
 @media only screen and (width < 600px) {
+    #navBar {
+        & .title {
+            display: none;
+        }
+        & .cetegories {
+            position: relative;
+            & .container {
+                width: 90vw;
+                & .sub {
+                    padding: 0.75vw 2vw;
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+            }
+        }
+        & .contact {
+            display: none;
+        }
+    }
+
     #experience, #projects, #about .title {
         & .main {
-            font-size: 32px;
+            font-size: 28px;
         }
         & .desc {
             font-size: 15px;
@@ -1125,23 +1333,29 @@ section {
     
     #experience {
         & .block {
-            font-size: 28px;
+            & .mainer {
+                font-size: 26px;
+            }
+            & .descri {
+                font-size: 14px;
+            }
         }
-    
+
         & .block .cards {
+            justify-content: center;
             & .card {
                 gap: 2vw;
-                padding: 2vw;
+                padding: 1vw 1.4vw;
                 border-radius: 10px;
                 & img {
                     height: 30px;
                 }
                 & .info {
                     & .name {
-                        font-size: 20px;
+                        font-size: 16px;
                     }
                     & .desc {
-                        font-size: 14px;
+                        font-size: 12px;
                     }
                 }
                 &::before {
@@ -1188,7 +1402,9 @@ section {
                 height: 100%;
             }
             & .parags {
+                width: 70vw;
                 & .inner {
+                    padding: 1vh;
                     & .date {
                         left: -60px;
                         font-size: 14px;
@@ -1218,6 +1434,10 @@ section {
                 font-size: 14px;
                 & .ttle {
                     font-size: 16px;
+                    & a {
+                        font-size: 12px;
+                        padding: 4px 8px;
+                    }
                 }
                 & .infos {
                     & .info {
@@ -1300,6 +1520,10 @@ section {
 }
 
 @media only screen and (width < 450px) {
+    #navBar {
+        display: none;
+    }
+
     #experience, #projects, #about .title {
         padding-top: 25vh;
         & .main {
@@ -1308,10 +1532,6 @@ section {
         & .desc {
             font-size: 12px;
         }
-    }
-
-    #contact {
-        padding-top: 20vh;
     }
 
     #home {
@@ -1409,6 +1629,7 @@ section {
             }
         }
         & .diplomas {
+            justify-content: center;
             & .diploma {
                 & .container {
                     padding: 1vh 1.5vh;
@@ -1416,6 +1637,10 @@ section {
                     gap: 0.5vh;
                     & .ttle {
                         font-size: 16px;
+                        & a {
+                            font-size: 12px;
+                            padding: 2px 6px;
+                        }
                     }
                     & .infos {
                         & .info {
@@ -1430,6 +1655,7 @@ section {
     }
     
     #contact {
+        padding-top: 20vh;
         & .head {
             & .top {
                 & .photo-de-profile {
