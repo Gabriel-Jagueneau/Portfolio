@@ -90,6 +90,7 @@ section {
             position: absolute;
             border-radius: 15px;
             transition: 0.5s ease;
+            backdrop-filter: blur(15px);
             background: linear-gradient(45deg, #eeff0020, #00aeff20, #ff00f220);
             background-size: 200% 400%;
             animation: gradientShift 8s ease infinite;
@@ -1137,6 +1138,16 @@ section {
                             padding: 4px 8px;
                         }
                     }
+                    & .infos {
+                        & .info {
+                            & .logo {
+                                font-size: 24px;
+                            }
+                            & .name {
+                                font-size: 17px;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1265,7 +1276,10 @@ section {
                     & .infos {
                         & .info {
                             & .logo {
-                                font-size: 18px;
+                                font-size: 20px;
+                            }
+                            & .name {
+                                font-size: 15px;
                             }
                         }
                     }
@@ -1342,7 +1356,6 @@ section {
         }
 
         & .block .cards {
-            justify-content: center;
             & .card {
                 gap: 2vw;
                 padding: 1vw 1.4vw;
@@ -1442,7 +1455,10 @@ section {
                 & .infos {
                     & .info {
                         & .logo {
-                            font-size: 20px;
+                            font-size: 18px;
+                        }
+                        & .name {
+                            font-size: 12px;
                         }
                     }
                 }
@@ -1548,8 +1564,12 @@ section {
     
     #experience {
         & .block {
-            font-size: 24px;
+            position: relative;
+            left: -1vw;
             margin-top: 2vh;
+            & .mainer {
+                font-size: 22px;
+            }
             & .descri {
                 font-size: 12px;
                 margin-bottom: 2vh;
@@ -1557,9 +1577,9 @@ section {
         }
     
         & .block .cards {
-            left: -6vw;
+            left: -4vw;
             gap: 1vw;
-            width: 90vw;
+            width: 88vw;
             & .card {
                 padding: 0.5vw 1.5vw;
                 gap: 1vw;
@@ -1646,6 +1666,9 @@ section {
                         & .info {
                             & .logo {
                                 font-size: 16px;
+                            }
+                            & .name {
+                                font-size: 12px;
                             }
                         }
                     }
