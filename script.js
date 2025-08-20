@@ -209,7 +209,7 @@ cards.forEach((card, i) => {
   });
 });
 
-document.getElementById('confetti-generator').addEventListener('click', () => {
+document.getElementById('confetti-generator').addEventListener('mouseover', () => {
   const end = Date.now() + 1000;
   const colors = ["#eeff00", "#00aeff", "#ff00f2"];
 

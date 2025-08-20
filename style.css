@@ -8,7 +8,6 @@
 
 body {
     font-family: 'Space Grotesk', sans-serif;
-    background: #0a0a0a;
     color: aliceblue;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -157,8 +156,7 @@ section {
             width: 50vw;
             gap: 1vw;
             & .sub {
-                background-color: rgba(80, 82, 83, 0.2);
-                border: 1px rgba(65, 67, 68, 0.1) solid;
+                position: relative;
                 border-radius: 15px;
                 display: flex;
                 justify-content: center;
@@ -168,12 +166,32 @@ section {
                 cursor: pointer;
                 font-size: 18px;
                 font-weight: 600;
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    height: 100%;
+                    width: 100%;
+                    border-radius: 90px;
+                    background: linear-gradient(45deg, #eeff0020, #00aeff20, #ff00f220);
+                    background-size: 200% 400%;
+                    animation: gradientShift 8s ease infinite;
+                    filter: grayscale(1);
+                    transition: ease 0.5s;
+                }
                 &:hover {
                     flex-grow: 1;
+                    &::after {
+                        filter: grayscale(0.6);
+                    }
                 }
             }
             & .growed {
                 flex-grow: 1;
+                &::after {
+                    filter: grayscale(0);
+                }
             }
         }
     }
@@ -1046,15 +1064,15 @@ section {
     height: 100vh;
     z-index: -1;
     overflow: hidden;
-    background: rgb(5, 5, 5);
+    background: rgb(20, 20, 20);
 }
 
 .circle {
     position: absolute;
     border-radius: 50%;
     background: linear-gradient(#eeff0088, #00aeff88, #ff00f288);
-    filter: blur(110px);
-    transition: all 0.3s ease;
+    filter: blur(125px);
+    transition: 0.3s ease;
 }
 
 /* -- phone adapt -- */
