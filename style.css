@@ -27,6 +27,14 @@ section {
     width: 100vw;
 }
 
+footer {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    padding: 4vw 2vw 2vw 2vw;
+    background: linear-gradient(180deg, transparent, rgba(46, 47, 47, 0.2) 40%);
+}
+
 /* -- global -- */
 
 .highlight {
@@ -777,13 +785,13 @@ section {
                         font-weight: 400;
                         color: rgba(240, 248, 255, 0.7);
                         & .logo {
-                            font-size: 26px;
+                            font-size: 24px;
                             font-family: 'Material Symbols Rounded';
                         }
                         & .name {
                             display: flex;
                             flex-direction: row;
-                            font-size: 19px;
+                            font-size: 17px;
                             gap: 5px;
                         }
                     }
@@ -1041,6 +1049,10 @@ section {
     }
 }
 
+/* -- nav bar -- */
+
+
+
 /* -- animations -- */
 
 @keyframes animateBubble {
@@ -1162,7 +1174,7 @@ section {
                                 font-size: 24px;
                             }
                             & .name {
-                                font-size: 17px;
+                                font-size: 16px;
                             }
                         }
                     }
