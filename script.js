@@ -1,71 +1,4 @@
 
-function createCircles() {
-  const bg = document.getElementById('parallaxBg');
-  const numCircles = 20;
-  const columns = Math.ceil(Math.sqrt(numCircles));
-  const rows = Math.ceil(numCircles / columns);
-
-  for (let i = 0; i < numCircles; i++) {
-    const circle = document.createElement('div');
-    circle.classList.add('circle');
-
-    const size = Math.random() * 300;
-    circle.style.width = `${size}px`;
-    circle.style.height = `${size}px`;
-
-    const col = i % columns;
-    const row = Math.floor(i / columns);
-    const cellWidth = 100 / columns;
-    const cellHeight = 90 / rows;
-    const leftOffset = col * cellWidth + Math.random() * (cellWidth * 0.8);
-    const topOffset = row * cellHeight + Math.random() * (cellHeight * 0.8);
-
-    circle.style.left = `${leftOffset}%`;
-    circle.style.top = `${topOffset}%`;
-    bg.appendChild(circle);
-  }
-}
-
-function animateCircles() {
-  const circles = document.querySelectorAll('.circle');
-  let rotationAngle = 0;
-
-  function animate() {
-    const scrolled = window.scrollY;
-    rotationAngle += 0.005;
-
-    circles.forEach((circle, index) => {
-      const speed = (index + 1) * 0.05;
-      const parallaxSpeed = (index + (1/5)) * 0.02;
-
-      const time = Date.now() * 0.01;
-      const oscillation = Math.sin(time * (speed * 0.2)) * 100;
-      const parallax = scrolled * parallaxSpeed;
-
-      const rotateAngle = rotationAngle * speed;
-
-      circle.style.transform = `translateY(${oscillation + parallax}px) rotate(${rotateAngle}rad)`;
-    });
-
-    requestAnimationFrame(animate);
-  }
-
-  requestAnimationFrame(animate);
-}
-
-function applyParallaxToText() {
-  const home = document.getElementById('home');
-  const bg = document.getElementById('parallaxBg');
-
-  const bgStyle = window.getComputedStyle(bg).backgroundImage;
-
-  home.style.backgroundImage = bgStyle;
-  home.style.backgroundSize = "cover";
-  home.style.backgroundPosition = "center";
-}
-
-// rotate
-
 const zone = document.querySelector(".image-zone");
 const cards = document.querySelectorAll(".cardage");
 const allCards = Array.from(cards);
@@ -250,12 +183,12 @@ const observer = new IntersectionObserver((entries) => {
 
     entries.forEach(entry => {
         const index = Array.from(sections).indexOf(entry.target);
-        if (entry.intersectionRatio >= 0.5) {
+        if (entry.intersectionRatio >= 0.3) {
             navItems.forEach(item => item.classList.remove('growed'));
             navItems[index].classList.add('growed');
         } 
     });
-}, {threshold: [0, 0.5, 1]});
+}, { threshold: Array.from({length: 101}, (_, i) => i / 100) });
 
 function observeScroll() {
   sections.forEach(section => observer.observe(section));
@@ -285,8 +218,6 @@ navShow.addEventListener('click', () => {
 // Initialization
 
 document.addEventListener('DOMContentLoaded', () => {
-  createCircles();
-  animateCircles();
   animate();
   observeScroll();
 });

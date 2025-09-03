@@ -11,6 +11,7 @@ body {
     color: aliceblue;
     overflow-x: hidden;
     overflow-y: scroll;
+    background-color: rgb(25, 25, 25);
 }
 
 header {
@@ -356,11 +357,10 @@ footer {
 #experience {
     flex-direction: column;
     justify-content: center;
-    padding-left: 5vw;
+    gap: 6vh;
+
     padding: 20vh;
-    padding-bottom: 30vh;
-    background: linear-gradient(0deg, transparent, rgba(21, 21, 21, 0.5) 15%, rgba(21, 21, 21, 0.5) 85%, transparent);
-    gap: 5vh;
+
     & .block {
         font-size: 36px;
         font-weight: 600;
@@ -488,6 +488,7 @@ footer {
             gap: 6vh;
             transition: ease 0.4s;
             border: 2px rgba(65, 67, 68, 0.4) solid;
+            will-change: transform;
             & .bg {
                 position: absolute;
                 z-index: -1;
@@ -560,6 +561,13 @@ footer {
                 & .text {
                     font-size: 18px;
                     cursor: pointer;
+
+                    display: -webkit-box;
+                    line-clamp: 3;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
             }
             &::after {
@@ -607,10 +615,10 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 20vh;
-    padding-bottom: 30vh;
-    background: linear-gradient(0deg, transparent, rgba(21, 21, 21, 0.5) 15%, rgba(21, 21, 21, 0.5) 85%, transparent);
     gap: 4vh;
+
+    padding: 20vh;
+
     & .contained {
         display: flex;
         flex-direction: row;
@@ -850,7 +858,9 @@ footer {
     align-items: center;
     justify-content: center;
     gap: 3vw;
+
     padding: 20vh;
+
     & .head {
         display: flex;
         flex-direction: column;
@@ -1049,10 +1059,6 @@ footer {
     }
 }
 
-/* -- nav bar -- */
-
-
-
 /* -- animations -- */
 
 @keyframes animateBubble {
@@ -1066,26 +1072,38 @@ footer {
     100% { background-position: 10% 80%; }
 }
 
-/* -- Background circles -- */
+@keyframes blob {
+    from { transform: rotate(0deg) scale(1); }
+    to   { transform: rotate(200deg) scale(1.2); }
+}
 
-.parallax-bg {
-    position: fixed;
+@keyframes blob-reverse {
+    from { transform: rotate(0deg) scale(1.2); }
+    to   { transform: rotate(-200deg) scale(1); }
+}
+
+/* -- Background -- */
+
+#bg-container {
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
     overflow: hidden;
-    background: rgb(20, 20, 20);
+    height: 100%;
+    width: 100%;
+
+    & .top {
+        height: 30%;
+        width: 120%;
+        transform: translate(-10%);
+        /*background-color: #00a2ff;*/
+        border-radius: 0px 0px 500% 500%; 
+        filter: blur(50px);
+        opacity: 0.4;
+    }
 }
 
-.circle {
-    position: absolute;
-    border-radius: 50%;
-    background: linear-gradient(#eeff0088, #00aeff88, #ff00f288);
-    filter: blur(125px);
-    transition: 0.3s ease;
-}
+
 
 /* -- phone adapt -- */
 
