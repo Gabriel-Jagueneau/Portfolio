@@ -148,17 +148,17 @@ document.getElementById('confetti-generator').addEventListener('mouseover', () =
 
   (function frame() {
     confetti({
-      particleCount: 2,
-      angle: 60,
-      spread: 85,
+      particleCount: 4,
+      angle: 50,
+      spread: 60,
       origin: { x: 0 , y: 1 },
       colors: colors
     });
 
     confetti({
-      particleCount: 2,
-      angle: 120,
-      spread: 85,
+      particleCount: 4,
+      angle: 130,
+      spread: 60,
       origin: { x: 1 , y: 1 },
       colors: colors
     });
