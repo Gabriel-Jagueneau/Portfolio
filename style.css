@@ -1307,6 +1307,13 @@ footer {
     #contact .head {
         width: 70vw;
     }
+
+    #footer {
+        & .air {
+            height: 100px;
+            background-size: 1000px 100px;
+        }
+    }
 }
 
 @media only screen and (width < 850px) {
@@ -1690,6 +1697,14 @@ footer {
                     }
                 }
             }
+        }
+    }
+
+    #footer {
+        margin-top: 10vh;
+        & .text {
+            font-weight: 500;
+            font-size: 14px;
         }
     }
 }
