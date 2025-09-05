@@ -31,9 +31,6 @@ section {
 footer {
     display: flex;
     justify-content: center;
-    width: 100vw;
-    padding: 4vw 2vw 2vw 2vw;
-    background: linear-gradient(180deg, transparent, rgba(46, 47, 47, 0.2) 40%);
 }
 
 /* -- global -- */
@@ -476,6 +473,7 @@ footer {
                 gap: 1vh;
                 backdrop-filter: blur(25px);
                 white-space: nowrap;
+                overflow: hidden;
                 &::after {
                     content: '';
                     top: 0;
@@ -513,15 +511,27 @@ footer {
                     gap: 1vh;
                     font-size: 24px;
                     font-weight: 600;
-                    & a {
+                    & .logo {
+                        position: relative;
                         display: flex;
-                        align-items: center;
-                        font-size: 18px;
+                        gap: 10px;
                         border-radius: 10px;
-                        padding: 4px 10px;
+                        padding: 6px 10px;
                         background-color: rgba(80, 82, 83, 0.2);
                         border: 1px rgba(65, 67, 68, 0.15) solid;
                         backdrop-filter: blur(10px);
+                        & img {
+                            object-fit: contain;
+                            height: 25px;
+                            top: 0;
+                            left: 0;
+                            z-index: -1;
+                        }
+                        & a {
+                            display: flex;
+                            align-items: center;
+                            font-size: 18px;
+                        }
                     }
                 }
                 & .infos {
@@ -930,11 +940,20 @@ footer {
                 align-items: center;
                 & .logo {
                     font-family: 'Material Symbols Rounded';
-                    font-weight: 600;
+                    font-weight: 500;
                     font-size: larger;
                 }
                 & .service {
                     font-weight: 600;
+                }
+                & .image {
+                    height: 25px;
+                }
+                & .type {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 6px;
+                    align-items: center;
                 }
             }
             & .special {
@@ -950,13 +969,19 @@ footer {
         
                     border: 1px solid transparent;
         
-                    background: linear-gradient(45deg, #eeff0030, #00aeff30, #ff00f230);
+                    background: radial-gradient(transparent, transparent, transparent, transparent, #eeff0030, #00aeff30, #ff00f230, transparent, transparent, transparent, transparent);
                     background-size: 200% 400%;
                     mask: linear-gradient(#fff 0 0) padding-box,
                         linear-gradient(#fff 0 0);
                     -webkit-mask-composite: destination-out;
                     mask-composite: exclude;
-                    animation: gradientShift 16s ease infinite;
+                    animation: gradientRotate 10s ease-in-out infinite;
+                }
+                &:nth-child(2)::before {
+                    animation-delay: 3s;
+                }
+                &:nth-child(3)::before {
+                    animation-delay: 6s;
                 }
             }
         }
@@ -1064,6 +1089,58 @@ footer {
     }
 }
 
+/* -- footer anim -- */
+
+#footer {
+    width: 100vw;
+    position: relative;
+    padding: 1vw;
+    & .air {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        background: url(https://1.bp.blogspot.com/-xQUc-TovqDk/XdxogmMqIRI/AAAAAAAACvI/AizpnE509UMGBcTiLJ58BC6iViPYGYQfQCLcBGAsYHQ/s1600/wave.png);
+        background-size: 1000px 150px;
+        filter: brightness(0.15)
+    }
+    & .air1 {
+        animation: wave 30s linear infinite;
+        z-index: 4;
+        opacity: 1;
+        animation-delay: 0s;
+        bottom: 0;
+    }
+    & .air2 {
+        animation: wave2 15s linear infinite;
+        z-index: 3;
+        opacity: 0.5;
+        animation-delay: -5s;
+        bottom: 10px;
+    }
+    & .air3{
+        animation: wave 30s linear infinite;
+        z-index: 2;
+        opacity: 0.2;
+        animation-delay: -2s;
+        bottom: 15px;
+    }
+    & .air4{
+        animation: wave2 5s linear infinite;
+        z-index: 1;
+        opacity: 0.7;
+        animation-delay: -5s;
+        bottom: 20px;
+    }
+    & .text {
+        position: relative;
+        font-weight: 600;
+        z-index: 5;
+    }
+}
+
+
 /* -- animations -- */
 
 @keyframes animateBubble {
@@ -1077,6 +1154,13 @@ footer {
     100% { background-position: 10% 80%; }
 }
 
+@keyframes gradientRotate {
+    0% { background-position: 10% 80%; }
+    50% { background-position: 80% 10%; }
+    100% { background-position: 10% 80%; }
+}
+
+/*
 @keyframes blob {
     from { transform: rotate(0deg) scale(1); }
     to   { transform: rotate(200deg) scale(1.2); }
@@ -1086,9 +1170,21 @@ footer {
     from { transform: rotate(0deg) scale(1.2); }
     to   { transform: rotate(-200deg) scale(1); }
 }
+*/
+
+@keyframes wave{
+    0% { background-position-x: 0px; }
+    100% { background-position-x: 1000px; }
+}
+
+@keyframes wave2{
+    0% { background-position-x: 0px; }
+    100% { background-position-x: -1000px; }
+}
 
 /* -- Background -- */
 
+/*
 #bg-container {
     position: absolute;
     top: 0;
@@ -1101,14 +1197,12 @@ footer {
         height: 30%;
         width: 120%;
         transform: translate(-10%);
-        /*background-color: #00a2ff;*/
         border-radius: 0px 0px 500% 500%; 
         filter: blur(50px);
         opacity: 0.4;
     }
 }
-
-
+*/
 
 /* -- phone adapt -- */
 
@@ -1186,9 +1280,13 @@ footer {
                     font-size: 16px;
                     & .ttle {
                         font-size: 22px;
-                        & a {
-                            font-size: 16px;
-                            padding: 4px 8px;
+                        & .logo {
+                            & img {
+                                height: 20px;
+                            }
+                            & a {
+                                font-size: 16px;
+                            }
                         }
                     }
                     & .infos {
@@ -1321,9 +1419,13 @@ footer {
                     font-size: 15px;
                     & .ttle {
                         font-size: 18px;
-                        & a {
-                            font-size: 14px;
-                            padding: 4px 8px;
+                        & .logo {
+                            & img {
+                                height: 16px;
+                            }
+                            & a {
+                                font-size: 14px;
+                            }
                         }
                     }
                     & .infos {
@@ -1499,10 +1601,14 @@ footer {
             & .diploma {
                 font-size: 14px;
                 & .ttle {
-                    font-size: 16px;
-                    & a {
-                        font-size: 12px;
-                        padding: 4px 8px;
+                    font-size: 16px !important;
+                    & .logo {
+                        & img {
+                            height: 14px;
+                        }
+                        & a {
+                            font-size: 12px;
+                        }
                     }
                 }
                 & .infos {
@@ -1702,19 +1808,12 @@ footer {
             }
         }
         & .diplomas {
-            justify-content: center;
             & .diploma {
+                transform: translate(-5vw) !important;
                 & .container {
                     padding: 1vh 1.5vh;
                     font-size: 12px;
                     gap: 0.5vh;
-                    & .ttle {
-                        font-size: 16px;
-                        & a {
-                            font-size: 12px;
-                            padding: 2px 6px;
-                        }
-                    }
                     & .infos {
                         & .info {
                             & .logo {

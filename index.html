@@ -15,7 +15,7 @@
     <meta property="og:description" content="Discover my portfolio as a future agronomy engineer, web developer, and designer.">
     <meta property="og:url" content="https://gabriel-jagueneau.github.io/Portfolio/">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://raw.githubusercontent.com/Gabriel-Jagueneau/Portfolio/refs/heads/main/images/gjlogo.png">
+    <meta content="https://raw.githubusercontent.com/Gabriel-Jagueneau/Portfolio/refs/heads/main/images/gjlogo.png" property="og:image">
     <meta property="og:locale" content="en_US">
       
     <meta name="twitter:card" content="summary_large_image">
@@ -194,7 +194,10 @@
                 <span></span>
                 <div class="container">
                     <div class="ttle">
-                        <a>2025-2028</a>
+                        <div class="logo">
+                            <img src="images/school/bsa.png" alt="">
+                            <a>2025-2028</a>
+                        </div>
                         Bordeaux Sciences Agro
                     </div> 
                     <div class="infos">
@@ -223,7 +226,10 @@
                 <span></span>
                 <div class="container">
                     <div class="ttle">
-                        <a>2023-2025</a>
+                        <div class="logo">
+                            <img src="images/school/ljr.png" alt="">
+                            <a>2023-2025</a>
+                        </div>
                         Lycée Jean Rostand
                     </div> 
                     <div class="infos">
@@ -252,7 +258,10 @@
                 <span></span>
                 <div class="container">
                     <div class="ttle">
-                        <a>2021-2023</a>
+                        <div class="logo">
+                            <img src="images/school/lcpdl.png" alt="">
+                            <a>2021-2023</a>
+                        </div>
                         Lycée Parc Des Loges
                     </div> 
                     <div class="infos">
@@ -572,8 +581,6 @@
 
     </section>
 
-    
-
     <section id="contact">
         <div class="head" id="confetti">
             <div class="top">
@@ -593,21 +600,27 @@
                     <div class="type">Europe, France</div>
                 </div>
                 <div class="info special">
-                    <div class="logo">school</div>
+                    <img src="images/school/bsa.png" alt="" class="image">
                     <div class="type">Bordeaux Science Agro</div>
                 </div>
                 <div class="info">
                     <div class="service">Future Agronomy Engineer</div>
-                    <div class="type">For 2028</div>
+                    <div class="type">
+                        2028
+                        <div class="logo">calendar_clock</div>
+                    </div>
                 </div>
                 <div class="info">
                     <div class="service">Junior Developper</div>
-                    <div class="type">Since 2020</div>
+                    <div class="type">
+                        2020
+                        <div class="logo">calendar_check</div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="body">
-            <span>Hi, nice to meet</span>
+            <span>Hi, glad to meet</span>
             <div id="confetti-generator" class="highlight">you !</div>
             <span>Contact me via my socials bellow !</span>
         </div>
@@ -680,8 +693,12 @@
         </div>
     </section>
 
-    <footer>
-        HandCrafted by gabriel JAGUENEAU
+    <footer id="footer">
+        <div class="text">HandCrafted by Gabriel JAGUENEAU</div>
+        <div class='air air1'></div>
+        <div class='air air2'></div>
+        <div class='air air3'></div>
+        <div class='air air4'></div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
