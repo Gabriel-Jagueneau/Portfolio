@@ -676,7 +676,8 @@ footer {
                 content: "";
                 position: absolute;
                 border-radius: 15px; 
-                padding: 1px; 
+                padding: 2px;
+                inset: 0;
                 mask: 
                   linear-gradient(#000 0 0) content-box,
                   linear-gradient(#000 0 0);
@@ -688,7 +689,6 @@ footer {
     & .agro .cards .card {
         background: radial-gradient(ellipse at left top, rgba(47, 163, 57, 0.4) 0%, #212121 60% ,#212121 100%);
         &::before {
-            inset: 0;
             background: linear-gradient(340deg, #212121 50%, rgb(47, 163, 57)); 
         }
     }
@@ -696,7 +696,6 @@ footer {
     & .student .cards .card {
         background: radial-gradient(ellipse at left top, rgba(47, 107, 163, 0.4) 0%, #212121 60% ,#212121 100%);
         &::before {
-            inset: 0;
             background: linear-gradient(340deg, #212121 50%, rgb(47, 107, 163)); 
         }
     }
@@ -704,7 +703,6 @@ footer {
     & .dev .cards .card {
         background: radial-gradient(ellipse at left top, rgba(159, 163, 47, 0.4) 0%, #212121 60% ,#212121 100%);
         &::before {
-            inset: 0;
             background: linear-gradient(340deg, #212121 50%, rgb(159, 163, 47)); 
         }
     }
@@ -712,7 +710,6 @@ footer {
     & .other .cards .card {
         background: radial-gradient(ellipse at left top, rgba(163, 47, 111, 0.4) 0%, #212121 60% ,#212121 100%);
         &::before {
-            inset: 0;
             background: linear-gradient(340deg, #212121 50%, rgb(163, 47, 111)); 
         }
     }
