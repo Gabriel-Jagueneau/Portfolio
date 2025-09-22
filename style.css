@@ -54,7 +54,7 @@ footer {
 /* -- nav bar -- */
 
 #navBar.hidden {
-    transform: translateY(-80px);
+    transform: translateY(-70px);
     background-color: rgba(0, 0, 0, 0);
     & .title, .cetegories, .contact, :after {
         filter: blur(10px);
@@ -67,15 +67,15 @@ footer {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    height: 80px;
+    height: 70px;
     filter: blur(0px);
     opacity: 1;
     transition: ease 0.4s;
     #nav-show {
         position: absolute;
         left: calc(50vw - (4px / 2) - 40px);
-        bottom: -15px;
-        padding: 4px;
+        bottom: -16px;
+        padding: 5px;
         width: 80px;
         border-radius: 10px;
         transition: ease 0.25s;
@@ -170,7 +170,7 @@ footer {
                 padding: 0.7vh 2vh;
                 transition: ease 0.5s;
                 cursor: pointer;
-                font-size: 18px;
+                font-size: 20px;
                 font-weight: 600;
                 &::after {
                     content: '';

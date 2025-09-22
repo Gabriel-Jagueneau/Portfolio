@@ -4,6 +4,9 @@ const cards = document.querySelectorAll(".cardage");
 const allCards = Array.from(cards);
 const dragStates = new Map();
 
+let repulsionDistance = 375;
+let maxVelocity = 35;
+
 document.addEventListener('DOMContentLoaded', () => {
   function initializeOrbits() {
     orbits = allCards.map((_, i) => ({
@@ -22,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       targetX: 0,
       targetY: 0,
+      velocityX: 0,
+      velocityY: 0,
     }));
   }
 
@@ -31,6 +36,23 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeOrbits();
   });
 });
+
+function applyPhysics(o1, o2) {
+  const dx = o2.currentX - o1.currentX;
+  const dy = o2.currentY - o1.currentY;
+  const distance = Math.hypot(dx, dy);
+
+  if (distance < repulsionDistance && distance > 0) {
+    const force = (repulsionDistance - distance) * 0.005;
+    const angle = Math.atan2(dy, dx);
+
+    o1.velocityX -= force * Math.cos(angle);
+    o1.velocityY -= force * Math.sin(angle);
+
+    o2.velocityX += force * Math.cos(angle);
+    o2.velocityY += force * Math.sin(angle);
+  }
+}
 
 function animate() {
   const rect = zone.getBoundingClientRect();
@@ -69,14 +91,33 @@ function animate() {
       o.angle += o.speed * o.direction;
     }
 
+    orbits.forEach((otherOrbit, j) => {
+      if (i !== j) {
+        applyPhysics(o, otherOrbit);
+      }
+    });
+
+    o.velocityX *= 0.95;
+    o.velocityY *= 0.95;
+
+    const velocityMagnitude = Math.hypot(o.velocityX, o.velocityY);
+    if (velocityMagnitude > maxVelocity) {
+      const scale = maxVelocity / velocityMagnitude;
+      o.velocityX *= scale;
+      o.velocityY *= scale;
+    }
+
+    o.currentX += o.velocityX;
+    o.currentY += o.velocityY;
+
     const x = centerX + o.baseRadius * Math.cos(o.angle);
     const y = centerY + o.baseRadius * Math.sin(o.angle);
 
-    o.currentX = x;
-    o.currentY = y;
+    o.currentX += (x - o.currentX) * 0.02;
+    o.currentY += (y - o.currentY) * 0.02;
 
-    card.style.left = (x - card.offsetWidth / 2) + "px";
-    card.style.top = (y - card.offsetHeight / 2) + "px";
+    card.style.left = (o.currentX - card.offsetWidth / 2) + "px";
+    card.style.top = (o.currentY - card.offsetHeight / 2) + "px";
   });
 
   requestAnimationFrame(animate);
@@ -116,6 +157,9 @@ cards.forEach((card, i) => {
           if (drag.dragging) {
             card.style.left = (drag.posX - card.offsetWidth / 2) + 'px';
             card.style.top = (drag.posY - card.offsetHeight / 2) + 'px';
+
+            o.currentX = drag.posX;
+            o.currentY = drag.posY;
           }
         });
       }
