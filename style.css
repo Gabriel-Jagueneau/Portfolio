@@ -474,6 +474,7 @@ footer {
                 backdrop-filter: blur(25px);
                 white-space: nowrap;
                 overflow: hidden;
+                cursor: pointer;
                 &::after {
                     content: '';
                     top: 0;
@@ -683,13 +684,6 @@ footer {
                   linear-gradient(#000 0 0);
                 mask-composite: exclude; 
             }
-        }
-    }
-
-    & .agro .cards .card {
-        background: radial-gradient(ellipse at left top, rgba(47, 163, 57, 0.4) 0%, #212121 60% ,#212121 100%);
-        &::before {
-            background: linear-gradient(340deg, #212121 50%, rgb(47, 163, 57)); 
         }
     }
 
