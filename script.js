@@ -5,23 +5,31 @@ const allCards = Array.from(cards);
 const dragStates = new Map();
 
 document.addEventListener('DOMContentLoaded', () => {
-  orbits = allCards.map((_, i) => ({
-    baseRadius: 0,
-    targetRadius: zone.getBoundingClientRect().width / 3,
-    speed: 0,
-    targetSpeed: 0.0005,
-    angle: (2 * Math.PI * i) / allCards.length,
-    direction: 1,
-    dragging: false,
-    returning: false,
-    angleLocked: false,
-  
-    currentX: 0,
-    currentY: 0,
-  
-    targetX: 0,
-    targetY: 0,
-  }));
+  function initializeOrbits() {
+    orbits = allCards.map((_, i) => ({
+      baseRadius: 0,
+      targetRadius: zone.getBoundingClientRect().width / 3,
+      speed: 0,
+      targetSpeed: 0.0005,
+      angle: (2 * Math.PI * i) / allCards.length,
+      direction: 1,
+      dragging: false,
+      returning: false,
+      angleLocked: false,
+
+      currentX: 0,
+      currentY: 0,
+
+      targetX: 0,
+      targetY: 0,
+    }));
+  }
+
+  initializeOrbits();
+
+  window.addEventListener('resize', () => {
+    initializeOrbits();
+  });
 });
 
 function animate() {
