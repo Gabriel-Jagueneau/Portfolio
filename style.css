@@ -794,6 +794,7 @@ footer {
                 & .knoledge {
                     cursor: pointer;
                     display: flex;
+                    flex-wrap: wrap;
                     flex-direction: row;
                     gap: 5px;
                     & .comp {
@@ -808,13 +809,12 @@ footer {
                 & .text {
                     font-size: 18px;
                     cursor: pointer;
-
-                    display: -webkit-box;
+                    /*display: -webkit-box;
                     line-clamp: 3;
                     -webkit-line-clamp: 3;
                     -webkit-box-orient: vertical;
                     overflow: hidden;
-                    text-overflow: ellipsis;
+                    text-overflow: ellipsis;*/
                 }
             }
             &::after {
@@ -1094,12 +1094,12 @@ footer {
         height: 150px;
         background: url(https://1.bp.blogspot.com/-xQUc-TovqDk/XdxogmMqIRI/AAAAAAAACvI/AizpnE509UMGBcTiLJ58BC6iViPYGYQfQCLcBGAsYHQ/s1600/wave.png);
         background-size: 1000px 150px;
-        filter: brightness(0.15)
+        filter: brightness(0.20)
     }
     & .air1 {
         animation: wave 30s linear infinite;
         z-index: 4;
-        opacity: 1;
+        opacity: 0.8;
         animation-delay: 0s;
         bottom: 0;
     }
@@ -1120,7 +1120,7 @@ footer {
     & .air4{
         animation: wave2 5s linear infinite;
         z-index: 1;
-        opacity: 0.7;
+        opacity: 0.6;
         animation-delay: -5s;
         bottom: 20px;
     }
@@ -1128,6 +1128,46 @@ footer {
         position: relative;
         font-weight: 600;
         z-index: 5;
+    }
+    & .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 5;
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        transition: ease 0.2s;
+        cursor: pointer;
+        & .totop {
+            font-size: 40px;
+            font-family: 'Material Symbols Rounded';
+            background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            transition: ease 0.2s;
+        }
+        & .text {
+            font-size: 16px;
+            font-weight: 600;
+            background: linear-gradient(45deg, #eeff00, #00aeff, #ff00f2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+    }
+    & .scrolled-bottom {
+        transform: translateX(-50%) translateY(-60px);
+        transition: transform 0.3s ease;
+        overflow: visible;
+    }
+    & .animating {
+        animation: animate-to-big 0.4s forwards linear;
     }
 }
 
@@ -1151,18 +1191,6 @@ footer {
     100% { background-position: 10% 80%; }
 }
 
-/*
-@keyframes blob {
-    from { transform: rotate(0deg) scale(1); }
-    to   { transform: rotate(200deg) scale(1.2); }
-}
-
-@keyframes blob-reverse {
-    from { transform: rotate(0deg) scale(1.2); }
-    to   { transform: rotate(-200deg) scale(1); }
-}
-*/
-
 @keyframes wave{
     0% { background-position-x: 0px; }
     100% { background-position-x: 1000px; }
@@ -1173,27 +1201,23 @@ footer {
     100% { background-position-x: -1000px; }
 }
 
-/* -- Background -- */
-
-/*
-#bg-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-    height: 100%;
-    width: 100%;
-
-    & .top {
-        height: 30%;
-        width: 120%;
-        transform: translate(-10%);
-        border-radius: 0px 0px 500% 500%; 
-        filter: blur(50px);
-        opacity: 0.4;
+@keyframes animate-to-big {
+    0% { 
+        transform: translateX(-50%) translateY(-60px) scale(1); 
+        opacity: 1;
+        filter: blur(0px);
+    }
+    100% { 
+        transform: translateX(-50%) translateY(-60vh) scale(10); 
+        opacity: 0;
+        filter: blur(5px);
     }
 }
-*/
+
+@keyframes scroll-left-right {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
 
 /* -- phone adapt -- */
 

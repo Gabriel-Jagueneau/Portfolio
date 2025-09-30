@@ -1,56 +1,98 @@
-let orbits;
 const zone = document.querySelector(".image-zone");
 const cards = document.querySelectorAll(".cardage");
 const allCards = Array.from(cards);
 const dragStates = new Map();
 
-let repulsionDistance = 375;
+let orbits;
 let maxVelocity = 35;
+
+// Parameters to tune
+const BASE_REPULSION_SCALE = 1.4;
+const REPULSION_STRENGTH = 0.005;
 
 document.addEventListener('DOMContentLoaded', () => {
   function initializeOrbits() {
-    orbits = allCards.map((_, i) => ({
-      baseRadius: 0,
-      targetRadius: zone.getBoundingClientRect().width / 3,
-      speed: 0,
-      targetSpeed: 0.0005,
-      angle: (2 * Math.PI * i) / allCards.length,
-      direction: 1,
-      dragging: false,
-      returning: false,
-      angleLocked: false,
+    const rect = zone.getBoundingClientRect();
+    const targetRadius = rect.width / 3;
 
-      currentX: 0,
-      currentY: 0,
+    orbits = allCards.map((card, i) => {
+      const cr = card.getBoundingClientRect();
+      const repulsionRadiusX = cr.width * BASE_REPULSION_SCALE;
+      const repulsionRadiusY = cr.height * BASE_REPULSION_SCALE;
 
-      targetX: 0,
-      targetY: 0,
-      velocityX: 0,
-      velocityY: 0,
-    }));
+      return {
+        baseRadius: 0,
+        targetRadius,
+        speed: 0,
+        targetSpeed: 0.00075,
+        angle: (2 * Math.PI * i) / allCards.length,
+        dragging: false,
+        returning: false,
+        angleLocked: false,
+
+        currentX: 0,
+        currentY: 0,
+
+        targetX: 0,
+        targetY: 0,
+        velocityX: 0,
+        velocityY: 0,
+
+        width: cr.width,
+        height: cr.height,
+        repulsionRadiusX,
+        repulsionRadiusY
+      };
+    });
   }
 
   initializeOrbits();
 
   window.addEventListener('resize', () => {
-    initializeOrbits();
+    const rect = zone.getBoundingClientRect();
+    const targetRadius = rect.width / 3;
+
+    orbits.forEach((o, i) => {
+      const card = allCards[i];
+      const cr = card.getBoundingClientRect();
+      o.width = cr.width;
+      o.height = cr.height;
+      o.repulsionRadiusX = cr.width * BASE_REPULSION_SCALE;
+      o.repulsionRadiusY = cr.height * BASE_REPULSION_SCALE;
+      o.targetRadius = targetRadius;
+    });
   });
 });
 
 function applyPhysics(o1, o2) {
   const dx = o2.currentX - o1.currentX;
   const dy = o2.currentY - o1.currentY;
-  const distance = Math.hypot(dx, dy);
 
-  if (distance < repulsionDistance && distance > 0) {
-    const force = (repulsionDistance - distance) * 0.005;
+  const pairRx = (o1.repulsionRadiusX + o2.repulsionRadiusX) / 2;
+  const pairRy = (o1.repulsionRadiusY + o2.repulsionRadiusY) / 2;
+
+  if (pairRx <= 0 || pairRy <= 0) return;
+
+  const nx = dx / pairRx;
+  const ny = dy / pairRy;
+  const scaledDistance = Math.hypot(nx, ny);
+
+  if (scaledDistance > 0 && scaledDistance < 1) {
+    const closeness = 1 - scaledDistance;
+
+    const avgPairSize = (pairRx + pairRy) / 2;
+    let force = closeness * REPULSION_STRENGTH * avgPairSize;
+
     const angle = Math.atan2(dy, dx);
 
-    o1.velocityX -= force * Math.cos(angle);
-    o1.velocityY -= force * Math.sin(angle);
+    const fx = force * Math.cos(angle);
+    const fy = force * Math.sin(angle);
 
-    o2.velocityX += force * Math.cos(angle);
-    o2.velocityY += force * Math.sin(angle);
+    o1.velocityX -= fx;
+    o1.velocityY -= fy;
+
+    o2.velocityX += fx;
+    o2.velocityY += fy;
   }
 }
 
@@ -88,7 +130,7 @@ function animate() {
     if (!o.angleLocked) {
       o.baseRadius += (o.targetRadius - o.baseRadius) * 0.02;
       o.speed += (o.targetSpeed - o.speed) * 0.02;
-      o.angle += o.speed * o.direction;
+      o.angle += o.speed;
     }
 
     orbits.forEach((otherOrbit, j) => {
@@ -97,9 +139,11 @@ function animate() {
       }
     });
 
+    // damping
     o.velocityX *= 0.95;
     o.velocityY *= 0.95;
 
+    // clamp velocity
     const velocityMagnitude = Math.hypot(o.velocityX, o.velocityY);
     if (velocityMagnitude > maxVelocity) {
       const scale = maxVelocity / velocityMagnitude;
@@ -268,6 +312,31 @@ function observeScroll() {
 
 navShow.addEventListener('click', () => {
   navBar.classList.toggle('hidden');
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const footerContainer = document.getElementById("footer-container");
+  function checkScrollBottom() {
+    const scrolled = window.innerHeight + window.scrollY;
+    const fullHeight = document.documentElement.scrollHeight;
+
+    if (scrolled >= fullHeight) {
+      footerContainer.classList.add("scrolled-bottom");
+    } else {
+      footerContainer.classList.remove("scrolled-bottom");
+      footerContainer.classList.remove("animating"); // reset quand on n’est plus en bas
+    }
+  }
+  window.addEventListener("scroll", checkScrollBottom);
+
+  footerContainer.addEventListener("click", (e) => {
+    const btn = e.currentTarget;
+    btn.classList.add("animating");
+  
+    btn.addEventListener("animationend", () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, { once: true });
+  });
 });
 
 // Initialization
