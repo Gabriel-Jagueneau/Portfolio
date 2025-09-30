@@ -830,7 +830,7 @@ footer {
                 transition: ease 0.2s;
             }
             &:hover {
-                gap: 8vh;
+                transform: scale(1.05);
                 cursor: pointer;
                 & .head {
                     cursor: pointer;
