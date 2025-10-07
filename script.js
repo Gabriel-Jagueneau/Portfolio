@@ -8,7 +8,7 @@ let maxVelocity = 35;
 
 // Parameters to tune
 const BASE_REPULSION_SCALE = 1.4;
-const REPULSION_STRENGTH = 0.005;
+const REPULSION_STRENGTH = 0.01;
 
 document.addEventListener('DOMContentLoaded', () => {
   function initializeOrbits() {
