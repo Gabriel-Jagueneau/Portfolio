@@ -107,6 +107,14 @@ function animate() {
 
     if (o.dragging) return;
 
+    if (o.inertialRelease) {
+      const velMag = Math.hypot(o.velocityX || 0, o.velocityY || 0);
+      if (velMag < 0.6) {
+        o.inertialRelease = false;
+        o.returning = true;
+      }
+    }
+
     if (o.returning) {
       const targetX = centerX + o.baseRadius * Math.cos(o.angle);
       const targetY = centerY + o.baseRadius * Math.sin(o.angle);
@@ -139,11 +147,9 @@ function animate() {
       }
     });
 
-    // damping
-    o.velocityX *= 0.95;
-    o.velocityY *= 0.95;
+    o.velocityX = (o.velocityX || 0) * 0.95;
+    o.velocityY = (o.velocityY || 0) * 0.95;
 
-    // clamp velocity
     const velocityMagnitude = Math.hypot(o.velocityX, o.velocityY);
     if (velocityMagnitude > maxVelocity) {
       const scale = maxVelocity / velocityMagnitude;
@@ -151,8 +157,8 @@ function animate() {
       o.velocityY *= scale;
     }
 
-    o.currentX += o.velocityX;
-    o.currentY += o.velocityY;
+    o.currentX += o.velocityX || 0;
+    o.currentY += o.velocityY || 0;
 
     const x = centerX + o.baseRadius * Math.cos(o.angle);
     const y = centerY + o.baseRadius * Math.sin(o.angle);
@@ -228,8 +234,27 @@ cards.forEach((card, i) => {
 
       o.baseRadius = Math.hypot(dx, dy);
       o.angle = Math.atan2(dy, dx);
+      if (drag && typeof drag.posX === 'number' && typeof drag.posY === 'number') {
+        const lastPosX = drag.posX;
+        const lastPosY = drag.posY;
+        const deltaX = releaseX - lastPosX;
+        const deltaY = releaseY - lastPosY;
+        o.velocityX = deltaX * 0.2;
+        o.velocityY = deltaY * 0.2;
+        if (Math.abs(o.velocityX) < 0.5 && Math.abs(o.velocityY) < 0.5) {
+          o.velocityX = 0;
+          o.velocityY = 0;
+          o.returning = true;
+          o.inertialRelease = false;
+        } else {
+          o.inertialRelease = true;
+          o.returning = false;
+        }
+      } else {
+        o.returning = true;
+        o.inertialRelease = false;
+      }
 
-      o.returning = true;
       o.angleLocked = true;
 
       o.currentX = releaseX;
@@ -324,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
       footerContainer.classList.add("scrolled-bottom");
     } else {
       footerContainer.classList.remove("scrolled-bottom");
-      footerContainer.classList.remove("animating"); // reset quand on n’est plus en bas
+      footerContainer.classList.remove("animating");
     }
   }
   window.addEventListener("scroll", checkScrollBottom);
