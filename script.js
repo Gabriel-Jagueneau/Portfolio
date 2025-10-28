@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrolled = window.innerHeight + window.scrollY;
     const fullHeight = document.documentElement.scrollHeight;
 
-    if (scrolled >= fullHeight) {
+    if (scrolled >= fullHeight - 10) {
       footerContainer.classList.add("scrolled-bottom");
     } else {
       footerContainer.classList.remove("scrolled-bottom");
