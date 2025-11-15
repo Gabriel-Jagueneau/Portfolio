@@ -339,37 +339,37 @@ navShow.addEventListener('click', () => {
   navBar.classList.toggle('hidden');
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  const footerContainer = document.getElementById("footer-container");
-  function checkScrollBottom() {
-    const scrolled = window.innerHeight + window.scrollY;
-    const fullHeight = document.documentElement.scrollHeight;
 
-    if (scrolled >= fullHeight - 10) {
-      footerContainer.classList.add("scrolled-bottom");
-    } else {
-      footerContainer.classList.remove("scrolled-bottom");
-      footerContainer.classList.remove("animating");
-    }
-  }
-  window.addEventListener("scroll", checkScrollBottom);
+document.getElementById("cards-student").onmousemove = e => {
+  for(const card of document.getElementsByClassName("card")) {
+    const rect = card.getBoundingClientRect(),
+          x = e.clientX - rect.left,
+          y = e.clientY - rect.top;
 
-  footerContainer.addEventListener("click", (e) => {
-    const btn = e.currentTarget;
-    btn.classList.add("animating");
-  
-    btn.addEventListener("animationend", () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, { once: true });
-  });
-});
+    card.style.setProperty("--mouse-x", `${x}px`);
+    card.style.setProperty("--mouse-y", `${y}px`);
+  };
+}
+document.getElementById("cards-dev").onmousemove = e => {
+  for(const card of document.getElementsByClassName("card")) {
+    const rect = card.getBoundingClientRect(),
+          x = e.clientX - rect.left,
+          y = e.clientY - rect.top;
 
-// Initialization
+    card.style.setProperty("--mouse-x", `${x}px`);
+    card.style.setProperty("--mouse-y", `${y}px`);
+  };
+}
+document.getElementById("cards-other").onmousemove = e => {
+  for(const card of document.getElementsByClassName("card")) {
+    const rect = card.getBoundingClientRect(),
+          x = e.clientX - rect.left,
+          y = e.clientY - rect.top;
 
-document.addEventListener('DOMContentLoaded', () => {
-  animate();
-  observeScroll();
-});
+    card.style.setProperty("--mouse-x", `${x}px`);
+    card.style.setProperty("--mouse-y", `${y}px`);
+  };
+}
 
 // AOS init
 
