@@ -1249,6 +1249,7 @@ footer {
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             cursor: pointer;
+            transition: ease 0.4s;
         }
     }
     & .scrolled-bottom {
@@ -1257,11 +1258,15 @@ footer {
         filter: blur(0px);
         overflow: visible;
         &:hover {
-            filter: blur(1px);
+            opacity: 0.6;
         }
     }
     & .animating {
         animation: animate-to-big-1 0.4s forwards linear;
+        & .text {
+            opacity: 0;
+            filter: blur(10px);
+        }
     }
 }
 
