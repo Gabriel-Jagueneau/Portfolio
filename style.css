@@ -851,6 +851,7 @@ footer {
                     white-space: nowarp;
                     font-weight: 600;
                     padding: 6px 12px;
+                    cursor: pointer;
                 }
                 & .see-website {
                     display: flex;
@@ -1144,8 +1145,10 @@ footer {
                     }
                     &:hover {
                         background-color: rgba(57, 59, 60, 0.5);
+                        cursor: pointer;
                         & .see-website {
                             -webkit-text-fill-color: transparent;
+                            cursor: pointer;
                         }
                     }
                 }
