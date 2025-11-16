@@ -4,11 +4,11 @@ const allCards = Array.from(cards);
 const dragStates = new Map();
 
 let orbits;
-let maxVelocity = 35;
+let maxVelocity = 40;
 
 // Parameters to tune
 const BASE_REPULSION_SCALE = 1.4;
-const REPULSION_STRENGTH = 0.01;
+const REPULSION_STRENGTH = 0.025;
 
 document.addEventListener('DOMContentLoaded', () => {
   function initializeOrbits() {
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         baseRadius: 0,
         targetRadius,
         speed: 0,
-        targetSpeed: 0.00075,
+        targetSpeed: 0.00060,
         angle: (2 * Math.PI * i) / allCards.length,
         dragging: false,
         returning: false,
@@ -377,7 +377,8 @@ document.addEventListener('DOMContentLoaded', () => {
 const cardContainerIds = [
   "cards-student", 
   "cards-dev", 
-  "cards-other"
+  "cards-other",
+  "cards-spinner"
 ];
 
 // Définit la fonction gestionnaire d'événement (handler) unique
