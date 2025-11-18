@@ -81,9 +81,9 @@ footer {
         transition: ease 0.25s;
         cursor: pointer;
         & .shadow {
-            background: linear-gradient(45deg, #eeff00ff, #00aeffff, #ff00f2ff);
-            filter: brightness(0) blur(5px);
-            transition: ease 0.25s;
+            filter: blur(5px);
+            opacity: 0.5;
+            transition: ease 0.5s;
             cursor: pointer;
         }
         & .background, .shadow {
@@ -96,7 +96,7 @@ footer {
             border-radius: 15px;
             transition: 0.5s ease;
             backdrop-filter: blur(15px);
-            background: linear-gradient(45deg, #eeff0020, #00aeff20, #ff00f220);
+            background: linear-gradient(45deg, #eeff0040, #00aeff40, #ff00f240);
             background-size: 200% 400%;
             animation: gradientShift 8s ease infinite;
             cursor: pointer;
@@ -110,7 +110,7 @@ footer {
             position: absolute;
             border-radius: 15px;
             border: 1px solid transparent;
-            background: linear-gradient(45deg, #eeff0020, #00aeff20, #ff00f220);
+            background: linear-gradient(45deg, #eeff0060, #00aeff60, #ff00f260);
             background-size: 200% 400%;
             mask: linear-gradient(#fff 0 0) padding-box,
                 linear-gradient(#fff 0 0);
@@ -126,7 +126,7 @@ footer {
             left: calc(50vw - (4px / 2) - 55px);
             & .shadow {
                 opacity: 1;
-                filter: brightness(1) blur(5px);
+                filter: blur(5px);
             }
         }
     }
@@ -136,13 +136,12 @@ footer {
         font-weight: 600;
         width: fit-content;
         transition: ease 0.2s;
-        
         background: linear-gradient(35deg,aliceblue 30%, rgb(215, 237, 255), aliceblue 70%);
-          background-size: 200% 400%;
-          color: transparent;
-          -webkit-background-clip: text;
-          background-clip: text;
-          animation: gradientRotate 6s ease infinite;
+        background-size: 200% 400%;
+        color: transparent;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: gradientRotate 6s ease infinite;
         &::after {
             content: '';
             position: absolute;
@@ -187,16 +186,17 @@ footer {
                     height: 100%;
                     width: 100%;
                     border-radius: 90px;
-                    background: linear-gradient(45deg, #eeff0020, #00aeff20, #ff00f220);
+                    background: linear-gradient(45deg, #eeff0030, #00aeff30, #ff00f230);
                     background-size: 200% 400%;
-                    animation: gradientShift 8s ease infinite;
+                    animation: gradientShift 12s ease infinite;
+                    animation-delay: 2.5s;
                     filter: grayscale(1);
                     transition: ease 0.5s;
                 }
                 &:hover {
                     flex-grow: 1;
                     &::after {
-                        filter: grayscale(0.6);
+                        filter: grayscale(0.5);
                     }
                 }
             }
@@ -312,7 +312,7 @@ footer {
             z-index: 1;
             overflow: visible;
             &:hover > .card::before {
-                opacity: 1;
+                opacity: 0.1;
             }
             & .card {
                 padding: 0.8vw 1vw;
@@ -370,7 +370,7 @@ footer {
             left: 0;
             background: radial-gradient(
                 400px circle at var(--mouse-x) var(--mouse-y), 
-                rgba(255, 255, 255, 0.1),
+                aliceblue,
                 transparent 40%
             );
         }
@@ -734,6 +734,14 @@ footer {
                     font-weight: 400;
                     font-style: italic;
                     color: rgba(240, 248, 255, 0.598);
+                    & span {
+                        font-style: normal;
+                        font-size: 14px;
+                        font-weight: 600;
+                        padding: 1px 4px;
+                        background-color: #88888820;
+                        border-radius: 5px;
+                    }
                 }
             }
         }
@@ -754,7 +762,7 @@ footer {
     }
       
     .card::before {
-        z-index: 5;
+        z-index: 3;
     }
       
     .card::after {  
@@ -847,10 +855,8 @@ footer {
             flex-direction: column;
             justify-content: space-between;
             border-radius: 20px;
-            overflow: hidden;
             gap: 6vh;
             transition: ease 0.4s;
-            border: 2px rgba(65, 67, 68, 0.4) solid;
             will-change: transform;
             & .bg {
                 position: absolute;
@@ -860,6 +866,7 @@ footer {
                 object-fit: cover;
                 top: 0;
                 left: 0;
+                border-radius: 20px;
             }
             & .box-blur {
                 background-color: rgba(80, 82, 83, 0.2);
@@ -867,6 +874,7 @@ footer {
                 backdrop-filter: blur(10px);
                 border-radius: 15px;
                 align-items: center;
+                border-radius: 15px;
             }
             & .head {
                 display: flex;
@@ -939,12 +947,13 @@ footer {
                 position: absolute;
                 inset: 0;
                 z-index: -1;
-                height: 101%;
+                height: 100%;
                 backdrop-filter: blur(100px);
                 mask-image: linear-gradient(to bottom, transparent 40%, #212121);
                 mask-repeat: no-repeat;
                 mask-size: cover;
                 transition: ease 0.2s;
+                border-radius: 18px;
             }
             &:hover {
                 transform: scale(1.05);
@@ -971,6 +980,28 @@ footer {
                     backdrop-filter: blur(0);
                 }
             }
+        }
+        &:hover > .carder::before {
+            opacity: 1;
+        }
+        .card::before {
+            border-radius: inherit;
+            content: "";
+            height: calc(100% + 4px);
+            width: calc(100% + 4px);
+            left: -2px;
+            opacity: 0;
+            position: absolute;
+            top: -2px;
+            transition: ease 0.5s;
+            border-radius: 21px;
+
+            z-index: -1;
+            background: radial-gradient(
+                800px circle at var(--mouse-x) var(--mouse-y), 
+                #ffffff60,
+                transparent 40%
+            );
         }
     }
 }

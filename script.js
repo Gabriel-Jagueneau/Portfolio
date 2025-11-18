@@ -373,30 +373,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Hover Exp cards
 
-// Liste des IDs des conteneurs auxquels nous voulons ajouter l'écouteur d'événement
 const cardContainerIds = [
   "cards-student", 
   "cards-dev", 
   "cards-other",
-  "cards-spinner"
+  "cards-spinner",
+  "cards-projects"
 ];
 
-// Définit la fonction gestionnaire d'événement (handler) unique
 const handleMouseMove = e => {
-  // Parcourt TOUTES les cartes avec la classe "card"
   for(const card of document.getElementsByClassName("card")) {
       const rect = card.getBoundingClientRect(),
-            // Calcule la position relative de la souris à l'intérieur de la carte
             x = e.clientX - rect.left, 
             y = e.clientY - rect.top;
 
-      // Met à jour les variables CSS pour la lueur/l'effet
       card.style.setProperty("--mouse-x", `${x}px`);
       card.style.setProperty("--mouse-y", `${y}px`);
   };
 };
 
-// Attache le même gestionnaire à chaque conteneur ciblé
 cardContainerIds.forEach(id => {
   const container = document.getElementById(id);
   if (container) {
