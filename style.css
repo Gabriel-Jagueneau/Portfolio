@@ -399,8 +399,8 @@ footer {
                 font-size: 16px;
                 font-weight: 400;
                 font-style: italic;
-                color: rgba(44, 50, 55, 0.3);
-                text-shadow: 0 0 10px rgba(44, 50, 55, 0.4);
+                color: rgba(44, 50, 55, 0.6);
+                text-shadow: 0 0 10px rgba(44, 50, 55, 0.6);
             }
         }
     }
@@ -1806,6 +1806,9 @@ footer {
                     }
                     & .desc {
                         font-size: 12px;
+                        & span {
+                            font-size: 12px;
+                        }
                     }
                 }
             }
@@ -2039,6 +2042,9 @@ footer {
                     }
                     & .desc {
                         font-size: 9px;
+                        & span {
+                            font-size: 9px;
+                        }
                     }
                 }
             }

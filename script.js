@@ -341,27 +341,37 @@ navShow.addEventListener('click', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
   const footerContainer = document.getElementById("footer-container");
-  function checkScrollBottom() {
-    const scrolled = window.innerHeight + window.scrollY;
-    const fullHeight = document.documentElement.scrollHeight;
-
-    if (scrolled >= fullHeight - 10) {
-      footerContainer.classList.add("scrolled-bottom");
-    } else {
-      footerContainer.classList.remove("scrolled-bottom");
-      footerContainer.classList.remove("animating");
-    }
-  }
-  window.addEventListener("scroll", checkScrollBottom);
-
+  
+  if (!footerContainer) return;
   footerContainer.addEventListener("click", (e) => {
     const btn = e.currentTarget;
-    btn.classList.add("animating");
-  
-    btn.addEventListener("animationend", () => {
+    if (btn.classList.contains("animating")) return; 
+    btn.classList.add("animating"); 
+
+    const { animationDuration } = window.getComputedStyle(btn);
+    let durationMs = parseFloat(animationDuration) * (animationDuration.includes('s') && !animationDuration.includes('ms') ? 1000 : 1);
+    durationMs = durationMs || 800; 
+    const scrollDelay = durationMs - 150;
+
+    setTimeout(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, scrollDelay);
+
+    btn.addEventListener("animationend", function handler() {
+        btn.classList.remove("animating");
+        btn.removeEventListener("animationend", handler);
     }, { once: true });
   });
+
+  const checkScrollBottom = () => {
+    const { innerHeight, scrollY } = window;
+    const { scrollHeight } = document.documentElement;
+    const isAtBottom = innerHeight + scrollY >= scrollHeight - 10;
+    footerContainer.classList.toggle("scrolled-bottom", isAtBottom);
+  };
+  
+  window.addEventListener("scroll", checkScrollBottom);
+  checkScrollBottom(); 
 });
 
 // Initialization
@@ -372,32 +382,21 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Hover Exp cards
-
-const cardContainerIds = [
-  "cards-student", 
-  "cards-dev", 
-  "cards-other",
-  "cards-spinner",
-  "cards-projects"
-];
-
-const handleMouseMove = e => {
-  for(const card of document.getElementsByClassName("card")) {
-      const rect = card.getBoundingClientRect(),
-            x = e.clientX - rect.left, 
-            y = e.clientY - rect.top;
-
-      card.style.setProperty("--mouse-x", `${x}px`);
-      card.style.setProperty("--mouse-y", `${y}px`);
+document.addEventListener('DOMContentLoaded', () => {
+  const handleMouseMove = event => {
+    for(const card of document.getElementsByClassName("card")) {
+        const rect = card.getBoundingClientRect(),
+              x = event.clientX - rect.left, 
+              y = event.clientY - rect.top;
+  
+        card.style.setProperty("--mouse-x", `${x}px`);
+        card.style.setProperty("--mouse-y", `${y}px`);
+    };
   };
-};
-
-cardContainerIds.forEach(id => {
-  const container = document.getElementById(id);
-  if (container) {
-      container.onmousemove = handleMouseMove;
-  }
+  
+  document.getElementById("body").onmousemove = handleMouseMove;
 });
+
 
 // AOS init
 
