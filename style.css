@@ -418,44 +418,50 @@ footer {
         display: flex;
         flex-direction: row;
         gap: 20px;
-        height: 800px;
+        height: 900px;
+        position: relative;
         & .line {
             position: relative;
-            display: flex;
-            justify-content: center;
+            width: 8px; 
             height: 105%;
-            padding-left: 4px;
-            padding-right: 4px;
             border-radius: 10px;
             background: linear-gradient(180deg, #eeff00 0%, #00aeff 45%, #ff00f2 90%, transparent 100%);
+            z-index: 1;
         }
         & .parags {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            flex: 1;
             & .inner {
                 position: relative;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
+                min-height: 50px;
                 & .date {
                     position: absolute;
-                    left: -54px;
+                    left: -24px; 
+                    transform: translateX(-50%);
+                    
                     min-width: 60px;
                     padding: 4px 10px;
                     background-color: rgba(81, 82, 83, 0.3);
                     border: 1px rgba(65, 67, 68, 0.15) solid;
-                    backdrop-filter: blur(5px);
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
                     border-radius: 10px;
                     text-align: center;
                     font-weight: 600;
                     color: white;
+                    z-index: 2;
+                    white-space: nowrap;
                 }
                 & .parag {
                     display: flex;
                     flex-direction: column;
                     gap: 5px;
-                    margin-left: 2vw;
+                    margin-left: 40px; 
                     width: 50vw;
                     & .text {
                         font-size: 20px;
@@ -479,6 +485,7 @@ footer {
                         display: flex;
                         flex-direction: row;
                         align-items: center;
+                        flex-wrap: wrap;
                         gap: 8px;
                         & .mention {
                             display: flex;
@@ -496,7 +503,6 @@ footer {
             }
         }
     }
-
     & .secondary {
         font-size: 36px;
         font-weight: 600;
@@ -798,6 +804,23 @@ footer {
         }
     }
 
+    & .entrepreneur .cards .card {
+        &::before {
+            background: radial-gradient(
+                500px circle at var(--mouse-x) var(--mouse-y), 
+                rgba(40, 194, 42, 0.3),
+                transparent 40%
+            );
+        }
+        &::after {  
+            background: radial-gradient(
+              600px circle at var(--mouse-x) var(--mouse-y), 
+              rgba(40, 194, 42, 0.5),
+              transparent 40%
+            );
+        }
+    }
+
     & .dev .cards .card {
         &::before {
             background: radial-gradient(
@@ -1027,14 +1050,19 @@ footer {
         border-radius: 15px;
         padding: 2vh;
         width: 60vw;
+        justify-content: center;
+        align-items: center;
         & .top {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: center;
+            width: 90%;
             gap: 2vw;
             & .photo-de-profile {
                 object-fit: cover;
+                height: 160px;
+                border-radius: 40%;
             }
             & .info {
                 display: flex;
@@ -1236,6 +1264,7 @@ footer {
     width: 100vw;
     position: relative;
     padding: 1vw;
+    z-index: 11;
     & .air {
         position: absolute;
         bottom: 0;
@@ -1336,7 +1365,7 @@ footer {
 #screen-contour {
     display: flex;
     position: sticky;
-    z-index: 1;
+    z-index: 10;
     & .bottom {
         position: fixed;
         height: 10vh;
