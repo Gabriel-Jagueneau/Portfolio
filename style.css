@@ -1532,7 +1532,7 @@ footer {
             & .parags {
                 & .inner {
                     & .date {
-                        left: -74px;
+                        left: -44px;
                     }
                     & .parag {
                         margin-left: 2vw;
@@ -1680,13 +1680,10 @@ footer {
         gap: 3vw;
         & .contained {
             gap: 40px;
-            height: 900px;
+            height: 1000px;
             & .parags {
                 width: 60vw;
                 & .inner {
-                    & .date {
-                        left: -74px;
-                    }
                     & .parag {
                         margin-left: 2vw;
                         & .bigger {
@@ -1885,7 +1882,7 @@ footer {
                 & .inner {
                     padding: 1vh;
                     & .date {
-                        left: -60px;
+                        left: -34px;
                         font-size: 14px;
                         padding: 4px 8px;
                         min-width: 45px;
@@ -2108,7 +2105,6 @@ footer {
             & .parags {
                 & .inner {
                     & .date {
-                        left: -58px;
                         font-size: 12px;
                         min-width: 50px;
                     }
