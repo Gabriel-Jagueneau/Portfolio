@@ -458,85 +458,74 @@ function updateClock() {
 
 updateClock();
 
-// mac window:
+// mac window
 
 const desktop = document.getElementById('mac-desktop');
 const minWindows = 6;
 
 const appTemplates = {
-    "Terminal": `
-        <div style="font-family: 'Courier New', monospace; color: #a6e22e; font-size: 11px; padding: 10px; background: #1e1e1e; height: 100%;">
-            <p style="color: #fff; margin-bottom: 5px;">Last login: ${new Date().toLocaleTimeString()}</p>
-            <p><span style="color: #66d9ef;">➜</span> <span style="color: #f92672;">~</span> git status</p>
-            <p style="color: #cfcfc2;">On branch main</p>
-            <p style="color: #cfcfc2;">Your branch is up to date.</p>
-            <p><span style="color: #66d9ef;">➜</span> <span style="color: #f92672;">~</span> <span class="cursor">_</span></p>
-        </div>`,
-    "Finder": `
-        <div style="display: flex; height: 100%; color: #eee; font-size: 11px;">
-            <div style="width: 75px; background: rgba(255,255,255,0.05); padding: 10px; border-right: 1px solid rgba(255,255,255,0.1);">
-                <div style="opacity: 0.5; margin-bottom: 10px;">Favoris</div>
-                <div style="margin-bottom: 5px;">🏠 Home</div>
-                <div style="margin-bottom: 5px;">📄 Docs</div>
-                <div style="margin-bottom: 5px;">☁️ iCloud</div>
-            </div>
-            <div style="flex: 1; padding: 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; align-content: start;">
-                <div style="text-align: center; border-radius: 5px; background-color: #555; padding: 8px;">📂<br>Projets</div>
-                <div style="text-align: center; border-radius: 5px; background-color: #555; padding: 8px;">📂<br>Images</div>
-                <div style="text-align: center; border-radius: 5px; background-color: #555; padding: 8px;">📂<br>Videos</div>
-                <div style="text-align: center; border-radius: 5px; background-color: #555; padding: 8px;">📄<br>index.html</div>
-            </div>
-        </div>`,
-    "Safari": `
-    <div style="background: #555; height: 100%; display: flex; flex-direction: column; font-family: -apple-system, BlinkMacSystemFont, sans-serif; border-radius: 6px; overflow: hidden;">
-        <div style="padding: 5px 10px; background: #444; display: flex; gap: 10px; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.2);">
-            <div style="display: flex; gap: 4px;">
-                <div style="width:6px;height:6px;background:#bbb;border-radius:50%"></div>
-                <div style="width:6px;height:6px;background:#bbb;border-radius:50%"></div>
-            </div>
-            <div style="flex: 1; background: #666; border-radius: 4px; height: 18px; font-size: 10px; display: flex; align-items: center; padding: 0 8px; color: aliceblue; opacity: 0.8;">
-                https://gjagueneau.eu/
-            </div>
+  "Terminal": `
+      <div class="app-terminal">
+          <p class="term-login">Last login: ${new Date().toLocaleTimeString()}</p>
+          <p><span class="term-arrow">➜</span> <span class="term-path">~</span> git status</p>
+          <p class="term-text">On branch main</p>
+          <p class="term-text">Your branch is up to date.</p>
+          <p><span class="term-arrow">➜</span> <span class="term-path">~</span> <span class="cursor">_</span></p>
+      </div>`,
+  "Finder": `
+      <div class="app-finder">
+          <aside class="finder-sidebar">
+              <div class="finder-label">Favoris</div>
+              <div class="finder-item"><img class="logo-finder-mac" src="images/icons/house.png" alt=""> Home</div>
+              <div class="finder-item"><img class="logo-finder-mac" src="images/icons/book-text.png" alt=""> Docs</div>
+              <div class="finder-item"><img class="logo-finder-mac" src="images/icons/cloud.png" alt=""> iCloud</div>
+          </aside>
+          <main class="finder-content">
+              <div class="finder-icon"><img class="logo-finder-mac" src="images/icons/folder-closed.png" alt="">Projets</div>
+              <div class="finder-icon"><img class="logo-finder-mac" src="images/icons/folder-closed.png" alt="">Images</div>
+              <div class="finder-icon"><img class="logo-finder-mac" src="images/icons/folder-closed.png" alt="">Videos</div>
+              <div class="finder-icon"><img class="logo-finder-mac" src="images/icons/sticky-note.png" alt="">index</div>
+          </main>
+      </div>`,
+  "Safari": `
+      <div class="app-safari">
+          <header class="safari-header">
+              <div class="safari-dots">
+                  <span></span><span></span>
+              </div>
+              <div class="safari-address">https://gjagueneau.eu/</div>
+          </header>
+          <main class="safari-body">
+              <h1 class="safari-title">My Portfolio</h1>
+          </main>
+      </div>`,
+  "Music": `
+      <div class="app-music">
+        <div class="music-cover">♫</div>
+        <div class="music-track">Cool Music</div>
+        <div class="music-subtitle">Apple Music</div>
+        <div class="music-progress">
+            <div class="music-bar"></div>
         </div>
-        <div style="flex: 1; display: flex; align-items: center; justify-content: center; background: #555;">
-            <div style="
-                position: relative; 
-                font-size: 20px; 
-                font-weight: 600; 
-                color: aliceblue;
-                background: linear-gradient(90deg, #eeff0088, #00aeff88, #ff00f288);
-                background-size: 100% 3px;
-                background-repeat: no-repeat;
-                background-position: left bottom;
-                padding-bottom: 4px;
-            ">
-                My Portfolio
-            </div>
+        <div class="music-time">
+            <span>1:24</span>
+            <span>-3:12</span>
         </div>
-    </div>`,
-    "Music": `
-        <div style="background: linear-gradient(180deg, #444, #222); height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white;">
-            <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #ff2d55, #ff5e3a); border-radius: 8px; box-shadow: 0 8px 15px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; font-size: 40px; margin-bottom: 10px;">♫</div>
-            <div style="font-weight: bold; font-size: 13px;">Lofi Beats</div>
-            <div style="font-size: 10px; opacity: 0.6;">Apple Music</div>
-            <div style="width: 80%; height: 3px; background: #555; margin-top: 15px; border-radius: 2px; position: relative;">
-                <div style="width: 40%; height: 100%; background: #fff; border-radius: 2px;"></div>
-            </div>
-        </div>`,
-    "Settings": `
-        <div style="padding: 10px; color: white;">
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; background: rgba(255,255,255,0.1); padding: 8px; border-radius: 8px;">
-                <div style="width: 30px; height: 30px; background: #888; border-radius: 50%;"></div>
-                <div>
-                  <div style="font-size: 12px; font-weight: bold;">Gabriel JAGUENEAU</div>
-                  <div style="font-size: 9px; opacity: 0.6;">Apple ID, iCloud, Media</div>
-                </div>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                <div style="background: rgba(255,255,255,0.05); padding: 5px; border-radius: 4px; font-size: 10px;">🌐 Wi-Fi</div>
-                <div style="background: rgba(255,255,255,0.05); padding: 5px; border-radius: 4px; font-size: 10px;">🎧 Bluetooth</div>
-            </div>
-        </div>`
+      </div>`,
+  "Settings": `
+      <div class="app-settings">
+          <header class="settings-profile">
+              <div class="profile-avatar"></div>
+              <div class="profile-info">
+                  <div class="profile-name">Gabriel JAGUENEAU</div>
+                  <div class="profile-sub">Apple ID, iCloud, Media</div>
+              </div>
+          </header>
+          <div class="settings-grid">
+              <div class="settings-tile"><img class="logo-settings-mac" src="images/icons/wifi.png" alt="">Wi-Fi</div>
+              <div class="settings-tile"><img class="logo-settings-mac" src="images/icons/bluetooth.png" alt="">Bluetooth</div>
+          </div>
+      </div>`
 };
 
 function spawnWindow() {
@@ -547,12 +536,12 @@ function spawnWindow() {
   const appName = apps[Math.floor(Math.random() * apps.length)];
   
   // Dimensions de la fenêtre
-  const winWidth = 320;
-  const winHeight = 220;
+  const winWidth = 35;
+  const winHeight = 45;
 
   // Calcul des positions maximales en pixels (basé sur la taille de .desktop)
-  const desktopWidth = desktop.offsetWidth;
-  const desktopHeight = desktop.offsetHeight;
+  const desktopWidth = desktop.offsetWidth / 100 * (100 - winWidth);
+  const desktopHeight = desktop.offsetHeight / 100 * (100 - winHeight);
 
   // On s'assure que la fenêtre reste bien dans les limites du bureau
   const maxPosX = desktopWidth - winWidth;
@@ -562,8 +551,8 @@ function spawnWindow() {
   const posX = Math.floor(Math.random() * maxPosX);
   const posY = Math.floor(Math.random() * maxPosY);
 
-  win.style.width = `${winWidth}px`;
-  win.style.height = `${winHeight}px`;
+  win.style.width = `${winWidth}%`;
+  win.style.height = `${winHeight}%`;
   win.style.left = `${posX}px`;
   win.style.top = `${posY}px`;
   
@@ -608,7 +597,7 @@ function spawnWindow() {
 }
 
 for (let i = 0; i < minWindows; i++) {
-  setTimeout(spawnWindow, i * 3000);
+  setTimeout(spawnWindow, i * 2000);
 }
 
 // AOS init
