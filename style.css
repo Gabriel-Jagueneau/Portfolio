@@ -435,11 +435,13 @@ footer {
             align-items: center;
             position: relative;
             height: 45vh;
+            width: 45vw;
             gap: 2vh;
             & .imagur {
                 display: flex;
                 position: relative;
                 height: 100%;
+                width: 100%;
                 gap: 2vh;
                 & .device {
                     width: 100%;
