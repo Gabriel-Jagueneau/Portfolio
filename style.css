@@ -183,10 +183,10 @@ footer {
             & .highlighter::before {
                 content: '';
                 position: absolute;
-                top: -1px;
-                left: -1px;
-                right: -1px;
-                bottom: -1px;
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
                 z-index: -1;
                 
                 background: linear-gradient(45deg, #eeff0088, #00aeff88, #ff00f288);
@@ -452,12 +452,12 @@ footer {
                     width: 150%;
                     border-radius: 15px;
                     z-index: -1;
-                    background: radial-gradient(rgb(0, 0, 0), transparent 70%);
+                    background: radial-gradient(#111, transparent 70%);
                 }
                 & .device {
                     width: 100%;
                     z-index: 2;
-                    filter: invert(95%) sepia(100%) hue-rotate(200deg) brightness(220%) saturate(150%);
+                    filter: invert(95%) sepia(100%) hue-rotate(200deg) brightness(200%) saturate(200%);
                 }
                 & .inside {
                     position: absolute;

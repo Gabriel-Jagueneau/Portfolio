@@ -1,5 +1,3 @@
-import { Curtains, Plane } from 'https://cdn.skypack.dev/curtainsjs';
-
 const zone = document.querySelector(".image-zone");
 const cards = document.querySelectorAll(".cardage");
 const allCards = Array.from(cards);
@@ -176,6 +174,9 @@ function animate() {
 }
 
 cards.forEach((card, i) => {
+  const cardStyle = window.getComputedStyle(card);
+  if (cardStyle.display === 'none') return;
+
   card.style.position = 'absolute';
 
   card.addEventListener('mousedown', (e) => {
@@ -434,7 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById("body").onmousemove = handleMouseMove;
 });
 
-// mac clock
+// mac UI
 
 function updateClock() {
   const timeElement = document.getElementById('mac-menu-item-time');
@@ -452,13 +453,11 @@ function updateClock() {
   const secondsStr = seconds < 10 ? '0' + seconds : seconds;
 
   timeElement.textContent = hours + ':' + minutesStr + ':' + secondsStr + ' ' + ampm;
-
+  
   setTimeout(updateClock, 1000);
 }
 
 updateClock();
-
-// mac window
 
 const desktop = document.getElementById('mac-desktop');
 const minWindows = 6;
