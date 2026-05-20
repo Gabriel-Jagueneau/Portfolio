@@ -1902,6 +1902,10 @@ footer {
         }
     }
 
+    #nav-show {
+        display: none;
+    }
+
     #home {
         & .quick-desc {
             & .names {
