@@ -3103,7 +3103,7 @@ body.mac-fullscreen-mode {
     align-items: center;
     justify-content: center;
     gap: 24px;
-    padding: 10vh 20px;
+    padding: 10vh 25vw;
     width: 100%;
     box-sizing: border-box;
 
@@ -3121,7 +3121,6 @@ body.mac-fullscreen-mode {
         border-radius: 20px;
         padding: 3vh 3.5vh;
         width: 100%;
-        max-width: 680px;
         box-sizing: border-box;
         justify-content: center;
         align-items: center;
@@ -3272,8 +3271,7 @@ body.mac-fullscreen-mode {
         font-size: 18px;
         text-align: center;
         overflow: visible;
-        width: 100%;
-        max-width: 680px;
+        width: fit-content;
         box-sizing: border-box;
 
         #confetti-generator {
@@ -3294,14 +3292,12 @@ body.mac-fullscreen-mode {
         justify-content: center;
         gap: 16px;
         width: 100%;
-        max-width: 680px;
         box-sizing: border-box;
 
         & .card {
             display: flex;
             flex-direction: row;
-            width: calc(50% - 8px);
-            min-width: 280px;
+            width: fit-content;
             box-sizing: border-box;
 
             background-color: rgba(65, 67, 68, 0.1);
