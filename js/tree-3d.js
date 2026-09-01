@@ -27,7 +27,12 @@ export function initWebGLTree(onComplete) {
     powerPreference: 'high-performance'
   });
   renderer.setSize(width, height);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Adaptive Pixel Ratio: Cap at 1.0 on low-end/quad-core devices, and 1.5 on high-DPI screens
+  const isLowPower = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+                     (navigator.deviceMemory && navigator.deviceMemory <= 4);
+  const targetPixelRatio = isLowPower ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.5);
+  renderer.setPixelRatio(targetPixelRatio);
 
   // ─── 2. Cartoon Lighting ──────────────────────────────────────────────────
   const ambientLight = new THREE.AmbientLight(0xfff8ee, 0.95);
@@ -716,69 +721,76 @@ export function initWebGLTree(onComplete) {
       loaderPercent.textContent = (progress * 100).toFixed(0) + '%';
     }
 
-    // ── Milestone Growth: Trunk & Branch Cylinders ──
-    branches.forEach((b) => {
-      if (progress < b.startP) {
-        b.mesh.scale.set(0.0001, 0.0001, 0.0001);
-      } else {
-        const span = b.endP - b.startP;
-        const localP = Math.min(1.0, (progress - b.startP) / span);
-        // Smooth progressive growth along length (Y)
-        const easeLen = localP * localP * (3 - 2 * localP);
+    // ── Milestone Growth: Trunk & Branch Cylinders (Only during growth phase) ──
+    if (!treeFullyGrown) {
+      branches.forEach((b) => {
+        if (progress < b.startP) {
+          b.mesh.scale.set(0.0001, 0.0001, 0.0001);
+        } else {
+          const span = b.endP - b.startP;
+          const localP = Math.min(1.0, (progress - b.startP) / span);
+          // Smooth progressive growth along length (Y)
+          const easeLen = localP * localP * (3 - 2 * localP);
 
-        // Continuous thickness expansion
-        let thicknessFactor = 0.05 + 0.95 * Math.max(0, (progress - b.startP) / (1.0 - b.startP));
-        if (b.isMainTrunk) {
+          // Continuous thickness expansion
+          let thicknessFactor = 0.05 + 0.95 * Math.max(0, (progress - b.startP) / (1.0 - b.startP));
+          if (b.isMainTrunk) {
+            if (progress < 0.25) {
+              // Ultra-fine delicate green sprout strand (starts at 0.015 radius)
+              thicknessFactor = 0.015 + 0.035 * (progress / 0.25);
+            } else if (progress < 0.50) {
+              // Growing shoot expanding from 0.05 to 0.30
+              thicknessFactor = 0.05 + 0.25 * ((progress - 0.25) / 0.25);
+            } else if (progress < 0.75) {
+              // Thickening into oak trunk (0.30 -> 0.70)
+              thicknessFactor = 0.30 + 0.40 * ((progress - 0.50) / 0.25);
+            } else {
+              // Full massive oak trunk (0.70 -> 1.0)
+              thicknessFactor = 0.70 + 0.30 * ((progress - 0.75) / 0.25);
+            }
+          }
+          b.mesh.scale.set(thicknessFactor, easeLen, thicknessFactor);
+
+          // Dynamic Color Transition: Stays green at <25%, turns brown progressively
           if (progress < 0.25) {
-            // Ultra-fine delicate green sprout strand (starts at 0.015 radius)
-            thicknessFactor = 0.015 + 0.035 * (progress / 0.25);
-          } else if (progress < 0.50) {
-            // Growing shoot expanding from 0.05 to 0.30
-            thicknessFactor = 0.05 + 0.25 * ((progress - 0.25) / 0.25);
-          } else if (progress < 0.75) {
-            // Thickening into oak trunk (0.30 -> 0.70)
-            thicknessFactor = 0.30 + 0.40 * ((progress - 0.50) / 0.25);
-          } else {
-            // Full massive oak trunk (0.70 -> 1.0)
-            thicknessFactor = 0.70 + 0.30 * ((progress - 0.75) / 0.25);
+            b.mat.color.copy(sproutGreen);
+          } else if (progress >= b.turnBrownP) {
+            const brownP = Math.min(1.0, (progress - b.turnBrownP) / 0.20);
+            b.mat.color.lerpColors(sproutGreen, b.isMainTrunk ? barkDarkBrown : barkLightBrown, brownP);
           }
         }
-        b.mesh.scale.set(thicknessFactor, easeLen, thicknessFactor);
+      });
 
-        // Dynamic Color Transition: Stays green at <25%, turns brown progressively
-        if (progress < 0.25) {
-          b.mat.color.copy(sproutGreen);
-        } else if (progress >= b.turnBrownP) {
-          const brownP = Math.min(1.0, (progress - b.turnBrownP) / 0.20);
-          b.mat.color.lerpColors(sproutGreen, b.isMainTrunk ? barkDarkBrown : barkLightBrown, brownP);
+      // ── Node Leaf Buds (Branches visually sprout from these leaves!) ──
+      nodeLeafBuds.forEach((bud) => {
+        if (progress < bud.startP) {
+          bud.group.scale.set(0.0001, 0.0001, 0.0001);
+        } else {
+          const span = Math.max(0.04, bud.endP - bud.startP);
+          const p = Math.min(1.0, (progress - bud.startP) / span);
+          const ease = p * p * (3 - 2 * p);
+          const s = bud.targetScale * ease;
+          bud.group.scale.set(s, s, s);
         }
-      }
-    });
+      });
 
-    // ── Node Leaf Buds (Branches visually sprout from these leaves!) ──
-    nodeLeafBuds.forEach((bud) => {
-      if (progress < bud.startP) {
-        bud.group.scale.set(0.0001, 0.0001, 0.0001);
-      } else {
-        const span = Math.max(0.04, bud.endP - bud.startP);
-        const p = Math.min(1.0, (progress - bud.startP) / span);
-        const ease = p * p * (3 - 2 * p);
-        const s = bud.targetScale * ease;
-        bud.group.scale.set(s, s, s);
+      if (progress >= 1.0) {
+        treeFullyGrown = true;
       }
-    });
+    }
 
     // ── Dense Leaf Canopy Blooms (50% -> 100%) ──
     leaves.forEach((l) => {
       if (progress < l.bloomStartP) {
         l.mesh.scale.set(0.0001, 0.0001, 0.0001);
       } else {
-        const span = Math.max(0.05, l.bloomEndP - l.bloomStartP);
-        const p = Math.min(1.0, (progress - l.bloomStartP) / span);
-        // Elastic cartoon pop overshoot
-        const overshoot = Math.sin(p * Math.PI * 0.5) * (1 + 0.22 * (1 - p));
-        const s = l.targetScale * overshoot;
-        l.mesh.scale.set(s, s, s);
+        if (!treeFullyGrown) {
+          const span = Math.max(0.05, l.bloomEndP - l.bloomStartP);
+          const p = Math.min(1.0, (progress - l.bloomStartP) / span);
+          const overshoot = Math.sin(p * Math.PI * 0.5) * (1 + 0.22 * (1 - p));
+          const s = l.targetScale * overshoot;
+          l.mesh.scale.set(s, s, s);
+        }
 
         // Soft gentle leaf fluttering in wind
         l.mesh.rotation.z = l.origRot.z + Math.sin(elapsedSec * l.swaySpeed + l.swayPhase) * 0.05;
@@ -879,5 +891,47 @@ export function initWebGLTree(onComplete) {
     renderer.render(scene, camera);
   }
 
-  requestAnimationFrame(animate);
+  // ── Render Loop Lifecycle with Automatic Viewport & Tab Throttling ──
+  let isTreeVisible = true;
+  let treeRafId = null;
+
+  function startTreeLoop() {
+    if (!treeRafId && isTreeVisible && !document.hidden) {
+      treeRafId = requestAnimationFrame(animate);
+    }
+  }
+
+  function stopTreeLoop() {
+    if (treeRafId) {
+      cancelAnimationFrame(treeRafId);
+      treeRafId = null;
+    }
+  }
+
+  // Pause WebGL rendering when user scrolls down to other sections
+  const homeSection = document.getElementById('home') || canvas;
+  if (homeSection && typeof IntersectionObserver !== 'undefined') {
+    const treeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        isTreeVisible = entry.isIntersecting;
+        if (isTreeVisible) {
+          startTreeLoop();
+        } else {
+          stopTreeLoop();
+        }
+      });
+    }, { rootMargin: '150px' });
+    treeObserver.observe(homeSection);
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopTreeLoop();
+    } else if (isTreeVisible) {
+      startTreeLoop();
+    }
+  }, { passive: true });
+
+  let treeFullyGrown = false;
+  startTreeLoop();
 }

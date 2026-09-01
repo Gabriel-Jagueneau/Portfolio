@@ -19,25 +19,25 @@ export const PHYSICS = {
   DRAG: 0.92,
 
   // ── Hard velocity cap (px/frame)
-  MAX_SPEED: 40,
+  MAX_SPEED: 45,
 
   // ── Orbit rotation
   ORBIT_SPEED: 0.00050,  // Angular velocity (rad/frame)
   ORBIT_RADIUS_LERP: 0.025,   // How fast radius expands to target
 
   // ── Impulse-based collision response
-  RESTITUTION: 0.90,
+  RESTITUTION: 0.88,
   FRICTION: 0.15,
 
-  // ── Pre-contact repulsion field (border-to-border, smoothstep curve)
-  REPULSION_MARGIN: 120,       // px from box edge where field starts (tight & close)
-  REPULSION_STRENGTH: 2.0,    // Soft gentle nudging before contact
+  // ── Pre-contact repulsion field (tight & gentle pre-contact buffer)
+  REPULSION_MARGIN: 30,       // px from box edge (reduced from 120px)
+  REPULSION_STRENGTH: 0.8,    // Soft subtle nudging before contact
 
   // ── Strict Collision Gap Padding
-  COLLISION_PADDING: 12,      // 12px air-gap buffer (zero overlap guarantee)
+  COLLISION_PADDING: 10,      // 10px air-gap buffer (zero overlap guarantee)
 
   // ── Throw velocity on mouse release
-  THROW_SCALE: 0.28,
+  THROW_SCALE: 0.35,
   THROW_HISTORY: 6,
 };
 
@@ -54,32 +54,21 @@ let visible = false;
 let isMacInteractive = false;
 
 function getBaseOrbitRadius(rectWidth) {
-  return Math.max(340, Math.min(rectWidth * 0.44, 480));
+  const w = rectWidth || (zone ? zone.getBoundingClientRect().width : 560);
+  return Math.max(220, Math.min(265, w * 0.40));
 }
 
 export function setMacInteractiveMode(active) {
   isMacInteractive = Boolean(active);
   if (!zone) return;
   const rect = zone.getBoundingClientRect();
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
-
   const normalRadius = getBaseOrbitRadius(rect.width);
   const radius = isMacInteractive
-    ? normalRadius * 1.55
+    ? normalRadius * 1.35
     : normalRadius;
 
   bodies.forEach(b => {
     b.targetRadius = radius;
-    if (isMacInteractive) {
-      // Outward push so cards decisively clear the Mac
-      const dx = b.x - centerX;
-      const dy = b.y - centerY;
-      const dist = Math.hypot(dx, dy) || 1;
-      const pushSpeed = 8.0;
-      b.vx += (dx / dist) * pushSpeed;
-      b.vy += (dy / dist) * pushSpeed;
-    }
   });
 }
 
@@ -95,8 +84,8 @@ export function initializeOrbits() {
   const n = allCards.length || 1;
 
   bodies = allCards.map((el, i) => {
-    const w = el.offsetWidth || 300;
-    const h = el.offsetHeight || 160;
+    const w = el.offsetWidth || 230;
+    const h = el.offsetHeight || 90;
     const mass = Math.max(1, PHYSICS.DENSITY * w * h);
 
     // Symmetrical 4-quadrant circular distribution (framing the laptop)
@@ -104,11 +93,7 @@ export function initializeOrbits() {
     const x = centerX + targetRadius * Math.cos(angle);
     const y = centerY + targetRadius * Math.sin(angle);
 
-    // Place element in DOM immediately at its circular orbit position
-    el.style.left = (x - w * 0.5) + "px";
-    el.style.top = (y - h * 0.5) + "px";
-
-    return {
+    const b = {
       el,
       dragging: false,
 
@@ -134,6 +119,12 @@ export function initializeOrbits() {
       w, h, mass,
       invMass: 1 / mass,
     };
+
+    // Place element in DOM immediately at its circular orbit position
+    el.style.left = (b.x - b.w * 0.5) + "px";
+    el.style.top = (b.y - b.h * 0.5) + "px";
+
+    return b;
   });
 
   // Initial zero-overlap solve
@@ -145,7 +136,7 @@ function updateDimensions() {
   const rect = zone.getBoundingClientRect();
   const normalRadius = getBaseOrbitRadius(rect.width);
   const radius = isMacInteractive
-    ? normalRadius * 1.55
+    ? normalRadius * 1.35
     : normalRadius;
 
   bodies.forEach((b, i) => {
@@ -162,7 +153,7 @@ function updateDimensions() {
 window.addEventListener('resize', updateDimensions, { passive: true });
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// Pre-contact Repulsion Field
+// Pre-contact Repulsion Field (Tight & Soft Buffer)
 // ═══════════════════════════════════════════════════════════════════════════════
 function applyRepulsionField() {
   const n = bodies.length;
@@ -209,7 +200,91 @@ function applyRepulsionField() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// Strict Iterative Position Projection & Impulse Resolver (Zero-Overlap Guarantee)
+// Elastic Collision Impulse Resolver (Full Inertia & Momentum Transfer)
+// ═══════════════════════════════════════════════════════════════════════════════
+function applyCollisionImpulses() {
+  const n = bodies.length;
+  const pad = PHYSICS.COLLISION_PADDING;
+
+  for (let i = 0; i < n; i++) {
+    const a = bodies[i];
+    for (let j = i + 1; j < n; j++) {
+      const b = bodies[j];
+
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const halfW = (a.w + b.w) * 0.5 + pad;
+      const halfH = (a.h + b.h) * 0.5 + pad;
+      const ox = halfW - Math.abs(dx);
+      const oy = halfH - Math.abs(dy);
+
+      // Contact or overlap detected
+      if (ox > 0 && oy > 0) {
+        let nx = 0, ny = 0;
+        if (ox < oy) {
+          nx = dx >= 0 ? 1 : -1;
+        } else {
+          ny = dy >= 0 ? 1 : -1;
+        }
+
+        const invA = a.dragging ? 0 : a.invMass;
+        const invB = b.dragging ? 0 : b.invMass;
+        const invSum = invA + invB;
+        if (invSum <= 0.0001) continue;
+
+        // Velocities
+        const avx = a.dragging ? a.dragVx : a.vx;
+        const avy = a.dragging ? a.dragVy : a.vy;
+        const bvx = b.dragging ? b.dragVx : b.vx;
+        const bvy = b.dragging ? b.dragVy : b.vy;
+
+        // Relative normal velocity
+        const rvn = (bvx - avx) * nx + (bvy - avy) * ny;
+
+        // Only impart impulse when approaching
+        if (rvn < 0) {
+          const e = PHYSICS.RESTITUTION;
+          // Kinetic punch multiplier when hitting with hand/mouse
+          const restitutionFactor = (a.dragging || b.dragging) ? Math.max(1.3, 1 + e) : (1 + e);
+          const jn = -restitutionFactor * rvn / invSum;
+
+          if (!a.dragging) {
+            a.vx -= jn * nx * invA;
+            a.vy -= jn * ny * invA;
+          }
+          if (!b.dragging) {
+            b.vx += jn * nx * invB;
+            b.vy += jn * ny * invB;
+          }
+
+          // Friction (tangential impulse)
+          const rvx = bvx - avx;
+          const rvy = bvy - avy;
+          const tx = rvx - rvn * nx;
+          const ty = rvy - rvn * ny;
+          const tLen = Math.hypot(tx, ty);
+          if (tLen > 0.001) {
+            const tnx = tx / tLen, tny = ty / tLen;
+            const jt = -(rvx * tnx + rvy * tny) / invSum;
+            const mu = PHYSICS.FRICTION;
+            const jc = Math.max(-Math.abs(jn) * mu, Math.min(Math.abs(jn) * mu, jt));
+            if (!a.dragging) {
+              a.vx -= jc * tnx * invA;
+              a.vy -= jc * tny * invA;
+            }
+            if (!b.dragging) {
+              b.vx += jc * tnx * invB;
+              b.vy += jc * tny * invB;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// Strict Iterative Position Projection (Zero-Overlap Guarantee)
 // ═══════════════════════════════════════════════════════════════════════════════
 function resolveCollisions(maxIterations = 20) {
   const n = bodies.length;
@@ -254,52 +329,15 @@ function resolveCollisions(maxIterations = 20) {
           const invSum = invA + invB;
           if (invSum <= 0.0001) continue;
 
-          // 1. Hard Positional Separation
-          const corr = (pen + 0.5) / invSum;
+          // Hard Positional Separation (Gauss-Seidel)
+          const corr = (pen + 0.2) / invSum;
           if (!a.dragging) {
             a.x -= nx * corr * invA;
             a.y -= ny * corr * invA;
-
-            // Inward velocity cancellation
-            const vDotA = a.vx * nx + a.vy * ny;
-            if (vDotA > 0) { a.vx -= vDotA * nx; a.vy -= vDotA * ny; }
           }
           if (!b.dragging) {
             b.x += nx * corr * invB;
             b.y += ny * corr * invB;
-
-            const vDotB = b.vx * nx + b.vy * ny;
-            if (vDotB < 0) { b.vx -= vDotB * nx; b.vy -= vDotB * ny; }
-          }
-
-          // 2. Elastic Normal Impulse on final iteration
-          if (iter === maxIterations - 1) {
-            const avx = a.dragging ? a.dragVx : a.vx;
-            const avy = a.dragging ? a.dragVy : a.vy;
-            const bvx = b.dragging ? b.dragVx : b.vx;
-            const bvy = b.dragging ? b.dragVy : b.vy;
-            const rvn = (bvx - avx) * nx + (bvy - avy) * ny;
-
-            if (rvn < 0) {
-              const jn = -(1 + PHYSICS.RESTITUTION) * rvn / invSum;
-              if (!a.dragging) { a.vx -= jn * nx * invA; a.vy -= jn * ny * invA; }
-              if (!b.dragging) { b.vx += jn * nx * invB; b.vy += jn * ny * invB; }
-
-              // Friction (tangential)
-              const rvx = bvx - avx;
-              const rvy = bvy - avy;
-              const tx = rvx - rvn * nx;
-              const ty = rvy - rvn * ny;
-              const tLen = Math.hypot(tx, ty);
-              if (tLen > 0.001) {
-                const tnx = tx / tLen, tny = ty / tLen;
-                const jt = -(rvx * tnx + rvy * tny) / invSum;
-                const mu = PHYSICS.FRICTION;
-                const jc = Math.max(-Math.abs(jn) * mu, Math.min(Math.abs(jn) * mu, jt));
-                if (!a.dragging) { a.vx -= jc * tnx * invA; a.vy -= jc * tny * invA; }
-                if (!b.dragging) { b.vx += jc * tnx * invB; b.vy += jc * tny * invB; }
-              }
-            }
           }
         }
       }
@@ -321,7 +359,12 @@ function physicsLoop() {
 
   // ── Integrate all non-dragging bodies
   for (const b of bodies) {
-    if (b.dragging) continue;
+    if (b.dragging) {
+      // Damping on drag velocity when hand slows down
+      b.dragVx *= 0.8;
+      b.dragVy *= 0.8;
+      continue;
+    }
 
     // Advance orbit (only ticks when not in interactive mac mode)
     const radiusLerp = isMacInteractive ? 0.05 : PHYSICS.ORBIT_RADIUS_LERP;
@@ -354,10 +397,13 @@ function physicsLoop() {
     b.y += b.vy;
   }
 
-  // ── Repulsion field (pre-contact soft force)
+  // ── Repulsion field (pre-contact subtle force)
   applyRepulsionField();
 
-  // ── Contact collision (Iterative Hard Constraint Solver)
+  // ── Kinetic collision momentum transfer
+  applyCollisionImpulses();
+
+  // ── Contact collision (Iterative Hard Constraint Solver - Zero Overlap)
   resolveCollisions(20);
 
   // ── Write to DOM
@@ -410,18 +456,19 @@ allCards.forEach((el, i) => {
       b.x = newX;
       b.y = newY;
 
-      b.dragHistory.push({ x: newX, y: newY, t: performance.now() });
+      b.dragHistory.push({ x: b.x, y: b.y, t: performance.now() });
       if (b.dragHistory.length > PHYSICS.THROW_HISTORY) b.dragHistory.shift();
+
+      // Impart kinetic impulse on impact
+      applyCollisionImpulses();
 
       // Enforce zero-overlap live during drag
       resolveCollisions(20);
 
-      requestAnimationFrame(() => {
-        for (const bd of bodies) {
-          bd.el.style.left = (bd.x - bd.w * 0.5) + "px";
-          bd.el.style.top = (bd.y - bd.h * 0.5) + "px";
-        }
-      });
+      for (const bd of bodies) {
+        bd.el.style.left = (bd.x - bd.w * 0.5) + "px";
+        bd.el.style.top = (bd.y - bd.h * 0.5) + "px";
+      }
     }
 
     function onMouseUp() {
