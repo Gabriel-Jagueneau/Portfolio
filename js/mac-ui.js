@@ -24,6 +24,7 @@ const SVG_ICONS = {
   search: `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10.5" cy="10.5" r="7"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>`,
   controlCenter: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2zm0 8h16a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2zm0 8h16a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2z"/></svg>`,
   wifi: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98A16.88 16.88 0 0 0 12 4zm0 2.9c3.8 0 7.27 1.44 9.9 3.82L12 18.77 2.1 10.72A14.9 14.9 0 0 1 12 6.9z"/></svg>`,
+  wifiOff: `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>`,
   bluetooth: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M14.24 12.01l4.7-4.7a1 1 0 000-1.42l-6-6A1 1 0 0011 0.6V9.58L6.41 5A1 1 0 005 6.41L10.59 12 5 17.59A1 1 0 106.41 19L11 14.41v8.99a1 1 0 001.94.71l6-6a1 1 0 000-1.42l-4.7-4.68zM13 3.41l3.29 3.3L13 10.01V3.41zm0 17.18v-6.6l3.29 3.3L13 20.59z"/></svg>`,
   moon: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12.3 2a10 10 0 00-.19 20 10 10 0 008.7-5.1 1 1 0 00-1-1.44 8 8 0 11-8.95-12 1 1 0 001.44-1.46z"/></svg>`,
   sun: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
@@ -186,52 +187,52 @@ function stopMusicAudio() {
 // VS Code App Files & State
 // ═══════════════════════════════════════════════════════════════════════════════
 const codeFiles = {
-  "developpeur.js": {
+  "developer.js": {
     lang: "javascript",
-    code: `// Gabriel Jagueneau — Ingénieur & Développeur
-const developpeur = {
-  nom: "Gabriel Jagueneau",
-  formation: "Ingénieur Agronome (Bordeaux Sciences Agro)",
-  metier: "Lead Dev & Fondateur Plintzy",
-  competences: ["JavaScript", "React", "Node.js", "Python", "Data GIS"],
-  statut: "Ouvert aux opportunités & collaborations"
+    code: `// Gabriel Jagueneau — Engineer & Developer
+const developer = {
+  name: "Gabriel Jagueneau",
+  education: "Agronomy Engineer (Bordeaux Sciences Agro)",
+  role: "Lead Dev & Founder at Plintzy",
+  skills: ["JavaScript", "React", "Node.js", "Python", "Data GIS"],
+  status: "Open to opportunities & collaborations"
 };
 
-function creerProjet() {
-  return "Lancement : Innovation végétale, tech & design !";
+function createProject() {
+  return "Launch: Plant innovation, tech & modern design!";
 }
-console.log(creerProjet());`
+console.log(createProject());`
   },
   "skills.py": {
     lang: "python",
-    code: `# Stack technique & Outils
+    code: `# Tech Stack & Tools
 skills = {
     "frontend": ["React", "Next.js", "TypeScript", "Vanilla CSS", "Three.js"],
     "backend": ["Node.js", "Express", "Python", "FastAPI", "PostgreSQL"],
-    "agronomie": ["Modélisation végétale", "SIG / QGIS", "Analyse de données"],
+    "agronomy": ["Crop Modeling", "GIS / QGIS", "Data Analysis"],
     "devops": ["Docker", "Git", "GitHub Actions", "Vite", "Supabase"]
 }
 
-def afficher_stack():
+def display_stack():
     for cat, items in skills.items():
-        print(f"[{cat.upper()}] : {', '.join(items)}")
+        print(f"[{cat.upper()}]: {', '.join(items)}")
 
-afficher_stack()`
+display_stack()`
   },
   "contact.json": {
     lang: "json",
     code: `{
-  "nom": "Gabriel Jagueneau",
+  "name": "Gabriel Jagueneau",
   "email": "contact@gjagueneau.fr",
   "github": "https://github.com/Gabriel-Jagueneau",
   "linkedin": "https://linkedin.com/in/gabriel-jagueneau",
-  "localisation": "Paris / Bordeaux, France",
-  "disponibilite": "Immédiate"
+  "location": "Paris / Bordeaux, France",
+  "availability": "Immediate"
 }`
   },
-  "agronomie_model.ts": {
+  "agronomy_model.ts": {
     lang: "typescript",
-    code: `// Simulation croissance végétale & capteurs IoT
+    code: `// Crop Growth Simulation & IoT Sensors
 interface PlantSensorData {
   soilMoisture: number; // %
   sunlightHours: number;
@@ -246,13 +247,14 @@ function calculateHealthIndex(data: PlantSensorData): string {
 console.log(calculateHealthIndex({ soilMoisture: 82, sunlightHours: 7.5, ndviIndex: 0.88 }));`
   }
 };
-let activeCodeFile = "developpeur.js";
+let activeCodeFile = "developer.js";
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// System Settings State
+// System Settings State & Wi-Fi Sync
 // ═══════════════════════════════════════════════════════════════════════════════
 const settingsState = {
   wifi: true,
+  wifiNetwork: 'Gabriel-5G',
   bluetooth: true,
   darkmode: true,
   airdrop: true,
@@ -262,6 +264,68 @@ const settingsState = {
   alertSound: "Glass",
   lowPowerMode: false
 };
+
+export function updateWifiSystemState(enabled, networkName) {
+  settingsState.wifi = enabled;
+  if (networkName) settingsState.wifiNetwork = networkName;
+
+  // 1. Menubar Top Bar Icon & Tooltip
+  const wifiMenuBtn = document.getElementById('mac-menu-wifi');
+  if (wifiMenuBtn) {
+    wifiMenuBtn.innerHTML = enabled ? SVG_ICONS.wifi : SVG_ICONS.wifiOff;
+    wifiMenuBtn.title = enabled ? `Wi-Fi: ${settingsState.wifiNetwork}` : 'Wi-Fi: Off';
+    wifiMenuBtn.style.opacity = enabled ? '0.85' : '0.4';
+  }
+
+  // 2. Control Center Toggle Item
+  const ccWifi = document.getElementById('cc-tog-wifi');
+  if (ccWifi) {
+    ccWifi.classList.toggle('active', enabled);
+    const small = ccWifi.querySelector('small');
+    if (small) small.textContent = enabled ? settingsState.wifiNetwork : 'Off';
+  }
+
+  // 3. Wi-Fi Popover (if currently open)
+  const popTog = document.getElementById('pop-wifi-tog');
+  if (popTog) popTog.checked = enabled;
+  const popContent = document.querySelector('.wifi-popover-content');
+  if (popContent) {
+    popContent.querySelectorAll('.pop-item[data-network]').forEach(item => {
+      item.classList.toggle('disabled', !enabled);
+      const isCur = item.getAttribute('data-network') === settingsState.wifiNetwork;
+      item.classList.toggle('active', isCur);
+      const checkEl = item.querySelector('.check');
+      if (checkEl) checkEl.style.display = (isCur && enabled) ? 'inline-flex' : 'none';
+    });
+  }
+
+  // 4. System Settings Windows (if open)
+  document.querySelectorAll('.app-settings-macos').forEach(app => {
+    const badge = app.querySelector('.settings-nav-item[data-cat="wifi"] .nav-status-badge');
+    if (badge) badge.textContent = enabled ? settingsState.wifiNetwork : 'Off';
+    const tog = app.querySelector('input[id^="wifi-toggle-"]');
+    if (tog) tog.checked = enabled;
+    const pane = app.querySelector('.settings-pane');
+    if (pane) {
+      pane.querySelectorAll('.card-row[data-network]').forEach(row => {
+        row.classList.toggle('disabled', !enabled);
+        const netName = row.getAttribute('data-network');
+        const isCur = netName === settingsState.wifiNetwork;
+        row.classList.toggle('highlight', isCur && enabled);
+        const nameEl = row.querySelector('.network-name');
+        if (nameEl) nameEl.textContent = isCur && enabled ? `${netName} (Connected)` : netName;
+        const checkIcon = row.querySelector('.check-icon');
+        if (checkIcon) checkIcon.style.visibility = (isCur && enabled) ? 'visible' : 'hidden';
+      });
+    }
+  });
+
+  // 5. Open Safari Windows (refresh page to toggle offline/online view)
+  document.querySelectorAll('.app-safari').forEach(safari => {
+    const reloadBtn = safari.querySelector('.safari-reload-btn');
+    if (reloadBtn) reloadBtn.click();
+  });
+}
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // Calculator State & Helper
@@ -275,8 +339,8 @@ const calcState = {
 };
 
 function formatCalcNumber(num) {
-  if (num === 'Erreur' || num === 'Error' || isNaN(num)) return 'Erreur';
-  if (!isFinite(num)) return 'Erreur';
+  if (num === 'Error' || num === 'Erreur' || isNaN(num)) return 'Error';
+  if (!isFinite(num)) return 'Error';
   const rounded = parseFloat(Number(num).toPrecision(10));
   return String(rounded);
 }
@@ -285,7 +349,7 @@ function performCalc(op, a, b) {
   if (op === '+') return a + b;
   if (op === '-') return a - b;
   if (op === '*') return a * b;
-  if (op === '/') return b !== 0 ? (a / b) : 'Erreur';
+  if (op === '/') return b !== 0 ? (a / b) : 'Error';
   return b;
 }
 
@@ -328,7 +392,7 @@ const appDefinitions = {
   // ── 1. Terminal (zsh) ──
   "Terminal": {
     title: "gabriel — zsh — 80×24",
-    widthPct: 56, heightPct: 58,
+    widthPct: 44, heightPct: 44,
     render: (win) => `
       <div class="app-terminal" id="term-container-${win.id}">
         <p class="term-login">Last login: ${new Date().toLocaleDateString()} on ttys001</p>
@@ -412,11 +476,11 @@ const appDefinitions = {
           resLine.innerHTML = `
             <p class="term-muted">Available commands: <span class="term-highlight">whoami</span>, <span class="term-highlight">skills</span>, <span class="term-highlight">projects</span>, <span class="term-highlight">fastfetch</span>, <span class="term-highlight">matrix</span>, <span class="term-highlight">contact</span>, <span class="term-highlight">ls</span>, <span class="term-highlight">cat &lt;file&gt;</span>, <span class="term-highlight">open &lt;app&gt;</span>, <span class="term-highlight">clear</span>, <span class="term-highlight">date</span>, <span class="term-highlight">sudo</span></p>`;
         } else if (lower === 'whoami' || lower === 'bio') {
-          resLine.innerHTML = `<p class="term-success">Gabriel Jagueneau — Élève-Ingénieur Agronome (Bordeaux Sciences Agro) & Développeur Web Full-Stack / Fondateur Plintzy.</p>`;
+          resLine.innerHTML = `<p class="term-success">Gabriel Jagueneau — Agronomy Engineering Student (Bordeaux Sciences Agro) & Full-Stack Web Developer / Founder of Plintzy.</p>`;
         } else if (lower === 'skills' || lower === 'tech') {
-          resLine.innerHTML = `<p class="term-info">Stack: JavaScript (ES6+), React, Next.js, Python, FastAPI, Node.js, SQL, Three.js, Docker, GIS/QGIS, Modélisation Agronomique.</p>`;
+          resLine.innerHTML = `<p class="term-info">Stack: JavaScript (ES6+), React, Next.js, Python, FastAPI, Node.js, SQL, Three.js, Docker, GIS/QGIS, Crop Modeling.</p>`;
         } else if (lower === 'projects') {
-          resLine.innerHTML = `<p class="term-info">● <strong>Plintzy</strong>: Startup & App tech végétale<br/>● <strong>TIPE Agronomie</strong>: Modélisation biologique & capteurs<br/>● <strong>Portfolio 2026</strong>: Interface interactive 3D WebGL<br/>● <strong>TDR Website</strong>: Plateforme web moderne</p>`;
+          resLine.innerHTML = `<p class="term-info">● <strong>Plintzy</strong>: Plant tech startup & mobile app<br/>● <strong>Agronomy Research</strong>: Biological crop modeling & IoT sensors<br/>● <strong>Portfolio 2026</strong>: 3D WebGL interactive interface<br/>● <strong>TDR Website</strong>: Modern web platform</p>`;
         } else if (lower === 'contact') {
           resLine.innerHTML = `<p class="term-highlight">Email: contact@gjagueneau.fr | LinkedIn: linkedin.com/in/gabriel-jagueneau | GitHub: @Gabriel-Jagueneau</p>`;
         } else if (lower === 'fastfetch' || lower === 'neofetch') {
@@ -447,15 +511,15 @@ const appDefinitions = {
           container.scrollTop = 0;
           return;
         } else if (lower === 'ls') {
-          resLine.innerHTML = `<p><span style="color:#58a6ff;">Applications/</span> &nbsp; <span style="color:#58a6ff;">Projects/</span> &nbsp; <span>developpeur.js</span> &nbsp; <span>skills.py</span> &nbsp; <span>CV_Gabriel.pdf</span> &nbsp; <span>index.html</span></p>`;
+          resLine.innerHTML = `<p><span style="color:#58a6ff;">Applications/</span> &nbsp; <span style="color:#58a6ff;">Projects/</span> &nbsp; <span>developer.js</span> &nbsp; <span>skills.py</span> &nbsp; <span>Resume_Gabriel.pdf</span> &nbsp; <span>index.html</span></p>`;
         } else if (lower.startsWith('cat ')) {
           const target = lower.replace('cat ', '').trim();
           if (target.includes('dev') || target.includes('.js')) {
-            resLine.innerHTML = `<pre class="term-code">const dev = { nom: "Gabriel Jagueneau", formation: "Agronome & Dev", statut: "Disponible" };</pre>`;
+            resLine.innerHTML = `<pre class="term-code">const dev = { name: "Gabriel Jagueneau", education: "Agronomy & Dev", status: "Available" };</pre>`;
           } else if (target.includes('skills') || target.includes('.py')) {
             resLine.innerHTML = `<pre class="term-code">skills = {"languages": ["JS", "Python", "SQL"], "frameworks": ["React", "FastAPI"]}</pre>`;
           } else if (target.includes('cv') || target.includes('resume')) {
-            resLine.innerHTML = `<p class="term-success">Gabriel Jagueneau - Curriculum Vitae : Double compétence Agronomie + Informatique.</p>`;
+            resLine.innerHTML = `<p class="term-success">Gabriel Jagueneau - Resume: Dual background in Agronomy + Computer Science.</p>`;
           } else {
             resLine.innerHTML = `<p class="term-muted">cat: ${escapeHtml(target)}: No such file or directory</p>`;
           }
@@ -484,8 +548,8 @@ const appDefinitions = {
 
   // ── 2. Finder (Native macOS Glass Design) ──
   "Finder": {
-    title: "Projects — Finder",
-    widthPct: 62, heightPct: 64,
+    title: "Gabriel — Portfolio — Finder",
+    widthPct: 48, heightPct: 46,
     render: (win) => `
       <div class="app-finder">
         <aside class="finder-sidebar">
@@ -543,8 +607,8 @@ const appDefinitions = {
       const folderData = {
         projects: [
           { name: "Plintzy", icon: SVG_ICONS.folderProjects, type: "app", open: "Safari", badge: "Startup" },
-          { name: "TIPE-Agronomie", icon: SVG_ICONS.folderProjects, type: "app", open: "Code", badge: "Research" },
-          { name: "developpeur.js", icon: SVG_ICONS.fileCode, type: "file", open: "Code", targetFile: "developpeur.js" },
+          { name: "Agronomy-Research", icon: SVG_ICONS.folderProjects, type: "app", open: "Code", badge: "Research" },
+          { name: "developer.js", icon: SVG_ICONS.fileCode, type: "file", open: "Code", targetFile: "developer.js" },
           { name: "skills.py", icon: SVG_ICONS.fileCode, type: "file", open: "Code", targetFile: "skills.py" }
         ],
         applications: [
@@ -556,19 +620,19 @@ const appDefinitions = {
           { name: "Settings.app", icon: SVG_ICONS.gear, open: "Settings" }
         ],
         documents: [
-          { name: "CV_Gabriel_Jagueneau.pdf", icon: SVG_ICONS.filePdf, open: "Safari" },
+          { name: "Resume_Gabriel_Jagueneau.pdf", icon: SVG_ICONS.filePdf, open: "Safari" },
           { name: "Resume_English.pdf", icon: SVG_ICONS.filePdf, open: "Safari" },
           { name: "contact.json", icon: SVG_ICONS.fileCode, open: "Code", targetFile: "contact.json" },
-          { name: "agronomie_model.ts", icon: SVG_ICONS.fileCode, open: "Code", targetFile: "agronomie_model.ts" }
+          { name: "agronomy_model.ts", icon: SVG_ICONS.fileCode, open: "Code", targetFile: "agronomy_model.ts" }
         ],
         downloads: [
           { name: "plintzy-v1.0.apk", icon: SVG_ICONS.fileCode, open: "Safari" },
-          { name: "agronomie_paper.pdf", icon: SVG_ICONS.filePdf, open: "Safari" },
+          { name: "agronomy_paper.pdf", icon: SVG_ICONS.filePdf, open: "Safari" },
           { name: "gjlogo.png", icon: SVG_ICONS.fileHtml, open: "Safari" }
         ],
         icloud: [
           { name: "Portfolio_Archive", icon: SVG_ICONS.folderProjects, open: "Code" },
-          { name: "Notes_Agronomie.txt", icon: SVG_ICONS.fileCode, open: "Code" }
+          { name: "Notes_Agronomy.txt", icon: SVG_ICONS.fileCode, open: "Code" }
         ]
       };
 
@@ -628,8 +692,8 @@ const appDefinitions = {
 
   // ── 3. Safari (Apple Web Engine UI) ──
   "Safari": {
-    title: "Gabriel Jagueneau — Portfolio",
-    widthPct: 70, heightPct: 68,
+    title: "Safari — Gabriel Jagueneau Portfolio",
+    widthPct: 54, heightPct: 50,
     render: (win) => `
       <div class="app-safari">
         <header class="safari-header">
@@ -680,21 +744,45 @@ const appDefinitions = {
 
         setTimeout(() => {
           viewport.style.opacity = '1';
+
+          if (!settingsState.wifi) {
+            if (tabTitle) tabTitle.textContent = "No Internet Connection";
+            viewport.innerHTML = `
+              <div class="safari-offline-wrap">
+                <div class="safari-offline-icon">${SVG_ICONS.wifiOff}</div>
+                <h2 class="safari-offline-title">You Are Not Connected to the Internet</h2>
+                <p class="safari-offline-desc">Safari cannot open "${displayUrl}" because your Mac's Wi-Fi is turned off.</p>
+                <div class="safari-offline-actions">
+                  <button class="safari-link-btn" id="safari-enable-wifi-btn">Turn On Wi-Fi</button>
+                  <button class="safari-link-btn secondary" id="safari-retry-btn">Try Again</button>
+                </div>
+              </div>`;
+
+            win.el.querySelector('#safari-enable-wifi-btn')?.addEventListener('click', () => {
+              updateWifiSystemState(true);
+              loadUrl(url);
+            });
+            win.el.querySelector('#safari-retry-btn')?.addEventListener('click', () => {
+              loadUrl(url);
+            });
+            return;
+          }
+
           if (url.includes('plintzy')) {
-            if (tabTitle) tabTitle.textContent = 'Plintzy — Agronomie Connectée & IA';
+            if (tabTitle) tabTitle.textContent = 'Plintzy — Connected Agronomy & AI';
             viewport.innerHTML = `
               <div class="safari-page-wrap">
-                <div class="safari-brand-badge" style="background:rgba(34, 197, 94, 0.2); border-color:#22c55e; color:#4ade80;"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> STARTUP AGRONOMIQUE</div>
+                <div class="safari-brand-badge" style="background:rgba(34, 197, 94, 0.2); border-color:#22c55e; color:#4ade80;"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> AGRONOMY STARTUP</div>
                 <h1 class="safari-hero-title" style="background: linear-gradient(90deg, #34c759, #00aeff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Plintzy</h1>
-                <p class="safari-hero-desc">L'application mobile & web qui démocratise l'agronomie de précision, le diagnostic végétal par vision par ordinateur et le suivi des parcelles agricoles.</p>
+                <p class="safari-hero-desc">The mobile & web application democratizing precision agronomy, computer-vision plant diagnosis, and agricultural field monitoring.</p>
                 <div class="safari-feature-grid">
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.aiChip}</span> Diagnostic Vision IA</strong><small>Détection instantanée des carences minérales et bioagresseurs foliaires.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.satellite}</span> Télédétection & SIG</strong><small>Cartographie NDVI, humidité du sol et prévisions micro-climatiques.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.smartphone}</span> Mobile & Web App</strong><small>Architecture réactive (Next.js, TypeScript, Supabase, Tailwind).</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.aiChip}</span> AI Vision Diagnostics</strong><small>Instant detection of mineral deficiencies and foliar pests.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.satellite}</span> Remote Sensing & GIS</strong><small>NDVI mapping, soil moisture monitoring, and microclimate forecasting.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.smartphone}</span> Mobile & Web App</strong><small>Reactive architecture (Next.js, TypeScript, Supabase, Tailwind).</small></div>
                 </div>
                 <div class="safari-action-links">
-                  <button class="safari-link-btn" onclick="window.open('https://plintzy.com', '_blank')">Visiter Plintzy.com <span style="display:inline-flex; margin-left:3px;">${SVG_ICONS.externalLink}</span></button>
-                  <button class="safari-link-btn secondary" id="safari-view-code-plintzy">Voir le Code Source</button>
+                  <button class="safari-link-btn" onclick="window.open('https://plintzy.com', '_blank')">Visit Plintzy.com <span style="display:inline-flex; margin-left:3px;">${SVG_ICONS.externalLink}</span></button>
+                  <button class="safari-link-btn secondary" id="safari-view-code-plintzy">View Source Code</button>
                 </div>
               </div>`;
             win.el.querySelector('#safari-view-code-plintzy')?.addEventListener('click', () => spawnOrFocusWindow('Code'));
@@ -704,45 +792,45 @@ const appDefinitions = {
               <div class="safari-page-wrap">
                 <div class="safari-brand-badge" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.25); color:#fff;"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.github}</span> GITHUB PROFILE</div>
                 <h1 class="safari-hero-title">@Gabriel-Jagueneau</h1>
-                <p class="safari-hero-desc">Dépôts open-source, simulations biologiques en Python, interfaces Three.js WebGL et bots interactifs.</p>
+                <p class="safari-hero-desc">Open-source repositories, biological simulations in Python, Three.js WebGL interfaces, and interactive bots.</p>
                 <div class="safari-feature-grid">
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.box}</span> Portfolio-2026</strong><small>Three.js, 3D WebGL Tree, Moteur Physique & macOS UI.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> plintzy-app</strong><small>React Native, TypeScript, API Node.js & Computer Vision.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.flask}</span> agronomy-tipe</strong><small>Modélisation de croissance et équations différentielles.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.box}</span> Portfolio-2026</strong><small>Three.js, 3D WebGL Tree, Physics Engine & macOS UI.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> plintzy-app</strong><small>React Native, TypeScript, Node.js API & Computer Vision.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.flask}</span> agronomy-tipe</strong><small>Growth modeling and differential equations.</small></div>
                 </div>
                 <div class="safari-action-links">
-                  <button class="safari-link-btn" onclick="window.open('https://github.com/Gabriel-Jagueneau', '_blank')">Ouvrir le Profil GitHub <span style="display:inline-flex; margin-left:3px;">${SVG_ICONS.externalLink}</span></button>
+                  <button class="safari-link-btn" onclick="window.open('https://github.com/Gabriel-Jagueneau', '_blank')">Open GitHub Profile <span style="display:inline-flex; margin-left:3px;">${SVG_ICONS.externalLink}</span></button>
                 </div>
               </div>`;
           } else if (url.includes('linkedin')) {
             if (tabTitle) tabTitle.textContent = 'Gabriel Jagueneau | LinkedIn';
             viewport.innerHTML = `
               <div class="safari-page-wrap">
-                <div class="safari-brand-badge" style="background:rgba(0, 119, 181, 0.2); border-color:#0077b5; color:#38bdf8;"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.briefcase}</span> PROFIL PROFESSIONNEL</div>
+                <div class="safari-brand-badge" style="background:rgba(0, 119, 181, 0.2); border-color:#0077b5; color:#38bdf8;"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.briefcase}</span> PROFESSIONAL PROFILE</div>
                 <h1 class="safari-hero-title">Gabriel Jagueneau</h1>
-                <p class="safari-hero-desc">Élève-Ingénieur Agronome (Bordeaux Sciences Agro) • Lead Developer & Fondateur Plintzy • Passionné par la DeepTech et l'AgTech.</p>
+                <p class="safari-hero-desc">Agronomy Engineering Student (Bordeaux Sciences Agro) • Lead Developer & Founder at Plintzy • Passionate about DeepTech & AgTech.</p>
                 <div class="safari-feature-grid">
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.graduationCap}</span> Formation d'Excellence</strong><small>CPGE BCPST puis École d'Ingénieurs Agronomes de Bordeaux.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.rocket}</span> Entrepreneuriat</strong><small>Lauréat Pépite & Développement d'applications à fort impact.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.graduationCap}</span> Academic Background</strong><small>CPGE BCPST followed by Bordeaux National Agronomy Engineering School.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.rocket}</span> Entrepreneurship</strong><small>National Student-Entrepreneur Award & High-impact application development.</small></div>
                 </div>
                 <div class="safari-action-links">
-                  <button class="safari-link-btn" onclick="window.open('https://linkedin.com/in/gabriel-jagueneau', '_blank')">Se connecter sur LinkedIn <span style="display:inline-flex; margin-left:3px;">${SVG_ICONS.externalLink}</span></button>
+                  <button class="safari-link-btn" onclick="window.open('https://linkedin.com/in/gabriel-jagueneau', '_blank')">Connect on LinkedIn <span style="display:inline-flex; margin-left:3px;">${SVG_ICONS.externalLink}</span></button>
                 </div>
               </div>`;
           } else {
             if (tabTitle) tabTitle.textContent = 'Gabriel Jagueneau — Portfolio';
             viewport.innerHTML = `
               <div class="safari-page-wrap">
-                <div class="safari-brand-badge"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.sparkle}</span> PORTFOLIO OFFICIEL 2026</div>
+                <div class="safari-brand-badge"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.sparkle}</span> OFFICIAL 2026 PORTFOLIO</div>
                 <h1 class="safari-hero-title">Gabriel Jagueneau</h1>
-                <p class="safari-hero-desc">Ingénieur Agronome & Développeur Full-Stack. Explorez mon espace interactif, mes projets AgTech et mes stacks techniques.</p>
+                <p class="safari-hero-desc">Agronomy Engineer & Full-Stack Developer. Explore my interactive workspace, AgTech projects, and technical stacks.</p>
                 <div class="safari-feature-grid">
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> Agronomie & Modélisation</strong><small>Capteurs IoT, traitement d'images foliaires & analyse de données.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.codeTag}</span> Ingénierie Full-Stack</strong><small>Applications réactives (React, Python, Node.js, WebGL 3D, Supabase).</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> Agronomy & Modeling</strong><small>IoT sensors, foliar image processing & data analysis.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.codeTag}</span> Full-Stack Engineering</strong><small>Reactive applications (React, Python, Node.js, 3D WebGL, Supabase).</small></div>
                 </div>
                 <div class="safari-action-links">
-                  <button class="safari-link-btn" id="safari-open-term">Lancer le Terminal</button>
-                  <button class="safari-link-btn secondary" id="safari-open-code">Éditeur VS Code</button>
+                  <button class="safari-link-btn" id="safari-open-term">Launch Terminal</button>
+                  <button class="safari-link-btn secondary" id="safari-open-code">VS Code Editor</button>
                 </div>
               </div>`;
 
@@ -781,8 +869,8 @@ const appDefinitions = {
 
   // ── 4. VS Code (Modern One Dark Pro IDE) ──
   "Code": {
-    title: "developpeur.js — Visual Studio Code",
-    widthPct: 74, heightPct: 70,
+    title: "developer.js — Visual Studio Code",
+    widthPct: 60, heightPct: 54,
     render: (win) => `
       <div class="app-code">
         <aside class="code-activity-bar">
@@ -799,9 +887,9 @@ const appDefinitions = {
             <span>EXPLORER : PORTFOLIO</span>
           </div>
           <div class="code-file-list">
-            <div class="code-file ${activeCodeFile === 'developpeur.js' ? 'active' : ''}" data-file="developpeur.js">
+            <div class="code-file ${activeCodeFile === 'developer.js' ? 'active' : ''}" data-file="developer.js">
               <span class="f-icon js">JS</span>
-              <span class="f-name">developpeur.js</span>
+              <span class="f-name">developer.js</span>
             </div>
             <div class="code-file ${activeCodeFile === 'skills.py' ? 'active' : ''}" data-file="skills.py">
               <span class="f-icon py">PY</span>
@@ -811,9 +899,9 @@ const appDefinitions = {
               <span class="f-icon json">{}</span>
               <span class="f-name">contact.json</span>
             </div>
-            <div class="code-file ${activeCodeFile === 'agronomie_model.ts' ? 'active' : ''}" data-file="agronomie_model.ts">
+            <div class="code-file ${activeCodeFile === 'agronomy_model.ts' ? 'active' : ''}" data-file="agronomy_model.ts">
               <span class="f-icon ts">TS</span>
-              <span class="f-name">agronomie_model.ts</span>
+              <span class="f-name">agronomy_model.ts</span>
             </div>
           </div>
         </aside>
@@ -845,7 +933,7 @@ const appDefinitions = {
             </div>
             <div class="code-console-body" id="code-console-${win.id}">
               <span class="console-prompt">gabriel@macbook:~/portfolio $</span>
-              <span id="code-output-${win.id}" class="console-text">Prêt. Cliquez sur 'Run Code' pour exécuter le script.</span>
+              <span id="code-output-${win.id}" class="console-text">Ready. Click 'Run Code' to execute the script.</span>
             </div>
           </div>
           <footer class="code-status-bar">
@@ -899,7 +987,7 @@ const appDefinitions = {
           area.value = codeFiles[file].code;
           updateGutter(area.value);
         }
-        if (out) out.innerHTML = `Fichier chargé : <strong style="color:#61afef;">${file}</strong>. Prêt à exécuter.`;
+        if (out) out.innerHTML = `File loaded: <strong style="color:#61afef;">${file}</strong>. Ready to run.`;
       }
 
       area?.addEventListener('input', () => {
@@ -919,16 +1007,16 @@ const appDefinitions = {
 
       runBtn?.addEventListener('click', () => {
         if (!out) return;
-        out.innerHTML = `<span style="color:#58a6ff;">[node execution] Lancement de ${activeCodeFile}...</span>`;
+        out.innerHTML = `<span style="color:#58a6ff;">[node execution] Running ${activeCodeFile}...</span>`;
         setTimeout(() => {
-          if (activeCodeFile === "developpeur.js") {
-            out.innerHTML = `<span style="color:#34c759;">[Sortie] Lancement : Innovation végétale, tech & design !</span><br/><span style="color:#98c379;">Done in 0.08s.</span>`;
+          if (activeCodeFile === "developer.js") {
+            out.innerHTML = `<span style="color:#34c759;">[Output] Launch: Plant innovation, tech & modern design!</span><br/><span style="color:#98c379;">Done in 0.08s.</span>`;
           } else if (activeCodeFile === "skills.py") {
-            out.innerHTML = `<span style="color:#34c759;">[FRONTEND] : React, Next.js, TypeScript, Three.js<br/>[BACKEND] : Node.js, Python, PostgreSQL, FastAPI<br/>[AGRONOMIE] : Modélisation biologique, SIG/QGIS</span>`;
-          } else if (activeCodeFile === "agronomie_model.ts") {
-            out.innerHTML = `<span style="color:#34c759;">[Health Index] Optimal Canopy Health (Score: 85.6/100)</span><br/><span style="color:#61afef;">✓ Capteurs IoT synchronisés.</span>`;
+            out.innerHTML = `<span style="color:#34c759;">[FRONTEND]: React, Next.js, TypeScript, Three.js<br/>[BACKEND]: Node.js, Python, PostgreSQL, FastAPI<br/>[AGRONOMY]: Biological crop modeling, GIS/QGIS</span>`;
+          } else if (activeCodeFile === "agronomy_model.ts") {
+            out.innerHTML = `<span style="color:#34c759;">[Health Index] Optimal Canopy Health (Score: 85.6/100)</span><br/><span style="color:#61afef;">✓ IoT sensors synchronized.</span>`;
           } else {
-            out.innerHTML = `<span style="color:#58a6ff;">[JSON Validated] ✓ Profil Gabriel Jagueneau prêt pour recrutement & partenariats.</span>`;
+            out.innerHTML = `<span style="color:#58a6ff;">[JSON Validated] ✓ Gabriel Jagueneau profile ready for recruitment & partnerships.</span>`;
           }
         }, 220);
       });
@@ -939,8 +1027,8 @@ const appDefinitions = {
 
   // ── 5. Apple Music (Authentic macOS Player) ──
   "Music": {
-    title: "Music",
-    widthPct: 60, heightPct: 65,
+    title: "Apple Music — Now Playing",
+    widthPct: 46, heightPct: 46,
     render: (win) => {
       const track = musicTracks[currentTrackIdx];
       const mins = Math.floor(musicCurrentSec / 60);
@@ -955,17 +1043,17 @@ const appDefinitions = {
           <aside class="music-sidebar">
             <div class="music-side-header">Apple Music</div>
             <div class="music-side-item active">
-              <span class="side-icon">${SVG_ICONS.listenPlay}</span> Écouter
+              <span class="side-icon">${SVG_ICONS.listenPlay}</span> Listen Now
             </div>
             <div class="music-side-item">
               <span class="side-icon">${SVG_ICONS.radio}</span> Radio
             </div>
             <div class="music-side-item">
-              <span class="side-icon">${SVG_ICONS.compass}</span> Explorer
+              <span class="side-icon">${SVG_ICONS.compass}</span> Browse
             </div>
-            <div class="music-side-header" style="margin-top:6px;">Bibliothèque</div>
+            <div class="music-side-header" style="margin-top:6px;">Library</div>
             <div class="music-side-item">
-              <span class="side-icon">${SVG_ICONS.clock}</span> Récents
+              <span class="side-icon">${SVG_ICONS.clock}</span> Recently Added
             </div>
             <div class="music-side-item">
               <span class="side-icon">${SVG_ICONS.playlist}</span> Playlists
@@ -1015,7 +1103,7 @@ const appDefinitions = {
 
             <!-- Up Next Queue -->
             <div class="music-queue-section">
-              <div class="queue-title">À suivre</div>
+              <div class="queue-title">Up Next</div>
               <div class="music-playlist">
                 ${musicTracks.map((t, idx) => `
                   <div class="playlist-item ${idx === currentTrackIdx ? 'active' : ''}" data-track-idx="${idx}">
@@ -1141,11 +1229,10 @@ const appDefinitions = {
     }
   },
 
-
   // ── 6. Calculator (Apple Native Logic) ──
   "Calculator": {
     title: "Calculator",
-    widthPct: 36, heightPct: 56,
+    widthPct: 22, heightPct: 36,
     render: (win) => `
       <div class="app-calculator" id="calc-app-${win.id}">
         <div class="calc-display" id="calc-disp-${win.id}">
@@ -1183,31 +1270,6 @@ const appDefinitions = {
       const exprEl = win.el.querySelector(`#calc-expr-${win.id}`);
       const clearBtn = win.el.querySelector(`#calc-clear-btn-${win.id}`);
       const grid = win.el.querySelector('.calc-grid');
-
-      function updateCalcUI() {
-        if (valEl) {
-          valEl.textContent = calcState.displayValue.replace('.', ',');
-          const len = calcState.displayValue.length;
-          if (len > 12) valEl.style.fontSize = '14px';
-          else if (len > 9) valEl.style.fontSize = '20px';
-          else valEl.style.fontSize = '';
-        }
-        if (exprEl) {
-          const opMap = { '+': '+', '-': '−', '*': '×', '/': '÷' };
-          if (calcState.operator && calcState.firstOperand !== null) {
-            exprEl.textContent = `${formatCalcNumber(calcState.firstOperand).replace('.', ',')} ${opMap[calcState.operator] || calcState.operator}`;
-          } else {
-            exprEl.textContent = '';
-          }
-        }
-        if (clearBtn) {
-          clearBtn.textContent = (calcState.displayValue === '0' || calcState.clearAll) ? 'AC' : 'C';
-        }
-        grid?.querySelectorAll('.calc-btn.op').forEach(btn => {
-          const opVal = btn.getAttribute('data-val');
-          btn.classList.toggle('active', Boolean(calcState.operator && calcState.waitingForSecondOperand && opVal === calcState.operator));
-        });
-      }
 
       function handleCalcInput(action, val) {
         if (action === 'num') {
@@ -1348,7 +1410,7 @@ const appDefinitions = {
   // ── 7. System Settings ──
   "Settings": {
     title: "System Settings",
-    widthPct: 60, heightPct: 64,
+    widthPct: 48, heightPct: 48,
     render: (win) => `
       <div class="app-settings-macos">
         <aside class="settings-sidebar">
@@ -1368,7 +1430,7 @@ const appDefinitions = {
             <div class="settings-nav-item active" data-cat="wifi">
               <span class="nav-icon blue">${SVG_ICONS.wifi}</span>
               <span class="nav-title">Wi-Fi</span>
-              <span class="nav-status-badge">${settingsState.wifi ? 'Gabriel-5G' : 'Off'}</span>
+              <span class="nav-status-badge">${settingsState.wifi ? settingsState.wifiNetwork : 'Off'}</span>
             </div>
             <div class="settings-nav-item" data-cat="bluetooth">
               <span class="nav-icon indigo">${SVG_ICONS.bluetooth}</span>
@@ -1424,45 +1486,52 @@ const appDefinitions = {
                 <div class="card-row header-row">
                   <span class="card-row-title">Known Networks</span>
                 </div>
-                <div class="card-row ${settingsState.wifi ? 'highlight' : 'disabled'}">
+                <div class="card-row ${settingsState.wifi && settingsState.wifiNetwork === 'Gabriel-5G' ? 'highlight' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="Gabriel-5G" style="cursor:pointer;">
                   <div class="row-left">
                     <span class="network-icon">${SVG_ICONS.wifi}</span>
                     <div>
-                      <div class="network-name">Gabriel-5G (Connected)</div>
+                      <div class="network-name">${settingsState.wifi && settingsState.wifiNetwork === 'Gabriel-5G' ? 'Gabriel-5G (Connected)' : 'Gabriel-5G'}</div>
                       <div class="network-sub">Security: WPA3 Personal • Channel 149</div>
                     </div>
                   </div>
-                  <span class="check-icon">${SVG_ICONS.check}</span>
+                  <span class="check-icon" style="visibility:${settingsState.wifi && settingsState.wifiNetwork === 'Gabriel-5G' ? 'visible' : 'hidden'};">${SVG_ICONS.check}</span>
                 </div>
-                <div class="card-row">
+                <div class="card-row ${settingsState.wifi && settingsState.wifiNetwork === 'Campus-Student-Wi-Fi' ? 'highlight' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="Campus-Student-Wi-Fi" style="cursor:pointer;">
                   <div class="row-left">
                     <span class="network-icon">${SVG_ICONS.wifi}</span>
                     <div>
-                      <div class="network-name">Campus-Student-Wi-Fi</div>
+                      <div class="network-name">${settingsState.wifi && settingsState.wifiNetwork === 'Campus-Student-Wi-Fi' ? 'Campus-Student-Wi-Fi (Connected)' : 'Campus-Student-Wi-Fi'}</div>
                       <div class="network-sub">Auto-Join Enabled</div>
                     </div>
                   </div>
                   <span class="lock-icon">${SVG_ICONS.lock}</span>
+                  <span class="check-icon" style="visibility:${settingsState.wifi && settingsState.wifiNetwork === 'Campus-Student-Wi-Fi' ? 'visible' : 'hidden'};">${SVG_ICONS.check}</span>
                 </div>
-                <div class="card-row">
+                <div class="card-row ${settingsState.wifi && settingsState.wifiNetwork === 'Plintzy-Office-Network' ? 'highlight' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="Plintzy-Office-Network" style="cursor:pointer;">
                   <div class="row-left">
                     <span class="network-icon">${SVG_ICONS.wifi}</span>
                     <div>
-                      <div class="network-name">Plintzy-Office-Network</div>
-                      <div class="network-sub">Fast 1 Gbps Fiber</div>
+                      <div class="network-name">${settingsState.wifi && settingsState.wifiNetwork === 'Plintzy-Office-Network' ? 'Plintzy-Office-Network (Connected)' : 'Plintzy-Office-Network'}</div>
+                      <div class="network-sub">Gigabit Fiber 1 Gbps</div>
                     </div>
                   </div>
                   <span class="lock-icon">${SVG_ICONS.lock}</span>
+                  <span class="check-icon" style="visibility:${settingsState.wifi && settingsState.wifiNetwork === 'Plintzy-Office-Network' ? 'visible' : 'hidden'};">${SVG_ICONS.check}</span>
                 </div>
               </div>
             </div>`;
 
           const tog = pane.querySelector(`#wifi-toggle-${win.id}`);
           tog?.addEventListener('change', () => {
-            settingsState.wifi = tog.checked;
-            const badge = win.el.querySelector('.settings-nav-item[data-cat="wifi"] .nav-status-badge');
-            if (badge) badge.textContent = settingsState.wifi ? 'Gabriel-5G' : 'Off';
-            renderCategory('wifi');
+            updateWifiSystemState(tog.checked);
+          });
+
+          pane.querySelectorAll('.card-row[data-network]').forEach(row => {
+            row.addEventListener('click', () => {
+              if (!settingsState.wifi) return;
+              const net = row.getAttribute('data-network');
+              updateWifiSystemState(true, net);
+            });
           });
         } else if (cat === 'bluetooth') {
           pane.innerHTML = `
@@ -1652,7 +1721,7 @@ const appDefinitions = {
               </div>
               <div class="settings-card-group" style="margin-top:10px;">
                 <div class="card-row"><span class="card-row-title">Owner</span><strong style="color:#fff;">Gabriel Jagueneau</strong></div>
-                <div class="card-row"><span class="card-row-title">Role</span><span style="color:#58a6ff;">Ingénieur Agronome & Dev</span></div>
+                <div class="card-row"><span class="card-row-title">Role</span><span style="color:#58a6ff;">Agronomy Engineer & Full-Stack Dev</span></div>
                 <div class="card-row"><span class="card-row-title">Storage</span><span>512 GB SSD (340 GB Free)</span></div>
                 <div class="card-row"><span class="card-row-title">AppleCare+</span><span style="color:#34c759;">Active Coverage</span></div>
               </div>
@@ -1938,18 +2007,18 @@ function initMenuInteractions() {
 
     const html = `
       <div class="menu-dropdown-list">
-        <div class="menu-drop-item" data-action="about">À propos de ce Mac</div>
+        <div class="menu-drop-item" data-action="about">About This Mac</div>
         <div class="menu-drop-sep"></div>
-        <div class="menu-drop-item" data-action="settings">Réglages Système...</div>
+        <div class="menu-drop-item" data-action="settings">System Settings...</div>
         <div class="menu-drop-item" data-action="appstore">App Store...</div>
         <div class="menu-drop-sep"></div>
-        <div class="menu-drop-item" data-action="forcequit">Forcer à quitter... <span>⌥⌘⎋</span></div>
+        <div class="menu-drop-item" data-action="forcequit">Force Quit... <span>⌥⌘⎋</span></div>
         <div class="menu-drop-sep"></div>
-        <div class="menu-drop-item" data-action="sleep">Mettre en veille</div>
-        <div class="menu-drop-item" data-action="restart">Redémarrer...</div>
-        <div class="menu-drop-item" data-action="shutdown">Éteindre...</div>
+        <div class="menu-drop-item" data-action="sleep">Sleep</div>
+        <div class="menu-drop-item" data-action="restart">Restart...</div>
+        <div class="menu-drop-item" data-action="shutdown">Shut Down...</div>
         <div class="menu-drop-sep"></div>
-        <div class="menu-drop-item" data-action="lock">Verrouiller l'écran <span>^⌘Q</span></div>
+        <div class="menu-drop-item" data-action="lock">Lock Screen <span>^⌘Q</span></div>
       </div>`;
 
     openPopover(appleBtn, html, 'apple-menu-popover');
@@ -1963,7 +2032,7 @@ function initMenuInteractions() {
         else if (action === 'lock') lockScreen();
         else if (action === 'sleep') sleepScreen();
         else if (action === 'restart' || action === 'shutdown') {
-          alert("Action simulée : Redémarrage de macOS");
+          alert("Simulated action: macOS Restart");
         }
       });
     });
@@ -1975,10 +2044,10 @@ function initMenuInteractions() {
     if (activePopover) { closeAllPopovers(); return; }
     const html = `
       <div class="battery-popover-content">
-        <div class="pop-header"><strong>Batterie</strong> <span>100%</span></div>
-        <div class="pop-sub">Source d'alimentation : Adaptateur secteur</div>
+        <div class="pop-header"><strong>Battery</strong> <span>100%</span></div>
+        <div class="pop-sub">Power Source: Power Adapter</div>
         <div class="pop-sep"></div>
-        <div class="pop-item" id="pop-open-battery">Réglages Batterie...</div>
+        <div class="pop-item" id="pop-open-battery">Battery Settings...</div>
       </div>`;
     openPopover(batteryBtn, html);
     document.getElementById('pop-open-battery')?.addEventListener('click', () => {
@@ -1998,15 +2067,43 @@ function initMenuInteractions() {
           <label class="macos-switch small"><input type="checkbox" id="pop-wifi-tog" ${settingsState.wifi ? 'checked' : ''}/><span class="slider"></span></label>
         </div>
         <div class="pop-sep"></div>
-        <div class="pop-section-title">Réseau actuel</div>
-        <div class="pop-item active">${SVG_ICONS.wifi} Gabriel-5G <span class="check">${SVG_ICONS.check}</span></div>
-        <div class="pop-section-title">Autres réseaux</div>
-        <div class="pop-item">${SVG_ICONS.wifi} Campus-Student-Wi-Fi <span class="lock">${SVG_ICONS.lock}</span></div>
-        <div class="pop-item">${SVG_ICONS.wifi} Plintzy-Office-Network <span class="lock">${SVG_ICONS.lock}</span></div>
+        <div class="pop-section-title">Current Network</div>
+        <div class="pop-item ${settingsState.wifiNetwork === 'Gabriel-5G' ? 'active' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="Gabriel-5G">
+          ${SVG_ICONS.wifi} <span class="pop-net-name">Gabriel-5G</span>
+          <span class="check" style="display:${settingsState.wifiNetwork === 'Gabriel-5G' && settingsState.wifi ? 'inline-flex' : 'none'};">${SVG_ICONS.check}</span>
+        </div>
+        <div class="pop-section-title">Other Networks</div>
+        <div class="pop-item ${settingsState.wifiNetwork === 'Campus-Student-Wi-Fi' ? 'active' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="Campus-Student-Wi-Fi">
+          ${SVG_ICONS.wifi} <span class="pop-net-name">Campus-Student-Wi-Fi</span>
+          <span class="lock">${SVG_ICONS.lock}</span>
+          <span class="check" style="display:${settingsState.wifiNetwork === 'Campus-Student-Wi-Fi' && settingsState.wifi ? 'inline-flex' : 'none'};">${SVG_ICONS.check}</span>
+        </div>
+        <div class="pop-item ${settingsState.wifiNetwork === 'Plintzy-Office-Network' ? 'active' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="Plintzy-Office-Network">
+          ${SVG_ICONS.wifi} <span class="pop-net-name">Plintzy-Office-Network</span>
+          <span class="lock">${SVG_ICONS.lock}</span>
+          <span class="check" style="display:${settingsState.wifiNetwork === 'Plintzy-Office-Network' && settingsState.wifi ? 'inline-flex' : 'none'};">${SVG_ICONS.check}</span>
+        </div>
+        <div class="pop-sep"></div>
+        <div class="pop-item" id="pop-open-wifi-settings" style="font-size:7.5px; opacity:0.8;">Wi-Fi Settings...</div>
       </div>`;
+
     openPopover(wifiBtn, html);
+
     document.getElementById('pop-wifi-tog')?.addEventListener('change', (ev) => {
-      settingsState.wifi = ev.target.checked;
+      updateWifiSystemState(ev.target.checked);
+    });
+
+    document.querySelectorAll('.wifi-popover-content .pop-item[data-network]').forEach(item => {
+      item.addEventListener('click', () => {
+        if (!settingsState.wifi) return;
+        const netName = item.getAttribute('data-network');
+        updateWifiSystemState(true, netName);
+      });
+    });
+
+    document.getElementById('pop-open-wifi-settings')?.addEventListener('click', () => {
+      closeAllPopovers();
+      spawnOrFocusWindow('Settings');
     });
   });
 
@@ -2036,22 +2133,22 @@ function initMenuInteractions() {
           <div class="cc-column right-tiles">
             <div class="cc-tile ${settingsState.darkmode ? 'active' : ''}" id="cc-tog-dark">
               <span class="tile-icon">${SVG_ICONS.moon}</span>
-              <span>Mode Sombre</span>
+              <span>Dark Mode</span>
             </div>
             <div class="cc-tile" id="cc-open-calc">
               <span class="tile-icon">${SVG_ICONS.calculator}</span>
-              <span>Calculatrice</span>
+              <span>Calculator</span>
             </div>
           </div>
         </div>
 
         <div class="cc-slider-card">
-          <div class="slider-title">Affichage (${settingsState.brightness}%)</div>
+          <div class="slider-title">Display (${settingsState.brightness}%)</div>
           <input type="range" class="macos-slider big" id="cc-disp-slider" min="20" max="100" value="${settingsState.brightness}" />
         </div>
 
         <div class="cc-slider-card">
-          <div class="slider-title">Son (${settingsState.soundVolume}%)</div>
+          <div class="slider-title">Sound (${settingsState.soundVolume}%)</div>
           <input type="range" class="macos-slider big" id="cc-sound-slider" min="0" max="100" value="${settingsState.soundVolume}" />
         </div>
 
@@ -2069,8 +2166,7 @@ function initMenuInteractions() {
 
     const wifiTog = document.getElementById('cc-tog-wifi');
     wifiTog?.addEventListener('click', () => {
-      settingsState.wifi = !settingsState.wifi;
-      wifiTog.classList.toggle('active', settingsState.wifi);
+      updateWifiSystemState(!settingsState.wifi);
     });
 
     const btTog = document.getElementById('cc-tog-bt');
@@ -2124,36 +2220,36 @@ function initMenuInteractions() {
 
       if (menuType === 'file') {
         itemsHtml = `
-          <div class="menu-drop-item" data-action="newwin">Nouvelle fenêtre <span>⌘N</span></div>
-          <div class="menu-drop-item" data-action="newtab">Nouvel onglet <span>⌘T</span></div>
+          <div class="menu-drop-item" data-action="newwin">New Window <span>⌘N</span></div>
+          <div class="menu-drop-item" data-action="newtab">New Tab <span>⌘T</span></div>
           <div class="menu-drop-sep"></div>
-          <div class="menu-drop-item" data-action="closewin">Fermer la fenêtre <span>⌘W</span></div>`;
+          <div class="menu-drop-item" data-action="closewin">Close Window <span>⌘W</span></div>`;
       } else if (menuType === 'edit') {
         itemsHtml = `
-          <div class="menu-drop-item">Annuler <span>⌘Z</span></div>
-          <div class="menu-drop-item">Rétablir <span>⇧⌘Z</span></div>
+          <div class="menu-drop-item">Undo <span>⌘Z</span></div>
+          <div class="menu-drop-item">Redo <span>⇧⌘Z</span></div>
           <div class="menu-drop-sep"></div>
-          <div class="menu-drop-item">Couper <span>⌘X</span></div>
-          <div class="menu-drop-item">Copier <span>⌘C</span></div>
-          <div class="menu-drop-item">Coller <span>⌘V</span></div>
-          <div class="menu-drop-item">Tout sélectionner <span>⌘A</span></div>`;
+          <div class="menu-drop-item">Cut <span>⌘X</span></div>
+          <div class="menu-drop-item">Copy <span>⌘C</span></div>
+          <div class="menu-drop-item">Paste <span>⌘V</span></div>
+          <div class="menu-drop-item">Select All <span>⌘A</span></div>`;
       } else if (menuType === 'view') {
         itemsHtml = `
-          <div class="menu-drop-item">Par icônes <span>⌘1</span></div>
-          <div class="menu-drop-item">Par liste <span>⌘2</span></div>
+          <div class="menu-drop-item">as Icons <span>⌘1</span></div>
+          <div class="menu-drop-item">as List <span>⌘2</span></div>
           <div class="menu-drop-sep"></div>
-          <div class="menu-drop-item" data-action="fullscreen">Activer le plein écran <span>^⌘F</span></div>`;
+          <div class="menu-drop-item" data-action="fullscreen">Enter Full Screen <span>^⌘F</span></div>`;
       } else if (menuType === 'window') {
         itemsHtml = `
-          <div class="menu-drop-item" data-action="min">Réduire <span>⌘M</span></div>
-          <div class="menu-drop-item" data-action="zoom">Agrandir / Zoom</div>
+          <div class="menu-drop-item" data-action="min">Minimize <span>⌘M</span></div>
+          <div class="menu-drop-item" data-action="zoom">Zoom</div>
           <div class="menu-drop-sep"></div>
-          <div class="menu-drop-item">Tout ramener au premier plan</div>`;
+          <div class="menu-drop-item">Bring All to Front</div>`;
       } else {
         itemsHtml = `
-          <div class="menu-drop-item" data-action="help">Recherche Aide</div>
+          <div class="menu-drop-item" data-action="help">Search Help</div>
           <div class="menu-drop-sep"></div>
-          <div class="menu-drop-item" data-action="contact">Contacter Gabriel Jagueneau</div>`;
+          <div class="menu-drop-item" data-action="contact">Contact Gabriel Jagueneau</div>`;
       }
 
       openPopover(mItem, `<div class="menu-dropdown-list">${itemsHtml}</div>`);
@@ -2219,7 +2315,7 @@ function toggleSpotlight() {
           results.innerHTML = `
             <div class="spot-item active" data-calc="true" data-val="${res}">
               <span>= ${res}</span>
-              <small>Calculatrice</small>
+              <small>Calculator</small>
             </div>`;
           results.querySelector('.spot-item[data-calc]')?.addEventListener('click', () => {
             calcState.displayValue = String(res);
@@ -2242,7 +2338,7 @@ function toggleSpotlight() {
         </div>
       `).join('');
     } else {
-      results.innerHTML = `<div class="spot-item disabled"><span>Aucun résultat pour "${escapeHtml(q)}"</span></div>`;
+      results.innerHTML = `<div class="spot-item disabled"><span>No results found for "${escapeHtml(q)}"</span></div>`;
     }
 
     results.querySelectorAll('.spot-item[data-open]').forEach(item => {
@@ -2298,16 +2394,16 @@ function showAboutMacModal() {
       <div class="modal-close-btn" id="modal-close-about">✕</div>
       <div class="modal-apple-badge">${SVG_ICONS.apple}</div>
       <h3>MacBook Pro</h3>
-      <p class="modal-sub">14 pouces, 2024</p>
+      <p class="modal-sub">14-inch, 2024</p>
       <div class="modal-specs-list">
-        <div class="spec-row"><span>Puce :</span> <strong>Apple M3 Pro (12 cœurs)</strong></div>
-        <div class="spec-row"><span>Mémoire :</span> <strong>18 Go Mémoire unifiée</strong></div>
-        <div class="spec-row"><span>Graphismes :</span> <strong>GPU 18 cœurs intégré</strong></div>
-        <div class="spec-row"><span>Numéro de série :</span> <strong>GJ77X92026M3P</strong></div>
-        <div class="spec-row"><span>macOS :</span> <strong>Sonoma 14.5</strong></div>
+        <div class="spec-row"><span>Chip:</span> <strong>Apple M3 Pro (12-core)</strong></div>
+        <div class="spec-row"><span>Memory:</span> <strong>18 GB Unified Memory</strong></div>
+        <div class="spec-row"><span>Graphics:</span> <strong>Integrated 18-core GPU</strong></div>
+        <div class="spec-row"><span>Serial Number:</span> <strong>GJ77X92026M3P</strong></div>
+        <div class="spec-row"><span>macOS:</span> <strong>Sonoma 14.5</strong></div>
       </div>
       <div class="modal-actions">
-        <button class="mac-dialog-btn primary" id="modal-more-info">En savoir plus...</button>
+        <button class="mac-dialog-btn primary" id="modal-more-info">More Info...</button>
       </div>
     </div>`;
 
@@ -2328,9 +2424,9 @@ function lockScreen() {
 
   const now = new Date();
   const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-  const days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-  const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
-  const dateStr = `${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]}`;
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const dateStr = `${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`;
 
   const lock = document.createElement('div');
   lock.id = 'mac-lockscreen';
@@ -2342,10 +2438,10 @@ function lockScreen() {
       <div class="lock-avatar">GJ</div>
       <div class="lock-username">Gabriel JAGUENEAU</div>
       <div class="lock-input-wrap">
-        <input type="password" id="lock-pwd-input" placeholder="Touch ID ou Mot de passe" />
+        <input type="password" id="lock-pwd-input" placeholder="Touch ID or Enter Password" />
         <button class="lock-submit-btn" id="lock-submit-btn">→</button>
       </div>
-      <small style="color:rgba(255,255,255,0.45); margin-top:8px; font-size:8px;">Appuyez sur Entrée ou cliquez pour déverrouiller</small>
+      <small style="color:rgba(255,255,255,0.45); margin-top:8px; font-size:8px;">Press Return or click to unlock</small>
     </div>`;
 
   macContainer.appendChild(lock);
@@ -2372,7 +2468,7 @@ function sleepScreen() {
   const sleep = document.createElement('div');
   sleep.id = 'mac-sleep-overlay';
   sleep.className = 'mac-sleep-overlay';
-  sleep.innerHTML = `<span style="font-size:10px; color:rgba(255,255,255,0.3);">Cliquez pour réveiller le Mac</span>`;
+  sleep.innerHTML = `<span style="font-size:10px; color:rgba(255,255,255,0.3);">Click to wake Mac</span>`;
   macContainer.appendChild(sleep);
 
   sleep.addEventListener('click', () => {
@@ -2498,30 +2594,39 @@ function initDockMagnification() {
   if (!dock) return;
 
   const items = Array.from(dock.querySelectorAll('.dock-item'));
+  const icons = items.map(item => item.querySelector('.dock-icon'));
+  let rafId = null;
 
   dock.addEventListener('mousemove', (e) => {
     const mouseX = e.clientX;
-    const maxScale = 1.38;
-    const maxDist = 80;
+    const maxScale = 1.20;
+    const maxDist = 42;
 
-    items.forEach(item => {
-      const rect = item.getBoundingClientRect();
-      const itemCenterX = rect.left + rect.width / 2;
-      const dist = Math.abs(mouseX - itemCenterX);
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      items.forEach((item, idx) => {
+        const icon = icons[idx];
+        if (!icon) return;
+        const rect = item.getBoundingClientRect();
+        const itemCenterX = rect.left + rect.width / 2;
+        const dist = Math.abs(mouseX - itemCenterX);
 
-      if (dist < maxDist) {
-        const norm = dist / maxDist;
-        const scale = 1 + (maxScale - 1) * (0.5 + 0.5 * Math.cos(norm * Math.PI));
-        item.style.transform = `scale(${scale.toFixed(3)}) translateY(-${((scale - 1) * 16).toFixed(1)}px)`;
-      } else {
-        item.style.transform = 'scale(1) translateY(0)';
-      }
+        if (dist < maxDist) {
+          const norm = dist / maxDist;
+          const scale = 1 + (maxScale - 1) * (0.5 + 0.5 * Math.cos(norm * Math.PI));
+          const lift = (scale - 1) * 20;
+          icon.style.transform = `translateY(-${lift.toFixed(1)}px) scale(${scale.toFixed(3)})`;
+        } else {
+          icon.style.transform = 'translateY(0) scale(1)';
+        }
+      });
     });
   });
 
   dock.addEventListener('mouseleave', () => {
-    items.forEach(item => {
-      item.style.transform = '';
+    if (rafId) cancelAnimationFrame(rafId);
+    icons.forEach(icon => {
+      if (icon) icon.style.transform = '';
     });
   });
 }
