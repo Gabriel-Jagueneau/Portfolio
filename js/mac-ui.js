@@ -6,7 +6,7 @@
 // - Lock Screen & Sleep Screen overlays with authentic unlock & wake transitions.
 // - Fully interactive macOS Apps:
 //     1. Finder: Sidebar folders (Applications, Projects, Documents), double-click to open files.
-//     2. Safari: Real address bar, multiple interactive tabs (Portfolio, Plintzy, GitHub, LinkedIn).
+//     2. Safari: Real address bar, multiple interactive tabs (Portfolio, AgroTech AI, GitHub, LinkedIn).
 //     3. VS Code: Multi-tab file explorer, editable code, interactive "▶ Run" console execution.
 //     4. Music: Animated waveform equalizer, seekable progress scrubber, volume slider, playlist queue.
 //     5. System Settings: Live Dark/Light theme toggle, Accent colors, Wi-Fi/BT switches, M3 Pro specs.
@@ -20,26 +20,26 @@ import { setMacInteractiveMode } from './cards-physics.js';
 // SVG Vector Flat Icons (100% Crisp Vector, Zero Emojis)
 // ═══════════════════════════════════════════════════════════════════════════════
 const SVG_ICONS = {
-  apple: `<svg width="10" height="10" viewBox="0 0 170 170" fill="currentColor"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.69-3.08-7.7-7.97-12.04-14.67-6.04-9.35-10.8-19.8-14.28-31.35-3.48-11.55-5.22-22.37-5.22-32.46 0-14.24 3.79-25.96 11.37-35.15 7.58-9.19 16.92-13.88 28.02-14.07 4.97 0 10.45 1.37 16.44 4.11 5.99 2.74 9.54 4.16 10.66 4.27 1.45-.22 5.31-1.74 11.58-4.56 6.27-2.82 11.75-4.11 16.44-3.88 12.31.62 22.18 5.46 29.6 14.52-10.74 6.51-16.02 15.53-15.84 27.05.18 8.94 3.65 16.32 10.41 22.14 6.76 5.82 14.73 9.07 23.91 9.75-2.02 6.09-4.57 12.18-7.65 18.27zm-29.35-105.74c0-7.39 2.65-14.18 7.95-20.37 5.3-6.19 11.77-9.84 19.41-10.94.44 2.82.44 5.3.01 7.44-.66 6.94-3.44 13.43-8.34 19.46-4.9 6.03-11.23 9.77-18.99 11.21-.04-2.2-.04-4.46-.04-6.8z"/></svg>`,
-  search: `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10.5" cy="10.5" r="7"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>`,
-  controlCenter: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2zm0 8h16a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2zm0 8h16a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2z"/></svg>`,
-  wifi: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C7.31 4 3.07 5.9 0 8.98L12 21 24 8.98A16.88 16.88 0 0 0 12 4zm0 2.9c3.8 0 7.27 1.44 9.9 3.82L12 18.77 2.1 10.72A14.9 14.9 0 0 1 12 6.9z"/></svg>`,
+  apple: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.66-1.06 1.73-.93 2.76 1 .08 2.02-.51 2.64-1.26z"/></svg>`,
+  search: `<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10.5" cy="10.5" r="7"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>`,
+  controlCenter: `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2zm0 8h16a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2zm0 8h16a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2z"/></svg>`,
+  wifi: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C7.31 4 3.07 5.9 0 8.98l1.42 1.42C4.16 7.66 7.87 6 12 6s7.84 1.66 10.58 4.4L24 8.98C20.93 5.9 16.69 4 12 4zm0 4.5c-3.5 0-6.68 1.42-9.01 3.73l1.42 1.42C6.46 11.6 9.07 10.5 12 10.5s5.54 1.1 7.59 3.15l1.42-1.42C18.68 9.92 15.5 8.5 12 8.5zm0 4.5c-2.28 0-4.34.92-5.86 2.44l1.42 1.42c1.16-1.16 2.74-1.86 4.44-1.86s3.28.7 4.44 1.86l1.42-1.42C16.34 13.92 14.28 13 12 13zm0 4.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>`,
   wifiOff: `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>`,
-  bluetooth: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M14.24 12.01l4.7-4.7a1 1 0 000-1.42l-6-6A1 1 0 0011 0.6V9.58L6.41 5A1 1 0 005 6.41L10.59 12 5 17.59A1 1 0 106.41 19L11 14.41v8.99a1 1 0 001.94.71l6-6a1 1 0 000-1.42l-4.7-4.68zM13 3.41l3.29 3.3L13 10.01V3.41zm0 17.18v-6.6l3.29 3.3L13 20.59z"/></svg>`,
-  moon: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12.3 2a10 10 0 00-.19 20 10 10 0 008.7-5.1 1 1 0 00-1-1.44 8 8 0 11-8.95-12 1 1 0 001.44-1.46z"/></svg>`,
-  sun: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
-  displays: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M20 3H4a2 2 0 00-2 2v10a2 2 0 002 2h6v2H8a1 1 0 000 2h8a1 1 0 000-2h-2v-2h6a2 2 0 002-2V5a2 2 0 00-2-2zm0 12H4V5h16v10z"/></svg>`,
-  sound: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M14 3.23v17.54a1 1 0 01-1.66.75L6.85 16H3a1 1 0 01-1-1V9a1 1 0 011-1h3.85l5.49-5.52a1 1 0 011.66.75zm4.5 8.77a5 5 0 00-2-4 1 1 0 10-1.2 1.6 3 3 0 011.2 2.4 3 3 0 01-1.2 2.4 1 1 0 101.2 1.6 5 5 0 002-4z"/></svg>`,
-  speakerMute: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>`,
-  battery: `<svg width="12" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H3a2 2 0 00-2 2v8a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2zm-2 9H4a1 1 0 01-1-1v-4a1 1 0 011-1h11a1 1 0 011 1v4a1 1 0 01-1 1zm7-6a1 1 0 00-1 1v4a1 1 0 002 0v-4a1 1 0 00-1-1z"/></svg>`,
-  batteryCharging: `<svg width="12" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6H3a2 2 0 00-2 2v8a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2zm-6 10l1.5-3.5H9.5L13 7l-1.5 3.5h3L11 16zm10-7a1 1 0 00-1 1v4a1 1 0 002 0v-4a1 1 0 00-1-1z"/></svg>`,
-  gear: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54A.48.48 0 0014 2h-4a.48.48 0 00-.49.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 00-.59.22L2.63 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.08.63-.08.94s.02.64.07.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h4c.24 0 .44-.17.49-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6a3.6 3.6 0 110-7.2 3.6 3.6 0 010 7.2z"/></svg>`,
-  airdrop: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 00-9 9 9 9 0 003 6.71L7.41 17.3A7 7 0 1112 19a6.93 6.93 0 01-4.95-2.05L5.64 18.36A9 9 0 1012 3zm0 4a5 5 0 00-5 5 4.93 4.93 0 001.46 3.54L9.88 14.12A3 3 0 1112 15a2.93 2.93 0 01-2.12-.88L8.46 15.54A5 5 0 1012 7zm0 4a1 1 0 100 2 1 1 0 000-2z"/></svg>`,
-  airpods: `<svg width="11" height="11" viewBox="0 0 24 24" fill="#007aff"><path d="M12 2a9 9 0 00-9 9v7a3 3 0 003 3h1a2 2 0 002-2v-5a2 2 0 00-2-2H5v-1a7 7 0 1114 0v1h-2a2 2 0 00-2 2v5a2 2 0 002 2h1a3 3 0 003-3v-7a9 9 0 00-9-9z"/></svg>`,
-  keyboard: `<svg width="11" height="11" viewBox="0 0 24 24" fill="#8e8e93"><path d="M20 5H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V7a2 2 0 00-2-2zm-9 3h2v2h-2V8zm-4 0h2v2H7V8zm-2 4h2v2H5v-2zm8 4H7v-2h6v2zm2-4h-2v-2h2v2zm0-4h2v2h-2V8zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>`,
-  trackpad: `<svg width="11" height="11" viewBox="0 0 24 24" fill="#8e8e93"><path d="M19 4H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm0 10H5V6h14v8z"/></svg>`,
-  lock: `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6a5 5 0 00-10 0v2H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V10a2 2 0 00-2-2zm-6 9a2 2 0 110-4 2 2 0 010 4zm3.1-9H8.9V6a3.1 3.1 0 016.2 0v2z"/></svg>`,
-  check: `<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#34c759" stroke-width="3.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  bluetooth: `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M14.24 12.01l4.7-4.7a1 1 0 0 0 0-1.42l-6-6A1 1 0 0 0 11 .6V9.58L6.41 5A1 1 0 0 0 5 6.41L10.59 12 5 17.59A1 1 0 1 0 6.41 19L11 14.41v8.99a1 1 0 0 0 1.94.71l6-6a1 1 0 0 0 0-1.42l-4.7-4.69zM13 3.41l3.29 3.3L13 10.01V3.41zm0 17.18v-6.6l3.29 3.3L13 20.59z"/></svg>`,
+  moon: `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
+  sun: `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
+  displays: `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M20 3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h7v2H9c-.55 0-1 .45-1 1s.45 1 1 1h6c.55 0 1-.45 1-1s-.45-1-1-1h-2v-2h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 13H4V5h16v11z"/></svg>`,
+  sound: `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>`,
+  speakerMute: `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>`,
+  battery: `<svg width="14" height="8" viewBox="0 0 26 12" fill="none"><rect x="0.6" y="0.6" width="21.8" height="10.8" rx="3.4" stroke="currentColor" stroke-width="1.2"/><rect x="2.5" y="2.5" width="18" height="7" rx="2" fill="currentColor"/><path d="M24 4.5C24.8 4.5 25.2 5 25.2 6C25.2 7 24.8 7.5 24 7.5V4.5Z" fill="currentColor"/></svg>`,
+  batteryCharging: `<svg width="14" height="8" viewBox="0 0 26 12" fill="none"><rect x="0.6" y="0.6" width="21.8" height="10.8" rx="3.4" stroke="currentColor" stroke-width="1.2"/><rect x="2.5" y="2.5" width="18" height="7" rx="2" fill="currentColor"/><path d="M12 2.5l-2.5 4h3.5l-1 3.5 3-4.5h-3.5l1-3z" fill="#000"/><path d="M24 4.5C24.8 4.5 25.2 5 25.2 6C25.2 7 24.8 7.5 24 7.5V4.5Z" fill="currentColor"/></svg>`,
+  gear: `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65A.488.488 0 0 0 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>`,
+  airdrop: `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3a9 9 0 0 0-9 9 9 9 0 0 0 3 6.71L7.41 17.3A7 7 0 1 1 12 19a6.93 6.93 0 0 1-4.95-2.05L5.64 18.36A9 9 0 1 0 12 3zm0 4a5 5 0 0 0-5 5 4.93 4.93 0 0 0 1.46 3.54L9.88 14.12A3 3 0 1 1 12 15a2.93 2.93 0 0 1-2.12-.88L8.46 15.54A5 5 0 1 0 12 7zm0 4a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/></svg>`,
+  airpods: `<svg width="10" height="10" viewBox="0 0 24 24" fill="#007aff"><path d="M12 2a9 9 0 00-9 9v7a3 3 0 003 3h1a2 2 0 002-2v-5a2 2 0 00-2-2H5v-1a7 7 0 1114 0v1h-2a2 2 0 00-2 2v5a2 2 0 002 2h1a3 3 0 003-3v-7a9 9 0 00-9-9z"/></svg>`,
+  keyboard: `<svg width="10" height="10" viewBox="0 0 24 24" fill="#8e8e93"><path d="M20 5H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V7a2 2 0 00-2-2zm-9 3h2v2h-2V8zm-4 0h2v2H7V8zm-2 4h2v2H5v-2zm8 4H7v-2h6v2zm2-4h-2v-2h2v2zm0-4h2v2h-2V8zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2z"/></svg>`,
+  trackpad: `<svg width="10" height="10" viewBox="0 0 24 24" fill="#8e8e93"><path d="M19 4H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm0 10H5V6h14v8z"/></svg>`,
+  lock: `<svg width="8" height="8" viewBox="0 0 24 24" fill="currentColor"><path d="M17 9V7c0-2.76-2.24-5-5-5S7 4.24 7 7v2H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V11c0-1.1-.9-2-2-2h-2zm-5 8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-8H8.9V7c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>`,
+  check: `<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
   folder: `<svg width="12" height="12" viewBox="0 0 24 24" fill="#007aff"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>`,
   folderProjects: `<svg width="28" height="28" viewBox="0 0 24 24" fill="#007aff"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"/></svg>`,
   fileCode: `<svg width="28" height="28" viewBox="0 0 24 24" fill="#f59e0b"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>`,
@@ -193,13 +193,13 @@ const codeFiles = {
 const developer = {
   name: "Gabriel Jagueneau",
   education: "Agronomy Engineer (Bordeaux Sciences Agro)",
-  role: "Lead Dev & Founder at Plintzy",
-  skills: ["JavaScript", "React", "Node.js", "Python", "Data GIS"],
+  role: "Agronomy Engineering Student & Full-Stack Developer",
+  skills: ["JavaScript", "React", "Node.js", "Python", "Data GIS", "Crop Modeling"],
   status: "Open to opportunities & collaborations"
 };
 
 function createProject() {
-  return "Launch: Plant innovation, tech & modern design!";
+  return "Launch: Plant innovation, AgTech & modern design!";
 }
 console.log(createProject());`
   },
@@ -476,11 +476,11 @@ const appDefinitions = {
           resLine.innerHTML = `
             <p class="term-muted">Available commands: <span class="term-highlight">whoami</span>, <span class="term-highlight">skills</span>, <span class="term-highlight">projects</span>, <span class="term-highlight">fastfetch</span>, <span class="term-highlight">matrix</span>, <span class="term-highlight">contact</span>, <span class="term-highlight">ls</span>, <span class="term-highlight">cat &lt;file&gt;</span>, <span class="term-highlight">open &lt;app&gt;</span>, <span class="term-highlight">clear</span>, <span class="term-highlight">date</span>, <span class="term-highlight">sudo</span></p>`;
         } else if (lower === 'whoami' || lower === 'bio') {
-          resLine.innerHTML = `<p class="term-success">Gabriel Jagueneau — Agronomy Engineering Student (Bordeaux Sciences Agro) & Full-Stack Web Developer / Founder of Plintzy.</p>`;
+          resLine.innerHTML = `<p class="term-success">Gabriel Jagueneau — Agronomy Engineering Student (Bordeaux Sciences Agro) & Full-Stack Web Developer.</p>`;
         } else if (lower === 'skills' || lower === 'tech') {
           resLine.innerHTML = `<p class="term-info">Stack: JavaScript (ES6+), React, Next.js, Python, FastAPI, Node.js, SQL, Three.js, Docker, GIS/QGIS, Crop Modeling.</p>`;
         } else if (lower === 'projects') {
-          resLine.innerHTML = `<p class="term-info">● <strong>Plintzy</strong>: Plant tech startup & mobile app<br/>● <strong>Agronomy Research</strong>: Biological crop modeling & IoT sensors<br/>● <strong>Portfolio 2026</strong>: 3D WebGL interactive interface<br/>● <strong>TDR Website</strong>: Modern web platform</p>`;
+          resLine.innerHTML = `<p class="term-info">● <strong>AgroTech AI</strong>: Crop modeling & IoT sensors<br/>● <strong>Agronomy Research</strong>: Biological growth modeling & remote sensing<br/>● <strong>Portfolio 2026</strong>: 3D WebGL interactive interface<br/>● <strong>TDR Website</strong>: Modern web platform</p>`;
         } else if (lower === 'contact') {
           resLine.innerHTML = `<p class="term-highlight">Email: contact@gjagueneau.fr | LinkedIn: linkedin.com/in/gabriel-jagueneau | GitHub: @Gabriel-Jagueneau</p>`;
         } else if (lower === 'fastfetch' || lower === 'neofetch') {
@@ -606,7 +606,7 @@ const appDefinitions = {
 
       const folderData = {
         projects: [
-          { name: "Plintzy", icon: SVG_ICONS.folderProjects, type: "app", open: "Safari", badge: "Startup" },
+          { name: "AgroTech-AI", icon: SVG_ICONS.folderProjects, type: "app", open: "Safari", badge: "Research" },
           { name: "Agronomy-Research", icon: SVG_ICONS.folderProjects, type: "app", open: "Code", badge: "Research" },
           { name: "developer.js", icon: SVG_ICONS.fileCode, type: "file", open: "Code", targetFile: "developer.js" },
           { name: "skills.py", icon: SVG_ICONS.fileCode, type: "file", open: "Code", targetFile: "skills.py" }
@@ -626,7 +626,7 @@ const appDefinitions = {
           { name: "agronomy_model.ts", icon: SVG_ICONS.fileCode, open: "Code", targetFile: "agronomy_model.ts" }
         ],
         downloads: [
-          { name: "plintzy-v1.0.apk", icon: SVG_ICONS.fileCode, open: "Safari" },
+          { name: "crop-model-v2.py", icon: SVG_ICONS.filePy, open: "Code" },
           { name: "agronomy_paper.pdf", icon: SVG_ICONS.filePdf, open: "Safari" },
           { name: "gjlogo.png", icon: SVG_ICONS.fileHtml, open: "Safari" }
         ],
@@ -712,18 +712,23 @@ const appDefinitions = {
             <span class="safari-act-btn" title="New Tab">+</span>
           </div>
         </header>
-        <div class="safari-tab-bar">
-          <div class="safari-tab active">
-            <span class="tab-icon">${SVG_ICONS.globe}</span>
-            <span class="tab-title" id="safari-tab-title-${win.id}">Gabriel Jagueneau — Portfolio</span>
-            <span class="tab-close">×</span>
+        <div class="safari-tab-bar" id="safari-tabs-${win.id}">
+          <div class="safari-tab active" data-url="https://gjagueneau.fr">
+            <span class="tab-icon">${SVG_ICONS.sparkle}</span>
+            <span class="tab-title">Portfolio</span>
           </div>
-        </div>
-        <div class="safari-bookmarks">
-          <button class="safari-chip active" data-url="https://gjagueneau.fr">${SVG_ICONS.sparkle} Portfolio</button>
-          <button class="safari-chip" data-url="https://plintzy.com">${SVG_ICONS.leaf} Plintzy</button>
-          <button class="safari-chip" data-url="https://github.com/Gabriel-Jagueneau">${SVG_ICONS.github} GitHub</button>
-          <button class="safari-chip" data-url="https://linkedin.com/in/gabriel-jagueneau">${SVG_ICONS.linkedin} LinkedIn</button>
+          <div class="safari-tab" data-url="https://gjagueneau.fr/agrotech">
+            <span class="tab-icon">${SVG_ICONS.leaf}</span>
+            <span class="tab-title">AgroTech AI</span>
+          </div>
+          <div class="safari-tab" data-url="https://github.com/Gabriel-Jagueneau">
+            <span class="tab-icon">${SVG_ICONS.github}</span>
+            <span class="tab-title">GitHub</span>
+          </div>
+          <div class="safari-tab" data-url="https://linkedin.com/in/gabriel-jagueneau">
+            <span class="tab-icon">${SVG_ICONS.linkedin}</span>
+            <span class="tab-title">LinkedIn</span>
+          </div>
         </div>
         <main class="safari-body" id="safari-viewport-${win.id}">
           <!-- Dynamic Content -->
@@ -731,22 +736,32 @@ const appDefinitions = {
       </div>`,
     setup: (win) => {
       const addrInput = win.el.querySelector(`#safari-addr-${win.id}`);
-      const tabTitle = win.el.querySelector(`#safari-tab-title-${win.id}`);
       const viewport = win.el.querySelector(`#safari-viewport-${win.id}`);
       const reloadBtn = win.el.querySelector(`#safari-reload-${win.id}`);
-      const chips = win.el.querySelectorAll('.safari-chip');
+      const tabs = win.el.querySelectorAll('.safari-tab');
+
+      function syncActiveTab(url) {
+        tabs.forEach(tab => {
+          const tabUrl = tab.getAttribute('data-url');
+          if (url.includes('github') && tabUrl.includes('github')) tab.classList.add('active');
+          else if (url.includes('linkedin') && tabUrl.includes('linkedin')) tab.classList.add('active');
+          else if ((url.includes('agrotech') || url.includes('agronomy')) && tabUrl.includes('agrotech')) tab.classList.add('active');
+          else if (!url.includes('github') && !url.includes('linkedin') && !url.includes('agrotech') && tabUrl === 'https://gjagueneau.fr') tab.classList.add('active');
+          else tab.classList.remove('active');
+        });
+      }
 
       function loadUrl(url) {
         if (!viewport) return;
         viewport.style.opacity = '0.35';
         const displayUrl = url.replace(/^https?:\/\//, '');
         if (addrInput) addrInput.value = displayUrl;
+        syncActiveTab(url);
 
         setTimeout(() => {
           viewport.style.opacity = '1';
 
           if (!settingsState.wifi) {
-            if (tabTitle) tabTitle.textContent = "No Internet Connection";
             viewport.innerHTML = `
               <div class="safari-offline-wrap">
                 <div class="safari-offline-icon">${SVG_ICONS.wifiOff}</div>
@@ -768,62 +783,57 @@ const appDefinitions = {
             return;
           }
 
-          if (url.includes('plintzy')) {
-            if (tabTitle) tabTitle.textContent = 'Plintzy — Connected Agronomy & AI';
+          if (url.includes('agrotech') || url.includes('agronomy')) {
             viewport.innerHTML = `
               <div class="safari-page-wrap">
-                <div class="safari-brand-badge" style="background:rgba(34, 197, 94, 0.2); border-color:#22c55e; color:#4ade80;"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> AGRONOMY STARTUP</div>
-                <h1 class="safari-hero-title" style="background: linear-gradient(90deg, #34c759, #00aeff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Plintzy</h1>
-                <p class="safari-hero-desc">The mobile & web application democratizing precision agronomy, computer-vision plant diagnosis, and agricultural field monitoring.</p>
+                <div class="safari-brand-badge" style="background:rgba(34, 197, 94, 0.2); border-color:#22c55e; color:#4ade80;"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> AGTECH RESEARCH</div>
+                <h1 class="safari-hero-title" style="background: linear-gradient(90deg, #34c759, #00aeff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AgroTech AI & Precision Farming</h1>
+                <p class="safari-hero-desc">Bordeaux Sciences Agro research project: computer-vision foliar diagnosis, Sentinel-2 satellite NDVI indexation, and real-time IoT soil tension telemetry.</p>
                 <div class="safari-feature-grid">
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.aiChip}</span> AI Vision Diagnostics</strong><small>Instant detection of mineral deficiencies and foliar pests.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.satellite}</span> Remote Sensing & GIS</strong><small>NDVI mapping, soil moisture monitoring, and microclimate forecasting.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.smartphone}</span> Mobile & Web App</strong><small>Reactive architecture (Next.js, TypeScript, Supabase, Tailwind).</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.aiChip}</span> AI Foliar Diagnosis</strong><small>Deep learning detection of mineral deficiencies and crop pathology.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.satellite}</span> Remote Sensing & GIS</strong><small>Satellite NDVI mapping, soil moisture monitoring, and vegetative vigor indexation.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.smartphone}</span> Connected Field Telemetry</strong><small>Microclimate sensors, automated irrigation recommendations, and alert dispatch.</small></div>
                 </div>
                 <div class="safari-action-links">
-                  <button class="safari-link-btn" onclick="window.open('https://plintzy.com', '_blank')">Visit Plintzy.com <span style="display:inline-flex; margin-left:3px;">${SVG_ICONS.externalLink}</span></button>
-                  <button class="safari-link-btn secondary" id="safari-view-code-plintzy">View Source Code</button>
+                  <button class="safari-link-btn secondary" id="safari-view-code-agrotech">View Python Models in VS Code</button>
                 </div>
               </div>`;
-            win.el.querySelector('#safari-view-code-plintzy')?.addEventListener('click', () => spawnOrFocusWindow('Code'));
+            win.el.querySelector('#safari-view-code-agrotech')?.addEventListener('click', () => spawnOrFocusWindow('Code'));
           } else if (url.includes('github')) {
-            if (tabTitle) tabTitle.textContent = 'Gabriel Jagueneau (@Gabriel-Jagueneau) · GitHub';
             viewport.innerHTML = `
               <div class="safari-page-wrap">
                 <div class="safari-brand-badge" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.25); color:#fff;"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.github}</span> GITHUB PROFILE</div>
                 <h1 class="safari-hero-title">@Gabriel-Jagueneau</h1>
-                <p class="safari-hero-desc">Open-source repositories, biological simulations in Python, Three.js WebGL interfaces, and interactive bots.</p>
+                <p class="safari-hero-desc">Open-source repositories, biological simulations in Python, Three.js WebGL interfaces, and interactive software.</p>
                 <div class="safari-feature-grid">
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.box}</span> Portfolio-2026</strong><small>Three.js, 3D WebGL Tree, Physics Engine & macOS UI.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> plintzy-app</strong><small>React Native, TypeScript, Node.js API & Computer Vision.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.flask}</span> agronomy-tipe</strong><small>Growth modeling and differential equations.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.box}</span> Portfolio-2026</strong><small>Three.js 3D WebGL Tree, Physics Engine & macOS UI.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> agrotech-engine</strong><small>Python, NumPy, Plant pathology vision model & IoT API.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.flask}</span> agronomy-tipe</strong><small>Crop growth modeling and differential equations.</small></div>
                 </div>
                 <div class="safari-action-links">
                   <button class="safari-link-btn" onclick="window.open('https://github.com/Gabriel-Jagueneau', '_blank')">Open GitHub Profile <span style="display:inline-flex; margin-left:3px;">${SVG_ICONS.externalLink}</span></button>
                 </div>
               </div>`;
           } else if (url.includes('linkedin')) {
-            if (tabTitle) tabTitle.textContent = 'Gabriel Jagueneau | LinkedIn';
             viewport.innerHTML = `
               <div class="safari-page-wrap">
                 <div class="safari-brand-badge" style="background:rgba(0, 119, 181, 0.2); border-color:#0077b5; color:#38bdf8;"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.briefcase}</span> PROFESSIONAL PROFILE</div>
                 <h1 class="safari-hero-title">Gabriel Jagueneau</h1>
-                <p class="safari-hero-desc">Agronomy Engineering Student (Bordeaux Sciences Agro) • Lead Developer & Founder at Plintzy • Passionate about DeepTech & AgTech.</p>
+                <p class="safari-hero-desc">Agronomy Engineering Student (Bordeaux Sciences Agro) • Full-Stack Developer • Passionate about DeepTech & AgTech.</p>
                 <div class="safari-feature-grid">
                   <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.graduationCap}</span> Academic Background</strong><small>CPGE BCPST followed by Bordeaux National Agronomy Engineering School.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.rocket}</span> Entrepreneurship</strong><small>National Student-Entrepreneur Award & High-impact application development.</small></div>
+                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.rocket}</span> Engineering & Innovation</strong><small>Biological modeling, connected sensors, and high-impact web architectures.</small></div>
                 </div>
                 <div class="safari-action-links">
                   <button class="safari-link-btn" onclick="window.open('https://linkedin.com/in/gabriel-jagueneau', '_blank')">Connect on LinkedIn <span style="display:inline-flex; margin-left:3px;">${SVG_ICONS.externalLink}</span></button>
                 </div>
               </div>`;
           } else {
-            if (tabTitle) tabTitle.textContent = 'Gabriel Jagueneau — Portfolio';
             viewport.innerHTML = `
               <div class="safari-page-wrap">
                 <div class="safari-brand-badge"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.sparkle}</span> OFFICIAL 2026 PORTFOLIO</div>
                 <h1 class="safari-hero-title">Gabriel Jagueneau</h1>
-                <p class="safari-hero-desc">Agronomy Engineer & Full-Stack Developer. Explore my interactive workspace, AgTech projects, and technical stacks.</p>
+                <p class="safari-hero-desc">Agronomy Engineer & Full-Stack Developer. Explore my interactive workspace, AgTech research, and technical stack.</p>
                 <div class="safari-feature-grid">
                   <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> Agronomy & Modeling</strong><small>IoT sensors, foliar image processing & data analysis.</small></div>
                   <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.codeTag}</span> Full-Stack Engineering</strong><small>Reactive applications (React, Python, Node.js, 3D WebGL, Supabase).</small></div>
@@ -837,14 +847,13 @@ const appDefinitions = {
             win.el.querySelector('#safari-open-term')?.addEventListener('click', () => spawnOrFocusWindow('Terminal'));
             win.el.querySelector('#safari-open-code')?.addEventListener('click', () => spawnOrFocusWindow('Code'));
           }
-        }, 150);
+        }, 120);
       }
 
-      chips.forEach(chip => {
-        chip.addEventListener('click', () => {
-          chips.forEach(c => c.classList.remove('active'));
-          chip.classList.add('active');
-          loadUrl(chip.getAttribute('data-url'));
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          const url = tab.getAttribute('data-url');
+          if (url) loadUrl(url);
         });
       });
 
@@ -1271,6 +1280,20 @@ const appDefinitions = {
       const clearBtn = win.el.querySelector(`#calc-clear-btn-${win.id}`);
       const grid = win.el.querySelector('.calc-grid');
 
+      function updateCalcUI() {
+        if (valEl) valEl.textContent = calcState.displayValue.replace('.', ',');
+        if (exprEl) {
+          exprEl.textContent = calcState.firstOperand !== null && calcState.operator ? `${calcState.firstOperand} ${calcState.operator}` : '';
+        }
+        if (clearBtn) {
+          clearBtn.textContent = calcState.displayValue === '0' || calcState.clearAll ? 'AC' : 'C';
+        }
+        grid?.querySelectorAll('.calc-btn.op').forEach(btn => {
+          const opVal = btn.getAttribute('data-val');
+          btn.classList.toggle('active', Boolean(calcState.operator === opVal && calcState.waitingForSecondOperand));
+        });
+      }
+
       function handleCalcInput(action, val) {
         if (action === 'num') {
           if (val === '.' || val === ',') {
@@ -1486,7 +1509,7 @@ const appDefinitions = {
                 <div class="card-row header-row">
                   <span class="card-row-title">Known Networks</span>
                 </div>
-                <div class="card-row ${settingsState.wifi && settingsState.wifiNetwork === 'Gabriel-5G' ? 'highlight' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="Gabriel-5G" style="cursor:pointer;">
+                <div class="card-row ${settingsState.wifi && settingsState.wifiNetwork === 'Gabriel-5G' ? 'is-connected' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="Gabriel-5G" style="cursor:pointer;">
                   <div class="row-left">
                     <span class="network-icon">${SVG_ICONS.wifi}</span>
                     <div>
@@ -1496,7 +1519,7 @@ const appDefinitions = {
                   </div>
                   <span class="check-icon" style="visibility:${settingsState.wifi && settingsState.wifiNetwork === 'Gabriel-5G' ? 'visible' : 'hidden'};">${SVG_ICONS.check}</span>
                 </div>
-                <div class="card-row ${settingsState.wifi && settingsState.wifiNetwork === 'Campus-Student-Wi-Fi' ? 'highlight' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="Campus-Student-Wi-Fi" style="cursor:pointer;">
+                <div class="card-row ${settingsState.wifi && settingsState.wifiNetwork === 'Campus-Student-Wi-Fi' ? 'is-connected' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="Campus-Student-Wi-Fi" style="cursor:pointer;">
                   <div class="row-left">
                     <span class="network-icon">${SVG_ICONS.wifi}</span>
                     <div>
@@ -1507,16 +1530,16 @@ const appDefinitions = {
                   <span class="lock-icon">${SVG_ICONS.lock}</span>
                   <span class="check-icon" style="visibility:${settingsState.wifi && settingsState.wifiNetwork === 'Campus-Student-Wi-Fi' ? 'visible' : 'hidden'};">${SVG_ICONS.check}</span>
                 </div>
-                <div class="card-row ${settingsState.wifi && settingsState.wifiNetwork === 'Plintzy-Office-Network' ? 'highlight' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="Plintzy-Office-Network" style="cursor:pointer;">
+                <div class="card-row ${settingsState.wifi && settingsState.wifiNetwork === 'AgroLab-5GHz-Secure' ? 'is-connected' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="AgroLab-5GHz-Secure" style="cursor:pointer;">
                   <div class="row-left">
                     <span class="network-icon">${SVG_ICONS.wifi}</span>
                     <div>
-                      <div class="network-name">${settingsState.wifi && settingsState.wifiNetwork === 'Plintzy-Office-Network' ? 'Plintzy-Office-Network (Connected)' : 'Plintzy-Office-Network'}</div>
-                      <div class="network-sub">Gigabit Fiber 1 Gbps</div>
+                      <div class="network-name">${settingsState.wifi && settingsState.wifiNetwork === 'AgroLab-5GHz-Secure' ? 'AgroLab-5GHz-Secure (Connected)' : 'AgroLab-5GHz-Secure'}</div>
+                      <div class="network-sub">Gigabit Fiber • WPA3 Enterprise</div>
                     </div>
                   </div>
                   <span class="lock-icon">${SVG_ICONS.lock}</span>
-                  <span class="check-icon" style="visibility:${settingsState.wifi && settingsState.wifiNetwork === 'Plintzy-Office-Network' ? 'visible' : 'hidden'};">${SVG_ICONS.check}</span>
+                  <span class="check-icon" style="visibility:${settingsState.wifi && settingsState.wifiNetwork === 'AgroLab-5GHz-Secure' ? 'visible' : 'hidden'};">${SVG_ICONS.check}</span>
                 </div>
               </div>
             </div>`;
@@ -1547,7 +1570,7 @@ const appDefinitions = {
                 <div class="card-row header-row">
                   <span class="card-row-title">My Devices</span>
                 </div>
-                <div class="card-row">
+                <div class="card-row ${!settingsState.bluetooth ? 'disabled' : ''}">
                   <div class="row-left">
                     <span class="dev-icon">${SVG_ICONS.airpods}</span>
                     <div>
@@ -1555,27 +1578,27 @@ const appDefinitions = {
                       <div class="network-sub">${settingsState.bluetooth ? 'Connected • 95%' : 'Disconnected'}</div>
                     </div>
                   </div>
-                  <span class="status-pill ${settingsState.bluetooth ? 'on' : 'off'}">${settingsState.bluetooth ? 'Connected' : 'Off'}</span>
+                  <span class="status-pill ${settingsState.bluetooth ? 'on' : 'off'}">${settingsState.bluetooth ? 'Connected' : 'Disconnected'}</span>
                 </div>
-                <div class="card-row">
+                <div class="card-row ${!settingsState.bluetooth ? 'disabled' : ''}">
                   <div class="row-left">
                     <span class="dev-icon">${SVG_ICONS.keyboard}</span>
                     <div>
                       <div class="network-name">Magic Keyboard with Touch ID</div>
-                      <div class="network-sub">Connected • 88%</div>
+                      <div class="network-sub">${settingsState.bluetooth ? 'Connected • 88%' : 'Disconnected'}</div>
                     </div>
                   </div>
-                  <span class="status-pill on">Connected</span>
+                  <span class="status-pill ${settingsState.bluetooth ? 'on' : 'off'}">${settingsState.bluetooth ? 'Connected' : 'Disconnected'}</span>
                 </div>
-                <div class="card-row">
+                <div class="card-row ${!settingsState.bluetooth ? 'disabled' : ''}">
                   <div class="row-left">
                     <span class="dev-icon">${SVG_ICONS.trackpad}</span>
                     <div>
                       <div class="network-name">Magic Trackpad</div>
-                      <div class="network-sub">Connected • 92%</div>
+                      <div class="network-sub">${settingsState.bluetooth ? 'Connected • 92%' : 'Disconnected'}</div>
                     </div>
                   </div>
-                  <span class="status-pill on">Connected</span>
+                  <span class="status-pill ${settingsState.bluetooth ? 'on' : 'off'}">${settingsState.bluetooth ? 'Connected' : 'Disconnected'}</span>
                 </div>
               </div>
             </div>`;
@@ -1709,8 +1732,43 @@ const appDefinitions = {
                 <small style="color:rgba(255,255,255,0.5); font-size:8px;">Power Source: Power Adapter • Fully Charged</small>
               </div>
             </div>`;
+        } else if (cat === 'profile') {
+          // Apple Account (iCloud)
+          pane.innerHTML = `
+            <div class="settings-section">
+              <div class="user-profile-hero">
+                <div class="profile-avatar-large">GJ</div>
+                <div class="profile-info-large">
+                  <span class="profile-name">Gabriel JAGUENEAU</span>
+                  <span class="profile-email">gabriel.jagueneau@icloud.com</span>
+                </div>
+              </div>
+              <div class="icloud-storage-card">
+                <div class="storage-header">
+                  <span>iCloud+ Storage</span>
+                  <strong>1.2 TB of 2 TB Used</strong>
+                </div>
+                <div class="storage-bar">
+                  <div class="seg photos"></div>
+                  <div class="seg drive"></div>
+                  <div class="seg backups"></div>
+                  <div class="seg docs"></div>
+                </div>
+                <div class="storage-legend">
+                  <span class="photos">Photos (840 GB)</span>
+                  <span class="drive">iCloud Drive (440 GB)</span>
+                  <span class="backups">Backups (280 GB)</span>
+                  <span class="docs">Docs & Data (160 GB)</span>
+                </div>
+              </div>
+              <div class="settings-card-group" style="margin-top:6px;">
+                <div class="card-row"><span class="card-row-title">Sign-In & Security</span><span style="color:rgba(255,255,255,0.6); font-size:5.5px;">2FA Enabled ›</span></div>
+                <div class="card-row"><span class="card-row-title">Subscriptions</span><span style="color:rgba(255,255,255,0.6); font-size:5.5px;">Apple One Premier ›</span></div>
+                <div class="card-row"><span class="card-row-title">Family Sharing</span><span style="color:rgba(255,255,255,0.6); font-size:5.5px;">5 Members ›</span></div>
+              </div>
+            </div>`;
         } else {
-          // General / Profile
+          // General
           pane.innerHTML = `
             <div class="settings-section">
               <div class="about-mac-hero">
@@ -1719,11 +1777,12 @@ const appDefinitions = {
                 <div class="about-mac-sub">Apple M3 Pro • 18 GB Unified Memory</div>
                 <div class="about-mac-os">macOS Sonoma 14.5</div>
               </div>
-              <div class="settings-card-group" style="margin-top:10px;">
-                <div class="card-row"><span class="card-row-title">Owner</span><strong style="color:#fff;">Gabriel Jagueneau</strong></div>
-                <div class="card-row"><span class="card-row-title">Role</span><span style="color:#58a6ff;">Agronomy Engineer & Full-Stack Dev</span></div>
-                <div class="card-row"><span class="card-row-title">Storage</span><span>512 GB SSD (340 GB Free)</span></div>
-                <div class="card-row"><span class="card-row-title">AppleCare+</span><span style="color:#34c759;">Active Coverage</span></div>
+              <div class="settings-card-group" style="margin-top:8px;">
+                <div class="card-row"><span class="card-row-title">About</span><span style="color:rgba(255,255,255,0.55); font-size:5.5px;">MacBookPro18,3 ›</span></div>
+                <div class="card-row"><span class="card-row-title">Software Update</span><span style="color:#34c759; font-size:5.5px;">macOS 14.5 Up to date ›</span></div>
+                <div class="card-row"><span class="card-row-title">Storage</span><span>512 GB SSD (342 GB Available) ›</span></div>
+                <div class="card-row"><span class="card-row-title">AirDrop & Handoff</span><span style="color:rgba(255,255,255,0.55); font-size:5.5px;">Contacts Only ›</span></div>
+                <div class="card-row"><span class="card-row-title">Date & Time</span><span style="color:rgba(255,255,255,0.55); font-size:5.5px;">Set Automatically ›</span></div>
               </div>
             </div>`;
         }
@@ -1743,7 +1802,7 @@ const appDefinitions = {
       userCard?.addEventListener('click', () => {
         navItems.forEach(n => n.classList.remove('active'));
         userCard.classList.add('active');
-        renderCategory('general');
+        renderCategory('profile');
       });
     }
   }
@@ -1839,6 +1898,16 @@ export function spawnOrFocusWindow(appName) {
     win.style.transform = 'scale(1) translateY(0)';
     win.style.filter    = 'blur(0px)';
   });
+
+  // If in autonomous non-interactive mode, schedule auto-dismiss
+  if (!isMacInteractive) {
+    const lifetime = Math.floor(13000 + Math.random() * 5000);
+    instance.autoDismissTimer = setTimeout(() => {
+      if (!isMacInteractive && openWindows.has(appName)) {
+        closeWindow(instance);
+      }
+    }, lifetime);
+  }
 }
 
 function focusWindow(instance) {
@@ -1849,6 +1918,7 @@ function focusWindow(instance) {
 }
 
 function closeWindow(instance) {
+  if (instance.autoDismissTimer) clearTimeout(instance.autoDismissTimer);
   if (instance.cleanup) instance.cleanup();
   instance.el.style.opacity   = '0';
   instance.el.style.transform = 'scale(0.92) translateY(-10px)';
@@ -2078,10 +2148,10 @@ function initMenuInteractions() {
           <span class="lock">${SVG_ICONS.lock}</span>
           <span class="check" style="display:${settingsState.wifiNetwork === 'Campus-Student-Wi-Fi' && settingsState.wifi ? 'inline-flex' : 'none'};">${SVG_ICONS.check}</span>
         </div>
-        <div class="pop-item ${settingsState.wifiNetwork === 'Plintzy-Office-Network' ? 'active' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="Plintzy-Office-Network">
-          ${SVG_ICONS.wifi} <span class="pop-net-name">Plintzy-Office-Network</span>
+        <div class="pop-item ${settingsState.wifiNetwork === 'AgroLab-5GHz-Secure' ? 'active' : ''} ${!settingsState.wifi ? 'disabled' : ''}" data-network="AgroLab-5GHz-Secure">
+          ${SVG_ICONS.wifi} <span class="pop-net-name">AgroLab-5GHz-Secure</span>
           <span class="lock">${SVG_ICONS.lock}</span>
-          <span class="check" style="display:${settingsState.wifiNetwork === 'Plintzy-Office-Network' && settingsState.wifi ? 'inline-flex' : 'none'};">${SVG_ICONS.check}</span>
+          <span class="check" style="display:${settingsState.wifiNetwork === 'AgroLab-5GHz-Secure' && settingsState.wifi ? 'inline-flex' : 'none'};">${SVG_ICONS.check}</span>
         </div>
         <div class="pop-sep"></div>
         <div class="pop-item" id="pop-open-wifi-settings" style="font-size:7.5px; opacity:0.8;">Wi-Fi Settings...</div>
@@ -2501,6 +2571,22 @@ function updateClock() {
 // ═══════════════════════════════════════════════════════════════════════════════
 // Interactive Mode Controller & Fullscreen
 // ═══════════════════════════════════════════════════════════════════════════════
+// ── Autonomous Cycle for Non-Interactive Mode ──
+function scheduleAutoSpawn(delay = 8000) {
+  if (autoSpawnTimer) clearTimeout(autoSpawnTimer);
+  if (isMacInteractive || !isDesktopVisible || document.hidden) return;
+
+  autoSpawnTimer = setTimeout(() => {
+    if (!isMacInteractive && isDesktopVisible && !document.hidden && openWindows.size < 2) {
+      const appKeys = Object.keys(appDefinitions);
+      const unopened = appKeys.filter(k => !openWindows.has(k));
+      const chosen = unopened[Math.floor(Math.random() * unopened.length)] || appKeys[0];
+      spawnOrFocusWindow(chosen);
+    }
+    scheduleAutoSpawn(Math.floor(9000 + Math.random() * 5000));
+  }, delay);
+}
+
 export function setInteractive(active) {
   if (isMacInteractive === active) return;
   isMacInteractive = Boolean(active);
@@ -2513,12 +2599,36 @@ export function setInteractive(active) {
   }
 
   if (isMacInteractive) {
-    if (autoSpawnTimer) clearTimeout(autoSpawnTimer);
+    // User is interacting: stop auto-spawn and cancel auto-dismiss on all open windows
+    if (autoSpawnTimer) {
+      clearTimeout(autoSpawnTimer);
+      autoSpawnTimer = null;
+    }
+    openWindows.forEach(winInst => {
+      if (winInst.autoDismissTimer) {
+        clearTimeout(winInst.autoDismissTimer);
+        winInst.autoDismissTimer = null;
+      }
+    });
+
     if (openWindows.size === 0) {
       spawnOrFocusWindow('Terminal');
     }
   } else {
+    // User left the Mac: close popovers and resume autonomous cycle
     closeAllPopovers();
+
+    openWindows.forEach(winInst => {
+      if (!winInst.autoDismissTimer) {
+        winInst.autoDismissTimer = setTimeout(() => {
+          if (!isMacInteractive && openWindows.has(winInst.appName)) {
+            closeWindow(winInst);
+          }
+        }, Math.floor(7000 + Math.random() * 4000));
+      }
+    });
+
+    scheduleAutoSpawn(6000);
   }
 }
 
@@ -2693,14 +2803,10 @@ function initDock() {
 }
 
 function initInteractiveListeners() {
-  function getMac() {
-    return document.getElementById('imagurrrr') || document.querySelector('.image-container');
-  }
-
-  const mac = getMac();
-  if (mac) {
-    mac.addEventListener('click', (e) => {
-      // If clicking the Mac when not in fullscreen mode, zoom into fullscreen!
+  const screenEl = document.querySelector('.inside') || document.querySelector('.macos-container');
+  if (screenEl) {
+    screenEl.addEventListener('click', (e) => {
+      // Strictly zoom into fullscreen ONLY when clicking on the display screen itself
       if (!isMacFullscreen) {
         if (e.target.closest('#mac-exit-fullscreen')) return;
         toggleMacFullscreen(true);
@@ -2709,17 +2815,49 @@ function initInteractiveListeners() {
   }
 
   document.addEventListener('mousedown', (e) => {
-    const m = getMac();
-    if (!m) return;
-
-    const isInsideMac = m.contains(e.target) || e.target.closest('#imagurrrr') || e.target.closest('.macos-container');
+    const isScreen = Boolean(e.target.closest('.inside') || e.target.closest('.macos-container'));
     const isCard = e.target.closest('.cardage');
     const isExitBtn = e.target.closest('#mac-exit-fullscreen');
 
-    if (isInsideMac || isExitBtn) {
+    if (isScreen || isExitBtn) {
       setInteractive(true);
     } else if (!isCard && !isMacFullscreen) {
       setInteractive(false);
+    }
+  });
+}
+
+// ── Viewport Observer & Visibility ──
+function initDesktopObserver() {
+  if (!desktop) return;
+
+  const desktopObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const wasVisible = isDesktopVisible;
+      isDesktopVisible = entry.isIntersecting;
+
+      if (isDesktopVisible && !wasVisible) {
+        if (openWindows.size === 0 && !isMacInteractive) {
+          setTimeout(() => { if (!isMacInteractive && openWindows.size === 0) spawnOrFocusWindow('Terminal'); }, 600);
+          setTimeout(() => { if (!isMacInteractive && openWindows.size < 2) spawnOrFocusWindow('Safari'); }, 4200);
+        }
+        scheduleAutoSpawn(8000);
+      } else if (!isDesktopVisible) {
+        if (autoSpawnTimer) {
+          clearTimeout(autoSpawnTimer);
+          autoSpawnTimer = null;
+        }
+      }
+    });
+  }, { rootMargin: '100px' });
+
+  desktopObserver.observe(desktop);
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && isDesktopVisible && !isMacInteractive) {
+      scheduleAutoSpawn(4000);
+    } else if (document.hidden && autoSpawnTimer) {
+      clearTimeout(autoSpawnTimer);
     }
   });
 }
@@ -2732,9 +2870,11 @@ export function initMacUI() {
   initDock();
   initMenuInteractions();
   initInteractiveListeners();
+  initDesktopObserver();
 
-  // Initial setup: spawn Terminal by default on start
+  // Initial setup: spawn Terminal by default on start and begin gentle auto-spawn
   if (desktop && openWindows.size === 0) {
     spawnOrFocusWindow('Terminal');
+    scheduleAutoSpawn(7000);
   }
 }
