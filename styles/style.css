@@ -2506,6 +2506,7 @@ body.site-revealing #navBar .contact {
                                             &:hover {
                                                 background: rgba(255, 255, 255, 0.08);
                                             }
+
                                             &.active {
                                                 background: rgba(0, 122, 255, 0.28);
                                             }
@@ -3165,10 +3166,26 @@ body.site-revealing #navBar .contact {
 
                                                     & .seg {
                                                         height: 100%;
-                                                        &.photos { background: #ff9500; width: 42%; }
-                                                        &.drive { background: #007aff; width: 22%; }
-                                                        &.backups { background: #af52de; width: 14%; }
-                                                        &.docs { background: #34c759; width: 8%; }
+
+                                                        &.photos {
+                                                            background: #ff9500;
+                                                            width: 42%;
+                                                        }
+
+                                                        &.drive {
+                                                            background: #007aff;
+                                                            width: 22%;
+                                                        }
+
+                                                        &.backups {
+                                                            background: #af52de;
+                                                            width: 14%;
+                                                        }
+
+                                                        &.docs {
+                                                            background: #34c759;
+                                                            width: 8%;
+                                                        }
                                                     }
                                                 }
 
@@ -3191,10 +3208,22 @@ body.site-revealing #navBar .contact {
                                                             border-radius: 50%;
                                                             display: inline-block;
                                                         }
-                                                        &.photos::before { background: #ff9500; }
-                                                        &.drive::before { background: #007aff; }
-                                                        &.backups::before { background: #af52de; }
-                                                        &.docs::before { background: #34c759; }
+
+                                                        &.photos::before {
+                                                            background: #ff9500;
+                                                        }
+
+                                                        &.drive::before {
+                                                            background: #007aff;
+                                                        }
+
+                                                        &.backups::before {
+                                                            background: #af52de;
+                                                        }
+
+                                                        &.docs::before {
+                                                            background: #34c759;
+                                                        }
                                                     }
                                                 }
                                             }
@@ -4634,11 +4663,11 @@ body.mac-fullscreen-mode {
         width: 100%;
         transition: ease 0.5s;
 
-        &:hover>.card::after {
+        & .card::after {
             opacity: 1;
         }
 
-        &:hover>.card::before {
+        & .card::before {
             opacity: 1;
         }
 
@@ -4799,9 +4828,10 @@ body.mac-fullscreen-mode {
             justify-content: space-between;
             border-radius: 16px;
             gap: 3.5vh;
-            transition: ease 0.4s;
+            transition: ease 0.2s;
             will-change: transform;
             overflow: hidden;
+            will-change: all;
 
             background:
                 padding-box linear-gradient(transparent),
@@ -4918,6 +4948,7 @@ body.mac-fullscreen-mode {
                 mask-size: cover;
                 transition: ease 0.2s;
                 border-radius: 16px;
+                will-change: backdrop-filter;
             }
 
             &:hover {
@@ -4936,7 +4967,7 @@ body.mac-fullscreen-mode {
 
                             & svg {
                                 stroke: url(#portfolio-gradient);
-                                transform: scale(1.1) rotate(-15deg);
+                                transform: scale(1.1);
                             }
                         }
                     }
@@ -5216,7 +5247,8 @@ body.mac-fullscreen-mode {
                         & svg {
                             fill: none;
                             stroke: white;
-                            transition: stroke 0.2s ease, transform 0.2s ease;
+                            transform: translateY(3px);
+                            transition: 0.2s ease;
                         }
                     }
 
@@ -5226,7 +5258,6 @@ body.mac-fullscreen-mode {
 
                         & .see-website svg {
                             stroke: url(#portfolio-gradient);
-                            transform: scale(1.1) rotate(-15deg);
                             cursor: pointer;
                         }
                     }

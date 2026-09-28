@@ -997,7 +997,7 @@ export function initWebGLTree(onComplete) {
 
   // ─── 18. Animation Loop (60 FPS Multi-Harmonic Wind & Botanical Growth) ───
   const startTime = performance.now();
-  const minDuration = 5500;
+  const minDuration = 3000; // 3 secondes minimum
   let currentProgress = 0.0;
   let isRevealed = false;
 

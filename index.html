@@ -39,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap">
 
-    <link rel="stylesheet" href="style.css?v=25" />
+    <link rel="stylesheet" href="styles/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
@@ -169,9 +169,12 @@
                         <div class="macos-container">
                             <nav class="top-bar">
                                 <div class="left-side">
-                                    <span class="apple-logo" id="mac-menu-apple" title="Apple Menu"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:middle; display:inline-block;">
-                                        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.66-1.06 1.73-.93 2.76 1 .08 2.02-.51 2.64-1.26z"/>
-                                    </svg></span>
+                                    <span class="apple-logo" id="mac-menu-apple" title="Apple Menu"><svg width="12"
+                                            height="12" viewBox="0 0 24 24" fill="currentColor"
+                                            style="vertical-align:middle; display:inline-block;">
+                                            <path
+                                                d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.66-1.06 1.73-.93 2.76 1 .08 2.02-.51 2.64-1.26z" />
+                                        </svg></span>
                                     <span class="menu-item active-app-name" id="mac-menu-app-name">Finder</span>
                                     <span class="menu-item" data-menu="file">File</span>
                                     <span class="menu-item" data-menu="edit">Edit</span>
@@ -180,14 +183,20 @@
                                     <span class="menu-item" data-menu="help">Help</span>
                                 </div>
                                 <div class="right-side">
-                                    <span class="menu-status battery" id="mac-menu-battery" title="Battery: 100%"><svg width="17" height="10" viewBox="0 0 26 12" fill="none" style="vertical-align:middle; margin-right:3px;">
-                                        <rect x="0.6" y="0.6" width="21.8" height="10.8" rx="3.4" stroke="currentColor" stroke-width="1.2"/>
-                                        <rect x="2.5" y="2.5" width="18" height="7" rx="2" fill="currentColor"/>
-                                        <path d="M24 4.5C24.8 4.5 25.2 5 25.2 6C25.2 7 24.8 7.5 24 7.5V4.5Z" fill="currentColor"/>
-                                    </svg>100%</span>
+                                    <span class="menu-status battery" id="mac-menu-battery" title="Battery: 100%"><svg
+                                            width="17" height="10" viewBox="0 0 26 12" fill="none"
+                                            style="vertical-align:middle; margin-right:3px;">
+                                            <rect x="0.6" y="0.6" width="21.8" height="10.8" rx="3.4"
+                                                stroke="currentColor" stroke-width="1.2" />
+                                            <rect x="2.5" y="2.5" width="18" height="7" rx="2" fill="currentColor" />
+                                            <path d="M24 4.5C24.8 4.5 25.2 5 25.2 6C25.2 7 24.8 7.5 24 7.5V4.5Z"
+                                                fill="currentColor" />
+                                        </svg>100%</span>
                                     <span class="menu-status wifi" id="mac-menu-wifi" title="Wi-Fi: Gabriel-5G">
-                                        <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" style="vertical-align:middle;">
-                                            <path d="M12 4C7.31 4 3.07 5.9 0 8.98l1.42 1.42C4.16 7.66 7.87 6 12 6s7.84 1.66 10.58 4.4L24 8.98C20.93 5.9 16.69 4 12 4zm0 4.5c-3.5 0-6.68 1.42-9.01 3.73l1.42 1.42C6.46 11.6 9.07 10.5 12 10.5s5.54 1.1 7.59 3.15l1.42-1.42C18.68 9.92 15.5 8.5 12 8.5zm0 4.5c-2.28 0-4.34.92-5.86 2.44l1.42 1.42c1.16-1.16 2.74-1.86 4.44-1.86s3.28.7 4.44 1.86l1.42-1.42C16.34 13.92 14.28 13 12 13zm0 4.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+                                        <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"
+                                            style="vertical-align:middle;">
+                                            <path
+                                                d="M12 4C7.31 4 3.07 5.9 0 8.98l1.42 1.42C4.16 7.66 7.87 6 12 6s7.84 1.66 10.58 4.4L24 8.98C20.93 5.9 16.69 4 12 4zm0 4.5c-3.5 0-6.68 1.42-9.01 3.73l1.42 1.42C6.46 11.6 9.07 10.5 12 10.5s5.54 1.1 7.59 3.15l1.42-1.42C18.68 9.92 15.5 8.5 12 8.5zm0 4.5c-2.28 0-4.34.92-5.86 2.44l1.42 1.42c1.16-1.16 2.74-1.86 4.44-1.86s3.28.7 4.44 1.86l1.42-1.42C16.34 13.92 14.28 13 12 13zm0 4.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
                                         </svg>
                                     </span>
                                     <span class="menu-status control-center-btn" id="mac-menu-control-center"
@@ -1397,11 +1406,13 @@
                     <div class="name" onclick="window.open('https://fr.fiverr.com/gabrieljag', '_blank');">
                         <div class="company">Fiverr</div>
                         <div class="see-website">
-                            <div class="button"><svg class="icon-svg icon-open" viewBox="0 0 24 24" width="18"
-                                    height="18" fill="none" stroke="currentColor" stroke-width="2.2"
-                                    stroke-linecap="round" stroke-linejoin="round">
+                            <div class="button">
+                                <svg class="icon-svg icon-open" viewBox="0 0 24 24" width="18" height="18" fill="none"
+                                    stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                                    stroke-linejoin="round">
                                     <path d="M7 17L17 7M7 7h10v10" />
-                                </svg></div>
+                                </svg>
+                            </div>
                         </div>
                     </div>
                     <div class="username">
@@ -1437,7 +1448,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script type="module" src="script.js?v=25"></script>
+    <script type="module" src="script.js?v=26"></script>
 </body>
 
 </html>

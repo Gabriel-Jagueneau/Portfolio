@@ -1,4 +1,4 @@
-import { initWebGLTree }      from './js/tree-3d.js?v=25';
+import { initWebGLTree }      from './js/tree-3d.js?v=26';
 import { initializeOrbits }  from './js/cards-physics.js?v=25';
 import { observeScroll }     from './js/nav.js';
 import { initFooter }        from './js/footer.js';

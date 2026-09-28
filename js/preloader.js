@@ -1,7 +1,7 @@
 // ─── Pure SVG Tree Growth & Zoom-Morph Preloader ──────────────────────────────
 // 1. Starts on pure black: a tiny green sprout emerges from the soil.
-// 2. Grows organically into a full SVG tree over 5 seconds (branches draw, leaves bloom).
-// 3. At 4.8s, executes a cinematic zoom towards the right canopy and smoothly morphs
+// 2. Grows organically into a full SVG tree over 3 seconds (branches draw, leaves bloom).
+// 3. At 3.0s, executes a cinematic zoom towards the right canopy and smoothly morphs
 //    into the real background tree photo, then orchestrates the website entrance.
 
 export function initPreloader(onComplete) {
@@ -13,7 +13,7 @@ export function initPreloader(onComplete) {
   }
 
   const startTime = performance.now();
-  const growthDuration = 4800; // 4.8s full growth before morph
+  const growthDuration = 3000; // 3s minimum growth before morph
   let isPageLoaded = document.readyState === 'complete';
 
   if (!isPageLoaded) {
