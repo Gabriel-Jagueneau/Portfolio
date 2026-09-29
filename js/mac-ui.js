@@ -2635,65 +2635,9 @@ export function setInteractive(active) {
 let isMacFullscreen = false;
 
 export function toggleMacFullscreen(force) {
-  const mac = document.getElementById('imagurrrr') || document.querySelector('.image-container');
-  const backdrop = document.getElementById('mac-fullscreen-backdrop');
-  const exitBtn = document.getElementById('mac-exit-fullscreen');
-  const dockFullscreenItem = document.getElementById('dock-item-fullscreen');
-
-  if (typeof force === 'boolean') {
-    isMacFullscreen = force;
-  } else {
-    isMacFullscreen = !isMacFullscreen;
-  }
-
-  if (isMacFullscreen && mac) {
-    setInteractive(true);
-
-    const rect = mac.getBoundingClientRect();
-    const targetW = window.innerWidth * 0.94;
-    const targetH = window.innerHeight * 0.92;
-    const scale = Math.min(targetW / rect.width, targetH / rect.height);
-
-    const macCenterX = rect.left + rect.width / 2;
-    const macCenterY = rect.top + rect.height / 2;
-    const viewCenterX = window.innerWidth / 2;
-    const viewCenterY = window.innerHeight / 2;
-    const deltaX = viewCenterX - macCenterX;
-    const deltaY = viewCenterY - macCenterY;
-
-    mac.style.setProperty('--zoom-tx', `${Math.round(deltaX)}px`);
-    mac.style.setProperty('--zoom-ty', `${Math.round(deltaY)}px`);
-    mac.style.setProperty('--zoom-scale', `${scale.toFixed(3)}`);
-
-    mac.classList.add('is-zooming');
-    document.body.classList.add('mac-fullscreen-mode');
-    mac.classList.add('is-mac-zoomed');
-    backdrop?.classList.add('active');
-    exitBtn?.classList.add('active');
-    dockFullscreenItem?.classList.add('active-fullscreen');
-
-    setTimeout(() => {
-      mac.classList.remove('is-zooming');
-    }, 700);
-  } else {
-    mac?.classList.add('is-zooming');
-    document.body.classList.remove('mac-fullscreen-mode');
-    mac?.classList.remove('is-mac-zoomed');
-    backdrop?.classList.remove('active');
-    exitBtn?.classList.remove('active');
-    dockFullscreenItem?.classList.remove('active-fullscreen');
-
-    setInteractive(false);
-
-    setTimeout(() => {
-      mac?.classList.remove('is-zooming');
-      if (!isMacFullscreen && mac) {
-        mac.style.removeProperty('--zoom-tx');
-        mac.style.removeProperty('--zoom-ty');
-        mac.style.removeProperty('--zoom-scale');
-      }
-    }, 750);
-  }
+  // Zoom on Mac has been removed: user interacts directly with the compact version
+  isMacFullscreen = false;
+  document.body.classList.remove('mac-fullscreen-mode');
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -2749,7 +2693,6 @@ function initDock() {
       e.stopPropagation();
       const appName = item.getAttribute('data-app');
       if (appName === 'Fullscreen') {
-        toggleMacFullscreen();
         return;
       }
       if (appName && appDefinitions[appName]) {
@@ -2761,20 +2704,13 @@ function initDock() {
     });
   });
 
-  document.getElementById('mac-exit-fullscreen')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleMacFullscreen(false);
-  });
-
-  document.getElementById('mac-fullscreen-backdrop')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleMacFullscreen(false);
-  });
-
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      if (isMacFullscreen) toggleMacFullscreen(false);
-      else if (isMacInteractive) setInteractive(false);
+      if (isMacInteractive) {
+        setInteractive(false);
+        const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
+        if (cardsSpinner) cardsSpinner.classList.remove('cards-hidden');
+      }
     } else if ((e.metaKey || e.ctrlKey) && e.code === 'Space') {
       e.preventDefault();
       if (isMacInteractive) toggleSpotlight();
@@ -2803,25 +2739,48 @@ function initDock() {
 }
 
 function initInteractiveListeners() {
-  const screenEl = document.querySelector('.inside') || document.querySelector('.macos-container');
-  if (screenEl) {
-    screenEl.addEventListener('click', (e) => {
-      // Strictly zoom into fullscreen ONLY when clicking on the display screen itself
-      if (!isMacFullscreen) {
-        if (e.target.closest('#mac-exit-fullscreen')) return;
-        toggleMacFullscreen(true);
-      }
-    });
+  const macScreen = document.querySelector('#imagurrrr .inside') || document.querySelector('.macos-container');
+  const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
+
+  function hideCards() {
+    if (cardsSpinner && !cardsSpinner.classList.contains('cards-hidden')) {
+      cardsSpinner.classList.add('cards-hidden');
+    }
   }
 
-  document.addEventListener('mousedown', (e) => {
-    const isScreen = Boolean(e.target.closest('.inside') || e.target.closest('.macos-container'));
-    const isCard = e.target.closest('.cardage');
-    const isExitBtn = e.target.closest('#mac-exit-fullscreen');
+  function showCards() {
+    if (cardsSpinner && cardsSpinner.classList.contains('cards-hidden')) {
+      cardsSpinner.classList.remove('cards-hidden');
+    }
+  }
 
-    if (isScreen || isExitBtn) {
+  // Clicking specifically on the Mac screen: hide cards and focus macOS
+  if (macScreen) {
+    macScreen.addEventListener('click', () => {
+      hideCards();
       setInteractive(true);
-    } else if (!isCard && !isMacFullscreen) {
+    }, true);
+
+    macScreen.addEventListener('mousedown', () => {
+      hideCards();
+      setInteractive(true);
+    }, true);
+  }
+
+  // Clicking outside the Mac screen (including on the laptop image or cards): bring back cards and unfocus
+  document.addEventListener('click', (e) => {
+    const isInsideScreen = Boolean(e.target.closest('#imagurrrr .inside') || e.target.closest('.macos-container'));
+    if (!isInsideScreen) {
+      showCards();
+      setInteractive(false);
+    }
+  });
+
+  document.addEventListener('mousedown', (e) => {
+    const isInsideScreen = Boolean(e.target.closest('#imagurrrr .inside') || e.target.closest('.macos-container'));
+    const isCard = Boolean(e.target.closest('.cardage'));
+    if (!isInsideScreen && !isCard) {
+      showCards();
       setInteractive(false);
     }
   });

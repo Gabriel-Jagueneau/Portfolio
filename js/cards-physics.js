@@ -63,13 +63,23 @@ export function setMacInteractiveMode(active) {
   if (!zone) return;
   const rect = zone.getBoundingClientRect();
   const normalRadius = getBaseOrbitRadius(rect.width);
-  const radius = isMacInteractive
-    ? normalRadius * 1.35
-    : normalRadius;
-
   bodies.forEach(b => {
-    b.targetRadius = radius;
+    b.targetRadius = normalRadius;
   });
+}
+
+function getOrbitCenter() {
+  if (!zone) return { centerX: 280, centerY: 250 };
+  const rect = zone.getBoundingClientRect();
+  const mac = document.getElementById('imagurrrr') || document.querySelector('.image-container');
+  if (mac) {
+    const macRect = mac.getBoundingClientRect();
+    return {
+      centerX: (macRect.left - rect.left) + macRect.width * 0.5,
+      centerY: (macRect.top - rect.top) + macRect.height * 0.5
+    };
+  }
+  return { centerX: rect.width * 0.5, centerY: rect.height * 0.5 };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -79,8 +89,7 @@ export function initializeOrbits() {
   if (!zone) return;
   const rect = zone.getBoundingClientRect();
   const targetRadius = getBaseOrbitRadius(rect.width);
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
+  const { centerX, centerY } = getOrbitCenter();
   const n = allCards.length || 1;
 
   bodies = allCards.map((el, i) => {
@@ -353,9 +362,7 @@ function resolveCollisions(maxIterations = 20) {
 function physicsLoop() {
   if (!visible || document.hidden || !zone) { rafId = null; return; }
 
-  const rect = zone.getBoundingClientRect();
-  const centerX = rect.width / 2;
-  const centerY = rect.height / 2;
+  const { centerX, centerY } = getOrbitCenter();
 
   // ── Integrate all non-dragging bodies
   for (const b of bodies) {

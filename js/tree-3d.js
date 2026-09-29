@@ -259,33 +259,85 @@ export function initWebGLTree(onComplete) {
   const treeGroup = new THREE.Group();
   scene.add(treeGroup);
 
-  // Mossy Ground Mound
+  // ─── Mossy Ground Mound with Organic Undulating Falloff into Background ───
+  // Le sol se fond de manière 100% imperceptible avec la couleur de fond du site (rgb(25, 25, 25))
   const groundCanvas = document.createElement('canvas');
   groundCanvas.width = 512;
   groundCanvas.height = 512;
   const gCtx = groundCanvas.getContext('2d');
+  gCtx.clearRect(0, 0, 512, 512);
 
-  const radGrad = gCtx.createRadialGradient(256, 256, 15, 256, 256, 250);
-  radGrad.addColorStop(0.0, 'rgba(46, 125, 50, 0.95)');
-  radGrad.addColorStop(0.25, 'rgba(67, 160, 71, 0.85)');
-  radGrad.addColorStop(0.55, 'rgba(76, 175, 80, 0.50)');
-  radGrad.addColorStop(0.80, 'rgba(129, 199, 132, 0.20)');
-  radGrad.addColorStop(1.0, 'rgba(46, 125, 50, 0.00)');
+  // 1) Lobe principal au centre (humus fertile & mousse forestière profonde)
+  const mainGrad = gCtx.createRadialGradient(256, 256, 12, 256, 256, 235);
+  mainGrad.addColorStop(0.00, 'rgba(28, 42, 24, 0.95)');   // Cœur d'humus et terre sombre
+  mainGrad.addColorStop(0.22, 'rgba(38, 78, 36, 0.90)');   // Mousse veloutée vibrante
+  mainGrad.addColorStop(0.42, 'rgba(46, 75, 40, 0.72)');   // Tapis végétal intermédiaire
+  mainGrad.addColorStop(0.62, 'rgba(36, 52, 34, 0.45)');   // Début de transition douce vers la pénombre
+  mainGrad.addColorStop(0.78, 'rgba(28, 36, 28, 0.20)');   // Teinte terreuse très proche du fond
+  mainGrad.addColorStop(0.88, 'rgba(25, 25, 25, 0.08)');   // Transition chromatique exacte vers rgb(25, 25, 25)
+  mainGrad.addColorStop(1.00, 'rgba(25, 25, 25, 0.00)');   // Zéro bordure visible
 
-  gCtx.fillStyle = radGrad;
-  gCtx.fillRect(0, 0, 512, 512);
+  gCtx.fillStyle = mainGrad;
+  gCtx.beginPath();
+  gCtx.arc(256, 256, 238, 0, Math.PI * 2);
+  gCtx.fill();
+
+  // 2) Lobes organiques secondaires décentrés pour briser toute géométrie circulaire artificielle
+  const groundLobes = [
+    { cx: 290, cy: 230, r: 175, col: 'rgba(36, 70, 34, 0.35)' },
+    { cx: 220, cy: 285, r: 180, col: 'rgba(34, 68, 32, 0.32)' },
+    { cx: 280, cy: 295, r: 165, col: 'rgba(40, 75, 36, 0.28)' },
+    { cx: 225, cy: 220, r: 170, col: 'rgba(35, 65, 32, 0.30)' },
+    { cx: 310, cy: 265, r: 155, col: 'rgba(38, 72, 35, 0.25)' },
+    { cx: 200, cy: 255, r: 160, col: 'rgba(36, 68, 34, 0.27)' }
+  ];
+
+  groundLobes.forEach(({ cx, cy, r, col }) => {
+    const lobeGrad = gCtx.createRadialGradient(cx, cy, 10, cx, cy, r);
+    lobeGrad.addColorStop(0.00, col);
+    lobeGrad.addColorStop(0.55, 'rgba(28, 42, 26, 0.14)');
+    lobeGrad.addColorStop(0.82, 'rgba(25, 25, 25, 0.04)');
+    lobeGrad.addColorStop(1.00, 'rgba(25, 25, 25, 0.00)');
+
+    gCtx.fillStyle = lobeGrad;
+    gCtx.beginPath();
+    gCtx.arc(cx, cy, r, 0, Math.PI * 2);
+    gCtx.fill();
+  });
+
+  // 3) Micro-détails botaniques d'humus et mottes de mousse dans le dôme central
+  for (let i = 0; i < 350; i++) {
+    const a = Math.random() * Math.PI * 2;
+    const dist = Math.pow(Math.random(), 1.6) * 160;
+    const px = 256 + Math.cos(a) * dist;
+    const py = 256 + Math.sin(a) * dist;
+    const sz = 1.0 + Math.random() * 2.5;
+    const isMoss = Math.random() > 0.45;
+    gCtx.fillStyle = isMoss
+      ? `rgba(${45 + Math.random() * 25}, ${85 + Math.random() * 35}, ${42 + Math.random() * 20}, ${0.12 + Math.random() * 0.16})`
+      : `rgba(${22 + Math.random() * 15}, ${26 + Math.random() * 15}, ${20 + Math.random() * 10}, ${0.15 + Math.random() * 0.20})`;
+    gCtx.beginPath();
+    gCtx.arc(px, py, sz, 0, Math.PI * 2);
+    gCtx.fill();
+  }
 
   const groundTexture = new THREE.CanvasTexture(groundCanvas);
+  groundTexture.wrapS = THREE.ClampToEdgeWrapping;
+  groundTexture.wrapT = THREE.ClampToEdgeWrapping;
+  groundTexture.minFilter = THREE.LinearMipmapLinearFilter;
+  groundTexture.magFilter = THREE.LinearFilter;
+
   const groundMat = new THREE.MeshStandardMaterial({
     map: groundTexture,
     transparent: true,
     depthWrite: false,
-    roughness: 0.9,
-    metalness: 0.05,
+    roughness: 0.95,
+    metalness: 0.02,
     side: THREE.DoubleSide
   });
 
-  const groundPlane = new THREE.Mesh(new THREE.PlaneGeometry(14, 14), groundMat);
+  // Plan élargi (18x18m) assurant que les bordures dégradées s'étendent amplement avec une transition douce
+  const groundPlane = new THREE.Mesh(new THREE.PlaneGeometry(18, 18), groundMat);
   groundPlane.rotation.x = -Math.PI * 0.5;
   groundPlane.position.set(0, -4.41, 0);
   groundPlane.receiveShadow = true;
@@ -307,8 +359,11 @@ export function initWebGLTree(onComplete) {
     const hScale = 0.6 + Math.random() * 0.9;
     const wScale = 0.7 + Math.random() * 0.6;
 
+    // Atténuation délicate de la flore vers les bords pour accompagner le fondu du sol
+    const distFade = rad < 1.0 ? 1.0 : Math.max(0.35, 1.0 - (rad - 1.0) / 1.85);
+
     grass.position.set(Math.cos(clusterAngle) * rad, -4.41, Math.sin(clusterAngle) * rad);
-    grass.scale.set(wScale, hScale, wScale);
+    grass.scale.set(wScale * distFade, hScale * distFade, wScale * distFade);
 
     const tilt = 0.15 + Math.random() * 0.35;
     grass.rotation.set(
@@ -474,26 +529,280 @@ export function initWebGLTree(onComplete) {
     new THREE.Vector3(0.22, 2.85, 0.00)    // 11 (Stage 4 Crown fork)
   ];
 
-  const trunkRadii = [
-    0.60, 0.56, 0.52, 0.48, 0.44, 0.40, 0.36, 0.32, 0.28, 0.24, 0.20, 0.16
-  ];
+  // ─── 8. Continuous Single-Mesh Botanical Trunk Engine (Un Seul Polygone 3D) ──
+  // A single continuous 3D manifold mesh along the organic S-curve without segmented
+  // cylinders, overlapping knuckles, or joint artifacts.
+  const trunkCurve = new THREE.CatmullRomCurve3(trunkNodes, false, 'catmullrom', 0.25);
+  const TRUNK_RINGS = 64;
+  const TRUNK_RADIAL = 18;
+  const SAMPLES = 256;
 
-  // Precise sequential growth intervals for the main trunk segments
-  const trunkIntervals = [
-    [0.00, 0.07, 0.35, 1], // Seg 0: Node 0 -> Node 1 (reaches node 1 at 0.07)
-    [0.06, 0.13, 0.37, 1], // Seg 1: Node 1 -> Node 2 (reaches node 2 at 0.13)
-    [0.12, 0.19, 0.40, 1], // Seg 2: Node 2 -> Node 3 (reaches node 3 at 0.19)
-    [0.18, 0.25, 0.44, 1], // Seg 3: Node 3 -> Node 4 (Stage 1 Crown at 0.25)
-    [0.25, 0.38, 0.48, 2], // Seg 4: Node 4 -> Node 5 (Trunk arrives at Node 5 at 0.38)
-    [0.37, 0.49, 0.54, 2], // Seg 5: Node 5 -> Node 6 (Stage 2 Leader apex at 0.49)
-    [0.50, 0.60, 0.62, 3], // Seg 6: Node 6 -> Node 7 (Trunk arrives at Node 7 at 0.60)
-    [0.59, 0.67, 0.68, 3], // Seg 7: Node 7 -> Node 8 (reaches node 8 at 0.67)
-    [0.66, 0.73, 0.74, 3], // Seg 8: Node 8 -> Node 9 (reaches node 9 at 0.73)
-    [0.72, 0.78, 0.77, 3], // Seg 9: Node 9 -> Node 10 (reaches node 10 at 0.78)
-    [0.77, 0.84, 0.83, 4]  // Seg 10: Node 10 -> Node 11 (Trunk arrives at Node 11 at 0.84)
-  ];
+  // Precompute sample points, tangents, and rotation-minimizing frames (Double Reflection RMF)
+  const samplePoints = [];
+  const sampleTangents = [];
+  for (let k = 0; k <= SAMPLES; k++) {
+    const u = k / SAMPLES;
+    samplePoints.push(trunkCurve.getPointAt(u));
+    sampleTangents.push(trunkCurve.getTangentAt(u));
+  }
 
-  // ─── 8. Seamless Continuous Branch Engine (No Floating Balls!) ────────────
+  const sampleNormals = new Array(SAMPLES + 1);
+  const sampleBinormals = new Array(SAMPLES + 1);
+
+  const t0 = sampleTangents[0];
+  let n0 = new THREE.Vector3(0, 0, 1);
+  if (Math.abs(t0.z) > 0.85) n0.set(1, 0, 0);
+  n0.crossVectors(t0, n0).normalize();
+  sampleNormals[0] = n0;
+  sampleBinormals[0] = new THREE.Vector3().crossVectors(t0, n0).normalize();
+
+  for (let i = 1; i <= SAMPLES; i++) {
+    const pPrev = samplePoints[i - 1];
+    const pCurr = samplePoints[i];
+    const tPrev = sampleTangents[i - 1];
+    const tCurr = sampleTangents[i];
+    const nPrev = sampleNormals[i - 1];
+
+    const v1 = new THREE.Vector3().subVectors(pCurr, pPrev);
+    const c1 = v1.dot(v1);
+
+    if (c1 < 1e-8) {
+      sampleNormals[i] = nPrev.clone();
+      sampleBinormals[i] = new THREE.Vector3().crossVectors(tCurr, sampleNormals[i]).normalize();
+      continue;
+    }
+
+    const rL = new THREE.Vector3().subVectors(nPrev, v1.clone().multiplyScalar((2.0 / c1) * v1.dot(nPrev)));
+    const tL = new THREE.Vector3().subVectors(tPrev, v1.clone().multiplyScalar((2.0 / c1) * v1.dot(tPrev)));
+
+    const v2 = new THREE.Vector3().subVectors(tCurr, tL);
+    const c2 = v2.dot(v2);
+
+    let nCurr;
+    if (c2 < 1e-8) {
+      nCurr = rL.normalize();
+    } else {
+      nCurr = new THREE.Vector3().subVectors(rL, v2.clone().multiplyScalar((2.0 / c2) * v2.dot(rL))).normalize();
+    }
+
+    sampleNormals[i] = nCurr;
+    sampleBinormals[i] = new THREE.Vector3().crossVectors(tCurr, nCurr).normalize();
+  }
+
+  // Precomputed trigonometric tables for the 18 radial segments
+  const cosTable = new Float32Array(TRUNK_RADIAL + 1);
+  const sinTable = new Float32Array(TRUNK_RADIAL + 1);
+  for (let j = 0; j <= TRUNK_RADIAL; j++) {
+    const angle = (j / TRUNK_RADIAL) * Math.PI * 2;
+    cosTable[j] = Math.cos(angle);
+    sinTable[j] = Math.sin(angle);
+  }
+
+  // Trunk Geometry & Buffers
+  const stride = TRUNK_RADIAL + 1;
+  const totalVerts = (TRUNK_RINGS + 1) * stride + 2;
+  const bottomCapIdx = (TRUNK_RINGS + 1) * stride;
+  const topCapIdx = bottomCapIdx + 1;
+
+  const posArr = new Float32Array(totalVerts * 3);
+  const normArr = new Float32Array(totalVerts * 3);
+  const uvArr = new Float32Array(totalVerts * 2);
+
+  const indices = [];
+  for (let i = 0; i < TRUNK_RINGS; i++) {
+    for (let j = 0; j < TRUNK_RADIAL; j++) {
+      const a = i * stride + j;
+      const b = (i + 1) * stride + j;
+      const c = (i + 1) * stride + (j + 1);
+      const d = i * stride + (j + 1);
+      indices.push(a, b, d);
+      indices.push(b, c, d);
+    }
+  }
+
+  // Bottom cap fan
+  for (let j = 0; j < TRUNK_RADIAL; j++) {
+    indices.push(bottomCapIdx, j + 1, j);
+  }
+
+  // Top cap fan
+  const topRingStart = TRUNK_RINGS * stride;
+  for (let j = 0; j < TRUNK_RADIAL; j++) {
+    indices.push(topCapIdx, topRingStart + j, topRingStart + j + 1);
+  }
+
+  const trunkGeo = new THREE.BufferGeometry();
+  trunkGeo.setIndex(indices);
+  trunkGeo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
+  trunkGeo.setAttribute('normal', new THREE.BufferAttribute(normArr, 3));
+  trunkGeo.setAttribute('uv', new THREE.BufferAttribute(uvArr, 2));
+
+  const trunkMat = new THREE.MeshStandardMaterial({
+    color: sproutGreenColor.clone(),
+    map: youngStemTexture,
+    roughness: 0.35,
+    metalness: 0.04
+  });
+
+  const trunkMesh = new THREE.Mesh(trunkGeo, trunkMat);
+  trunkMesh.castShadow = true;
+  trunkMesh.receiveShadow = true;
+  trunkMesh.frustumCulled = false; // Ne jamais masquer le tronc lors des déplacements caméra
+  treeGroup.add(trunkMesh);
+  trunkMesh.isTextureMatured = false;
+
+  function getTrunkGrowthT(prog) {
+    if (prog <= 0.0) return 0.005;
+    if (prog <= 0.25) {
+      // Stage 1 (0 -> 25%) : Germination naturelle, la jeune tige verte émerge
+      // et atteint une taille de jeune pousse réaliste et délicate (~75 cm, t = 0.11)
+      const u = prog / 0.25;
+      const ease = u * u * (3 - 2 * u);
+      return 0.005 + 0.105 * ease;
+    }
+    if (prog <= 0.38) {
+      // Stage 2 (25% -> 38%) : Élongation de l'arbrisseau vers la fourche latérale (Node 5, t = 0.382)
+      const u = (prog - 0.25) / 0.13;
+      const ease = u * u * (3 - 2 * u);
+      return 0.110 + (0.382 - 0.110) * ease;
+    }
+    if (prog <= 0.60) {
+      // Stage 3 (38% -> 60%) : Croissance jusqu'à la fourche médiane (Node 7, t = 0.600)
+      const u = (prog - 0.38) / 0.22;
+      const ease = u * u * (3 - 2 * u);
+      return 0.382 + (0.600 - 0.382) * ease;
+    }
+    if (prog <= 0.84) {
+      // Stage 4 (60% -> 84%) : Tronc supérieur jusqu'à la cime (Node 11, t = 1.0)
+      const u = (prog - 0.60) / 0.24;
+      const ease = u * u * (3 - 2 * u);
+      return 0.600 + 0.400 * ease;
+    }
+    return 1.0;
+  }
+
+  function getTrunkBaseRadius(t, prog) {
+    const baseR = 0.60 - t * 0.44;
+    // Les contreforts racinaires massifs n'apparaissent qu'avec la maturité (prog > 0.35)
+    const maturity = Math.max(0, Math.min(1.0, (prog - 0.35) / 0.50));
+    const flare = (t < 0.08) ? Math.pow((0.08 - t) / 0.08, 2) * 0.12 * maturity : 0.0;
+    return baseR + flare;
+  }
+
+  const tempCenter = new THREE.Vector3();
+
+  function updateContinuousTrunk(prog, thicknessFactor) {
+    const targetT = getTrunkGrowthT(prog);
+
+    let ptr = 0;
+    let uvPtr = 0;
+
+    for (let i = 0; i <= TRUNK_RINGS; i++) {
+      const s = i / TRUNK_RINGS;
+      const t = s * targetT;
+
+      trunkCurve.getPointAt(t, tempCenter);
+
+      const sampleIdx = Math.min(SAMPLES, Math.max(0, Math.round(t * SAMPLES)));
+      const N = sampleNormals[sampleIdx];
+      const B = sampleBinormals[sampleIdx];
+
+      const baseR = getTrunkBaseRadius(t, prog);
+
+      let tipFactor = 1.0;
+      if (targetT < 0.98) {
+        if (s > 0.88) {
+          tipFactor = Math.sin((1.0 - s) / 0.12 * Math.PI * 0.5);
+        }
+      } else {
+        if (s > 0.95) {
+          tipFactor = 0.90 + 0.10 * (1.0 - s) / 0.05;
+        }
+      }
+
+      // Rayon minimal non nul pour éviter les triangles dégénérés (évite les normales NaN)
+      const minTipR = 0.015 * thicknessFactor;
+      const ringRadius = Math.max(minTipR, baseR * thicknessFactor * tipFactor);
+
+      for (let j = 0; j <= TRUNK_RADIAL; j++) {
+        const cosVal = cosTable[j];
+        const sinVal = sinTable[j];
+        const angle = (j / TRUNK_RADIAL) * Math.PI * 2;
+
+        const fluting = 1.0 + 0.032 * Math.sin(angle * 4.0 + t * 12.0) + 0.018 * Math.cos(angle * 2.0 - t * 6.0);
+        const r = ringRadius * fluting;
+
+        posArr[ptr++] = tempCenter.x + r * (N.x * cosVal + B.x * sinVal);
+        posArr[ptr++] = tempCenter.y + r * (N.y * cosVal + B.y * sinVal);
+        posArr[ptr++] = tempCenter.z + r * (N.z * cosVal + B.z * sinVal);
+
+        uvArr[uvPtr++] = (j / TRUNK_RADIAL) * 2.0;
+        uvArr[uvPtr++] = t * 4.0;
+      }
+    }
+
+    // Sommet central calotte basse (racine)
+    const basePt = samplePoints[0];
+    posArr[ptr++] = basePt.x;
+    posArr[ptr++] = basePt.y - 0.02;
+    posArr[ptr++] = basePt.z;
+    uvArr[uvPtr++] = 0.5;
+    uvArr[uvPtr++] = 0.0;
+
+    // Sommet central calotte haute (apex légèrement décalé le long de la tangente)
+    const topTanIdx = Math.min(SAMPLES, Math.max(0, Math.round(targetT * SAMPLES)));
+    const topTan = sampleTangents[topTanIdx];
+    const topOffset = 0.03 * thicknessFactor;
+    posArr[ptr++] = tempCenter.x + topTan.x * topOffset;
+    posArr[ptr++] = tempCenter.y + topTan.y * topOffset;
+    posArr[ptr++] = tempCenter.z + topTan.z * topOffset;
+    uvArr[uvPtr++] = 0.5;
+    uvArr[uvPtr++] = targetT * 4.0;
+
+    trunkGeo.computeVertexNormals();
+
+    // Protection absolue contre les valeurs NaN dans les normales
+    const nArray = trunkGeo.attributes.normal.array;
+    for (let k = 0; k < nArray.length; k += 3) {
+      if (isNaN(nArray[k]) || isNaN(nArray[k + 1]) || isNaN(nArray[k + 2])) {
+        nArray[k] = 0;
+        nArray[k + 1] = 1;
+        nArray[k + 2] = 0;
+      }
+    }
+
+    trunkGeo.attributes.position.needsUpdate = true;
+    trunkGeo.attributes.normal.needsUpdate = true;
+    trunkGeo.attributes.uv.needsUpdate = true;
+    trunkGeo.computeBoundingSphere();
+
+    // Transitions de texture et de matériau
+    if (prog < 0.25) {
+      trunkMat.color.copy(sproutGreenColor);
+      trunkMat.roughness = 0.35;
+      if (trunkMesh.isTextureMatured) {
+        trunkMat.map = youngStemTexture;
+        trunkMat.needsUpdate = true;
+        trunkMesh.isTextureMatured = false;
+      }
+    } else if (prog < 0.50) {
+      const hazelP = (prog - 0.25) / 0.25;
+      trunkMat.color.lerpColors(sproutGreenColor, youngHazelBarkColor, Math.min(1.0, hazelP * 1.3));
+      trunkMat.roughness = THREE.MathUtils.lerp(0.35, 0.58, hazelP);
+    } else {
+      const brownP = Math.min(1.0, (prog - 0.50) / 0.25);
+      trunkMat.color.lerpColors(youngHazelBarkColor, barkDarkBrownColor, brownP);
+      trunkMat.roughness = THREE.MathUtils.lerp(0.58, 0.85, brownP);
+
+      if (!trunkMesh.isTextureMatured && prog >= 0.52) {
+        trunkMat.map = matureBarkTexture;
+        trunkMat.needsUpdate = true;
+        trunkMesh.isTextureMatured = true;
+      }
+    }
+  }
+
+  // ─── 8. Lateral Bough and Twig Engine ─────────────────────────────────────
   const branches = [];
   const leaves = [];
   const twigTipGeo = new THREE.SphereGeometry(1, 6, 6, 0, Math.PI * 2, 0, Math.PI * 0.5);
@@ -501,7 +810,6 @@ export function initWebGLTree(onComplete) {
   function createBranch({
     start, end, rStart, rEnd,
     startP, endP, turnBrownP = 1.0,
-    isMainTrunk = false,
     stage = 1,
     hasTipCap = false
   }) {
@@ -509,9 +817,8 @@ export function initWebGLTree(onComplete) {
     const len = dir.length();
 
     // Natural overlap extends backward into the parent segment for a continuous seamless joint
-    const overlap = Math.min(len * 0.18, rStart * 0.40);
-    // 12 radial segments for smooth, sculpted, photorealistic wood curvature
-    const geo = new THREE.CylinderGeometry(rEnd, rStart, len + overlap, 12);
+    const overlap = Math.min(len * 0.18, rStart * 0.35);
+    const geo = new THREE.CylinderGeometry(rEnd, rStart, len + overlap, 12, 1, true);
     geo.translate(0, (len + overlap) * 0.5 - overlap, 0);
     geo.computeVertexNormals();
 
@@ -552,7 +859,6 @@ export function initWebGLTree(onComplete) {
       startP,
       endP,
       turnBrownP,
-      isMainTrunk,
       stage,
       rStart,
       rEnd,
@@ -564,22 +870,6 @@ export function initWebGLTree(onComplete) {
     };
     branches.push(branchObj);
     return branchObj;
-  }
-
-  // Create Continuous Trunk Spine (Seamless overlapping wood, no joint spheres)
-  for (let s = 0; s < 11; s++) {
-    createBranch({
-      start: trunkNodes[s],
-      end: trunkNodes[s + 1],
-      rStart: trunkRadii[s],
-      rEnd: trunkRadii[s + 1],
-      startP: trunkIntervals[s][0],
-      endP: trunkIntervals[s][1],
-      turnBrownP: trunkIntervals[s][2],
-      stage: trunkIntervals[s][3],
-      isMainTrunk: true,
-      hasTipCap: false
-    });
   }
 
   // ─── 9. Stage 1 Seedling Specialized Foliage & Morning Dew Droplets ──────
@@ -745,6 +1035,8 @@ export function initWebGLTree(onComplete) {
 
   // ─── 14. High-Density Foliage Canopy Structured by Stage ──────────────────
   function addCanopyCluster(center, count, radiusX, radiusY, radiusZ, bloomStartP, bloomEndP, stage = 4) {
+    const clusterSpan = Math.max(0.04, bloomEndP - bloomStartP);
+
     for (let i = 0; i < count; i++) {
       const mat = leafMaterials[Math.floor(Math.random() * leafMaterials.length)];
       const leaf = new THREE.Mesh(leafGeo, mat);
@@ -773,53 +1065,62 @@ export function initWebGLTree(onComplete) {
       leaf.scale.set(0.0001, 0.0001, 0.0001);
       treeGroup.add(leaf);
 
+      // Échelonnement individuel et organique de chaque feuille dans l'intervalle du cluster
+      // pour éviter tout effet de bloc ou d'apparition soudaine en masse
+      const staggerFraction = (i + Math.random() * 0.5) / (count + 0.5);
+      const leafStartP = bloomStartP + staggerFraction * clusterSpan * 0.65;
+      const leafDuration = 0.08 + Math.random() * 0.04;
+
       leaves.push({
         mesh: leaf,
         targetScale: baseScale,
+        leafStartP,
+        leafDuration,
         bloomStartP,
         bloomEndP,
         stage,
         swayPhase: Math.random() * Math.PI * 2,
         swaySpeed: 1.6 + Math.random() * 2.0,
-        origRot: leaf.rotation.clone()
+        origRot: leaf.rotation.clone(),
+        unfurlAngle: (Math.random() * 0.35 + 0.2) * (Math.random() < 0.5 ? -1 : 1)
       });
     }
   }
 
-  // Stage 2 Foliage: Blooms cleanly between 0.44 and 0.50 (in sync with sapling boughs)
-  addCanopyCluster(bL_nodes[2], 26, 0.7, 0.6, 0.7, 0.44, 0.50, 2);
-  addCanopyCluster(bR_nodes[2], 28, 0.7, 0.6, 0.7, 0.44, 0.50, 2);
-  addCanopyCluster(trunkNodes[5], 24, 0.6, 0.5, 0.6, 0.40, 0.49, 2);
-  addCanopyCluster(trunkNodes[6], 26, 0.7, 0.6, 0.7, 0.45, 0.50, 2);
+  // Stage 2 Foliage: Blooms cleanly between 0.42 and 0.54 (in sync with sapling boughs)
+  addCanopyCluster(bL_nodes[2], 26, 0.7, 0.6, 0.7, 0.42, 0.52, 2);
+  addCanopyCluster(bR_nodes[2], 28, 0.7, 0.6, 0.7, 0.42, 0.52, 2);
+  addCanopyCluster(trunkNodes[5], 24, 0.6, 0.5, 0.6, 0.40, 0.50, 2);
+  addCanopyCluster(trunkNodes[6], 26, 0.7, 0.6, 0.7, 0.44, 0.54, 2);
 
-  // Stage 3 Foliage: Rich Mid-Tier Canopy Volumes (0.58 -> 0.74)
-  addCanopyCluster(bL_nodes[3], 45, 1.2, 1.0, 1.2, 0.58, 0.70, 3);
-  addCanopyCluster(bL_nodes[4], 50, 1.3, 1.1, 1.3, 0.62, 0.73, 3);
-  addCanopyCluster(bR_nodes[3], 55, 1.3, 1.1, 1.3, 0.58, 0.70, 3);
-  addCanopyCluster(bF_nodes[1], 35, 1.0, 0.8, 1.0, 0.68, 0.74, 3);
-  addCanopyCluster(bB_nodes[1], 35, 1.0, 0.8, 1.0, 0.68, 0.74, 3);
-  addCanopyCluster(new THREE.Vector3(0.0, 1.8, 0.0), 50, 1.4, 1.2, 1.4, 0.60, 0.72, 3);
-  addCanopyCluster(new THREE.Vector3(1.5, 2.2, 0.2), 45, 1.3, 1.1, 1.3, 0.62, 0.74, 3);
-  addCanopyCluster(new THREE.Vector3(-1.2, 2.0, -0.3), 45, 1.3, 1.1, 1.3, 0.62, 0.74, 3);
+  // Stage 3 Foliage: Rich Mid-Tier Canopy Volumes (0.56 -> 0.76)
+  addCanopyCluster(bL_nodes[3], 45, 1.2, 1.0, 1.2, 0.56, 0.72, 3);
+  addCanopyCluster(bL_nodes[4], 50, 1.3, 1.1, 1.3, 0.60, 0.75, 3);
+  addCanopyCluster(bR_nodes[3], 55, 1.3, 1.1, 1.3, 0.56, 0.72, 3);
+  addCanopyCluster(bF_nodes[1], 35, 1.0, 0.8, 1.0, 0.64, 0.76, 3);
+  addCanopyCluster(bB_nodes[1], 35, 1.0, 0.8, 1.0, 0.64, 0.76, 3);
+  addCanopyCluster(new THREE.Vector3(0.0, 1.8, 0.0), 50, 1.4, 1.2, 1.4, 0.58, 0.74, 3);
+  addCanopyCluster(new THREE.Vector3(1.5, 2.2, 0.2), 45, 1.3, 1.1, 1.3, 0.60, 0.75, 3);
+  addCanopyCluster(new THREE.Vector3(-1.2, 2.0, -0.3), 45, 1.3, 1.1, 1.3, 0.60, 0.75, 3);
 
-  // Stage 4 Foliage: Full High-Density Crown & Sprawling Boughs (0.78 -> 0.96)
-  addCanopyCluster(bTopCrown_end, 65, 1.4, 1.3, 1.4, 0.88, 0.96, 4);
-  addCanopyCluster(new THREE.Vector3(0.0, 4.8, 0.0), 60, 1.5, 1.2, 1.5, 0.88, 0.96, 4);
-  addCanopyCluster(bTop1_end, 45, 1.2, 1.0, 1.2, 0.88, 0.95, 4);
-  addCanopyCluster(bTop2_end, 45, 1.2, 1.0, 1.2, 0.88, 0.95, 4);
-  addCanopyCluster(new THREE.Vector3(-1.0, 4.2, 0.4), 50, 1.3, 1.1, 1.3, 0.85, 0.95, 4);
-  addCanopyCluster(new THREE.Vector3(1.2, 4.3, -0.3), 50, 1.3, 1.1, 1.3, 0.85, 0.95, 4);
-  addCanopyCluster(bF_nodes[2], 45, 1.2, 1.0, 1.2, 0.78, 0.92, 4);
-  addCanopyCluster(new THREE.Vector3(1.8, 2.8, 2.4), 40, 1.1, 1.0, 1.1, 0.80, 0.93, 4);
-  addCanopyCluster(bB_nodes[2], 45, 1.2, 1.0, 1.2, 0.78, 0.92, 4);
-  addCanopyCluster(new THREE.Vector3(-2.0, 3.0, -2.2), 40, 1.1, 1.0, 1.1, 0.80, 0.93, 4);
-  addCanopyCluster(bR_nodes[4], 65, 1.4, 1.2, 1.4, 0.78, 0.92, 4);
-  addCanopyCluster(bR_nodes[5], 60, 1.4, 1.2, 1.4, 0.88, 0.96, 4);
-  addCanopyCluster(new THREE.Vector3(4.2, 3.5, -0.4), 55, 1.3, 1.1, 1.3, 0.85, 0.96, 4);
-  addCanopyCluster(new THREE.Vector3(5.2, 2.4, 0.4), 50, 1.2, 1.0, 1.2, 0.85, 0.96, 4);
-  addCanopyCluster(new THREE.Vector3(-3.2, 2.8, 0.7), 40, 1.1, 1.0, 1.1, 0.82, 0.94, 4);
-  addCanopyCluster(new THREE.Vector3(1.5, 3.2, 0.2), 50, 1.5, 1.3, 1.5, 0.84, 0.95, 4);
-  addCanopyCluster(new THREE.Vector3(-1.0, 3.0, -0.2), 45, 1.4, 1.2, 1.4, 0.82, 0.94, 4);
+  // Stage 4 Foliage: Full High-Density Crown & Sprawling Boughs (0.76 -> 0.98)
+  addCanopyCluster(bTopCrown_end, 65, 1.4, 1.3, 1.4, 0.85, 0.97, 4);
+  addCanopyCluster(new THREE.Vector3(0.0, 4.8, 0.0), 60, 1.5, 1.2, 1.5, 0.85, 0.97, 4);
+  addCanopyCluster(bTop1_end, 45, 1.2, 1.0, 1.2, 0.86, 0.96, 4);
+  addCanopyCluster(bTop2_end, 45, 1.2, 1.0, 1.2, 0.86, 0.96, 4);
+  addCanopyCluster(new THREE.Vector3(-1.0, 4.2, 0.4), 50, 1.3, 1.1, 1.3, 0.83, 0.96, 4);
+  addCanopyCluster(new THREE.Vector3(1.2, 4.3, -0.3), 50, 1.3, 1.1, 1.3, 0.83, 0.96, 4);
+  addCanopyCluster(bF_nodes[2], 45, 1.2, 1.0, 1.2, 0.76, 0.92, 4);
+  addCanopyCluster(new THREE.Vector3(1.8, 2.8, 2.4), 40, 1.1, 1.0, 1.1, 0.78, 0.93, 4);
+  addCanopyCluster(bB_nodes[2], 45, 1.2, 1.0, 1.2, 0.76, 0.92, 4);
+  addCanopyCluster(new THREE.Vector3(-2.0, 3.0, -2.2), 40, 1.1, 1.0, 1.1, 0.78, 0.93, 4);
+  addCanopyCluster(bR_nodes[4], 65, 1.4, 1.2, 1.4, 0.76, 0.92, 4);
+  addCanopyCluster(bR_nodes[5], 60, 1.4, 1.2, 1.4, 0.85, 0.97, 4);
+  addCanopyCluster(new THREE.Vector3(4.2, 3.5, -0.4), 55, 1.3, 1.1, 1.3, 0.82, 0.96, 4);
+  addCanopyCluster(new THREE.Vector3(5.2, 2.4, 0.4), 50, 1.2, 1.0, 1.2, 0.82, 0.96, 4);
+  addCanopyCluster(new THREE.Vector3(-3.2, 2.8, 0.7), 40, 1.1, 1.0, 1.1, 0.80, 0.94, 4);
+  addCanopyCluster(new THREE.Vector3(1.5, 3.2, 0.2), 50, 1.5, 1.3, 1.5, 0.82, 0.95, 4);
+  addCanopyCluster(new THREE.Vector3(-1.0, 3.0, -0.2), 45, 1.4, 1.2, 1.4, 0.80, 0.94, 4);
 
   // Floating Breeze Leaves
   const floatingLeaves = [];
@@ -889,6 +1190,29 @@ export function initWebGLTree(onComplete) {
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
   }, { passive: true });
+
+  // ─── Smooth Cinematic Camera Spline Paths ─────────────────────────────────
+  const camPath = [
+    new THREE.Vector3(0.00, -4.00, 4.40),  // 0% Sol / Semis émergent
+    new THREE.Vector3(0.00, -3.40, 5.50),  // 25% Jeune pousse
+    new THREE.Vector3(0.15, -1.60, 9.50),  // 50% Arbrisseau
+    new THREE.Vector3(0.35,  0.50, 14.50), // 75% Arbre en croissance
+    new THREE.Vector3(-3.20, 0.90, 14.20)  // 100% Chêne mature
+  ];
+
+  const lookPath = [
+    new THREE.Vector3(0.00, -4.30, 0.00),  // 0% Sol
+    new THREE.Vector3(0.00, -3.20, 0.00),  // 25% Pousse
+    new THREE.Vector3(0.10, -1.00, 0.00),  // 50% Sapling
+    new THREE.Vector3(0.15,  1.10, 0.00),  // 75% Mid-canopy
+    new THREE.Vector3(-1.20, 1.50, 0.00)   // 100% Cime
+  ];
+
+  const camCurve = new THREE.CatmullRomCurve3(camPath, false, 'catmullrom', 0.5);
+  const lookCurve = new THREE.CatmullRomCurve3(lookPath, false, 'catmullrom', 0.5);
+  const currentCamLook = new THREE.Vector3(0, -4.3, 0);
+  const targetCamPos = new THREE.Vector3();
+  const targetLookPos = new THREE.Vector3();
 
   // ─── 16. Real Page Loading State & Staging Caps ───────────────────────────
   let domReady = (document.readyState === 'interactive' || document.readyState === 'complete');
@@ -980,42 +1304,39 @@ export function initWebGLTree(onComplete) {
 
   // Dynamic Sprout Tip Calculation
   function getSproutTip(prog) {
-    if (prog <= 0.0) return trunkNodes[0].clone();
-    if (prog >= 0.25) return trunkNodes[4].clone();
-
-    for (let s = 0; s < 4; s++) {
-      const segStartP = trunkIntervals[s][0];
-      const segEndP = trunkIntervals[s][1];
-      if (prog <= segEndP) {
-        const u = Math.max(0, Math.min(1, (prog - segStartP) / (segEndP - segStartP)));
-        const ease = u * u * (3 - 2 * u);
-        return new THREE.Vector3().lerpVectors(trunkNodes[s], trunkNodes[s + 1], ease);
-      }
-    }
-    return trunkNodes[4].clone();
+    const t = getTrunkGrowthT(prog);
+    return trunkCurve.getPointAt(Math.max(0.001, Math.min(1.0, t)));
   }
 
   // ─── 18. Animation Loop (60 FPS Multi-Harmonic Wind & Botanical Growth) ───
+  const introDelay = 450; // Pause initiale : seul le background pur est affiché
   const startTime = performance.now();
-  const minDuration = 3000; // 3 secondes minimum
+  const minDuration = 3000; // 3 secondes minimum de croissance de l'arbre
   let currentProgress = 0.0;
   let isRevealed = false;
+  let isCompleteTriggered = false;
+
+  // Déclenchement de l'entrée : le sol monte en fondu up et la barre descend et s'élargit en down width
+  setTimeout(() => {
+    document.body.classList.add('tree-intro-active');
+  }, 400);
 
   function animate(now) {
     animId = requestAnimationFrame(animate);
 
     const elapsed = now - startTime;
     const elapsedSec = elapsed / 1000;
-    const rawTimeProgress = Math.min(1.0, elapsed / minDuration);
+
+    // Pendant les premiers introDelay ms, la croissance reste à 0 (l'écran prépare l'apparition)
+    const growthElapsed = Math.max(0, elapsed - introDelay);
+    const rawTimeProgress = Math.min(1.0, growthElapsed / minDuration);
 
     const organicTimeProgress = botanicalTimeline(rawTimeProgress);
 
-    let maxAllowedCap = 0.25;
-    if (domReady) maxAllowedCap = 0.50;
-    if (domReady && (imagesLoaded || loadedImgCount >= Math.max(1, totalImgs * 0.5))) maxAllowedCap = 0.75;
-    if (domReady && imagesLoaded && windowLoaded) maxAllowedCap = 1.0;
-
-    let targetProgress = Math.min(organicTimeProgress, maxAllowedCap);
+    let targetProgress = organicTimeProgress;
+    if (growthElapsed >= minDuration) {
+      targetProgress = 1.0;
+    }
 
     if (manualLockedProgress !== null) {
       targetProgress = manualLockedProgress;
@@ -1023,10 +1344,12 @@ export function initWebGLTree(onComplete) {
       targetProgress = currentProgress;
     }
 
-    const lerpSpeed = (targetProgress >= 0.99 && currentProgress >= 0.98) ? 0.04 : 0.07;
+    // Convergence fluide vers 100% sans blocage artificiel
+    const lerpSpeed = (targetProgress >= 0.98) ? 0.09 : 0.07;
     currentProgress += (targetProgress - currentProgress) * lerpSpeed;
 
-    if (manualLockedProgress === null && rawTimeProgress >= 1.0 && windowLoaded && (1.0 - currentProgress) < 0.005) {
+    // Verrouillage net et garanti à 100%
+    if (manualLockedProgress === null && (rawTimeProgress >= 1.0 || (1.0 - currentProgress) < 0.008)) {
       currentProgress = 1.0;
     }
 
@@ -1034,7 +1357,7 @@ export function initWebGLTree(onComplete) {
     mouse.x += (mouse.targetX - mouse.x) * 0.05;
     mouse.y += (mouse.targetY - mouse.y) * 0.05;
 
-    // ── Live Top Loader Capsule Update (Ultra-fluid GPU transform, no state text) ──
+    // ── Live Top Loader Capsule Update ──
     const loaderFill = document.getElementById('nav-loader-fill');
     const loaderPercent = document.getElementById('nav-loader-percent');
 
@@ -1043,6 +1366,38 @@ export function initWebGLTree(onComplete) {
     }
     if (loaderPercent) {
       loaderPercent.textContent = `${Math.round(progress * 100)}%`;
+    }
+
+    // ── Étape Terminé : logo vert, bordure et fond vert, puis transition vers le site ──
+    if (progress >= 1.0 && !isCompleteTriggered && manualLockedProgress === null) {
+      isCompleteTriggered = true;
+
+      // Garantir l'affichage 100%
+      if (loaderFill) loaderFill.style.transform = 'scaleX(1)';
+      if (loaderPercent) loaderPercent.textContent = '100%';
+
+      // Passer le header/capsule en état "terminé"
+      const navBar = document.getElementById('navBar');
+      if (navBar) navBar.classList.add('is-complete');
+
+      // Après 1600ms (laissant amplement le temps d'apprécier la transition complète), lancer la transition vers le site
+      setTimeout(() => {
+        if (!isRevealed) {
+          isRevealed = true;
+          const preloader = document.getElementById('preloader');
+          if (preloader) {
+            preloader.classList.add('preloader-zoom-morph');
+            setTimeout(() => {
+              preloader.remove();
+            }, 1000);
+          }
+          document.body.classList.add('site-revealed', 'site-revealing');
+          setTimeout(() => {
+            document.body.classList.remove('site-revealing');
+          }, 1200);
+          if (typeof onComplete === 'function') onComplete();
+        }
+      }, 1600);
     }
 
     // Multi-Harmonic Wind Simulation
@@ -1059,20 +1414,31 @@ export function initWebGLTree(onComplete) {
     }
 
     // ── Proportional Botanical Trunk & Branch Scaling ──
-    let trunkThicknessFactor = 0.12;
+    let trunkThicknessFactor = 0.035;
     if (progress <= 0.25) {
+      // Stage 1 (0 -> 25%) : Tige de semis très fine, souple et élancée
       const p = progress / 0.25;
-      trunkThicknessFactor = 0.08 + 0.08 * (p * p * (3 - 2 * p));
+      const ease = p * p * (3 - 2 * p);
+      trunkThicknessFactor = 0.035 + 0.035 * ease;
     } else if (progress <= 0.50) {
+      // Stage 2 (25% -> 50%) : Épaississement naturel en jeune arbrisseau
       const p = (progress - 0.25) / 0.25;
-      trunkThicknessFactor = 0.16 + 0.22 * (p * p * (3 - 2 * p));
+      const ease = p * p * (3 - 2 * p);
+      trunkThicknessFactor = 0.070 + 0.220 * ease;
     } else if (progress <= 0.75) {
+      // Stage 3 (50% -> 75%) : Tronc vigoureux et musclé
       const p = (progress - 0.50) / 0.25;
-      trunkThicknessFactor = 0.38 + 0.34 * (p * p * (3 - 2 * p));
+      const ease = p * p * (3 - 2 * p);
+      trunkThicknessFactor = 0.290 + 0.400 * ease;
     } else {
+      // Stage 4 (75% -> 100%) : Grand chêne mature au tronc puissant
       const p = (progress - 0.75) / 0.25;
-      trunkThicknessFactor = 0.72 + 0.28 * (p * p * (3 - 2 * p));
+      const ease = p * p * (3 - 2 * p);
+      trunkThicknessFactor = 0.690 + 0.310 * ease;
     }
+
+    // ── Update Continuous Botanical Trunk (Un Seul Polygone 3D Continu) ──
+    updateContinuousTrunk(progress, trunkThicknessFactor);
 
     branches.forEach((b) => {
       if (progress < b.startP) {
@@ -1083,9 +1449,7 @@ export function initWebGLTree(onComplete) {
         const localP = Math.min(1.0, (progress - b.startP) / span);
         const easeLen = localP * localP * (3 - 2 * localP);
 
-        const currentThickness = b.isMainTrunk
-          ? trunkThicknessFactor
-          : (0.10 + 0.90 * Math.min(1.0, Math.max(0, (progress - b.startP) / (1.0 - b.startP))));
+        const currentThickness = 0.10 + 0.90 * Math.min(1.0, Math.max(0, (progress - b.startP) / (1.0 - b.startP)));
 
         b.mesh.scale.set(currentThickness, easeLen, currentThickness);
 
@@ -1106,18 +1470,11 @@ export function initWebGLTree(onComplete) {
             b.isTextureMatured = false;
           }
         } else if (progress < 0.50) {
-          const hazelP = (progress - 0.25) / 0.25;
-          if (b.isMainTrunk && b.stage === 1) {
-            b.mat.color.lerpColors(sproutGreenColor, youngHazelBarkColor, Math.min(1.0, hazelP * 1.3));
-            b.mat.roughness = THREE.MathUtils.lerp(0.35, 0.58, hazelP);
-          } else {
-            b.mat.color.copy(sproutGreenColor);
-            b.mat.roughness = 0.38;
-          }
+          b.mat.color.copy(sproutGreenColor);
+          b.mat.roughness = 0.38;
         } else if (progress >= b.turnBrownP) {
           const brownP = Math.min(1.0, (progress - b.turnBrownP) / 0.22);
-          const targetBark = b.isMainTrunk ? barkDarkBrownColor : youngHazelBarkColor;
-          b.mat.color.lerpColors(youngHazelBarkColor, targetBark, brownP);
+          b.mat.color.lerpColors(youngHazelBarkColor, barkDarkBrownColor, brownP);
           b.mat.roughness = THREE.MathUtils.lerp(0.58, 0.85, brownP);
 
           if (!b.isTextureMatured && progress >= 0.55) {
@@ -1130,26 +1487,40 @@ export function initWebGLTree(onComplete) {
     });
 
     // ── Stage 1 Seedling Foliage Tracking ──
-    if (progress < 0.04) {
+    // Feuilles de la base du tronc (cotylédons) : grandissent puis disparaissent avant 25%
+    if (progress < 0.04 || progress >= 0.25) {
       cotyledonGroup.scale.set(0.0001, 0.0001, 0.0001);
-    } else {
-      const cP = Math.min(1.0, (progress - 0.04) / 0.12);
+      cotyledonGroup.visible = false;
+    } else if (progress < 0.16) {
+      cotyledonGroup.visible = true;
+      const cP = (progress - 0.04) / 0.12;
       const cEase = cP * cP * (3 - 2 * cP);
+      cotyledonGroup.scale.set(cEase, cEase, cEase);
+    } else {
+      // Disparition progressive vers 25%
+      cotyledonGroup.visible = true;
+      const cP = (0.25 - progress) / 0.09;
+      const cEase = Math.max(0.0001, cP * cP * (3 - 2 * cP));
       cotyledonGroup.scale.set(cEase, cEase, cEase);
     }
 
-    if (progress < 0.02) {
+    // Premières feuilles du haut (rosette apicale de la pousse) : disparaissent dès 25%
+    if (progress < 0.02 || progress >= 0.25) {
       sproutRosette.scale.set(0.0001, 0.0001, 0.0001);
+      sproutRosette.visible = false;
     } else {
+      sproutRosette.visible = true;
       const tipPos = getSproutTip(progress);
       sproutRosette.position.copy(tipPos);
 
-      const rP = Math.min(1.0, (progress - 0.02) / 0.18);
-      const rEase = rP * rP * (3 - 2 * rP);
-
-      let scale = rEase;
-      if (progress > 0.40) {
-        scale = Math.max(0.75, 1.0 - (progress - 0.40) * 0.35);
+      let scale = 1.0;
+      if (progress < 0.18) {
+        const rP = (progress - 0.02) / 0.16;
+        scale = rP * rP * (3 - 2 * rP);
+      } else {
+        // Disparition nette et fluide dès 25%
+        const fadeP = (0.25 - progress) / 0.07;
+        scale = Math.max(0.0001, fadeP * fadeP * (3 - 2 * fadeP));
       }
       sproutRosette.scale.set(scale, scale, scale);
 
@@ -1158,21 +1529,41 @@ export function initWebGLTree(onComplete) {
       });
     }
 
-    // ── Dense Canopy Leaves with Shimmering Specular Sunlight Flutter ──
+    // ── Dense Canopy Leaves with Organic Progressive Unfurl & Specular Sunlight Flutter ──
     leaves.forEach((l) => {
-      if (progress < l.bloomStartP) {
+      if (progress < l.leafStartP) {
         l.mesh.scale.set(0.0001, 0.0001, 0.0001);
+        l.mesh.visible = false;
       } else {
-        const span = Math.max(0.04, l.bloomEndP - l.bloomStartP);
-        const p = Math.min(1.0, (progress - l.bloomStartP) / span);
-        const overshoot = Math.sin(p * Math.PI * 0.5) * (1 + 0.18 * (1 - p));
-        const s = l.targetScale * overshoot;
+        l.mesh.visible = true;
+        const p = Math.min(1.0, (progress - l.leafStartP) / l.leafDuration);
+
+        // Déploiement progressif et fluide :
+        // 1) Éclosion du bourgeon (p <= 0.35) : croissance continue et douce de 0 à ~72% (courbe S sans à-coup)
+        // 2) Maturation douce (p > 0.35) : maturation délicate de 72% à 100% de la taille adulte
+        let currentScale;
+        let unfoldProg;
+
+        if (p <= 0.35) {
+          const u = p / 0.35;
+          const unfurlEase = u * u * (3 - 2 * u);
+          currentScale = l.targetScale * 0.72 * unfurlEase;
+          unfoldProg = unfurlEase;
+        } else {
+          const m = (p - 0.35) / 0.65;
+          const matureEase = m * m * (3 - 2 * m);
+          currentScale = l.targetScale * (0.72 + 0.28 * matureEase);
+          unfoldProg = 1.0;
+        }
+
+        const s = Math.max(0.0001, currentScale);
         l.mesh.scale.set(s, s, s);
 
+        const unfoldRotOffset = (1.0 - unfoldProg) * l.unfurlAngle;
         const flutter = Math.sin(elapsedSec * l.swaySpeed + l.swayPhase) * (0.03 + windGust * 0.045);
         const twist = Math.cos(elapsedSec * (l.swaySpeed * 0.8) + l.swayPhase) * (0.02 + windGust * 0.025);
-        l.mesh.rotation.z = l.origRot.z + flutter;
-        l.mesh.rotation.x = l.origRot.x + twist;
+        l.mesh.rotation.z = l.origRot.z + flutter + unfoldRotOffset * 0.5;
+        l.mesh.rotation.x = l.origRot.x + twist + unfoldRotOffset;
       }
     });
 
@@ -1185,6 +1576,10 @@ export function initWebGLTree(onComplete) {
     floatingLeaves.forEach((fl) => {
       if (progress >= fl.spawnP) {
         fl.mesh.visible = true;
+        const flP = Math.min(1.0, (progress - fl.spawnP) / 0.04);
+        const flScale = 0.38 * flP * flP * (3 - 2 * flP);
+        fl.mesh.scale.set(flScale, flScale, flScale);
+
         fl.mesh.position.y += fl.vy;
         fl.mesh.position.x += fl.vx * (0.8 + windGust * 0.4);
         fl.mesh.rotation.z += fl.rotSpeed;
@@ -1218,68 +1613,23 @@ export function initWebGLTree(onComplete) {
       pollenMat.opacity = 0;
     }
 
-    // ── Camera Choreography tailored to the 4 Stages ──
-    let targetCamX = 0;
-    let targetCamY = -3.8;
-    let targetCamZ = 4.8;
-    let targetLookX = 0;
-    let targetLookY = -4.0;
+    // ── Ultra-Fluid Continuous Cinematic Camera Choreography ──
+    const smoothProg = Math.max(0, Math.min(1.0, progress));
+    camCurve.getPointAt(smoothProg, targetCamPos);
+    lookCurve.getPointAt(smoothProg, targetLookPos);
 
-    if (progress <= 0.25) {
-      const p = progress / 0.25;
-      const ease = p * p * (3 - 2 * p);
-      targetCamX = 0;
-      targetCamY = THREE.MathUtils.lerp(-4.0, -3.4, ease);
-      targetCamZ = THREE.MathUtils.lerp(4.0, 5.2, ease);
-      targetLookX = 0;
-      targetLookY = THREE.MathUtils.lerp(-4.3, -3.2, ease);
-    } else if (progress <= 0.50) {
-      const p = (progress - 0.25) / 0.25;
-      const ease = p * p * (3 - 2 * p);
-      targetCamX = THREE.MathUtils.lerp(0, 0.15, ease);
-      targetCamY = THREE.MathUtils.lerp(-3.4, -1.6, ease);
-      targetCamZ = THREE.MathUtils.lerp(5.2, 9.2, ease);
-      targetLookX = THREE.MathUtils.lerp(0, 0.1, ease);
-      targetLookY = THREE.MathUtils.lerp(-3.2, -1.0, ease);
-    } else if (progress <= 0.75) {
-      const p = (progress - 0.50) / 0.25;
-      const ease = p * p * (3 - 2 * p);
-      targetCamX = THREE.MathUtils.lerp(0.15, 0.35, ease);
-      targetCamY = THREE.MathUtils.lerp(-1.6, 0.5, ease);
-      targetCamZ = THREE.MathUtils.lerp(9.2, 14.5, ease);
-      targetLookX = THREE.MathUtils.lerp(0.1, 0.15, ease);
-      targetLookY = THREE.MathUtils.lerp(-1.0, 1.1, ease);
-    } else {
-      const p = (progress - 0.75) / 0.25;
-      const ease = p * p * (3 - 2 * p);
-      targetCamX = THREE.MathUtils.lerp(0.35, -3.2, ease);
-      targetCamY = THREE.MathUtils.lerp(0.5, 0.9, ease);
-      targetCamZ = THREE.MathUtils.lerp(14.5, 14.2, ease);
-      targetLookX = THREE.MathUtils.lerp(0.15, -1.2, ease);
-      targetLookY = THREE.MathUtils.lerp(1.1, 1.5, ease);
-    }
+    // Amortissement exponentiel doux et fluide (sans saccades ni cassures d'angles)
+    camera.position.x += (targetCamPos.x + mouse.x * 0.35 - camera.position.x) * 0.045;
+    camera.position.y += (targetCamPos.y - mouse.y * 0.25 - camera.position.y) * 0.045;
+    camera.position.z += (targetCamPos.z - camera.position.z) * 0.045;
 
-    camera.position.x += (targetCamX + mouse.x * 0.35 - camera.position.x) * 0.05;
-    camera.position.y += (targetCamY - mouse.y * 0.25 - camera.position.y) * 0.05;
-    camera.position.z += (targetCamZ - camera.position.z) * 0.05;
-    camera.lookAt(targetLookX + mouse.x * 0.15, targetLookY - mouse.y * 0.15, 0);
+    currentCamLook.x += (targetLookPos.x + mouse.x * 0.15 - currentCamLook.x) * 0.045;
+    currentCamLook.y += (targetLookPos.y - mouse.y * 0.15 - currentCamLook.y) * 0.045;
+    currentCamLook.z += (targetLookPos.z - currentCamLook.z) * 0.045;
 
-    // ── Reveal Site at 100% ──
-    if (!isRevealed && manualLockedProgress === null && progress >= 1.0 && windowLoaded && elapsed >= minDuration) {
-      isRevealed = true;
-      const preloader = document.getElementById('preloader');
-      if (preloader) {
-        preloader.classList.add('preloader-zoom-morph');
-        setTimeout(() => {
-          preloader.remove();
-        }, 1000);
-      }
-      document.body.classList.add('site-revealed', 'site-revealing');
-      setTimeout(() => {
-        document.body.classList.remove('site-revealing');
-      }, 1200);
-      if (typeof onComplete === 'function') onComplete();
-    }
+    camera.lookAt(currentCamLook);
+
+
 
     renderer.render(scene, camera);
   }

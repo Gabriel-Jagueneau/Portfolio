@@ -39,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap">
 
-    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="styles/style.css?v=44" />
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
@@ -59,11 +59,18 @@
     <header id="navBar" class="card">
         <!-- Floating Loader Capsule (Morphs into full NavBar upon site reveal) -->
         <div id="nav-loader-capsule" class="nav-loader-capsule">
-            <div class="nav-loader-track">
-                <div id="nav-loader-fill" class="nav-loader-fill"></div>
+            <div class="nav-loader-content">
+                <div class="nav-loader-track">
+                    <div id="nav-loader-fill" class="nav-loader-fill"></div>
+                </div>
+                <div class="nav-loader-label">
+                    <span id="nav-loader-percent" class="nav-loader-percent">0%</span>
+                </div>
             </div>
-            <div class="nav-loader-label">
-                <span id="nav-loader-percent" class="nav-loader-percent">0%</span>
+            <div class="nav-loader-complete">
+                <svg class="complete-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#34c759" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
             </div>
         </div>
 
@@ -433,39 +440,6 @@
 
                                     <div class="sep"></div>
 
-                                    <!-- Fullscreen / Cinema Mode -->
-                                    <div class="dock-item" data-app="Fullscreen" id="dock-item-fullscreen"
-                                        title="Full Screen (Zoom)">
-                                        <div class="dock-tooltip">Full Screen</div>
-                                        <svg viewBox="0 0 64 64" class="dock-icon" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                                <linearGradient id="display-flat-bg" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#6366f1" />
-                                                    <stop offset="100%" stop-color="#4f46e5" />
-                                                </linearGradient>
-                                            </defs>
-                                            <rect width="64" height="64" rx="14" fill="url(#display-flat-bg)" />
-                                            <!-- Display Frame -->
-                                            <rect x="12" y="14" width="40" height="26" rx="3" fill="#1e1b4b"
-                                                stroke="#ffffff" stroke-width="2" />
-                                            <rect x="28" y="40" width="8" height="8" fill="#ffffff" />
-                                            <rect x="22" y="48" width="20" height="2.5" rx="1" fill="#ffffff" />
-                                            <!-- 4 Expand arrows inside display -->
-                                            <g stroke="#818cf8" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round" fill="none">
-                                                <polyline points="18,22 18,19 21,19" />
-                                                <line x1="18" y1="19" x2="23" y2="24" />
-                                                <polyline points="46,22 46,19 43,19" />
-                                                <line x1="46" y1="19" x2="41" y2="24" />
-                                                <polyline points="18,32 18,35 21,35" />
-                                                <line x1="18" y1="35" x2="23" y2="30" />
-                                                <polyline points="46,32 46,35 43,35" />
-                                                <line x1="46" y1="35" x2="41" y2="30" />
-                                            </g>
-                                        </svg>
-                                        <span class="dock-dot"></span>
-                                    </div>
-
                                     <!-- Trash -->
                                     <div class="dock-item" title="Trash" data-app="Trash">
                                         <div class="dock-tooltip">Trash</div>
@@ -507,12 +481,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Mac Fullscreen Backdrop and Floating Exit Button -->
-            <div id="mac-fullscreen-backdrop" class="mac-fullscreen-backdrop"></div>
-            <button id="mac-exit-fullscreen" class="mac-exit-fullscreen-btn" title="Exit Full Screen (Esc)">
-                <span>✕ Exit Full Screen</span>
-                <kbd>Esc</kbd>
-            </button>
         </div>
     </section>
 
@@ -1448,7 +1416,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script type="module" src="script.js?v=26"></script>
+    <script type="module" src="script.js?v=44"></script>
 </body>
 
 </html>
