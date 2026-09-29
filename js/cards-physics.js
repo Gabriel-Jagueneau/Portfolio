@@ -53,7 +53,47 @@ let rafId = null;
 let visible = false;
 let isMacInteractive = false;
 
+export function getScreenCenter() {
+  const cardsContainer = document.getElementById('cards-spinner') || zone;
+  const screenEl = document.querySelector('#imagurrrr .inside') || document.querySelector('.macos-container');
+
+  if (screenEl && cardsContainer) {
+    const screenRect = screenEl.getBoundingClientRect();
+    const containerRect = cardsContainer.getBoundingClientRect();
+    if (screenRect.width > 0 && screenRect.height > 0 && containerRect.width > 0) {
+      return {
+        centerX: (screenRect.left - containerRect.left) + screenRect.width * 0.5,
+        centerY: (screenRect.top - containerRect.top) + screenRect.height * 0.5
+      };
+    }
+  }
+
+  // Exact fallback based on Mac screen proportion (screen center is at 50% X and 46.5% Y)
+  const mac = document.getElementById('imagurrrr') || document.querySelector('.image-container');
+  if (mac && cardsContainer) {
+    const macRect = mac.getBoundingClientRect();
+    const containerRect = cardsContainer.getBoundingClientRect();
+    if (containerRect.width > 0) {
+      return {
+        centerX: (macRect.left - containerRect.left) + macRect.width * 0.5,
+        centerY: (macRect.top - containerRect.top) + macRect.height * 0.465
+      };
+    }
+  }
+
+  const baseW = zone ? zone.offsetWidth || 560 : 560;
+  const baseH = zone ? zone.offsetHeight || 350 : 350;
+  return { centerX: baseW * 0.5, centerY: baseH * 0.465 };
+}
+
 function getBaseOrbitRadius(rectWidth) {
+  const screenEl = document.querySelector('#imagurrrr .inside') || document.querySelector('.macos-container');
+  if (screenEl) {
+    const sw = screenEl.getBoundingClientRect().width;
+    if (sw > 100) {
+      return Math.max(220, Math.min(275, sw * 0.48));
+    }
+  }
   const w = rectWidth || (zone ? zone.getBoundingClientRect().width : 560);
   return Math.max(220, Math.min(265, w * 0.40));
 }
@@ -68,20 +108,6 @@ export function setMacInteractiveMode(active) {
   });
 }
 
-function getOrbitCenter() {
-  if (!zone) return { centerX: 280, centerY: 250 };
-  const rect = zone.getBoundingClientRect();
-  const mac = document.getElementById('imagurrrr') || document.querySelector('.image-container');
-  if (mac) {
-    const macRect = mac.getBoundingClientRect();
-    return {
-      centerX: (macRect.left - rect.left) + macRect.width * 0.5,
-      centerY: (macRect.top - rect.top) + macRect.height * 0.5
-    };
-  }
-  return { centerX: rect.width * 0.5, centerY: rect.height * 0.5 };
-}
-
 // ═══════════════════════════════════════════════════════════════════════════════
 // Body initialization
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -89,15 +115,15 @@ export function initializeOrbits() {
   if (!zone) return;
   const rect = zone.getBoundingClientRect();
   const targetRadius = getBaseOrbitRadius(rect.width);
-  const { centerX, centerY } = getOrbitCenter();
+  const { centerX, centerY } = getScreenCenter();
   const n = allCards.length || 1;
 
   bodies = allCards.map((el, i) => {
     const w = el.offsetWidth || 230;
-    const h = el.offsetHeight || 90;
+    const h = el.offsetHeight || 96;
     const mass = Math.max(1, PHYSICS.DENSITY * w * h);
 
-    // Symmetrical 4-quadrant circular distribution (framing the laptop)
+    // Symmetrical 4-quadrant circular distribution (framing the laptop screen)
     const angle = (2 * Math.PI * i) / n - Math.PI / 4;
     const x = centerX + targetRadius * Math.cos(angle);
     const y = centerY + targetRadius * Math.sin(angle);
@@ -362,7 +388,7 @@ function resolveCollisions(maxIterations = 20) {
 function physicsLoop() {
   if (!visible || document.hidden || !zone) { rafId = null; return; }
 
-  const { centerX, centerY } = getOrbitCenter();
+  const { centerX, centerY } = getScreenCenter();
 
   // ── Integrate all non-dragging bodies
   for (const b of bodies) {
@@ -415,6 +441,10 @@ function physicsLoop() {
 
   // ── Write to DOM
   for (const b of bodies) {
+    if (b.el.offsetWidth > 50 && b.el.offsetWidth !== b.w) {
+      b.w = b.el.offsetWidth;
+      b.h = b.el.offsetHeight;
+    }
     b.el.style.left = (b.x - b.w * 0.5) + "px";
     b.el.style.top = (b.y - b.h * 0.5) + "px";
   }
@@ -511,6 +541,6 @@ allCards.forEach((el, i) => {
   });
 });
 
-// Helpers to get zone center at release time
-function centerXSnapshot() { return zone ? zone.getBoundingClientRect().width / 2 : 0; }
-function centerYSnapshot() { return zone ? zone.getBoundingClientRect().height / 2 : 0; }
+// Helpers to get screen center at release time
+function centerXSnapshot() { return getScreenCenter().centerX; }
+function centerYSnapshot() { return getScreenCenter().centerY; }

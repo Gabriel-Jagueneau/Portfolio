@@ -28,22 +28,29 @@ export function initWebGLTree(onComplete) {
   const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
   camera.position.set(0, -3.8, 4.8);
 
+  // Adaptive Device Detection: Mobile & Low-Power Hardware
+  const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const isLowPower = isMobile ||
+                     (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+                     (navigator.deviceMemory && navigator.deviceMemory <= 4);
+
   const renderer = new THREE.WebGLRenderer({
     canvas,
     alpha: true,
-    antialias: true,
-    powerPreference: 'high-performance'
+    antialias: !isMobile,
+    powerPreference: 'high-performance',
+    precision: isLowPower ? 'mediump' : 'highp'
   });
   renderer.setSize(width, height);
 
-  // Soft PCF Dappled Shadow Map Engine
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  // Soft PCF Shadow Map (strictly disabled on mobile & low-power devices for huge FPS gain)
+  renderer.shadowMap.enabled = !isLowPower;
+  if (!isLowPower) {
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  }
 
-  // Adaptive Pixel Ratio
-  const isLowPower = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
-                     (navigator.deviceMemory && navigator.deviceMemory <= 4);
-  const targetPixelRatio = isLowPower ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.5);
+  // Adaptive Pixel Ratio: clamp to 1.0 on mobile/low-power (prevents multi-million pixel buffers), max 1.25 on desktop
+  const targetPixelRatio = isLowPower ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.25);
   renderer.setPixelRatio(targetPixelRatio);
 
   // ─── 2. Photorealistic Botanical Lighting & Dappled Shadows ───────────────
@@ -55,16 +62,20 @@ export function initWebGLTree(onComplete) {
 
   const sunLight = new THREE.DirectionalLight(0xfffdf0, 1.35);
   sunLight.position.set(14, 24, 18);
-  sunLight.castShadow = true;
-  sunLight.shadow.mapSize.width = 1024;
-  sunLight.shadow.mapSize.height = 1024;
-  sunLight.shadow.camera.near = 1.0;
-  sunLight.shadow.camera.far = 65;
-  sunLight.shadow.camera.left = -8.5;
-  sunLight.shadow.camera.right = 8.5;
-  sunLight.shadow.camera.top = 9.0;
-  sunLight.shadow.camera.bottom = -5.5;
-  sunLight.shadow.bias = -0.0008;
+  if (!isLowPower) {
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.width = 512;
+    sunLight.shadow.mapSize.height = 512;
+    sunLight.shadow.camera.near = 1.0;
+    sunLight.shadow.camera.far = 65;
+    sunLight.shadow.camera.left = -8.5;
+    sunLight.shadow.camera.right = 8.5;
+    sunLight.shadow.camera.top = 9.0;
+    sunLight.shadow.camera.bottom = -5.5;
+    sunLight.shadow.bias = -0.0008;
+  } else {
+    sunLight.castShadow = false;
+  }
   scene.add(sunLight);
 
   const rimLight = new THREE.DirectionalLight(0xa5d6a7, 0.75);
@@ -348,11 +359,12 @@ export function initWebGLTree(onComplete) {
   const grassGeo = new THREE.ConeGeometry(0.06, 0.44, 4);
   grassGeo.translate(0, 0.22, 0);
 
-  for (let i = 0; i < 95; i++) {
+  const grassBladeCount = isLowPower ? 40 : 95;
+  for (let i = 0; i < grassBladeCount; i++) {
     const grassMat = leafMaterials[i % leafMaterials.length];
     const grass = new THREE.Mesh(grassGeo, grassMat);
-    grass.castShadow = true;
-    grass.receiveShadow = true;
+    grass.castShadow = false;
+    grass.receiveShadow = false;
 
     const clusterAngle = (i % 12) * (Math.PI * 2 / 12) + (Math.random() - 0.5) * 0.4;
     const rad = 0.25 + Math.pow(Math.random(), 1.5) * 2.6;
@@ -393,7 +405,7 @@ export function initWebGLTree(onComplete) {
   for (let m = 0; m < 14; m++) {
     const mMat = mossMats[m % mossMats.length];
     const moss = new THREE.Mesh(mossGeo, mMat);
-    moss.receiveShadow = true;
+    moss.receiveShadow = false;
     const mAngle = (m / 14) * Math.PI * 2 + Math.random() * 0.3;
     const mRad = 0.35 + Math.random() * 1.8;
     const sX = 0.22 + Math.random() * 0.28;
@@ -415,7 +427,8 @@ export function initWebGLTree(onComplete) {
     const cMat = leafMaterials[(c * 2) % leafMaterials.length];
     for (let k = 0; k < 3; k++) {
       const leaflet = new THREE.Mesh(leafGeo, cMat);
-      leaflet.castShadow = true;
+      leaflet.castShadow = false;
+      leaflet.receiveShadow = false;
       leaflet.rotation.set(Math.PI * 0.45, 0, (k * Math.PI * 2) / 3);
       leaflet.scale.set(0.12, 0.12, 0.12);
       cloverGroup.add(leaflet);
@@ -436,7 +449,7 @@ export function initWebGLTree(onComplete) {
 
     const center = new THREE.Mesh(petalGeo, centerMat);
     center.scale.set(1.1, 0.8, 1.1);
-    center.castShadow = true;
+    center.castShadow = false;
     flowerGroup.add(center);
 
     for (let p = 0; p < 5; p++) {
@@ -444,7 +457,7 @@ export function initWebGLTree(onComplete) {
       const pAngle = (p / 5) * Math.PI * 2;
       petal.position.set(Math.cos(pAngle) * 0.07, 0, Math.sin(pAngle) * 0.07);
       petal.scale.set(1.3, 0.4, 0.9);
-      petal.castShadow = true;
+      petal.castShadow = false;
       flowerGroup.add(petal);
     }
     treeGroup.add(flowerGroup);
@@ -471,12 +484,12 @@ export function initWebGLTree(onComplete) {
 
     const stem = new THREE.Mesh(stemGeo, shroomStemMat);
     stem.position.y = 0.08;
-    stem.castShadow = true;
+    stem.castShadow = false;
     shroom.add(stem);
 
     const cap = new THREE.Mesh(capGeo, shroomCapMat);
     cap.position.y = 0.16;
-    cap.castShadow = true;
+    cap.castShadow = false;
     shroom.add(cap);
 
     shroom.rotation.z = (Math.random() - 0.5) * 0.3;
@@ -1036,12 +1049,15 @@ export function initWebGLTree(onComplete) {
   // ─── 14. High-Density Foliage Canopy Structured by Stage ──────────────────
   function addCanopyCluster(center, count, radiusX, radiusY, radiusZ, bloomStartP, bloomEndP, stage = 4) {
     const clusterSpan = Math.max(0.04, bloomEndP - bloomStartP);
+    const clusterCount = isLowPower ? Math.max(10, Math.round(count * 0.45)) : count;
+    const leafScaleMult = isLowPower ? 1.35 : 1.0;
 
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < clusterCount; i++) {
       const mat = leafMaterials[Math.floor(Math.random() * leafMaterials.length)];
       const leaf = new THREE.Mesh(leafGeo, mat);
-      leaf.castShadow = true;
-      leaf.receiveShadow = true;
+      // Leaves do not need individual shadow passes, saves 800+ depth renders per frame
+      leaf.castShadow = false;
+      leaf.receiveShadow = false;
 
       const u = Math.random();
       const v = Math.random();
@@ -1061,13 +1077,13 @@ export function initWebGLTree(onComplete) {
         Math.random() * Math.PI * 0.8 - 0.4
       );
 
-      const baseScale = 0.55 + Math.random() * 0.4;
+      const baseScale = (0.55 + Math.random() * 0.4) * leafScaleMult;
       leaf.scale.set(0.0001, 0.0001, 0.0001);
       treeGroup.add(leaf);
 
       // Échelonnement individuel et organique de chaque feuille dans l'intervalle du cluster
       // pour éviter tout effet de bloc ou d'apparition soudaine en masse
-      const staggerFraction = (i + Math.random() * 0.5) / (count + 0.5);
+      const staggerFraction = (i + Math.random() * 0.5) / (clusterCount + 0.5);
       const leafStartP = bloomStartP + staggerFraction * clusterSpan * 0.65;
       const leafDuration = 0.08 + Math.random() * 0.04;
 
@@ -1124,7 +1140,8 @@ export function initWebGLTree(onComplete) {
 
   // Floating Breeze Leaves
   const floatingLeaves = [];
-  for (let i = 0; i < 35; i++) {
+  const floatingLeavesCount = isLowPower ? 12 : 35;
+  for (let i = 0; i < floatingLeavesCount; i++) {
     const mat = leafMaterials[i % leafMaterials.length];
     const fLeaf = new THREE.Mesh(leafGeo, mat);
     fLeaf.position.set(
@@ -1134,7 +1151,7 @@ export function initWebGLTree(onComplete) {
     );
     fLeaf.scale.set(0.38, 0.38, 0.38);
     fLeaf.visible = false;
-    fLeaf.castShadow = true;
+    fLeaf.castShadow = false;
     treeGroup.add(fLeaf);
 
     floatingLeaves.push({
@@ -1147,7 +1164,7 @@ export function initWebGLTree(onComplete) {
   }
 
   // Atmospheric Sunlit Pollen Motes
-  const pollenCount = 45;
+  const pollenCount = isLowPower ? 18 : 45;
   const pollenGeo = new THREE.BufferGeometry();
   const pollenPos = new Float32Array(pollenCount * 3);
   const pollenVels = [];
@@ -1321,8 +1338,35 @@ export function initWebGLTree(onComplete) {
     document.body.classList.add('tree-intro-active');
   }, 400);
 
+  // ── Render Loop Lifecycle (The tree stays continuously visible across the entire site) ──
+  let rafId = null;
+  let lastFrameTime = 0;
+
+  function stopTreeLoop() {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  }
+
+  function startTreeLoop() {
+    if (!rafId && !document.hidden) {
+      rafId = requestAnimationFrame(animate);
+    }
+  }
+
   function animate(now) {
-    animId = requestAnimationFrame(animate);
+    if (document.hidden) {
+      rafId = null;
+      return;
+    }
+    rafId = requestAnimationFrame(animate);
+
+    // Throttle background idle animation to ~30 FPS on mobile / low-power after tree is fully grown
+    if (isLowPower && isRevealed) {
+      if (now - lastFrameTime < 32) return;
+    }
+    lastFrameTime = now;
 
     const elapsed = now - startTime;
     const elapsedSec = elapsed / 1000;
@@ -1530,42 +1574,47 @@ export function initWebGLTree(onComplete) {
     }
 
     // ── Dense Canopy Leaves with Organic Progressive Unfurl & Specular Sunlight Flutter ──
-    leaves.forEach((l) => {
-      if (progress < l.leafStartP) {
-        l.mesh.scale.set(0.0001, 0.0001, 0.0001);
-        l.mesh.visible = false;
-      } else {
-        l.mesh.visible = true;
-        const p = Math.min(1.0, (progress - l.leafStartP) / l.leafDuration);
-
-        // Déploiement progressif et fluide :
-        // 1) Éclosion du bourgeon (p <= 0.35) : croissance continue et douce de 0 à ~72% (courbe S sans à-coup)
-        // 2) Maturation douce (p > 0.35) : maturation délicate de 72% à 100% de la taille adulte
-        let currentScale;
-        let unfoldProg;
-
-        if (p <= 0.35) {
-          const u = p / 0.35;
-          const unfurlEase = u * u * (3 - 2 * u);
-          currentScale = l.targetScale * 0.72 * unfurlEase;
-          unfoldProg = unfurlEase;
+    const skipLeafSway = isLowPower && isRevealed && (Math.floor(elapsedSec * 30) % 2 !== 0);
+    if (!skipLeafSway) {
+      leaves.forEach((l) => {
+        if (progress < l.leafStartP) {
+          l.mesh.scale.set(0.0001, 0.0001, 0.0001);
+          l.mesh.visible = false;
         } else {
-          const m = (p - 0.35) / 0.65;
-          const matureEase = m * m * (3 - 2 * m);
-          currentScale = l.targetScale * (0.72 + 0.28 * matureEase);
-          unfoldProg = 1.0;
+          l.mesh.visible = true;
+          if (progress < 1.0) {
+            const p = Math.min(1.0, (progress - l.leafStartP) / l.leafDuration);
+            let currentScale;
+            let unfoldProg;
+
+            if (p <= 0.35) {
+              const u = p / 0.35;
+              const unfurlEase = u * u * (3 - 2 * u);
+              currentScale = l.targetScale * 0.72 * unfurlEase;
+              unfoldProg = unfurlEase;
+            } else {
+              const m = (p - 0.35) / 0.65;
+              const matureEase = m * m * (3 - 2 * m);
+              currentScale = l.targetScale * (0.72 + 0.28 * matureEase);
+              unfoldProg = 1.0;
+            }
+
+            const s = Math.max(0.0001, currentScale);
+            l.mesh.scale.set(s, s, s);
+
+            const unfoldRotOffset = (1.0 - unfoldProg) * l.unfurlAngle;
+            const flutter = Math.sin(elapsedSec * l.swaySpeed + l.swayPhase) * (0.03 + windGust * 0.045);
+            const twist = Math.cos(elapsedSec * (l.swaySpeed * 0.8) + l.swayPhase) * (0.02 + windGust * 0.025);
+            l.mesh.rotation.z = l.origRot.z + flutter + unfoldRotOffset * 0.5;
+            l.mesh.rotation.x = l.origRot.x + twist + unfoldRotOffset;
+          } else {
+            // Arbre adulte mature : taille verrouillée, oscillation d'ambiance légère
+            const flutter = Math.sin(elapsedSec * l.swaySpeed + l.swayPhase) * (0.02 + windGust * 0.03);
+            l.mesh.rotation.z = l.origRot.z + flutter;
+          }
         }
-
-        const s = Math.max(0.0001, currentScale);
-        l.mesh.scale.set(s, s, s);
-
-        const unfoldRotOffset = (1.0 - unfoldProg) * l.unfurlAngle;
-        const flutter = Math.sin(elapsedSec * l.swaySpeed + l.swayPhase) * (0.03 + windGust * 0.045);
-        const twist = Math.cos(elapsedSec * (l.swaySpeed * 0.8) + l.swayPhase) * (0.02 + windGust * 0.025);
-        l.mesh.rotation.z = l.origRot.z + flutter + unfoldRotOffset * 0.5;
-        l.mesh.rotation.x = l.origRot.x + twist + unfoldRotOffset;
-      }
-    });
+      });
+    }
 
     // ── Ground Grass Blades Breeze Swaying ──
     groundBlades.forEach((gb) => {
@@ -1634,43 +1683,12 @@ export function initWebGLTree(onComplete) {
     renderer.render(scene, camera);
   }
 
-  // ── Render Loop Lifecycle with Automatic Viewport & Tab Throttling ──
-  let isTreeVisible = true;
-  let treeRafId = null;
-  let animId = null;
-
-  function startTreeLoop() {
-    if (!treeRafId && isTreeVisible && !document.hidden) {
-      treeRafId = requestAnimationFrame(animate);
-    }
-  }
-
-  function stopTreeLoop() {
-    if (treeRafId) {
-      cancelAnimationFrame(treeRafId);
-      treeRafId = null;
-    }
-  }
-
-  const homeSection = document.getElementById('home') || canvas;
-  if (homeSection && typeof IntersectionObserver !== 'undefined') {
-    const treeObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        isTreeVisible = entry.isIntersecting;
-        if (isTreeVisible) {
-          startTreeLoop();
-        } else {
-          stopTreeLoop();
-        }
-      });
-    }, { rootMargin: '150px' });
-    treeObserver.observe(homeSection);
-  }
-
+  // ── Render Loop Lifecycle: The tree remains visible as the living background across the site ──
+  // Pauses WebGL rendering strictly when the tab itself is minimized or hidden in background
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       stopTreeLoop();
-    } else if (isTreeVisible) {
+    } else {
       startTreeLoop();
     }
   }, { passive: true });

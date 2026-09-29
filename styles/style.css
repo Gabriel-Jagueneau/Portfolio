@@ -58,11 +58,11 @@ body:not(.site-revealed).tree-intro-active .webgl-tree-canvas {
 }
 
 body.site-revealed .webgl-tree-canvas {
-    opacity: 0.30;
+    opacity: 0.4;
     transform: translateY(0);
-    filter: blur(20px) brightness(0.58) contrast(1.15);
-    mask-image: linear-gradient(to bottom, #212121 70%, transparent 95%);
-    -webkit-mask-image: linear-gradient(to bottom, #212121 70%, transparent 95%);
+    filter: blur(20px) brightness(0.65) contrast(1.1);
+    mask-image: linear-gradient(to bottom, #212121 75%, transparent 98%);
+    -webkit-mask-image: linear-gradient(to bottom, #212121 75%, transparent 98%);
 }
 
 body:not(.site-revealed) #nav-show,
@@ -78,12 +78,12 @@ body:not(.site-revealed) footer {
 /* ── Floating Loader Capsule inside Header (Before Site Reveal) ── */
 body:not(.site-revealed) #navBar {
     position: fixed !important;
-    top: 24px !important;
+    top: 12px !important;
     left: 50% !important;
     margin: 0 !important;
     height: 42px !important;
     border-radius: 999px !important;
-    padding: 0 16px !important;
+    padding: 0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -91,20 +91,30 @@ body:not(.site-revealed) #navBar {
     z-index: 100000 !important;
     pointer-events: auto !important;
 
-    /* État initial : masqué en haut avec largeur réduite */
-    opacity: 0 !important;
-    transform: translateX(-50%) translateY(-35px) !important;
-    width: 60px !important;
-    transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-        width 0.95s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    /* État initial : goutte d'eau (petite boule) masquée au-dessus du haut de l'écran */
+    filter: blur(16px);
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(-75px) scale(0.65, 1.35) !important;
+    width: 42px !important;
+
+    /* Transition liquide : chute rapide avec rebond de goutte, puis étirement en largeur vers l'ovale */
+    transition: opacity 0.40s ease,
+        transform 0.60s cubic-bezier(0.2, 1.26, 0.64, 1),
+        width 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+        padding 0.60s ease 0.32s,
+        border-color 0.85s ease,
+        background-color 0.85s ease,
+        box-shadow 0.85s ease,
+        filter 0.4s ease !important;
 }
 
-/* Entrée de la barre : glisse vers le bas (down) et s'étend en largeur (width) */
+/* Entrée de la goutte d'eau : chute de la petite boule, rebond fluide puis agrandissement en ovale */
 body:not(.site-revealed).tree-intro-active #navBar {
     opacity: 1 !important;
-    transform: translateX(-50%) translateY(0) !important;
+    transform: translateX(-50%) translateY(0) scale(1, 1) !important;
     width: 260px !important;
+    padding: 0 16px !important;
+    filter: blur(0px);
 }
 
 body:not(.site-revealed) #navBar .title,
@@ -114,37 +124,40 @@ body:not(.site-revealed) #navBar .contact {
     opacity: 0 !important;
 }
 
-/* État Terminé (100%) : border devient verte, background légèrement vert avec glow et morphing fluide vers 60px */
+/* État Terminé (100%) : border devient verte, background légèrement vert avec glow et morphing fluide vers 124px */
 body:not(.site-revealed) #navBar.is-complete {
-    width: 80px !important;
-    padding: 0 !important;
-    border-color: rgba(52, 199, 89, 0.85) !important;
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(0) scale(1, 1) !important;
+    width: 124px !important;
+    padding: 0 16px !important;
+    border-color: rgba(52, 199, 89, 0.4) !important;
     background-color: rgba(22, 45, 28, 0.88) !important;
-    box-shadow: 0 10px 32px rgba(0, 0, 0, 0.50), 0 0 24px rgba(52, 199, 89, 0.40) !important;
-    transition: width 1.0s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.50), 0 0 24px rgba(52, 199, 89, 0.40) !important;
+    transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1),
         border-color 0.85s ease,
         background-color 0.85s ease,
         box-shadow 0.85s ease !important;
 }
 
-/* La barre loading et le pourcentage disparaissent à l'envers de navItemReveal (blur, translateY, fade) */
+/* La barre loading et le pourcentage disparaissent quand le chargement est 100% terminé */
 #navBar.is-complete .nav-loader-content {
     opacity: 0 !important;
     transform: translateY(-8px) scale(0.95) !important;
     filter: blur(6px) !important;
     pointer-events: none !important;
-    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.90s cubic-bezier(0.16, 1, 0.3, 1),
-        filter 0.90s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition: opacity 0.60s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.60s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.60s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
+/* Apparition du tick vert et du texte Loaded */
 #navBar.is-complete .nav-loader-complete {
     opacity: 1 !important;
     transform: scale(1) !important;
     filter: blur(0px) !important;
-    transition: opacity 0.80s cubic-bezier(0.16, 1, 0.3, 1) 0.30s,
-        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.30s,
-        filter 0.80s cubic-bezier(0.16, 1, 0.3, 1) 0.30s !important;
+    transition: opacity 0.70s cubic-bezier(0.16, 1, 0.3, 1) 0.25s,
+        transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.25s,
+        filter 0.70s cubic-bezier(0.16, 1, 0.3, 1) 0.25s !important;
 }
 
 body:not(.site-revealed) .nav-loader-capsule {
@@ -154,7 +167,7 @@ body:not(.site-revealed) .nav-loader-capsule {
     width: 100% !important;
     height: 100% !important;
     opacity: 0 !important;
-    transition: opacity 0.5s ease 0.2s !important;
+    transition: opacity 0.40s ease 0.38s !important;
 }
 
 body:not(.site-revealed).tree-intro-active .nav-loader-capsule {
@@ -194,6 +207,7 @@ body:not(.site-revealed).tree-intro-active .nav-loader-capsule {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
     opacity: 0;
     filter: blur(4px);
     transform: scale(0.60);
@@ -216,6 +230,9 @@ body:not(.site-revealed).tree-intro-active .nav-loader-capsule {
     font-weight: 600;
     color: #ffffff;
     letter-spacing: 0.3px;
+    line-height: 1;
+    white-space: nowrap;
+    user-select: none;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -281,6 +298,57 @@ body:not(.site-revealed) #home {
 
 body.site-revealed #home {
     opacity: 1;
+}
+
+/* ── Apparition des 4 cards chacune à la suite (après loading et au retour de clic) ── */
+body.site-revealed #home .cards:not(.cards-hidden) .cardage {
+    opacity: 1;
+    filter: blur(0px);
+    -webkit-filter: blur(0px);
+    transform: scale(1) translateY(0);
+    width: 230px;
+    height: 96px;
+    min-height: 96px;
+    max-width: 230px;
+    max-height: 96px;
+    margin: 0;
+    padding: 0.6vw 0.8vw;
+    border-color: rgba(65, 67, 68, 0.2);
+    pointer-events: auto;
+
+    /* Transition d'apparition fluide et ample */
+    transition:
+        opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        -webkit-filter 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        width 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        height 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        padding 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.3s ease,
+        box-shadow ease 0.3s;
+}
+
+body.site-revealed #home .cards:not(.cards-hidden) .cardage div {
+    opacity: 1;
+    transition: opacity 0.4s ease 0.15s;
+}
+
+/* Délais échelonnés : chacune à la suite */
+body.site-revealed #home .cards:not(.cards-hidden) .cardage:nth-child(1) {
+    transition-delay: 0.20s;
+}
+
+body.site-revealed #home .cards:not(.cards-hidden) .cardage:nth-child(2) {
+    transition-delay: 0.45s;
+}
+
+body.site-revealed #home .cards:not(.cards-hidden) .cardage:nth-child(3) {
+    transition-delay: 0.70s;
+}
+
+body.site-revealed #home .cards:not(.cards-hidden) .cardage:nth-child(4) {
+    transition-delay: 0.95s;
 }
 
 header {
@@ -476,7 +544,7 @@ body.site-revealing #navBar .contact {
             flex-direction: row;
             justify-content: space-evenly;
             align-items: center;
-            width: 44vw;
+            width: clamp(520px, 46vw, 680px);
             gap: 0.8vw;
             pointer-events: auto;
 
@@ -487,12 +555,14 @@ body.site-revealing #navBar .contact {
                 justify-content: center;
                 align-items: center;
                 padding: 0.5vh 1.6vh;
-                transition: ease 0.4s;
-                transition-delay: 0.05s;
+                transition: flex-grow 0.32s cubic-bezier(0.2, 0.9, 0.3, 1), padding 0.32s ease;
                 cursor: pointer;
                 font-size: 14px;
                 font-weight: 600;
                 overflow: visible;
+                white-space: nowrap;
+                flex-grow: 0;
+                flex-shrink: 0;
 
                 &::after {
                     content: '';
@@ -507,7 +577,7 @@ body.site-revealing #navBar .contact {
                     animation: gradientShift 12s ease infinite;
                     animation-delay: 2.5s;
                     filter: grayscale(1);
-                    transition: ease 0.5s;
+                    transition: filter 0.35s ease;
                 }
 
                 &:hover {
@@ -715,6 +785,24 @@ body.site-revealing #navBar .contact {
     }
 }
 
+.real-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+
+    & .webgl-tree-canvas {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        pointer-events: none;
+    }
+}
+
 #home {
     display: flex;
     flex-direction: row-reverse;
@@ -722,24 +810,6 @@ body.site-revealing #navBar .contact {
     justify-content: center;
     gap: 6vw;
     padding: 0 4vw;
-
-    & .real-bg {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: 0;
-        pointer-events: none;
-        overflow: hidden;
-
-        & .webgl-tree-canvas {
-            width: 100vw;
-            height: 100vh;
-            display: block;
-            pointer-events: none;
-        }
-    }
 
     & .quick-desc {
         display: flex;
@@ -783,6 +853,9 @@ body.site-revealing #navBar .contact {
 
         & .cards {
             position: absolute;
+            top: 0;
+            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
             z-index: 10;
@@ -794,7 +867,7 @@ body.site-revealing #navBar .contact {
                 pointer-events: none;
                 padding: 0;
                 position: absolute;
-                border-radius: 12px;
+                border-radius: 18px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -807,7 +880,7 @@ body.site-revealing #navBar .contact {
                 cursor: grab;
                 box-shadow: transparent 0px 0px 0px;
 
-                background-color: rgba(65, 67, 68, 0.3);
+                background-color: rgba(65, 67, 68, 0.15);
                 border: 1px transparent solid;
                 backdrop-filter: blur(20px);
                 -webkit-backdrop-filter: blur(20px);
@@ -862,45 +935,7 @@ body.site-revealing #navBar .contact {
                 }
             }
 
-            /* État visible : Apparition une par une */
-            &:not(.cards-hidden) .cardage {
-                opacity: 1;
-                filter: blur(0px);
-                -webkit-filter: blur(0px);
-                transform: scale(1) translateY(0);
-                width: 230px;
-                height: 96px;
-                min-height: 96px;
-                max-width: 230px;
-                max-height: 96px;
-                margin: 0;
-                padding: 0.6vw 0.8vw;
-                border-color: rgba(65, 67, 68, 0.2);
-                pointer-events: auto;
 
-                /* Transition d'apparition fluide et ample */
-                transition:
-                    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                    filter 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                    -webkit-filter 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                    width 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                    height 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                    padding 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                    border-color 0.3s ease,
-                    box-shadow ease 0.3s;
-
-                & div {
-                    opacity: 1;
-                    transition: opacity 0.4s ease 0.15s;
-                }
-            }
-
-            /* Délais échelonnés : apparition une par une */
-            &:not(.cards-hidden) .cardage:nth-child(1) { transition-delay: 0.12s; }
-            &:not(.cards-hidden) .cardage:nth-child(2) { transition-delay: 0.34s; }
-            &:not(.cards-hidden) .cardage:nth-child(3) { transition-delay: 0.56s; }
-            &:not(.cards-hidden) .cardage:nth-child(4) { transition-delay: 0.78s; }
 
             /* État masqué explicite quand on clique sur le Mac */
             &.cards-hidden {
@@ -4940,7 +4975,6 @@ body.mac-fullscreen-mode {
             transition: ease 0.2s;
             will-change: transform;
             overflow: hidden;
-            will-change: all;
 
             background:
                 padding-box linear-gradient(transparent),
@@ -5051,13 +5085,14 @@ body.mac-fullscreen-mode {
                 inset: 0;
                 z-index: -1;
                 height: 100%;
-                backdrop-filter: blur(100px);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
                 mask-image: linear-gradient(to bottom, transparent 40%, #212121);
+                -webkit-mask-image: linear-gradient(to bottom, transparent 40%, #212121);
                 mask-repeat: no-repeat;
                 mask-size: cover;
                 transition: ease 0.2s;
                 border-radius: 16px;
-                will-change: backdrop-filter;
             }
 
             &:hover {
@@ -5117,7 +5152,8 @@ body.mac-fullscreen-mode {
 
         background-color: rgba(65, 67, 68, 0.1);
         border: 1px rgba(65, 67, 68, 0.2) solid;
-        backdrop-filter: blur(50px);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
 
         border-radius: 16px;
         padding: 2.5vh 3vh;
@@ -5265,7 +5301,8 @@ body.mac-fullscreen-mode {
         justify-content: center;
         background-color: rgba(65, 67, 68, 0.1);
         border: 1px rgba(65, 67, 68, 0.2) solid;
-        backdrop-filter: blur(50px);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         gap: 5px;
         border-radius: 12px;
         padding: 1.5vh 2.5vh;
@@ -5303,7 +5340,8 @@ body.mac-fullscreen-mode {
 
             background-color: rgba(65, 67, 68, 0.1);
             border: 1px rgba(65, 67, 68, 0.2) solid;
-            backdrop-filter: blur(50px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
 
             border-radius: 12px;
             padding: 12px 14px;
@@ -5872,6 +5910,12 @@ body.mac-fullscreen-mode {
         & .desc {
             font-size: 14px;
         }
+    }
+
+    body.site-revealed .webgl-tree-canvas {
+        filter: blur(6px) brightness(0.65);
+        mask-image: none;
+        -webkit-mask-image: none;
     }
 
     #home {

@@ -39,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap">
 
-    <link rel="stylesheet" href="styles/style.css?v=44" />
+    <link rel="stylesheet" href="styles/style.css?v=53" />
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
@@ -68,10 +68,11 @@
                 </div>
             </div>
             <div class="nav-loader-complete">
-                <svg class="complete-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#34c759"
+                <svg class="complete-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#34c759"
                     stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
+                <span class="complete-text">Loaded</span>
             </div>
         </div>
 
@@ -126,15 +127,16 @@
         <div class="shadow"></div>
     </div>
 
+    <div class="real-bg">
+        <canvas id="webgl-tree-canvas" class="webgl-tree-canvas"></canvas>
+    </div>
+
     <div id="screen-contour">
         <div class="bottom"></div>
     </div>
 
     <section id="home">
 
-        <div class="real-bg">
-            <canvas id="webgl-tree-canvas" class="webgl-tree-canvas"></canvas>
-        </div>
         <div class="quick-desc">
             <div class="names" data-aos="fade-down" data-aos-duration="1400">
                 <div class="name">Gabriel</div>
@@ -1417,7 +1419,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script type="module" src="script.js?v=44"></script>
+    <script type="module" src="script.js?v=53"></script>
 </body>
 
 </html>

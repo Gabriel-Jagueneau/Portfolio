@@ -1,6 +1,6 @@
-import { initWebGLTree }      from './js/tree-3d.js?v=38';
-import { initializeOrbits }  from './js/cards-physics.js?v=31';
-import { observeScroll }     from './js/nav.js';
+import { initWebGLTree }      from './js/tree-3d.js?v=41';
+import { initializeOrbits }  from './js/cards-physics.js?v=34';
+import { observeScroll }     from './js/nav.js?v=3';
 import { initFooter }        from './js/footer.js';
 import { initCardHover }     from './js/card-hover.js';
 import { initConfetti }      from './js/confetti.js';
