@@ -39,7 +39,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&display=swap">
 
-    <link rel="stylesheet" href="styles/style.css?v=53" />
+    <link rel="stylesheet" href="styles/style.css?v=64" />
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
@@ -125,6 +125,9 @@
         <div class="border"></div>
         <div class="background"></div>
         <div class="shadow"></div>
+        <div class="nav-show-roller" id="nav-show-roller">
+            <span class="nav-show-item is-visible" id="nav-show-phrase">Loading data...</span>
+        </div>
     </div>
 
     <div class="real-bg">
@@ -144,6 +147,19 @@
             </div>
             <div class="description" data-aos="fade-up" data-aos-duration="1400">Future Agronomy Engineer,
                 Student-Entrepreneur and Multi-stack developer</div>
+            <div class="hero-actions" data-aos="fade-up" data-aos-duration="1400" data-aos-delay="200">
+                <a href="#projects" class="box-blur hero-btn">
+                    <span>Projects</span>
+                    <svg class="hero-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none"
+                        stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+                <a href="#contact" class="box-blur hero-btn contact-button">
+                    <span>Contact</span>
+                </a>
+            </div>
         </div>
         <div class="image-zone">
             <div class="cards" id="cards-spinner">
@@ -502,7 +518,8 @@
                     <div class="parag">
                         <div class="text">
                             <span class="bigger">Hello!</span> <br>
-                            My name is <span class="highlight-ang">Gabriel Jagueneau</span> <i class="smaller">(as you
+                            My name is <span class="highlight-ang">Gabriel Jagueneau</span>, I am <span
+                                id="dynamic-user-age">21</span> years old <i class="smaller">(as you
                                 may have noticed already..)</i>
                         </div>
                     </div>
@@ -758,7 +775,8 @@
 
         <div class="block student">
             <div class="mainer"><span class="highlight">A</span>student</div>
-            <div class="descri">My level in these domains is Equivalent of a Biology undergraduate 2nd year student.
+            <div class="descri" id="dynamic-student-level">My level in these domains is Equivalent of a Biology
+                undergraduate 3rd year / 1st year Engineering student.
             </div>
             <div class="cards" id="cards-student">
 
@@ -1218,7 +1236,7 @@
                     <div class="type">Bordeaux Science Agro</div>
                 </div>
                 <div class="info">
-                    <div class="service">Future Agronomy Engineer</div>
+                    <div class="service" id="dynamic-engineer-status">Future Agronomy Engineer</div>
                     <div class="type">
                         2028
                         <div class="logo"><svg class="icon-svg" viewBox="0 0 24 24" width="20" height="20"
@@ -1229,9 +1247,9 @@
                     </div>
                 </div>
                 <div class="info">
-                    <div class="service">Junior Developper</div>
+                    <div class="service">Developer</div>
                     <div class="type">
-                        2020
+                        <span id="dynamic-coding-exp">7+ yrs</span>
                         <div class="logo"><svg class="icon-svg" viewBox="0 0 24 24" width="20" height="20"
                                 fill="currentColor">
                                 <path
@@ -1410,7 +1428,7 @@
             </div>
             <div class="text">To top</div>
         </div>
-        <div class="text">HandCrafted by Gabriel JAGUENEAU</div>
+        <div class="text">HandCrafted by Gabriel JAGUENEAU · <span class="dynamic-current-year">2026</span></div>
         <div class='air air1'></div>
         <div class='air air2'></div>
         <div class='air air3'></div>
@@ -1419,7 +1437,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script type="module" src="script.js?v=53"></script>
+    <script type="module" src="script.js?v=65"></script>
 </body>
 
 </html>

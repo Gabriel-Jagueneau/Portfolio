@@ -127,6 +127,42 @@ export function observeScroll() {
       }, 950);
     });
   });
+
+  // Intercept all internal anchor links (like href="#projects", href="#contact")
+  // to smoothly scroll without saving or modifying the URL hash in history
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
+      const href = anchor.getAttribute('href');
+      if (!href || href === '#') return;
+      try {
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          isClickScrolling = true;
+
+          const pairIndex = navPairs.findIndex(p => p.section === target);
+          if (pairIndex !== -1) {
+            setActiveIndex(pairIndex);
+          }
+
+          target.scrollIntoView({ behavior: 'smooth' });
+
+          clearTimeout(clickTimeout);
+          clickTimeout = setTimeout(() => {
+            isClickScrolling = false;
+            updateActiveSection();
+          }, 950);
+        }
+      } catch (err) {
+        // Fallback for invalid selector
+      }
+    });
+  });
+
+  // Clean URL hash if the user arrives with one in the address bar
+  if (window.location.hash) {
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
 }
 
 if (navShow && navBar) {

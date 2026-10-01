@@ -65,7 +65,15 @@ body.site-revealed .webgl-tree-canvas {
     -webkit-mask-image: linear-gradient(to bottom, #212121 75%, transparent 98%);
 }
 
-body:not(.site-revealed) #nav-show,
+/* Safari / WebKit compositor optimization: prevents severe GPU stalls and drop to 5fps */
+@supports (-webkit-backdrop-filter: none) and (not (-moz-appearance: none)) {
+    body.site-revealed .webgl-tree-canvas {
+        filter: blur(8px) brightness(0.65);
+        mask-image: none;
+        -webkit-mask-image: none;
+    }
+}
+
 body:not(.site-revealed) #screen-contour,
 body:not(.site-revealed) #home .quick-desc,
 body:not(.site-revealed) #home .image-zone,
@@ -172,6 +180,196 @@ body:not(.site-revealed) .nav-loader-capsule {
 
 body:not(.site-revealed).tree-intro-active .nav-loader-capsule {
     opacity: 1 !important;
+}
+
+/* ── Petite Nav Companion ("Nav Close") Pendant le Loading ── */
+/* État initial : gouttelette liquide masquée derrière la barre de navigation */
+body:not(.site-revealed) #nav-show {
+    position: fixed !important;
+    z-index: 99999 !important;
+    left: 50% !important;
+    top: 16px !important;
+    transform: translateX(-50%) translateY(0) scale(0.60, 1.40) !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    opacity: 0 !important;
+    filter: blur(18px) !important;
+    border-radius: 999px !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: default !important;
+    background: rgba(22, 24, 28, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.40) !important;
+
+    /* Transition d'entrée fluide et liquide : chute verticale puis ouverture en largeur (un peu plus rapide) */
+    transition: top 0.52s cubic-bezier(0.2, 1.25, 0.5, 1),
+        transform 0.52s cubic-bezier(0.2, 1.25, 0.5, 1),
+        width 0.46s cubic-bezier(0.16, 1, 0.3, 1) 0.10s,
+        min-width 0.46s cubic-bezier(0.16, 1, 0.3, 1) 0.10s,
+        max-width 0.46s cubic-bezier(0.16, 1, 0.3, 1) 0.10s,
+        padding 0.38s ease 0.10s,
+        opacity 0.34s ease,
+        filter 0.36s ease !important;
+}
+
+/* Apparition liquide sous la barre de progression (gouttelette qui descend et s'élargit) */
+body:not(.site-revealed) #nav-show.sub-nav-active {
+    top: 64px !important;
+    transform: translateX(-50%) translateY(0) scale(1, 1) !important;
+    opacity: 1 !important;
+    filter: blur(0px) !important;
+    width: 168px !important;
+    min-width: 168px !important;
+    max-width: 168px !important;
+    height: 30px !important;
+    padding: 0 16px !important;
+}
+
+/* Rentrée liquide dans la barre à 100% : EXACTEMENT l'arrivée en inversé, un tout petit peu plus rapide */
+body:not(.site-revealed) #nav-show.sub-nav-retract {
+    top: 16px !important;
+    transform: translateX(-50%) translateY(0) scale(0.60, 1.40) !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    filter: blur(28px) !important;
+    -webkit-backdrop-filter: blur(28px) !important;
+    backdrop-filter: blur(28px) !important;
+    pointer-events: none !important;
+
+    /* Inversion exacte du timing de l'arrivée mais légèrement plus rapide et punchy */
+    transition: width 0.36s cubic-bezier(0.4, 0, 0.2, 1),
+        min-width 0.36s cubic-bezier(0.4, 0, 0.2, 1),
+        max-width 0.36s cubic-bezier(0.4, 0, 0.2, 1),
+        padding 0.28s ease,
+        top 0.54s cubic-bezier(0.45, 0, 0.15, 1) 0.08s,
+        transform 0.54s cubic-bezier(0.45, 0, 0.15, 1) 0.08s,
+        filter 0.50s ease 0.06s,
+        opacity 0.44s ease 0.18s !important;
+}
+
+body:not(.site-revealed) #nav-show.sub-nav-retract .nav-show-roller,
+body:not(.site-revealed) #nav-show.sub-nav-retract .nav-show-item {
+    opacity: 0 !important;
+    transition: opacity 0.22s ease !important;
+}
+
+body:not(.site-revealed) #nav-show .background,
+body:not(.site-revealed) #nav-show .shadow,
+body:not(.site-revealed) #nav-show .border {
+    border-radius: 999px !important;
+}
+
+/* ── Rouleau de texte façon Minuteur Apple (cylindre 3D avec flou cinétique) ── */
+#nav-show .nav-show-roller {
+    display: none;
+    position: relative;
+    z-index: 10;
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+    overflow: hidden;
+    perspective: 260px;
+    pointer-events: none;
+    align-items: center;
+    justify-content: center;
+}
+
+body:not(.site-revealed) #nav-show .nav-show-roller {
+    display: flex;
+}
+
+body.site-revealed #nav-show .nav-show-roller {
+    display: none !important;
+}
+
+#nav-show .nav-show-item {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: rgba(240, 248, 255, 0.92);
+    white-space: nowrap;
+    pointer-events: none;
+    will-change: transform, opacity, filter;
+}
+
+/* Texte actif visible bien net au centre */
+#nav-show .nav-show-item.is-visible {
+    transform: translateY(0) rotateX(0deg);
+    opacity: 1;
+    filter: blur(0px) !important;
+    -webkit-filter: blur(0px) !important;
+}
+
+/* Roulement vers le haut avec flou cinétique (motion blur prononcé) */
+#nav-show .nav-show-item.roll-out {
+    animation: navTextRollOut 0.3s cubic-bezier(0.2, 0.8, 0.3, 1) forwards !important;
+}
+
+/* Arrivée par le bas avec flou cinétique initial (motion blur prononcé) */
+#nav-show .nav-show-item.roll-in {
+    animation: navTextRollIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+@keyframes navTextRollOut {
+    0% {
+        transform: translateY(0) rotateX(0deg);
+        opacity: 1;
+        filter: blur(0px);
+        -webkit-filter: blur(0px);
+    }
+
+    35% {
+        opacity: 0.80;
+        filter: blur(3.5px);
+        -webkit-filter: blur(3.5px);
+    }
+
+    100% {
+        transform: translateY(-110%) rotateX(42deg);
+        opacity: 0;
+        filter: blur(7.5px);
+        -webkit-filter: blur(7.5px);
+    }
+}
+
+@keyframes navTextRollIn {
+    0% {
+        transform: translateY(110%) rotateX(-42deg);
+        opacity: 0;
+        filter: blur(7.5px);
+        -webkit-filter: blur(7.5px);
+    }
+
+    40% {
+        opacity: 0.90;
+        filter: blur(2.5px);
+        -webkit-filter: blur(2.5px);
+    }
+
+    100% {
+        transform: translateY(0) rotateX(0deg);
+        opacity: 1;
+        filter: blur(0px);
+        -webkit-filter: blur(0px);
+    }
 }
 
 /* ── Capsule Internal Progress Elements (Haute visibilité & élégance) ── */
@@ -394,6 +592,14 @@ footer {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.box-blur {
+    background-color: rgba(80, 82, 83, 0.2);
+    border: 1px rgba(65, 67, 68, 0.15) solid;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
 }
 
 ::-webkit-scrollbar {
@@ -812,16 +1018,18 @@ body.site-revealing #navBar .contact {
     padding: 0 4vw;
 
     & .quick-desc {
+        position: relative;
+        z-index: 20;
         display: flex;
         flex-direction: column;
-        gap: 2.5vh;
-        width: 34vw;
+        gap: 2.8vh;
+        width: clamp(380px, 41vw, 580px);
 
         & .names {
-            font-size: 44px;
-            letter-spacing: 0.1vw;
-            font-weight: 600;
-            line-height: 1.15;
+            font-size: clamp(52px, 4.3vw, 70px);
+            letter-spacing: -0.01em;
+            font-weight: 700;
+            line-height: 1.08;
 
             & .name {
                 width: fit-content;
@@ -830,20 +1038,93 @@ body.site-revealing #navBar .contact {
                 &::after {
                     content: '';
                     position: absolute;
-                    bottom: 8%;
+                    bottom: 6%;
                     left: 0;
-                    height: 6%;
+                    height: 5px;
                     width: 100%;
                     border-radius: 90px;
-                    background: linear-gradient(90deg, #eeff0088, #00aeff88, #ff00f288);
+                    background: linear-gradient(90deg, #eeff00aa, #00aeffaa, #ff00f2aa);
                 }
             }
         }
 
         & .description {
-            font-size: 17px;
-            line-height: 1.5;
-            color: rgba(240, 248, 255, 0.85);
+            font-size: clamp(14.5px, 1.1vw, 17px);
+            line-height: 1.55;
+            color: rgba(240, 248, 255, 0.88);
+        }
+
+        & .hero-actions {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 14px;
+            margin-top: 0.6vh;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 20;
+
+            & .hero-btn {
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 10px 22px;
+                border-radius: 12px;
+                font-size: 15px;
+                font-weight: 500;
+                font-family: inherit;
+                text-decoration: none;
+                cursor: pointer;
+                color: aliceblue;
+                background-color: rgba(80, 82, 83, 0.2);
+                border: 1px rgba(65, 67, 68, 0.15) solid;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                transition: ease 0.2s;
+                overflow: hidden;
+
+                &::before {
+                    content: "";
+                    height: 100%;
+                    width: 100%;
+                    opacity: 0.05;
+                    position: absolute;
+                    transition: ease 0.5s;
+                    border-radius: 10px;
+                    left: 0;
+                    pointer-events: none;
+                    background: radial-gradient(500px circle at var(--mouse-x) var(--mouse-y),
+                            aliceblue,
+                            transparent 40%);
+                }
+
+                & svg {
+                    position: relative;
+                    z-index: 2;
+                    transition: transform 0.2s ease;
+                }
+
+                & .hero-btn-arrow {
+                    transform: translateX(0px);
+                }
+
+                & span {
+                    position: relative;
+                    z-index: 2;
+                    pointer-events: none;
+                }
+
+                &:hover {
+                    background-color: rgba(100, 102, 105, 0.35);
+                    border-color: rgba(255, 255, 255, 0.25);
+
+                    & .hero-btn-arrow {
+                        transform: translateX(4px);
+                    }
+                }
+            }
         }
     }
 
@@ -1035,6 +1316,7 @@ body.site-revealing #navBar .contact {
                     border-radius: 15px;
                     z-index: -1;
                     background: radial-gradient(#111, transparent 70%);
+                    pointer-events: none;
                 }
 
                 & .device {
@@ -4470,26 +4752,32 @@ body.mac-fullscreen-mode {
         display: flex;
         flex-direction: row;
         gap: 16px;
-        height: 650px;
+        min-height: 700px;
+        height: auto;
         position: relative;
 
         & .line {
             position: relative;
             width: 6px;
-            height: 105%;
+            align-self: stretch;
+            min-height: 100%;
             border-radius: 10px;
-            background: linear-gradient(180deg, #eeff00 0%, #00aeff 45%, #ff00f2 90%, transparent 100%);
+            background: linear-gradient(180deg, #eeff00 0%, #00aeff 45%, #ff00f2 92%, #ff00f2 100%);
             z-index: 1;
         }
 
         & .parags {
+            position: relative;
+            z-index: 3;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            gap: 16px;
             flex: 1;
 
             & .inner {
                 position: relative;
+                z-index: 2;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
@@ -4511,8 +4799,17 @@ body.mac-fullscreen-mode {
                     font-weight: 600;
                     font-size: 13px;
                     color: white;
-                    z-index: 2;
+                    z-index: 10;
                     white-space: nowrap;
+                    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                }
+
+                &.timeline-current .date {
+                    background: linear-gradient(135deg, rgba(0, 174, 255, 0.22), rgba(255, 0, 242, 0.12));
+                }
+
+                &.timeline-future .parag {
+                    opacity: 0.75;
                 }
 
                 & .parag {
@@ -5450,9 +5747,9 @@ body.mac-fullscreen-mode {
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 150px;
+        height: 100px;
         background: url(https://1.bp.blogspot.com/-xQUc-TovqDk/XdxogmMqIRI/AAAAAAAACvI/AizpnE509UMGBcTiLJ58BC6iViPYGYQfQCLcBGAsYHQ/s1600/wave.png);
-        background-size: 1000px 150px;
+        background-size: 1000px 100px;
         filter: brightness(0.20);
         pointer-events: none;
     }
@@ -5793,12 +6090,19 @@ body.mac-fullscreen-mode {
 
     #home {
         & .quick-desc {
+            width: min(85vw, 600px);
+            gap: 2.2vh;
+
             & .names {
-                font-size: 40px;
+                font-size: clamp(44px, 5.5vw, 56px);
             }
 
             & .description {
-                font-size: 16px;
+                font-size: clamp(14px, 1.8vw, 16px);
+            }
+
+            & .hero-actions {
+                gap: 14px;
             }
         }
 
@@ -6163,14 +6467,25 @@ body.mac-fullscreen-mode {
 
     #home {
         & .quick-desc {
-            gap: 1vh;
+            width: 90vw;
+            gap: 1.8vh;
 
             & .names {
-                font-size: 50px;
+                font-size: clamp(38px, 9vw, 48px);
             }
 
             & .description {
-                font-size: 20px;
+                font-size: clamp(13px, 3.4vw, 15px);
+            }
+
+            & .hero-actions {
+                gap: 12px;
+                margin-top: 4px;
+
+                & .hero-btn {
+                    padding: 11px 22px;
+                    font-size: 15px;
+                }
             }
         }
     }
@@ -6518,14 +6833,30 @@ body.mac-fullscreen-mode {
 
     #home {
         & .quick-desc {
-            gap: 1vh;
+            width: 92vw;
+            gap: 1.6vh;
 
             & .names {
-                font-size: 50px;
+                font-size: clamp(34px, 8.8vw, 42px);
+                line-height: 1.1;
             }
 
             & .description {
-                font-size: 14px;
+                font-size: 15px;
+                line-height: 1.5;
+            }
+
+            & .hero-actions {
+                width: 100%;
+                gap: 10px;
+                margin-top: 4px;
+
+                & .hero-btn {
+                    flex: 1 1 auto;
+                    min-width: 130px;
+                    padding: 10px 18px;
+                    font-size: 14px;
+                }
             }
         }
     }
