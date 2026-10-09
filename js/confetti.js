@@ -107,7 +107,7 @@ export function initConfetti() {
       shapes: ['star', 'circle'],
     });
 
-    const duration = 2800;
+    const duration = 1500;
     const animationEnd = Date.now() + duration;
 
     clearInterval(superInterval);
@@ -167,7 +167,7 @@ export function initConfetti() {
     if (isSuperActive) return;
 
     const now = Date.now();
-    hoverTimestamps = hoverTimestamps.filter(t => now - t < 3500);
+    hoverTimestamps = hoverTimestamps.filter(t => now - t < 2000);
     hoverTimestamps.push(now);
 
     if (hoverTimestamps.length >= 10) {
