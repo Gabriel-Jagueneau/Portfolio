@@ -3,7 +3,7 @@
 // creating a fluid multi-card radial gradient halo with zero layout thrashing.
 
 export function initCardHover() {
-  const selector = ".card, .carder, .hero-btn, .diploma, .parag, #contact .head, #contact .body, #contact .bottom .info";
+  const selector = ".card, .carder, .hero-btn, .diploma, .parag, #contact .head, #contact .body, #contact .bottom .info, #navBar";
   let rafPending = false;
   let lastEvent = null;
 
@@ -18,8 +18,8 @@ export function initCardHover() {
     const elements = document.querySelectorAll(selector);
     for (let i = 0; i < elements.length; i++) {
       const el = elements[i];
-      // Skip elements that are not rendered (e.g. inactive tab or hidden section)
-      if (el.offsetParent === null) continue;
+      // Skip elements that are not rendered (offsetParent is null for display:none elements, but also for position:fixed like #navBar)
+      if (el.offsetParent === null && el.id !== "navBar") continue;
 
       const rect = el.getBoundingClientRect();
       // Only process elements currently in or adjacent to the viewport
