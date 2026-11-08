@@ -1,0 +1,3458 @@
+            &.is-zooming {
+                will-change: transform;
+            }
+
+            &.is-mac-zoomed {
+                z-index: 10003;
+                box-shadow: none !important;
+                border: none !important;
+                outline: none !important;
+                background: transparent !important;
+
+                & .imagur::after {
+                    opacity: 0 !important;
+                }
+            }
+
+            & .imagur {
+                display: flex;
+                position: relative;
+                height: 100%;
+                width: 100%;
+                gap: 2vh;
+                transform: translateZ(0);
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: -25%;
+                    left: -25%;
+                    height: 150%;
+                    width: 150%;
+                    border-radius: 15px;
+                    z-index: -1;
+                    background: radial-gradient(#111, transparent 70%);
+                    pointer-events: none;
+                }
+
+                & .device {
+                    width: 100%;
+                    position: relative;
+                    z-index: 3;
+                    pointer-events: none;
+                    image-rendering: -webkit-optimize-contrast;
+                    image-rendering: high-quality;
+                    filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.7)) brightness(0.22) saturate(0.7) hue-rotate(200deg);
+                }
+
+                & .inside {
+                    position: absolute;
+                    top: 46.5%;
+                    left: 50%;
+                    transform: translate(-50%, -50%) translateZ(0);
+                    width: 85%;
+                    height: 89%;
+                    z-index: 1;
+                    border-radius: 9px 9px 0 0;
+                    overflow: hidden;
+                    background: radial-gradient(circle at 80% 20%, #1e1b4b 0%, #0f172a 40%, #020617 100%), radial-gradient(circle at 20% 80%, #312e81 0%, transparent 60%);
+                    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+                    -webkit-font-smoothing: antialiased;
+                    -moz-osx-font-smoothing: grayscale;
+                    text-rendering: optimizeLegibility;
+
+                    & .macos-container {
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        position: relative;
+                        user-select: none;
+                        transition: 0.3s ease;
+
+                        &.is-interactive {
+                            cursor: default;
+                        }
+
+                        & input,
+                        & textarea,
+                        & select {
+                            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+                            -webkit-font-smoothing: antialiased;
+                            -moz-osx-font-smoothing: grayscale;
+                            box-sizing: border-box;
+                        }
+
+                        & .top-bar {
+                            height: clamp(17px, 3.76%, 26px);
+                            background: rgba(30, 32, 44, 0.75);
+                            backdrop-filter: blur(25px);
+                            -webkit-backdrop-filter: blur(25px);
+                            z-index: 100;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 0 8px;
+                            font-size: 6.5px;
+                            color: rgba(255, 255, 255, 0.9);
+                            box-sizing: border-box;
+                            -webkit-font-smoothing: antialiased;
+                            -moz-osx-font-smoothing: grayscale;
+
+                            & .left-side {
+                                display: flex;
+                                align-items: center;
+                                gap: 3px;
+                                max-width: calc(50% - 40px);
+                                overflow: hidden;
+                                white-space: nowrap;
+
+                                & .apple-logo {
+                                    font-size: 7.5px;
+                                    margin-right: 3px;
+                                    cursor: pointer;
+                                    opacity: 0.95;
+                                    display: flex;
+                                    align-items: center;
+                                }
+
+                                & .menu-item {
+                                    padding: 0 3px;
+                                    border-radius: 2px;
+                                    cursor: default;
+                                    opacity: 0.85;
+                                    font-size: 6.5px;
+                                    transition: 0.2s ease;
+
+                                    &:hover {
+                                        background: var(--pill-bg-hover);
+                                        opacity: 1;
+                                    }
+                                }
+
+                                & .active-app-name {
+                                    font-weight: 600;
+                                    opacity: 1;
+                                }
+                            }
+
+                            & .right-side {
+                                display: flex;
+                                align-items: center;
+                                gap: 4px;
+                                font-size: 6.5px;
+                                max-width: calc(50% - 40px);
+                                justify-content: flex-end;
+                                white-space: nowrap;
+
+                                & .menu-status {
+                                    display: flex;
+                                    align-items: center;
+                                    opacity: 0.88;
+                                    cursor: pointer;
+                                    transition: 0.2s ease;
+
+                                    &:hover {
+                                        opacity: 1;
+                                    }
+                                }
+
+                                & .wifi {
+                                    display: flex;
+                                    align-items: center;
+                                }
+
+                                & #mac-menu-item-time {
+                                    font-variant-numeric: tabular-nums;
+                                    opacity: 0.9;
+                                    font-weight: 500;
+                                    white-space: nowrap;
+                                }
+                            }
+                        }
+
+                        & .desktop {
+                            flex: 1;
+                            position: relative;
+                            width: 100%;
+                            overflow: hidden;
+                        }
+
+                        & .mac-brightness-overlay {
+                            position: absolute;
+                            inset: 0;
+                            background: #000;
+                            opacity: 0;
+                            pointer-events: none;
+                            z-index: 999;
+                            transition: 0.2s ease;
+                        }
+
+                        & .window {
+                            position: absolute;
+                            background: rgba(28, 29, 36, 0.94);
+                            backdrop-filter: blur(35px);
+                            -webkit-backdrop-filter: blur(35px);
+                            border-radius: 6px;
+                            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 0.5px rgba(255, 255, 255, 0.1);
+                            overflow: hidden;
+                            display: flex;
+                            flex-direction: column;
+                            z-index: 2;
+                            opacity: 0.85;
+                            transition: 0.3s ease;
+
+                            &.active-window {
+                                z-index: 10;
+                                opacity: 1;
+                                box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 0 0.5px rgba(255, 255, 255, 0.22);
+
+                                & .window-header .dots .dot {
+                                    opacity: 1;
+                                }
+
+                                & .window-header .window-title {
+                                    color: rgba(255, 255, 255, 0.9);
+                                }
+                            }
+
+                            & .window-header {
+                                height: 16px;
+                                background: rgba(255, 255, 255, 0.04);
+                                border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+                                display: flex;
+                                align-items: center;
+                                padding: 0 5px;
+                                position: relative;
+                                cursor: grab;
+                                box-sizing: border-box;
+
+                                &:active {
+                                    cursor: grabbing;
+                                }
+
+                                & .window-title {
+                                    position: absolute;
+                                    left: 0;
+                                    right: 0;
+                                    text-align: center;
+                                    font-size: 6.5px;
+                                    font-weight: 500;
+                                    color: rgba(255, 255, 255, 0.6);
+                                    pointer-events: none;
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    padding: 0 30px;
+                                    transition: 0.2s ease;
+                                }
+
+                                & .dots {
+                                    display: flex;
+                                    gap: 3.5px;
+                                    align-items: center;
+                                    z-index: 2;
+
+                                    &:hover .dot::after {
+                                        opacity: 1;
+                                    }
+
+                                    & .dot {
+                                        width: 6px;
+                                        height: 6px;
+                                        border-radius: 50%;
+                                        cursor: pointer;
+                                        box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.25);
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        position: relative;
+                                        opacity: 0.65;
+                                        transition: 0.2s ease;
+
+                                        &::after {
+                                            font-size: 4.5px;
+                                            font-weight: 800;
+                                            line-height: 1;
+                                            color: rgba(0, 0, 0, 0.7);
+                                            opacity: 0;
+                                            transition: 0.2s ease;
+                                            position: absolute;
+                                            top: 50%;
+                                            left: 50%;
+                                            transform: translate(-50%, -50%);
+                                        }
+
+                                        &:hover {
+                                            filter: brightness(1.12);
+                                            transform: scale(1.08);
+                                        }
+
+                                        &.close {
+                                            background: #ff5f57;
+
+                                            &::after {
+                                                content: '×';
+                                            }
+                                        }
+
+                                        &.minimize {
+                                            background: #febc2e;
+
+                                            &::after {
+                                                content: '−';
+                                            }
+                                        }
+
+                                        &.maximize {
+                                            background: #28c840;
+
+                                            &::after {
+                                                content: '+';
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            & .window-content {
+                                flex: 1;
+                                overflow: hidden;
+                                display: flex;
+                                flex-direction: column;
+                                box-sizing: border-box;
+
+                                & .app-terminal {
+                                    height: 100%;
+                                    background: rgba(16, 17, 22, 0.96);
+                                    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+                                    color: #e6edf3;
+                                    font-size: 6px;
+                                    line-height: 1.3;
+                                    padding: 4px 6px;
+                                    overflow-y: auto;
+                                    box-sizing: border-box;
+                                    display: flex;
+                                    flex-direction: column;
+
+                                    & .term-login {
+                                        color: rgba(255, 255, 255, 0.4);
+                                        margin-bottom: 2px;
+                                    }
+
+                                    & .term-welcome {
+                                        color: rgba(255, 255, 255, 0.55);
+                                        margin-bottom: 6px;
+                                    }
+
+                                    & .term-prompt {
+                                        color: #58a6ff;
+                                        font-weight: 600;
+                                    }
+
+                                    & .term-path {
+                                        color: #f778ba;
+                                    }
+
+                                    & .term-cmd {
+                                        color: #ffffff;
+                                    }
+
+                                    & .term-highlight {
+                                        color: #e5c07b;
+                                        font-weight: 600;
+                                    }
+
+                                    & .term-success {
+                                        color: #3fb950;
+                                    }
+
+                                    & .term-info {
+                                        color: #58a6ff;
+                                    }
+
+                                    & .term-warn {
+                                        color: #ff9500;
+                                    }
+
+                                    & .term-err {
+                                        color: #ff5f56;
+                                    }
+
+                                    & .term-muted {
+                                        color: rgba(255, 255, 255, 0.6);
+                                    }
+
+                                    & .term-code {
+                                        background: rgba(0, 0, 0, 0.3);
+                                        padding: 4px 6px;
+                                        border-radius: 4px;
+                                        color: #98c379;
+                                        margin: 3px 0;
+                                    }
+
+                                    & .term-output {
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 2px;
+                                    }
+
+                                    & .term-input-line {
+                                        display: flex;
+                                        align-items: center;
+                                        margin-top: 4px;
+                                        flex-shrink: 0;
+
+                                        & .term-cli-input {
+                                            flex: 1;
+                                            min-width: 50px;
+                                            background: transparent;
+                                            border: none;
+                                            outline: none;
+                                            color: #fff;
+                                            font-family: inherit;
+                                            font-size: 6px;
+                                            line-height: 1.3;
+                                            padding: 0;
+                                            caret-color: #58a6ff;
+                                        }
+                                    }
+                                }
+
+                                /* ═══════════════════════════════════════════════
+                                   1. FINDER (Native Apple Glass macOS UI)
+                                   ═══════════════════════════════════════════════ */
+                                & .app-finder {
+                                    height: 100%;
+                                    display: flex;
+                                    background: rgba(22, 24, 32, 0.94);
+                                    color: #e1e4e8;
+                                    font-size: 6.5px;
+                                    box-sizing: border-box;
+                                    overflow: hidden;
+
+                                    & .finder-sidebar {
+                                        width: 68px;
+                                        flex-shrink: 0;
+                                        background: rgba(14, 15, 22, 0.7);
+                                        border-right: 0.5px solid rgba(255, 255, 255, 0.08);
+                                        padding: 4px 3px;
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 1px;
+                                        box-sizing: border-box;
+
+                                        & .finder-section-title {
+                                            font-size: 5px;
+                                            font-weight: 700;
+                                            text-transform: uppercase;
+                                            color: rgba(255, 255, 255, 0.35);
+                                            padding: 2px 3px 1px;
+                                            letter-spacing: 0.4px;
+                                        }
+
+                                        & .finder-item {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 3px;
+                                            padding: 2px 4px;
+                                            border-radius: 3px;
+                                            color: rgba(255, 255, 255, 0.75);
+                                            cursor: pointer;
+                                            font-size: 6px;
+                                            transition: 0.2s ease;
+
+                                            & .finder-item-icon {
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                font-size: 7px;
+
+                                                &.blue {
+                                                    color: #007aff;
+                                                }
+
+                                                &.purple {
+                                                    color: #af52de;
+                                                }
+
+                                                &.orange {
+                                                    color: #ff9500;
+                                                }
+
+                                                &.green {
+                                                    color: #34c759;
+                                                }
+
+                                                &.cyan {
+                                                    color: #5ac8fa;
+                                                }
+                                            }
+
+                                            &.active {
+                                                background: rgba(0, 122, 255, 0.75);
+                                                color: #fff;
+                                                font-weight: 500;
+                                            }
+
+                                            &:hover:not(.active) {
+                                                background: var(--pill-bg);
+                                                color: var(--text-white);
+                                            }
+                                        }
+                                    }
+
+                                    & .finder-main {
+                                        flex: 1;
+                                        min-width: 0;
+                                        display: flex;
+                                        flex-direction: column;
+                                        background: rgba(18, 19, 26, 0.85);
+                                        box-sizing: border-box;
+
+                                        & .finder-toolbar {
+                                            height: 16px;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: space-between;
+                                            padding: 0 5px;
+                                            background: rgba(0, 0, 0, 0.2);
+                                            border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+                                            box-sizing: border-box;
+
+                                            & .finder-nav-arrows {
+                                                display: flex;
+                                                gap: 2px;
+
+                                                & .finder-arrow-btn {
+                                                    width: 12px;
+                                                    height: 12px;
+                                                    border-radius: 2px;
+                                                    border: none;
+                                                    background: rgba(255, 255, 255, 0.08);
+                                                    color: #fff;
+                                                    font-size: 8px;
+                                                    cursor: pointer;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: center;
+                                                    padding: 0;
+
+                                                    &:disabled {
+                                                        opacity: 0.3;
+                                                        cursor: default;
+                                                    }
+                                                }
+                                            }
+
+                                            & .finder-breadcrumbs {
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 3px;
+                                                font-size: 6px;
+                                                font-weight: 600;
+                                                color: #fff;
+
+                                                & .crumb-icon {
+                                                    display: flex;
+                                                    align-items: center;
+                                                    color: #007aff;
+                                                }
+                                            }
+
+                                            & .finder-search-box {
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 3px;
+                                                background: rgba(255, 255, 255, 0.08);
+                                                border: 0.5px solid rgba(255, 255, 255, 0.12);
+                                                border-radius: 3px;
+                                                padding: 1px 4px;
+                                                height: 12px;
+                                                box-sizing: border-box;
+
+                                                & .search-icon {
+                                                    font-size: 6px;
+                                                    opacity: 0.5;
+                                                    display: flex;
+                                                    align-items: center;
+                                                }
+
+                                                & .finder-search-input {
+                                                    border: none;
+                                                    background: transparent;
+                                                    outline: none;
+                                                    color: #fff;
+                                                    font-size: 4.8px;
+                                                    font-family: inherit;
+                                                    width: 45px;
+                                                    padding: 0;
+
+                                                    &::placeholder {
+                                                        color: rgba(255, 255, 255, 0.35);
+                                                        font-size: 4.8px;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        & .finder-content {
+                                            flex: 1;
+                                            padding: 6px 4px;
+                                            display: grid;
+                                            grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+                                            gap: 6px 4px;
+                                            align-content: start;
+                                            overflow-y: auto;
+                                            box-sizing: border-box;
+
+                                            & .finder-icon {
+                                                display: flex;
+                                                flex-direction: column;
+                                                align-items: center;
+                                                text-align: center;
+                                                padding: 3px 2px;
+                                                border-radius: 4px;
+                                                gap: 2px;
+                                                cursor: pointer;
+                                                transition: 0.2s ease;
+
+                                                & .finder-svg-wrap {
+                                                    width: 22px;
+                                                    height: 22px;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: center;
+                                                    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+
+                                                    & svg {
+                                                        width: 18px;
+                                                        height: 18px;
+                                                    }
+                                                }
+
+                                                & .finder-name-label {
+                                                    font-size: 5.5px;
+                                                    color: rgba(255, 255, 255, 0.9);
+                                                    line-height: 1.1;
+                                                    max-width: 42px;
+                                                    overflow: hidden;
+                                                    text-overflow: ellipsis;
+                                                    white-space: nowrap;
+                                                }
+
+                                                &.selected {
+                                                    background: rgba(0, 122, 255, 0.55);
+
+                                                    & .finder-name-label {
+                                                        color: #fff;
+                                                        font-weight: 600;
+                                                    }
+                                                }
+
+                                                &:hover:not(.selected) {
+                                                    background: var(--pill-bg);
+                                                }
+                                            }
+                                        }
+
+                                        & .finder-footer {
+                                            height: 11px;
+                                            border-top: 0.5px solid rgba(255, 255, 255, 0.06);
+                                            background: rgba(0, 0, 0, 0.25);
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 5.5px;
+                                            color: rgba(255, 255, 255, 0.45);
+                                        }
+                                    }
+                                }
+
+                                /* ═══════════════════════════════════════════════
+                                   2. SAFARI (Apple Web Engine Browser)
+                                   ═══════════════════════════════════════════════ */
+                                & .app-safari {
+                                    height: 100%;
+                                    display: flex;
+                                    flex-direction: column;
+                                    background: #1a1b1f;
+                                    color: #fff;
+                                    box-sizing: border-box;
+                                    overflow: hidden;
+
+                                    /* ── Unified toolbar: tabs + address bar in one row (Sonoma style) ── */
+                                    & .safari-header {
+                                        height: 20px;
+                                        min-height: 20px;
+                                        flex-shrink: 0;
+                                        padding: 0 5px;
+                                        background: rgba(32, 33, 40, 0.97);
+                                        border-bottom: 0.5px solid rgba(255, 255, 255, 0.09);
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 4px;
+                                        box-sizing: border-box;
+
+                                        & .safari-nav-group {
+                                            display: flex;
+                                            gap: 2px;
+                                            flex-shrink: 0;
+
+                                            & .safari-nav-btn {
+                                                width: 13px;
+                                                height: 13px;
+                                                border-radius: 3px;
+                                                border: none;
+                                                background: rgba(255, 255, 255, 0.07);
+                                                color: rgba(255, 255, 255, 0.75);
+                                                font-size: 8px;
+                                                font-weight: 300;
+                                                cursor: pointer;
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                padding: 0;
+                                                transition: 0.2s ease;
+                                                line-height: 1;
+
+                                                &:hover:not(:disabled) {
+                                                    background: var(--pill-bg-hover);
+                                                    color: var(--text-white);
+                                                }
+
+                                                &:disabled {
+                                                    opacity: 0.28;
+                                                    cursor: default;
+                                                }
+                                            }
+                                        }
+
+                                        & .safari-address {
+                                            flex: 1;
+                                            min-width: 0;
+                                            height: 14px;
+                                            min-height: 14px;
+                                            background: rgba(255, 255, 255, 0.07);
+                                            border: 0.5px solid rgba(255, 255, 255, 0.14);
+                                            border-radius: 4px;
+                                            display: flex;
+                                            align-items: center;
+                                            padding: 0 5px;
+                                            gap: 3px;
+                                            box-sizing: border-box;
+                                            transition: 0.2s ease;
+
+                                            &:focus-within {
+                                                border-color: rgba(0, 122, 255, 0.6);
+                                                background: var(--pill-bg);
+                                                box-shadow: 0 0 0 1.5px rgba(0, 122, 255, 0.2);
+                                            }
+
+                                            & .lock-icon {
+                                                font-size: 6px;
+                                                opacity: 0.85;
+                                                display: flex;
+                                                align-items: center;
+                                                color: #34c759;
+                                                flex-shrink: 0;
+                                            }
+
+                                            & .safari-protocol {
+                                                font-size: 5px;
+                                                color: rgba(255, 255, 255, 0.38);
+                                                flex-shrink: 0;
+                                            }
+
+                                            & .safari-addr-input {
+                                                flex: 1;
+                                                min-width: 0;
+                                                border: none;
+                                                background: transparent;
+                                                outline: none;
+                                                color: #fff;
+                                                font-size: 5px;
+                                                font-family: inherit;
+                                                padding: 0;
+                                            }
+
+                                            & .safari-reload-btn {
+                                                border: none;
+                                                background: transparent;
+                                                color: rgba(255, 255, 255, 0.5);
+                                                cursor: pointer;
+                                                font-size: 7.5px;
+                                                padding: 0;
+                                                flex-shrink: 0;
+                                                line-height: 1;
+                                                transition: 0.2s ease;
+
+                                                &:hover {
+                                                    color: var(--text-white);
+                                                }
+                                            }
+                                        }
+
+                                        & .safari-actions-right {
+                                            display: flex;
+                                            gap: 3px;
+                                            flex-shrink: 0;
+
+                                            & .safari-act-btn {
+                                                width: 13px;
+                                                height: 13px;
+                                                border-radius: 3px;
+                                                background: rgba(255, 255, 255, 0.07);
+                                                color: var(--text-secondary);
+                                                font-size: 7.5px;
+                                                cursor: pointer;
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                transition: 0.2s ease;
+
+                                                &:hover {
+                                                    background: var(--pill-bg-hover);
+                                                    color: var(--text-white);
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    & .safari-tab-bar {
+                                        height: 16px;
+                                        min-height: 16px;
+                                        flex-shrink: 0;
+                                        background: rgba(20, 21, 26, 0.98);
+                                        border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+                                        display: flex;
+                                        align-items: stretch;
+                                        padding: 0;
+                                        gap: 0;
+                                        box-sizing: border-box;
+
+                                        & .safari-tab {
+                                            flex: 1;
+                                            max-width: 25%;
+                                            height: 100%;
+                                            background: transparent;
+                                            border: none;
+                                            border-right: 0.5px solid rgba(255, 255, 255, 0.08);
+                                            padding: 0 5px;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            gap: 3px;
+                                            font-size: 5.5px;
+                                            color: rgba(255, 255, 255, 0.6);
+                                            cursor: pointer;
+                                            transition: 0.2s ease;
+                                            box-sizing: border-box;
+
+                                            &:hover:not(.active) {
+                                                background: var(--pill-bg);
+                                                color: var(--text-white);
+                                            }
+
+                                            &.active {
+                                                background: rgba(45, 48, 58, 0.95);
+                                                color: #fff;
+                                                font-weight: 500;
+                                                box-shadow: inset 0 -1.5px 0 #007aff;
+                                            }
+
+                                            & .tab-icon {
+                                                display: flex;
+                                                align-items: center;
+                                                flex-shrink: 0;
+                                            }
+
+                                            & .tab-title {
+                                                overflow: hidden;
+                                                text-overflow: ellipsis;
+                                                white-space: nowrap;
+                                            }
+                                        }
+                                    }
+
+                                    & .safari-body {
+                                        flex: 1;
+                                        overflow-y: auto;
+                                        background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #0f172a 60%, #020617 100%);
+                                        padding: 8px 10px;
+                                        box-sizing: border-box;
+                                        transition: 0.2s ease;
+
+                                        & .safari-page-wrap {
+                                            max-width: 320px;
+                                            margin: 0 auto;
+                                            display: flex;
+                                            flex-direction: column;
+                                            align-items: center;
+                                            text-align: center;
+                                            gap: 5px;
+                                        }
+
+                                        & .safari-brand-badge {
+                                            font-size: 5px;
+                                            font-weight: 700;
+                                            padding: 2px 6px;
+                                            border-radius: 8px;
+                                            background: rgba(0, 174, 255, 0.15);
+                                            border: 0.5px solid rgba(0, 174, 255, 0.3);
+                                            color: #38bdf8;
+                                            letter-spacing: 0.4px;
+                                        }
+
+                                        & .safari-hero-title {
+                                            font-size: 11px;
+                                            font-weight: 800;
+                                            color: #fff;
+                                            margin: 0;
+                                        }
+
+                                        & .safari-hero-desc {
+                                            font-size: 6.5px;
+                                            color: var(--text-secondary);
+                                            line-height: 1.3;
+                                            max-width: 95%;
+                                            margin: 0;
+                                        }
+
+                                        & .safari-feature-grid {
+                                            display: grid;
+                                            grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+                                            gap: 4px;
+                                            width: 100%;
+                                            margin-top: 3px;
+
+                                            & .safari-f-card {
+                                                background: rgba(255, 255, 255, 0.06);
+                                                border: 0.5px solid rgba(255, 255, 255, 0.1);
+                                                border-radius: 5px;
+                                                padding: 4px 6px;
+                                                text-align: left;
+                                                display: flex;
+                                                flex-direction: column;
+                                                gap: 2px;
+
+                                                & strong {
+                                                    font-size: 6px;
+                                                    color: #fff;
+                                                }
+
+                                                & small {
+                                                    font-size: 5.5px;
+                                                    color: rgba(255, 255, 255, 0.55);
+                                                    line-height: 1.2;
+                                                }
+                                            }
+                                        }
+
+                                        & .safari-action-links {
+                                            display: flex;
+                                            gap: 5px;
+                                            margin-top: 3px;
+
+                                            & .safari-link-btn {
+                                                background: #007aff;
+                                                color: #fff;
+                                                font-size: 6px;
+                                                font-weight: 600;
+                                                border: none;
+                                                border-radius: 4px;
+                                                padding: 3px 8px;
+                                                cursor: pointer;
+                                                transition: 0.2s ease;
+
+                                                &.secondary {
+                                                    background: rgba(255, 255, 255, 0.12);
+                                                    color: rgba(255, 255, 255, 0.9);
+                                                }
+
+                                                &:hover {
+                                                    filter: brightness(1.15);
+                                                    transform: scale(1.03);
+                                                }
+                                            }
+                                        }
+
+                                        & .safari-offline-wrap {
+                                            max-width: 260px;
+                                            margin: 10px auto 0;
+                                            display: flex;
+                                            flex-direction: column;
+                                            align-items: center;
+                                            text-align: center;
+                                            gap: 5px;
+
+                                            & .safari-offline-icon {
+                                                color: rgba(255, 255, 255, 0.45);
+                                                margin-bottom: 2px;
+                                            }
+
+                                            & .safari-offline-title {
+                                                font-size: 8px;
+                                                font-weight: 600;
+                                                color: #fff;
+                                                margin: 0;
+                                            }
+
+                                            & .safari-offline-desc {
+                                                font-size: 6px;
+                                                color: rgba(255, 255, 255, 0.55);
+                                                max-width: 200px;
+                                                margin: 0;
+                                                line-height: 1.3;
+                                            }
+
+                                            & .safari-offline-actions {
+                                                display: flex;
+                                                gap: 5px;
+                                                margin-top: 4px;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                /* ═══════════════════════════════════════════════
+                                   3. VS CODE (One Dark Pro Modern IDE)
+                                   ═══════════════════════════════════════════════ */
+                                & .app-code {
+                                    height: 100%;
+                                    display: flex;
+                                    background: #1e1e24;
+                                    color: #abb2bf;
+                                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                                    font-size: 8px;
+                                    box-sizing: border-box;
+                                    overflow: hidden;
+
+                                    & .code-activity-bar {
+                                        width: 18px;
+                                        flex-shrink: 0;
+                                        background: #18181b;
+                                        border-right: 0.5px solid rgba(255, 255, 255, 0.06);
+                                        display: flex;
+                                        flex-direction: column;
+                                        align-items: center;
+                                        padding: 4px 0;
+                                        gap: 6px;
+                                        box-sizing: border-box;
+
+                                        & .act-icon {
+                                            font-size: 8px;
+                                            opacity: 0.45;
+                                            cursor: pointer;
+                                            transition: 0.2s ease;
+
+                                            &.active,
+                                            &:hover {
+                                                opacity: 1;
+                                            }
+
+                                            &.bottom {
+                                                margin-top: auto;
+                                            }
+                                        }
+                                    }
+
+                                    & .code-sidebar {
+                                        width: 68px;
+                                        flex-shrink: 0;
+                                        background: #1e1e24;
+                                        border-right: 0.5px solid rgba(255, 255, 255, 0.06);
+                                        display: flex;
+                                        flex-direction: column;
+                                        box-sizing: border-box;
+
+                                        & .code-section-header {
+                                            font-size: 5px;
+                                            font-weight: 700;
+                                            color: rgba(255, 255, 255, 0.4);
+                                            padding: 3px 4px;
+                                            letter-spacing: 0.3px;
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 2px;
+                                        }
+
+                                        & .code-file-list {
+                                            display: flex;
+                                            flex-direction: column;
+                                            gap: 1px;
+                                            padding: 0 2px;
+
+                                            & .code-file {
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 3px;
+                                                padding: 2px 3px;
+                                                border-radius: 2px;
+                                                cursor: pointer;
+                                                font-size: 5.5px;
+                                                color: var(--text-secondary);
+                                                transition: 0.2s ease;
+
+                                                & .f-icon {
+                                                    font-size: 5px;
+                                                    font-weight: 700;
+                                                    padding: 1px 2px;
+                                                    border-radius: 2px;
+                                                    line-height: 1;
+
+                                                    &.js {
+                                                        background: #f7df1e;
+                                                        color: #000;
+                                                    }
+
+                                                    &.py {
+                                                        background: #3572A5;
+                                                        color: #fff;
+                                                    }
+
+                                                    &.json {
+                                                        background: #cbcb41;
+                                                        color: #000;
+                                                    }
+
+                                                    &.ts {
+                                                        background: #3178c6;
+                                                        color: #fff;
+                                                    }
+                                                }
+
+                                                &.active {
+                                                    background: rgba(0, 122, 204, 0.3);
+                                                    color: #fff;
+                                                    font-weight: 500;
+                                                }
+
+                                                &:hover:not(.active) {
+                                                    background: var(--pill-bg);
+                                                    color: var(--text-white);
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    & .code-editor-wrap {
+                                        flex: 1;
+                                        min-width: 0;
+                                        display: flex;
+                                        flex-direction: column;
+                                        background: #1e222b;
+                                        box-sizing: border-box;
+
+                                        & .code-tab-header {
+                                            height: 15px;
+                                            background: #181a20;
+                                            border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+                                            display: flex;
+                                            justify-content: space-between;
+                                            align-items: center;
+                                            padding: 0 4px;
+                                            box-sizing: border-box;
+
+                                            & .code-tab.active {
+                                                background: #1e222b;
+                                                border-top: 1px solid #007acc;
+                                                height: 100%;
+                                                padding: 0 5px;
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 3px;
+                                                font-size: 5.5px;
+                                                color: #fff;
+
+                                                & .tab-close {
+                                                    opacity: 0.5;
+                                                    margin-left: 2px;
+                                                    cursor: pointer;
+                                                }
+                                            }
+
+                                            & .code-run-btn {
+                                                background: #34c759;
+                                                color: #000;
+                                                font-weight: 700;
+                                                font-size: 5.5px;
+                                                border: none;
+                                                border-radius: 2px;
+                                                padding: 1.5px 5px;
+                                                cursor: pointer;
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 2px;
+                                                transition: 0.2s ease;
+
+                                                &:hover {
+                                                    filter: brightness(1.2);
+                                                    transform: scale(1.04);
+                                                }
+                                            }
+                                        }
+
+                                        & .code-breadcrumbs {
+                                            height: 10px;
+                                            background: #1e222b;
+                                            border-bottom: 0.5px solid rgba(255, 255, 255, 0.04);
+                                            display: flex;
+                                            align-items: center;
+                                            padding: 0 5px;
+                                            font-size: 5px;
+                                            color: rgba(255, 255, 255, 0.35);
+                                            gap: 3px;
+
+                                            & .active-crumb {
+                                                color: rgba(255, 255, 255, 0.75);
+                                                font-weight: 500;
+                                            }
+                                        }
+
+                                        & .code-main-area {
+                                            flex: 1;
+                                            min-height: 0;
+                                            display: flex;
+                                            background: #1e222b;
+                                            overflow: hidden;
+
+                                            & .code-gutter {
+                                                width: 16px;
+                                                background: #1a1d24;
+                                                color: rgba(255, 255, 255, 0.25);
+                                                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+                                                font-size: 5px;
+                                                padding: 4px 2px;
+                                                text-align: right;
+                                                user-select: none;
+                                                display: flex;
+                                                flex-direction: column;
+                                                line-height: 1.35;
+                                                overflow: hidden;
+                                                box-sizing: border-box;
+                                            }
+
+                                            & .code-textarea {
+                                                flex: 1;
+                                                min-width: 0;
+                                                height: 100%;
+                                                background: transparent;
+                                                border: none;
+                                                outline: none;
+                                                color: #abb2bf;
+                                                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+                                                font-size: 5px;
+                                                line-height: 1.35;
+                                                padding: 4px 6px;
+                                                box-sizing: border-box;
+                                                resize: none;
+                                                white-space: pre;
+                                            }
+                                        }
+
+                                        & .code-console-panel {
+                                            height: 32px;
+                                            background: #14161b;
+                                            border-top: 0.5px solid rgba(255, 255, 255, 0.08);
+                                            display: flex;
+                                            flex-direction: column;
+
+                                            & .console-tab-row {
+                                                height: 11px;
+                                                background: #181a20;
+                                                display: flex;
+                                                align-items: center;
+                                                padding: 0 5px;
+                                                gap: 6px;
+
+                                                & .console-tab {
+                                                    font-size: 5px;
+                                                    color: rgba(255, 255, 255, 0.4);
+                                                    cursor: pointer;
+
+                                                    &.active {
+                                                        color: #fff;
+                                                        font-weight: 600;
+                                                        border-bottom: 1px solid #007acc;
+                                                    }
+                                                }
+                                            }
+
+                                            & .code-console-body {
+                                                flex: 1;
+                                                padding: 2px 6px;
+                                                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+                                                font-size: 5.5px;
+                                                color: #abb2bf;
+                                                overflow-y: auto;
+                                                line-height: 1.2;
+
+                                                & .console-prompt {
+                                                    color: #58a6ff;
+                                                    font-weight: 600;
+                                                    margin-right: 3px;
+                                                }
+                                            }
+                                        }
+
+                                        & .code-status-bar {
+                                            height: 10px;
+                                            background: #007acc;
+                                            color: #fff;
+                                            display: flex;
+                                            justify-content: space-between;
+                                            align-items: center;
+                                            padding: 0 5px;
+                                            font-size: 5px;
+                                            box-sizing: border-box;
+
+                                            & .status-left,
+                                            & .status-right {
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 3px;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                /* ═══════════════════════════════════════════════
+                                   4. APPLE MUSIC (Modern Frosted Glass Player)
+                                   ═══════════════════════════════════════════════ */
+                                & .app-music {
+                                    height: 100%;
+                                    display: flex;
+                                    background: #180a14;
+                                    color: #fff;
+                                    box-sizing: border-box;
+                                    overflow: hidden;
+
+                                    & .music-sidebar {
+                                        width: 65px;
+                                        flex-shrink: 0;
+                                        background: rgba(20, 10, 18, 0.85);
+                                        border-right: 0.5px solid rgba(255, 255, 255, 0.08);
+                                        padding: 5px 3px;
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 1px;
+                                        box-sizing: border-box;
+
+                                        & .music-side-header {
+                                            font-size: 5px;
+                                            font-weight: 700;
+                                            text-transform: uppercase;
+                                            color: rgba(255, 255, 255, 0.35);
+                                            letter-spacing: 0.4px;
+                                            padding: 2px 3px 1px;
+                                        }
+
+                                        & .music-side-item {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 3px;
+                                            font-size: 5.5px;
+                                            color: var(--text-secondary);
+                                            padding: 2px 4px;
+                                            border-radius: 3px;
+                                            cursor: pointer;
+                                            transition: 0.2s ease;
+
+                                            &.active {
+                                                background: rgba(250, 45, 72, 0.25);
+                                                color: #fa2d48;
+                                                font-weight: 600;
+                                            }
+
+                                            &:hover:not(.active) {
+                                                background: var(--pill-bg);
+                                                color: var(--text-white);
+                                            }
+                                        }
+                                    }
+
+                                    & .music-main-content {
+                                        flex: 1;
+                                        min-width: 0;
+                                        display: flex;
+                                        flex-direction: column;
+                                        background: radial-gradient(circle at 80% 20%, #351327 0%, #170914 100%);
+                                        padding: 6px;
+                                        gap: 5px;
+                                        overflow-y: auto;
+                                        box-sizing: border-box;
+
+                                        & .music-hero-card {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 6px;
+                                            background: rgba(255, 255, 255, 0.05);
+                                            border: 0.5px solid rgba(255, 255, 255, 0.08);
+                                            border-radius: 5px;
+                                            padding: 4px 6px;
+
+                                            & .music-cover {
+                                                width: 24px;
+                                                height: 24px;
+                                                border-radius: 4px;
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                color: #fff;
+                                                flex-shrink: 0;
+                                                box-shadow: 0 2px 8px rgba(250, 45, 72, 0.4);
+                                            }
+
+                                            & .music-meta {
+                                                flex: 1;
+                                                min-width: 0;
+                                                display: flex;
+                                                flex-direction: column;
+                                                gap: 1px;
+
+                                                & .music-track {
+                                                    font-size: 6.5px;
+                                                    font-weight: 700;
+                                                    color: #fff;
+                                                    white-space: nowrap;
+                                                    overflow: hidden;
+                                                    text-overflow: ellipsis;
+                                                }
+
+                                                & .music-artist {
+                                                    font-size: 5.5px;
+                                                    color: rgba(255, 255, 255, 0.6);
+                                                }
+
+                                                & .music-equalizer {
+                                                    display: flex;
+                                                    align-items: flex-end;
+                                                    gap: 1.5px;
+                                                    height: 5px;
+                                                    margin-top: 1px;
+
+                                                    & span {
+                                                        width: 1.5px;
+                                                        height: 1.5px;
+                                                        background: #fa2d48;
+                                                        border-radius: 1px;
+                                                        transition: 0.2s ease;
+                                                    }
+
+                                                    &.playing span:nth-child(1) {
+                                                        animation: musicEq 0.6s infinite alternate ease-in-out;
+                                                    }
+
+                                                    &.playing span:nth-child(2) {
+                                                        animation: musicEq 0.9s infinite alternate ease-in-out;
+                                                    }
+
+                                                    &.playing span:nth-child(3) {
+                                                        animation: musicEq 0.5s infinite alternate ease-in-out;
+                                                    }
+
+                                                    &.playing span:nth-child(4) {
+                                                        animation: musicEq 0.8s infinite alternate ease-in-out;
+                                                    }
+
+                                                    &.playing span:nth-child(5) {
+                                                        animation: musicEq 0.7s infinite alternate ease-in-out;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        & .music-player-controls {
+                                            display: flex;
+                                            flex-direction: column;
+                                            align-items: center;
+                                            gap: 4px;
+
+                                            & .music-buttons-row {
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 8px;
+
+                                                & .music-btn {
+                                                    border: none;
+                                                    background: transparent;
+                                                    color: #fff;
+                                                    font-size: 9px;
+                                                    cursor: pointer;
+                                                    opacity: 0.85;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: center;
+                                                    transition: 0.2s ease;
+
+                                                    &:hover {
+                                                        opacity: 1;
+                                                        transform: scale(1.15);
+                                                    }
+
+                                                    &.play-btn {
+                                                        width: 22px;
+                                                        height: 22px;
+                                                        border-radius: 50%;
+                                                        background: linear-gradient(135deg, #fa2d48, #ff5b79);
+                                                        color: #fff;
+                                                        box-shadow: 0 2px 8px rgba(250, 45, 72, 0.5);
+                                                    }
+                                                }
+                                            }
+
+                                            & .music-progress-wrap {
+                                                width: 100%;
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 6px;
+                                                cursor: pointer;
+
+                                                & .time-lbl {
+                                                    font-size: 6.5px;
+                                                    color: rgba(255, 255, 255, 0.45);
+                                                    width: 20px;
+                                                    text-align: center;
+                                                    font-variant-numeric: tabular-nums;
+                                                }
+
+                                                & .music-progress {
+                                                    flex: 1;
+                                                    height: 3px;
+                                                    background: rgba(255, 255, 255, 0.15);
+                                                    border-radius: 2px;
+                                                    overflow: hidden;
+
+                                                    & .music-bar {
+                                                        height: 100%;
+                                                        background: #fa2d48;
+                                                        border-radius: 2px;
+                                                        transition: 0.2s ease;
+                                                    }
+                                                }
+                                            }
+
+                                            & .music-volume-row {
+                                                width: 120px;
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 5px;
+                                                margin-top: 1px;
+
+                                                & .vol-icon {
+                                                    font-size: 7px;
+                                                    color: rgba(255, 255, 255, 0.5);
+                                                    display: flex;
+                                                    align-items: center;
+                                                }
+
+                                                & .music-vol-slider {
+                                                    flex: 1;
+                                                    height: 3px;
+                                                }
+                                            }
+                                        }
+
+                                        & .music-queue-section {
+                                            flex: 1;
+                                            display: flex;
+                                            flex-direction: column;
+                                            gap: 4px;
+
+                                            & .queue-title {
+                                                font-size: 6.5px;
+                                                font-weight: 700;
+                                                text-transform: uppercase;
+                                                color: rgba(255, 255, 255, 0.35);
+                                                letter-spacing: 0.5px;
+                                            }
+
+                                            & .music-playlist {
+                                                display: flex;
+                                                flex-direction: column;
+                                                gap: 2px;
+
+                                                & .playlist-item {
+                                                    display: flex;
+                                                    align-items: center;
+                                                    gap: 6px;
+                                                    padding: 3px 5px;
+                                                    border-radius: 4px;
+                                                    cursor: pointer;
+                                                    transition: 0.2s ease;
+
+                                                    & .p-index {
+                                                        font-size: 6.5px;
+                                                        color: rgba(255, 255, 255, 0.35);
+                                                        width: 10px;
+                                                        text-align: center;
+                                                    }
+
+                                                    & .p-thumb {
+                                                        width: 16px;
+                                                        height: 16px;
+                                                        border-radius: 3px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        justify-content: center;
+                                                        font-size: 8px;
+                                                        color: #fff;
+                                                        flex-shrink: 0;
+                                                    }
+
+                                                    & .p-info {
+                                                        flex: 1;
+                                                        min-width: 0;
+                                                        display: flex;
+                                                        flex-direction: column;
+
+                                                        & .p-title {
+                                                            font-size: 7.5px;
+                                                            color: #fff;
+                                                            white-space: nowrap;
+                                                            overflow: hidden;
+                                                            text-overflow: ellipsis;
+                                                        }
+
+                                                        & .p-sub {
+                                                            font-size: 6.5px;
+                                                            color: rgba(255, 255, 255, 0.45);
+                                                        }
+                                                    }
+
+                                                    & .p-dur {
+                                                        font-size: 6.5px;
+                                                        color: rgba(255, 255, 255, 0.35);
+                                                    }
+
+                                                    &.active {
+                                                        background: rgba(250, 45, 72, 0.25);
+
+                                                        & .p-title {
+                                                            color: #fa2d48;
+                                                            font-weight: 600;
+                                                        }
+                                                    }
+
+                                                    &:hover:not(.active) {
+                                                        background: var(--pill-bg);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                & .app-settings-macos {
+                                    height: 100%;
+                                    display: flex;
+                                    background: rgba(26, 27, 34, 0.96);
+                                    box-sizing: border-box;
+                                    overflow: hidden;
+                                    width: 100%;
+
+                                    /* ── Sidebar ── */
+                                    & .settings-sidebar {
+                                        width: 86px;
+                                        flex-shrink: 0;
+                                        background: rgba(0, 0, 0, 0.28);
+                                        border-right: 0.5px solid rgba(255, 255, 255, 0.08);
+                                        padding: 4px 3px;
+                                        display: flex;
+                                        flex-direction: column;
+                                        gap: 3px;
+                                        box-sizing: border-box;
+                                        overflow-y: auto;
+
+                                        & .settings-search {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 3px;
+                                            background: rgba(255, 255, 255, 0.08);
+                                            border-radius: 3px;
+                                            padding: 1px 4px;
+                                            height: 12px;
+                                            box-sizing: border-box;
+
+                                            & .search-icon {
+                                                font-size: 5.5px;
+                                                opacity: 0.5;
+                                            }
+
+                                            & .settings-search-input {
+                                                background: transparent;
+                                                border: none;
+                                                outline: none;
+                                                color: #fff;
+                                                font-size: 4.8px;
+                                                font-family: inherit;
+                                                width: 100%;
+                                                padding: 0;
+
+                                                &::placeholder {
+                                                    color: rgba(255, 255, 255, 0.35);
+                                                    font-size: 4.8px;
+                                                }
+                                            }
+                                        }
+
+                                        & .settings-user-card {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 4px;
+                                            padding: 2.5px 3px;
+                                            border-radius: 4px;
+                                            cursor: pointer;
+                                            transition: 0.2s ease;
+
+                                            &:hover {
+                                                background: var(--pill-bg);
+                                            }
+
+                                            &.active {
+                                                background: rgba(0, 122, 255, 0.28);
+                                            }
+
+                                            & .user-avatar {
+                                                width: 14px;
+                                                height: 14px;
+                                                border-radius: 50%;
+                                                background: linear-gradient(135deg, #007aff, #5856d6);
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                font-size: 5.5px;
+                                                font-weight: 700;
+                                                color: #fff;
+                                                flex-shrink: 0;
+                                            }
+
+                                            & .user-info {
+                                                display: flex;
+                                                flex-direction: column;
+                                                min-width: 0;
+                                                flex: 1;
+
+                                                & .user-name {
+                                                    font-size: 5.5px;
+                                                    font-weight: 600;
+                                                    color: #fff;
+                                                    white-space: nowrap;
+                                                    overflow: hidden;
+                                                    text-overflow: ellipsis;
+                                                }
+
+                                                & .user-sub {
+                                                    font-size: 4.5px;
+                                                    color: rgba(255, 255, 255, 0.45);
+                                                    white-space: nowrap;
+                                                    overflow: hidden;
+                                                    text-overflow: ellipsis;
+                                                }
+                                            }
+
+                                            & .chevron {
+                                                font-size: 7px;
+                                                color: rgba(255, 255, 255, 0.3);
+                                            }
+                                        }
+
+                                        & .settings-nav-list {
+                                            display: flex;
+                                            flex-direction: column;
+                                            gap: 1.5px;
+
+                                            & .settings-nav-item {
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 3.5px;
+                                                padding: 2px 3.5px;
+                                                border-radius: 3.5px;
+                                                cursor: pointer;
+                                                font-size: 5.5px;
+                                                color: rgba(255, 255, 255, 0.85);
+                                                transition: 0.2s ease;
+
+                                                &.active {
+                                                    background: rgba(0, 122, 255, 0.32);
+                                                    color: #fff;
+                                                    font-weight: 500;
+
+                                                    & .nav-status-badge {
+                                                        color: rgba(255, 255, 255, 0.9);
+                                                    }
+                                                }
+
+                                                &:hover:not(.active) {
+                                                    background: var(--pill-bg);
+                                                    color: var(--text-white);
+                                                }
+
+                                                & .nav-icon {
+                                                    width: 11px;
+                                                    height: 11px;
+                                                    border-radius: 2.8px;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: center;
+                                                    color: #fff;
+                                                    flex-shrink: 0;
+
+                                                    & svg {
+                                                        width: 7.5px;
+                                                        height: 7.5px;
+                                                        display: block;
+                                                    }
+
+                                                    &.blue {
+                                                        background: #007aff;
+                                                    }
+
+                                                    &.indigo {
+                                                        background: #5856d6;
+                                                    }
+
+                                                    &.purple {
+                                                        background: #af52de;
+                                                    }
+
+                                                    &.red {
+                                                        background: #ff3b30;
+                                                    }
+
+                                                    &.green {
+                                                        background: #34c759;
+                                                    }
+
+                                                    &.gray {
+                                                        background: #8e8e93;
+                                                    }
+                                                }
+
+                                                & .nav-title {
+                                                    flex: 1;
+                                                    white-space: nowrap;
+                                                    overflow: hidden;
+                                                    text-overflow: ellipsis;
+                                                }
+
+                                                & .nav-status-badge {
+                                                    font-size: 5px;
+                                                    color: rgba(255, 255, 255, 0.45);
+                                                    white-space: nowrap;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    /* ── Right Content Pane ── */
+                                    & .settings-pane {
+                                        flex: 1;
+                                        min-width: 0;
+                                        padding: 6px 8px;
+                                        overflow-y: auto;
+                                        box-sizing: border-box;
+
+                                        & .settings-section {
+                                            display: flex;
+                                            flex-direction: column;
+                                            gap: 5px;
+
+                                            & h2 {
+                                                font-size: 8.5px;
+                                                font-weight: 700;
+                                                color: #fff;
+                                                margin: 0;
+                                            }
+
+                                            & .section-header-row {
+                                                display: flex;
+                                                justify-content: space-between;
+                                                align-items: center;
+                                            }
+
+                                            & .settings-card-group {
+                                                background: rgba(255, 255, 255, 0.05);
+                                                border: 0.5px solid rgba(255, 255, 255, 0.08);
+                                                border-radius: 5px;
+                                                overflow: hidden;
+                                                display: flex;
+                                                flex-direction: column;
+
+                                                & .card-row {
+                                                    display: flex;
+                                                    justify-content: space-between;
+                                                    align-items: center;
+                                                    padding: 3px 6px;
+                                                    border-bottom: 0.5px solid rgba(255, 255, 255, 0.05);
+                                                    font-size: 5.5px;
+                                                    color: rgba(255, 255, 255, 0.85);
+
+                                                    &:last-child {
+                                                        border-bottom: none;
+                                                    }
+
+                                                    &.header-row {
+                                                        background: rgba(0, 0, 0, 0.15);
+                                                        padding: 2px 6px;
+                                                        font-weight: 600;
+                                                        color: rgba(255, 255, 255, 0.45);
+                                                        font-size: 5px;
+                                                        text-transform: uppercase;
+                                                        letter-spacing: 0.3px;
+                                                    }
+
+                                                    &.is-connected {
+                                                        background: rgba(0, 122, 255, 0.16) !important;
+                                                        -webkit-text-fill-color: initial !important;
+                                                        color: #fff !important;
+
+                                                        & .network-name {
+                                                            color: #fff !important;
+                                                            -webkit-text-fill-color: #fff !important;
+                                                        }
+
+                                                        & .network-sub {
+                                                            color: rgba(255, 255, 255, 0.6) !important;
+                                                            -webkit-text-fill-color: rgba(255, 255, 255, 0.6) !important;
+                                                        }
+                                                    }
+
+                                                    &.highlight {
+                                                        background: rgba(0, 122, 255, 0.16) !important;
+                                                        -webkit-text-fill-color: initial !important;
+                                                        color: #fff !important;
+                                                    }
+
+                                                    &.disabled {
+                                                        opacity: 0.4;
+                                                    }
+
+                                                    & .card-row-title {
+                                                        font-weight: 500;
+                                                        color: #fff;
+                                                    }
+
+                                                    & .card-row-sub {
+                                                        font-size: 5px;
+                                                        color: rgba(255, 255, 255, 0.5);
+                                                        margin-top: 1px;
+                                                    }
+
+                                                    & .row-left {
+                                                        display: flex;
+                                                        align-items: center;
+                                                        gap: 6px;
+                                                        flex: 1;
+                                                        min-width: 0;
+
+                                                        & .network-icon,
+                                                        & .dev-icon {
+                                                            width: 14px;
+                                                            height: 14px;
+                                                            display: flex;
+                                                            align-items: center;
+                                                            justify-content: center;
+                                                            flex-shrink: 0;
+                                                            color: #007aff;
+
+                                                            & svg {
+                                                                width: 11px;
+                                                                height: 11px;
+                                                                display: block;
+                                                            }
+                                                        }
+
+                                                        & .network-name {
+                                                            font-size: 5.5px;
+                                                            font-weight: 600;
+                                                            color: #fff;
+                                                            line-height: 1.2;
+                                                        }
+
+                                                        & .network-sub {
+                                                            font-size: 4.5px;
+                                                            color: rgba(255, 255, 255, 0.5);
+                                                            line-height: 1.2;
+                                                        }
+                                                    }
+
+                                                    & .check-icon {
+                                                        width: 12px;
+                                                        height: 12px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        justify-content: center;
+                                                        flex-shrink: 0;
+                                                        color: #34c759;
+
+                                                        & svg {
+                                                            width: 9px;
+                                                            height: 9px;
+                                                            display: block;
+                                                        }
+                                                    }
+
+                                                    & .lock-icon {
+                                                        width: 12px;
+                                                        height: 12px;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        justify-content: center;
+                                                        flex-shrink: 0;
+                                                        opacity: 0.55;
+                                                        color: var(--text-secondary);
+
+                                                        & svg {
+                                                            width: 8px;
+                                                            height: 8px;
+                                                            display: block;
+                                                        }
+                                                    }
+
+                                                    & .status-pill {
+                                                        font-size: 5px;
+                                                        padding: 1px 4px;
+                                                        border-radius: 6px;
+
+                                                        &.on {
+                                                            background: rgba(52, 199, 89, 0.18);
+                                                            color: #34c759;
+                                                        }
+
+                                                        &.off {
+                                                            background: rgba(255, 255, 255, 0.08);
+                                                            color: rgba(255, 255, 255, 0.4);
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            /* ── macOS Toggle Switch ── */
+                                            & .macos-switch {
+                                                position: relative;
+                                                display: inline-block;
+                                                width: 18px;
+                                                height: 10px;
+                                                flex-shrink: 0;
+
+                                                & input {
+                                                    opacity: 0;
+                                                    width: 0;
+                                                    height: 0;
+
+                                                    &:checked+.slider {
+                                                        background-color: #34c759;
+                                                    }
+
+                                                    &:checked+.slider:before {
+                                                        transform: translateX(8px);
+                                                    }
+                                                }
+
+                                                & .slider {
+                                                    position: absolute;
+                                                    cursor: pointer;
+                                                    top: 0;
+                                                    left: 0;
+                                                    right: 0;
+                                                    bottom: 0;
+                                                    background-color: rgba(255, 255, 255, 0.2);
+                                                    transition: 0.2s ease;
+                                                    border-radius: 10px;
+
+                                                    &:before {
+                                                        position: absolute;
+                                                        content: "";
+                                                        height: 8px;
+                                                        width: 8px;
+                                                        left: 1px;
+                                                        bottom: 1px;
+                                                        background-color: white;
+                                                        transition: 0.2s ease;
+                                                        border-radius: 50%;
+                                                        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+                                                    }
+                                                }
+                                            }
+
+                                            /* ── Range Slider ── */
+                                            & .macos-slider {
+                                                -webkit-appearance: none;
+                                                appearance: none;
+                                                height: 2.5px;
+                                                background: rgba(255, 255, 255, 0.18);
+                                                border-radius: 2px;
+                                                outline: none;
+
+                                                &::-webkit-slider-thumb {
+                                                    -webkit-appearance: none;
+                                                    appearance: none;
+                                                    width: 7px;
+                                                    height: 7px;
+                                                    border-radius: 50%;
+                                                    background: #fff;
+                                                    cursor: pointer;
+                                                    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+                                                }
+                                            }
+
+                                            /* ── Select Dropdown ── */
+                                            & .macos-select {
+                                                background: rgba(255, 255, 255, 0.08);
+                                                border: 0.5px solid rgba(255, 255, 255, 0.12);
+                                                border-radius: 3px;
+                                                color: #fff;
+                                                font-size: 5.5px;
+                                                padding: 1px 3px;
+                                                outline: none;
+                                            }
+
+                                            /* ── Appearance Theme Picker ── */
+                                            & .appearance-theme-picker {
+                                                display: flex;
+                                                gap: 6px;
+
+                                                & .theme-option {
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                    align-items: center;
+                                                    gap: 2px;
+                                                    cursor: pointer;
+
+                                                    & span {
+                                                        font-size: 5.5px;
+                                                        color: var(--text-secondary);
+                                                    }
+
+                                                    &.selected {
+                                                        & .theme-preview {
+                                                            border-color: #007aff;
+                                                            box-shadow: 0 0 0 1.5px #007aff;
+                                                        }
+
+                                                        & span {
+                                                            color: #fff;
+                                                            font-weight: 600;
+                                                        }
+                                                    }
+
+                                                    & .theme-preview {
+                                                        width: 44px;
+                                                        height: 28px;
+                                                        border-radius: 5px;
+                                                        border: 1px solid rgba(255, 255, 255, 0.15);
+                                                        padding: 3px;
+                                                        box-sizing: border-box;
+                                                        display: flex;
+                                                        align-items: center;
+                                                        justify-content: center;
+
+                                                        &.light-theme {
+                                                            background: #f0f0f5;
+
+                                                            & .mini-win {
+                                                                width: 28px;
+                                                                height: 16px;
+                                                                background: #fff;
+                                                                border-radius: 2px;
+                                                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+                                                            }
+                                                        }
+
+                                                        &.dark-theme {
+                                                            background: #1e1e24;
+
+                                                            & .mini-win {
+                                                                width: 28px;
+                                                                height: 16px;
+                                                                background: #2c2c34;
+                                                                border-radius: 2px;
+                                                                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+                                                            }
+                                                        }
+
+                                                        &.auto-theme {
+                                                            background: linear-gradient(135deg, #f0f0f5 50%, #1e1e24 50%);
+
+                                                            & .mini-win-split {
+                                                                width: 28px;
+                                                                height: 16px;
+                                                                background: linear-gradient(135deg, #fff 50%, #2c2c34 50%);
+                                                                border-radius: 2px;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            /* ── Accent Color Dots ── */
+                                            & .accent-dots {
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 4px;
+
+                                                & .accent-dot {
+                                                    width: 9px;
+                                                    height: 9px;
+                                                    border-radius: 50%;
+                                                    cursor: pointer;
+                                                    transition: 0.2s ease;
+
+                                                    &.selected {
+                                                        box-shadow: 0 0 0 1.5px #fff;
+                                                        transform: scale(1.15);
+                                                    }
+
+                                                    &.blue {
+                                                        background: #007aff;
+                                                    }
+
+                                                    &.purple {
+                                                        background: #af52de;
+                                                    }
+
+                                                    &.pink {
+                                                        background: #ff2d55;
+                                                    }
+
+                                                    &.red {
+                                                        background: #ff3b30;
+                                                    }
+
+                                                    &.orange {
+                                                        background: #ff9500;
+                                                    }
+
+                                                    &.green {
+                                                        background: #34c759;
+                                                    }
+
+                                                    &.graphite {
+                                                        background: #8e8e93;
+                                                    }
+                                                }
+                                            }
+
+                                            /* ── Displays & Battery Cards ── */
+                                            & .display-preview-card,
+                                            & .battery-hero-card {
+                                                background: rgba(255, 255, 255, 0.05);
+                                                border: 0.5px solid rgba(255, 255, 255, 0.08);
+                                                border-radius: 7px;
+                                                padding: 8px;
+                                                display: flex;
+                                                flex-direction: column;
+                                                align-items: center;
+                                                text-align: center;
+                                                gap: 4px;
+
+                                                & .macbook-screen-graphic {
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                    gap: 1px;
+
+                                                    & span {
+                                                        font-size: 8.5px;
+                                                        font-weight: 600;
+                                                        color: #fff;
+                                                    }
+
+                                                    & small {
+                                                        font-size: 6.5px;
+                                                        color: rgba(255, 255, 255, 0.5);
+                                                    }
+                                                }
+
+                                                & .battery-indicator-wrap {
+                                                    display: flex;
+                                                    align-items: baseline;
+                                                    gap: 6px;
+
+                                                    & .battery-pct-big {
+                                                        font-size: 14px;
+                                                        font-weight: 700;
+                                                        color: #34c759;
+                                                    }
+
+                                                    & .battery-health-badge {
+                                                        font-size: 7px;
+                                                        color: #34c759;
+                                                    }
+                                                }
+
+                                                & .battery-bar-wrap {
+                                                    width: 80%;
+                                                    height: 5px;
+                                                    background: rgba(255, 255, 255, 0.12);
+                                                    border-radius: 3px;
+                                                    overflow: hidden;
+
+                                                    & .battery-bar-fill {
+                                                        height: 100%;
+                                                        background: #34c759;
+                                                        border-radius: 3px;
+                                                    }
+                                                }
+                                            }
+
+                                            /* ── Apple Account User Hero & iCloud Storage ── */
+                                            & .user-profile-hero {
+                                                display: flex;
+                                                align-items: center;
+                                                gap: 8px;
+                                                padding: 6px 4px;
+
+                                                & .profile-avatar-large {
+                                                    width: 28px;
+                                                    height: 28px;
+                                                    border-radius: 50%;
+                                                    background: linear-gradient(135deg, #007aff, #5856d6);
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: center;
+                                                    font-size: 10px;
+                                                    font-weight: 700;
+                                                    color: #fff;
+                                                    flex-shrink: 0;
+                                                    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.4);
+                                                }
+
+                                                & .profile-info-large {
+                                                    display: flex;
+                                                    flex-direction: column;
+                                                    min-width: 0;
+
+                                                    & .profile-name {
+                                                        font-size: 8px;
+                                                        font-weight: 700;
+                                                        color: #fff;
+                                                    }
+
+                                                    & .profile-email {
+                                                        font-size: 5.5px;
+                                                        color: rgba(255, 255, 255, 0.55);
+                                                    }
+                                                }
+                                            }
+
+                                            & .icloud-storage-card {
+                                                background: rgba(255, 255, 255, 0.04);
+                                                border: 0.5px solid rgba(255, 255, 255, 0.08);
+                                                border-radius: 5px;
+                                                padding: 6px 8px;
+                                                display: flex;
+                                                flex-direction: column;
+                                                gap: 4px;
+
+                                                & .storage-header {
+                                                    display: flex;
+                                                    justify-content: space-between;
+                                                    align-items: center;
+                                                    font-size: 5.5px;
+                                                    color: rgba(255, 255, 255, 0.85);
+
+                                                    & strong {
+                                                        color: #fff;
+                                                        font-weight: 600;
+                                                    }
+                                                }
+
+                                                & .storage-bar {
+                                                    height: 5px;
+                                                    border-radius: 2.5px;
+                                                    background: rgba(255, 255, 255, 0.1);
+                                                    display: flex;
+                                                    overflow: hidden;
+                                                    gap: 1px;
+
+                                                    & .seg {
+                                                        height: 100%;
+
+                                                        &.photos {
+                                                            background: #ff9500;
+                                                            width: 42%;
+                                                        }
+
+                                                        &.drive {
+                                                            background: #007aff;
+                                                            width: 22%;
+                                                        }
+
+                                                        &.backups {
+                                                            background: #af52de;
+                                                            width: 14%;
+                                                        }
+
+                                                        &.docs {
+                                                            background: #34c759;
+                                                            width: 8%;
+                                                        }
+                                                    }
+                                                }
+
+                                                & .storage-legend {
+                                                    display: flex;
+                                                    gap: 6px;
+                                                    font-size: 4.5px;
+                                                    color: rgba(255, 255, 255, 0.6);
+                                                    flex-wrap: wrap;
+
+                                                    & span {
+                                                        display: flex;
+                                                        align-items: center;
+                                                        gap: 2px;
+
+                                                        &::before {
+                                                            content: '';
+                                                            width: 3.5px;
+                                                            height: 3.5px;
+                                                            border-radius: 50%;
+                                                            display: inline-block;
+                                                        }
+
+                                                        &.photos::before {
+                                                            background: #ff9500;
+                                                        }
+
+                                                        &.drive::before {
+                                                            background: #007aff;
+                                                        }
+
+                                                        &.backups::before {
+                                                            background: #af52de;
+                                                        }
+
+                                                        &.docs::before {
+                                                            background: #34c759;
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            /* ── About Mac Hero ── */
+                                            & .about-mac-hero {
+                                                display: flex;
+                                                flex-direction: column;
+                                                align-items: center;
+                                                text-align: center;
+                                                gap: 2px;
+                                                padding: 6px 0;
+
+                                                & .apple-logo-badge {
+                                                    font-size: 20px;
+                                                    color: #fff;
+                                                    opacity: 0.9;
+                                                }
+
+                                                & .about-mac-title {
+                                                    font-size: 10px;
+                                                    font-weight: 700;
+                                                    color: #fff;
+                                                }
+
+                                                & .about-mac-sub {
+                                                    font-size: 7px;
+                                                    color: rgba(255, 255, 255, 0.6);
+                                                }
+
+                                                & .about-mac-os {
+                                                    font-size: 6.5px;
+                                                    color: #007aff;
+                                                    margin-top: 2px;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        & .dock-container {
+                            position: absolute;
+                            bottom: 4px;
+                            left: 0;
+                            right: 0;
+                            display: flex;
+                            justify-content: center;
+                            z-index: 500;
+                            pointer-events: none;
+                            transform: none;
+
+                            & .dock {
+                                pointer-events: auto;
+                                background: rgba(200, 210, 230, 0.18);
+                                backdrop-filter: blur(32px) saturate(200%) brightness(1.08);
+                                -webkit-backdrop-filter: blur(32px) saturate(200%) brightness(1.08);
+                                padding: 5px;
+                                border-radius: 11px;
+                                display: flex;
+                                align-items: flex-end;
+                                gap: 5px;
+                                height: 32px;
+                                box-sizing: border-box;
+                                border: 0.5px solid rgba(255, 255, 255, 0.38);
+
+                                & .dock-item {
+                                    width: 22px;
+                                    height: 22px;
+                                    display: flex;
+                                    flex-direction: column;
+                                    align-items: center;
+                                    justify-content: flex-end;
+                                    position: relative;
+                                    cursor: pointer;
+                                    flex-shrink: 0;
+
+                                    & .dock-icon {
+                                        width: 22px;
+                                        height: 22px;
+                                        border-radius: 5px;
+                                        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+                                        pointer-events: none;
+                                        transform-origin: bottom center;
+                                        will-change: transform;
+                                        transition: 0.2s ease;
+                                        object-fit: contain;
+                                    }
+
+                                    &:hover .dock-icon {
+                                        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.55)) brightness(1.08);
+                                    }
+
+                                    & .dock-dot {
+                                        width: 2px;
+                                        height: 2px;
+                                        background: var(--text-white);
+                                        border-radius: 50%;
+                                        position: absolute;
+                                        bottom: -3.5px;
+                                        box-shadow: 0 0 2px rgba(255, 255, 255, 0.9);
+                                        opacity: 0;
+                                        transition: 0.25s ease;
+                                    }
+
+                                    &.has-running-window .dock-dot,
+                                    &.active-fullscreen .dock-dot {
+                                        opacity: 1;
+                                    }
+
+                                    & .dock-tooltip {
+                                        position: absolute;
+                                        bottom: calc(100% + 8px);
+                                        left: 50%;
+                                        transform: translateX(-50%) translateY(4px);
+                                        background: rgba(20, 22, 32, 0.82);
+                                        backdrop-filter: blur(18px) saturate(160%);
+                                        -webkit-backdrop-filter: blur(18px) saturate(160%);
+                                        border: 0.5px solid rgba(255, 255, 255, 0.22);
+                                        color: #f1f5f9;
+                                        font-size: 6.5px;
+                                        font-weight: 500;
+                                        letter-spacing: 0.01em;
+                                        padding: 2px 5px;
+                                        border-radius: 4px;
+                                        white-space: nowrap;
+                                        pointer-events: none;
+                                        opacity: 0;
+                                        transition: 0.2s ease;
+                                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+                                        z-index: 200;
+                                    }
+
+                                    &:hover .dock-tooltip {
+                                        opacity: 1;
+                                        transform: translateX(-50%) translateY(0);
+                                    }
+
+                                    &.bouncing {
+                                        animation: dockBounce 0.55s 2 cubic-bezier(0.36, 0.07, 0.19, 0.97);
+                                    }
+                                }
+
+                                & .sep {
+                                    width: 0.5px;
+                                    background: rgba(255, 255, 255, 0.35);
+                                    height: 100%;
+                                    margin: 0 3px;
+                                    flex-shrink: 0;
+                                }
+                            }
+                        }
+
+                        /* ── macOS Popovers & Dropdown Menus ── */
+                        & .mac-popover {
+                            position: absolute;
+                            background: rgba(36, 38, 50, 0.88);
+                            backdrop-filter: blur(35px);
+                            -webkit-backdrop-filter: blur(35px);
+                            border: 0.5px solid rgba(255, 255, 255, 0.18);
+                            border-radius: 6px;
+                            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), 0 0 0 0.5px rgba(255, 255, 255, 0.12);
+                            z-index: 1000;
+                            color: #fff;
+                            font-size: 6px;
+                            padding: 2.5px;
+                            min-width: 95px;
+                            box-sizing: border-box;
+                            animation: popoverFade 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+
+                            &.apple-menu-popover {
+                                min-width: 100px;
+                            }
+
+                            &.cc-popover {
+                                width: 125px;
+                                padding: 4px;
+                                border-radius: 8px;
+                            }
+
+                            & .menu-dropdown-list {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 1px;
+
+                                & .menu-drop-item {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    padding: 2px 4px;
+                                    border-radius: 3px;
+                                    cursor: pointer;
+                                    color: rgba(255, 255, 255, 0.88);
+                                    transition: 0.2s ease;
+
+                                    & span {
+                                        font-size: 5px;
+                                        color: rgba(255, 255, 255, 0.4);
+                                        margin-left: 6px;
+                                    }
+
+                                    &:hover {
+                                        background: var(--accent-indigo);
+                                        color: var(--text-white);
+
+                                        & span {
+                                            color: var(--text-white);
+                                        }
+                                    }
+                                }
+
+                                & .menu-drop-sep {
+                                    height: 0.5px;
+                                    background: rgba(255, 255, 255, 0.1);
+                                    margin: 2px 1px;
+                                }
+                            }
+
+                            & .battery-popover-content,
+                            & .wifi-popover-content {
+                                padding: 2px 3px;
+
+                                & .pop-header {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    font-size: 6px;
+                                    padding: 1px 2px 3px 2px;
+                                }
+
+                                & .pop-sub {
+                                    font-size: 5px;
+                                    color: rgba(255, 255, 255, 0.55);
+                                    padding: 0 2px;
+                                }
+
+                                & .pop-sep {
+                                    height: 0.5px;
+                                    background: rgba(255, 255, 255, 0.1);
+                                    margin: 3px 0;
+                                }
+
+                                & .pop-section-title {
+                                    font-size: 5px;
+                                    text-transform: uppercase;
+                                    color: rgba(255, 255, 255, 0.4);
+                                    padding: 1px 3px;
+                                    font-weight: 600;
+                                }
+
+                                & .pop-item {
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 3px;
+                                    padding: 2px 4px;
+                                    border-radius: 3px;
+                                    cursor: pointer;
+                                    color: rgba(255, 255, 255, 0.8);
+                                    font-size: 6px;
+                                    transition: 0.2s ease;
+
+                                    &.active {
+                                        background: rgba(0, 122, 255, 0.2);
+                                        color: #fff;
+                                        font-weight: 500;
+                                    }
+
+                                    &.disabled {
+                                        opacity: 0.35;
+                                        pointer-events: none;
+                                    }
+
+                                    & .check,
+                                    & .lock {
+                                        margin-left: auto;
+                                    }
+
+                                    &:hover:not(.active):not(.disabled) {
+                                        background: var(--pill-bg);
+                                        color: var(--text-white);
+                                    }
+                                }
+                            }
+                        }
+
+                        /* ── Control Center Panel ── */
+                        & .control-center-panel {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 3px;
+
+                            & .top-modules {
+                                display: flex;
+                                gap: 3px;
+
+                                & .connectivity-box {
+                                    flex: 1.2;
+                                    background: rgba(255, 255, 255, 0.06);
+                                    border: 0.5px solid rgba(255, 255, 255, 0.08);
+                                    border-radius: 6px;
+                                    padding: 3px;
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 2px;
+
+                                    & .cc-toggle-item {
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 3px;
+                                        padding: 2px;
+                                        border-radius: 4px;
+                                        cursor: pointer;
+                                        transition: 0.2s ease;
+
+                                        & .cc-icon-circle {
+                                            width: 10px;
+                                            height: 10px;
+                                            border-radius: 50%;
+                                            background: rgba(255, 255, 255, 0.15);
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 5.5px;
+                                            transition: 0.2s ease;
+                                        }
+
+                                        & .cc-label {
+                                            font-size: 5.5px;
+                                            font-weight: 600;
+                                            line-height: 1;
+                                        }
+
+                                        & small {
+                                            font-size: 4.5px;
+                                            color: rgba(255, 255, 255, 0.45);
+                                        }
+
+                                        &.active {
+                                            & .cc-icon-circle {
+                                                background: #007aff;
+                                                color: #fff;
+                                            }
+                                        }
+
+                                        &:hover {
+                                            background: var(--pill-bg);
+                                        }
+                                    }
+                                }
+
+                                & .right-tiles {
+                                    flex: 1;
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 3px;
+
+                                    & .cc-tile {
+                                        flex: 1;
+                                        background: rgba(255, 255, 255, 0.06);
+                                        border: 0.5px solid rgba(255, 255, 255, 0.08);
+                                        border-radius: 6px;
+                                        padding: 3px 4px;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 3px;
+                                        cursor: pointer;
+                                        font-size: 5.5px;
+                                        transition: 0.2s ease;
+
+                                        &.active {
+                                            background: rgba(0, 122, 255, 0.3);
+                                            border-color: rgba(0, 122, 255, 0.4);
+                                        }
+
+                                        &:hover:not(.active) {
+                                            background: var(--pill-bg);
+                                        }
+                                    }
+                                }
+                            }
+
+                            & .cc-slider-card {
+                                background: rgba(255, 255, 255, 0.06);
+                                border: 0.5px solid rgba(255, 255, 255, 0.08);
+                                border-radius: 6px;
+                                padding: 3px 4px;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 2px;
+
+                                & .slider-title {
+                                    font-size: 5px;
+                                    color: rgba(255, 255, 255, 0.6);
+                                }
+
+                                & .macos-slider.big {
+                                    width: 100%;
+                                    height: 6px;
+                                    border-radius: 3px;
+                                }
+                            }
+
+                            & .cc-now-playing-card {
+                                background: rgba(255, 255, 255, 0.06);
+                                border: 0.5px solid rgba(255, 255, 255, 0.08);
+                                border-radius: 6px;
+                                padding: 3px 4px;
+                                display: flex;
+                                align-items: center;
+                                gap: 4px;
+
+                                & .mini-cover {
+                                    width: 14px;
+                                    height: 14px;
+                                    border-radius: 3px;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 7px;
+                                }
+
+                                & .mini-meta {
+                                    flex: 1;
+                                    min-width: 0;
+                                    display: flex;
+                                    flex-direction: column;
+
+                                    & strong {
+                                        font-size: 5.5px;
+                                        white-space: nowrap;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;
+                                    }
+
+                                    & small {
+                                        font-size: 4.5px;
+                                        color: rgba(255, 255, 255, 0.5);
+                                    }
+                                }
+
+                                & .cc-play-btn {
+                                    background: rgba(255, 255, 255, 0.15);
+                                    border: none;
+                                    border-radius: 50%;
+                                    width: 12px;
+                                    height: 12px;
+                                    color: #fff;
+                                    font-size: 6px;
+                                    cursor: pointer;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
+                            }
+                        }
+
+                        /* ── Spotlight Search Modal ── */
+                        & .mac-spotlight-modal {
+                            position: absolute;
+                            top: 20%;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 160px;
+                            background: rgba(30, 32, 42, 0.88);
+                            backdrop-filter: blur(35px);
+                            -webkit-backdrop-filter: blur(35px);
+                            border: 0.5px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 8px;
+                            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8);
+                            z-index: 2000;
+                            overflow: hidden;
+                            animation: spotlightPop 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+
+                            & .spotlight-search-bar {
+                                display: flex;
+                                align-items: center;
+                                gap: 4px;
+                                padding: 4px 6px;
+                                border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+
+                                & input {
+                                    flex: 1;
+                                    background: transparent;
+                                    border: none;
+                                    outline: none;
+                                    color: #fff;
+                                    font-size: 5.5px;
+                                    font-family: inherit;
+
+                                    &::placeholder {
+                                        color: rgba(255, 255, 255, 0.4);
+                                        font-size: 5.5px;
+                                    }
+                                }
+                            }
+
+                            & .spotlight-results {
+                                max-height: 120px;
+                                overflow-y: auto;
+                                padding: 3px;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 1px;
+
+                                & .spot-item {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    padding: 4px 6px;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    font-size: 8px;
+                                    color: rgba(255, 255, 255, 0.85);
+
+                                    & small {
+                                        font-size: 6.5px;
+                                        color: rgba(255, 255, 255, 0.4);
+                                    }
+
+                                    &.active,
+                                    &:hover {
+                                        background: var(--accent-indigo);
+                                        color: var(--text-white);
+
+                                        & small {
+                                            color: var(--text-white);
+                                        }
+                                    }
+
+                                    &.disabled {
+                                        opacity: 0.5;
+                                        cursor: default;
+                                    }
+                                }
+                            }
+                        }
+
+                        /* ── About This Mac Modal Dialog ── */
+                        & .mac-modal-dialog {
+                            position: absolute;
+                            inset: 0;
+                            background: rgba(0, 0, 0, 0.4);
+                            backdrop-filter: blur(8px);
+                            -webkit-backdrop-filter: blur(8px);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            z-index: 3000;
+
+                            & .modal-card {
+                                width: 170px;
+                                background: rgba(34, 36, 46, 0.95);
+                                border: 0.5px solid rgba(255, 255, 255, 0.2);
+                                border-radius: 10px;
+                                padding: 12px;
+                                text-align: center;
+                                position: relative;
+                                box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8);
+
+                                & .modal-close-btn {
+                                    position: absolute;
+                                    top: 6px;
+                                    left: 8px;
+                                    font-size: 9px;
+                                    color: rgba(255, 255, 255, 0.5);
+                                    cursor: pointer;
+
+                                    &:hover {
+                                        color: #ff5f57;
+                                    }
+                                }
+
+                                & .modal-apple-badge {
+                                    font-size: 24px;
+                                    color: #fff;
+                                    margin-bottom: 2px;
+                                }
+
+                                & h3 {
+                                    margin: 0;
+                                    font-size: 11px;
+                                    font-weight: 700;
+                                    color: #fff;
+                                }
+
+                                & .modal-sub {
+                                    font-size: 7.5px;
+                                    color: rgba(255, 255, 255, 0.5);
+                                    margin: 1px 0 6px 0;
+                                }
+
+                                & .modal-specs-list {
+                                    display: flex;
+                                    flex-direction: column;
+                                    gap: 2px;
+                                    text-align: left;
+                                    background: rgba(0, 0, 0, 0.2);
+                                    padding: 6px;
+                                    border-radius: 5px;
+                                    font-size: 7px;
+                                    color: var(--text-secondary);
+
+                                    & .spec-row {
+                                        display: flex;
+                                        justify-content: space-between;
+
+                                        & strong {
+                                            color: #fff;
+                                        }
+                                    }
+                                }
+
+                                & .modal-actions {
+                                    margin-top: 8px;
+
+                                    & .mac-dialog-btn {
+                                        background: #007aff;
+                                        color: #fff;
+                                        border: none;
+                                        border-radius: 4px;
+                                        padding: 3px 8px;
+                                        font-size: 7.5px;
+                                        font-weight: 500;
+                                        cursor: pointer;
+                                    }
+                                }
+                            }
+                        }
+
+                        /* ── Lock Screen Overlay ── */
+                        & .mac-lockscreen-overlay {
+                            position: absolute;
+                            inset: 0;
+                            background: radial-gradient(circle at center, rgba(30, 20, 50, 0.92) 0%, rgba(10, 10, 20, 0.98) 100%);
+                            backdrop-filter: blur(40px);
+                            -webkit-backdrop-filter: blur(40px);
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            z-index: 5000;
+                            transition: 0.4s ease;
+
+                            & .lock-time {
+                                font-size: 28px;
+                                font-weight: 200;
+                                color: #fff;
+                                letter-spacing: -0.5px;
+                            }
+
+                            & .lock-date {
+                                font-size: 9px;
+                                font-weight: 500;
+                                color: rgba(255, 255, 255, 0.75);
+                                margin-top: -2px;
+                                margin-bottom: 16px;
+                            }
+
+                            & .lock-avatar-wrap {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+
+                                & .lock-avatar {
+                                    width: 38px;
+                                    height: 38px;
+                                    border-radius: 50%;
+                                    background: linear-gradient(135deg, #007aff, #af52de);
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 14px;
+                                    font-weight: 700;
+                                    color: #fff;
+                                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+                                    margin-bottom: 5px;
+                                }
+
+                                & .lock-username {
+                                    font-size: 9px;
+                                    font-weight: 600;
+                                    color: #fff;
+                                    margin-bottom: 8px;
+                                }
+
+                                & .lock-input-wrap {
+                                    display: flex;
+                                    align-items: center;
+                                    background: rgba(255, 255, 255, 0.15);
+                                    border: 0.5px solid rgba(255, 255, 255, 0.25);
+                                    border-radius: 12px;
+                                    padding: 2px 4px 2px 8px;
+
+                                    & input {
+                                        background: transparent;
+                                        border: none;
+                                        outline: none;
+                                        color: #fff;
+                                        font-size: 5.5px;
+                                        font-family: inherit;
+                                        width: 100px;
+
+                                        &::placeholder {
+                                            color: rgba(255, 255, 255, 0.4);
+                                            font-size: 5.5px;
+                                        }
+                                    }
+
+                                    & .lock-submit-btn {
+                                        background: rgba(255, 255, 255, 0.2);
+                                        border: none;
+                                        border-radius: 50%;
+                                        width: 14px;
+                                        height: 14px;
+                                        color: #fff;
+                                        font-size: 8px;
+                                        cursor: pointer;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                    }
+                                }
+                            }
+                        }
+
+                        /* ── Sleep Overlay ── */
+                        & .mac-sleep-overlay {
+                            position: absolute;
+                            inset: 0;
+                            background: #000;
+                            z-index: 6000;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                            transition: 0.3s ease;
+                        }
+
+                        /* ── Calculator App ── */
+                        & .app-calculator {
+                            height: 100%;
+                            background: #1c1c1e;
+                            display: flex;
+                            flex-direction: column;
+                            padding: 0;
+                            box-sizing: border-box;
+                            overflow: hidden;
+
+                            & .calc-display {
+                                flex-shrink: 0;
+                                min-height: 38px;
+                                padding: 4px 8px 2px 8px;
+                                background: #1c1c1e;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: flex-end;
+                                justify-content: flex-end;
+                                gap: 1px;
+
+                                & .calc-expr {
+                                    font-size: 6.5px;
+                                    color: rgba(255, 255, 255, 0.35);
+                                    font-weight: 300;
+                                    min-height: 8px;
+                                    letter-spacing: 0.2px;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                    max-width: 100%;
+                                }
+
+                                & .calc-main-value {
+                                    font-size: 16px;
+                                    font-weight: 200;
+                                    color: #fff;
+                                    letter-spacing: -0.5px;
+                                    font-variant-numeric: tabular-nums;
+                                    line-height: 1;
+                                    transition: 0.2s ease;
+                                    max-width: 100%;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                }
+                            }
+
+                            & .calc-grid {
+                                flex: 1;
+                                display: grid;
+                                grid-template-columns: repeat(4, 1fr);
+                                gap: 1px;
+                                background: #000;
+
+                                & .calc-btn {
+                                    border: none;
+                                    border-radius: 0;
+                                    font-size: 8.5px;
+                                    font-weight: 400;
+                                    cursor: pointer;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    user-select: none;
+                                    transition: 0.2s ease;
+
+                                    &:active {
+                                        filter: brightness(1.35);
+                                    }
+
+                                    &.num {
+                                        background: #3a3a3c;
+                                        color: #fff;
+
+                                        &:hover {
+                                            filter: brightness(1.18);
+                                        }
+                                    }
+
+                                    &.zero {
+                                        grid-column: span 2;
+                                        justify-content: flex-start;
+                                        padding-left: 18px;
+                                    }
+
+                                    &.fn {
+                                        background: #636366;
+                                        color: #fff;
+                                        font-weight: 500;
+
+                                        &:hover {
+                                            filter: brightness(1.18);
+                                        }
+                                    }
+
+                                    &.op {
+                                        background: #ff9f0a;
+                                        color: #fff;
+                                        font-size: 18px;
+                                        font-weight: 300;
+
+                                        &:hover {
+                                            filter: brightness(1.12);
+                                        }
+
+                                        &.active {
+                                            background: #fff;
+                                            color: #ff9f0a;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        /* ── Music Equalizer Animation ── */
+                        & .music-equalizer {
+                            display: flex;
+                            align-items: flex-end;
+                            gap: 1.5px;
+                            height: 8px;
+                            margin: 2px auto 0 auto;
+
+                            & span {
+                                width: 1.5px;
+                                height: 2px;
+                                background: #fa2d48;
+                                border-radius: 1px;
+                            }
+
+                            &.playing span {
+                                animation: eqBounce 0.6s infinite alternate ease-in-out;
+
+                                &:nth-child(1) {
+                                    animation-delay: 0.1s;
+                                }
+
+                                &:nth-child(2) {
+                                    animation-delay: 0.3s;
+                                }
+
+                                &:nth-child(3) {
+                                    animation-delay: 0.5s;
+                                }
+
+                                &:nth-child(4) {
+                                    animation-delay: 0.2s;
+                                }
+
+                                &:nth-child(5) {
+                                    animation-delay: 0.4s;
+                                }
+                            }
+                        }
+
+
+
+                        & .term-fastfetch {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            background: rgba(0, 0, 0, 0.25);
+                            padding: 4px 6px;
+                            border-radius: 4px;
+                            margin: 2px 0;
+
+                            & .term-ascii-logo {
+                                font-size: 5px;
+                                color: #fff;
+                                line-height: 1;
+                                margin: 0;
+                            }
+
+                            & .term-fastfetch-info {
+                                font-size: 7.5px;
+                                line-height: 1.3;
+
+                                & .term-key {
+                                    color: #58a6ff;
+                                    font-weight: 600;
+                                }
+                            }
+                        }
+
+                        /* ── Light Mode Dynamic Override ── */
+                        &.light-mode {
+                            background: radial-gradient(circle at 10% 20%, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
+
+                            & .top-bar {
+                                background: rgba(255, 255, 255, 0.65);
+                                color: #1e293b;
+                            }
+
+                            & .window {
+                                background: rgba(255, 255, 255, 0.94);
+                                color: #1e293b;
+
+                                & .window-header {
+                                    background: rgba(0, 0, 0, 0.04);
+                                    border-bottom-color: rgba(0, 0, 0, 0.08);
+
+                                    & .window-title {
+                                        color: #334155;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes popoverFade {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spotlightPop {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+@keyframes eqBounce {
+    0% {
+        height: 2px;
+    }
+
+    100% {
+        height: 8px;
+    }
+}
+
+@keyframes musicEq {
+    0% {
+        height: 2px;
+    }
+
+    50% {
+        height: 7px;
+    }
+
+    100% {
+        height: 4px;
+    }
+}
+
+@keyframes dockBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ── Mac Fullscreen Cinema Zoom Mode (Neutralized) ── */
+
+body.mac-fullscreen-mode {
+    overflow: auto !important;
+}
+
+#mac-fullscreen-backdrop,
+#mac-exit-fullscreen {
+    display: none !important;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+

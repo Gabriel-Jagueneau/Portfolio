@@ -1,0 +1,454 @@
+/* ─── Pure Black WebGL 3D Tree Preloader & Reveal ─────────────────────────── */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    z-index: 9999999;
+    pointer-events: none;
+    transition: opacity 0.85s cubic-bezier(0.65, 0, 0.35, 1), visibility 0.85s ease;
+}
+
+.preloader.preloader-zoom-morph {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.webgl-tree-canvas {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+    pointer-events: none;
+    transform: translateZ(0);
+    will-change: opacity, transform;
+    transition: opacity 2.4s cubic-bezier(0.25, 1, 0.5, 1), filter 2.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Avant l'intro : l'écran n'affiche QUE le background pur */
+body:not(.site-revealed) .webgl-tree-canvas {
+    opacity: 0;
+    transform: translateY(35px);
+    filter: none;
+    transition: opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1), transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Entrée du sol : fondu up fluide vers sa position de repos */
+body:not(.site-revealed).tree-intro-active .webgl-tree-canvas {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+body.site-revealed .webgl-tree-canvas {
+    opacity: 0.45;
+    transform: translateY(0);
+    filter: blur(16px) brightness(0.60);
+}
+
+body:not(.site-revealed) #screen-contour,
+body:not(.site-revealed) #home .quick-desc,
+body:not(.site-revealed) #home .image-zone,
+body:not(.site-revealed) section:not(#home),
+body:not(.site-revealed) footer {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* ── Floating Loader Capsule inside Header (Before Site Reveal) ── */
+body:not(.site-revealed) #navBar {
+    position: fixed !important;
+    top: 12px !important;
+    left: 50% !important;
+    margin: 0 !important;
+    height: 42px !important;
+    border-radius: 999px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    z-index: 100000 !important;
+    pointer-events: auto !important;
+
+    /* État initial : goutte d'eau (petite boule) masquée au-dessus du haut de l'écran */
+    filter: blur(16px);
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(-75px) scale(0.65, 1.35) !important;
+    width: 42px !important;
+
+    /* Transition liquide : chute rapide avec rebond de goutte, puis étirement en largeur vers l'ovale */
+    transition: opacity 0.40s ease,
+        transform 0.60s cubic-bezier(0.2, 1.26, 0.64, 1),
+        width 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+        padding 0.60s ease 0.32s,
+        border-color 0.85s ease,
+        background-color 0.85s ease,
+        box-shadow 0.85s ease,
+        filter 0.4s ease !important;
+}
+
+/* Entrée de la goutte d'eau : chute de la petite boule, rebond fluide puis agrandissement en ovale */
+body:not(.site-revealed).tree-intro-active #navBar {
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(0) scale(1, 1) !important;
+    width: 260px !important;
+    padding: 0 16px !important;
+    filter: blur(0px);
+}
+
+body:not(.site-revealed) #navBar .title,
+body:not(.site-revealed) #navBar .cetegories,
+body:not(.site-revealed) #navBar .contact {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+/* État Terminé (100%) : transition GPU fluide sans aucun reflow pour éliminer toute saccade */
+body:not(.site-revealed) #navBar.is-complete {
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(0) scale(1, 1) !important;
+    width: 134px !important;
+    padding: 0 18px !important;
+    border-color: rgba(52, 199, 89, 0.55) !important;
+    background-color: rgba(18, 42, 26, 0.90) !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    transition: width 0.40s cubic-bezier(0.16, 1, 0.3, 1), padding 0.30s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease !important;
+    will-change: width, transform, opacity;
+}
+
+/* La barre loading et le pourcentage disparaissent avec un fondu GPU sans filtre lourd */
+#navBar.is-complete .nav-loader-content {
+    opacity: 0 !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    transform: translateY(-6px) scale(0.96) !important;
+    pointer-events: none !important;
+    transition: opacity 0.25s ease, transform 0.25s ease !important;
+    will-change: opacity, transform;
+}
+
+/* Apparition du tick vert et du texte Loaded (parfaitement net, sans aucun flou) */
+#navBar.is-complete .nav-loader-complete {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    will-change: transform, opacity;
+}
+
+body:not(.site-revealed) .nav-loader-capsule {
+    display: flex !important;
+    align-items: center !important;
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 0 !important;
+    transition: 0.5s ease !important;
+}
+
+body:not(.site-revealed).tree-intro-active .nav-loader-capsule {
+    opacity: 1 !important;
+}
+
+/* ── Petite Nav Companion ("Nav Close") Pendant le Loading ── */
+/* État initial : gouttelette liquide masquée derrière la barre de navigation */
+body:not(.site-revealed) #nav-show {
+    position: fixed !important;
+    z-index: 99999 !important;
+    left: 50% !important;
+    top: 16px !important;
+    transform: translateX(-50%) translateY(0) scale(0.60, 1.40) !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    opacity: 0 !important;
+    border-radius: 999px !important;
+    pointer-events: none !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: default !important;
+    background: rgba(22, 24, 28, 0.75) !important;
+    border: 1px solid var(--glass-border) !important;
+    box-shadow: var(--shadow-md) !important;
+    will-change: transform, opacity;
+
+    /* Transition d'entrée fluide et liquide */
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease !important;
+}
+
+/* Apparition liquide sous la barre de progression (gouttelette qui descend et s'élargit) */
+body:not(.site-revealed) #nav-show.sub-nav-active {
+    top: 64px !important;
+    transform: translateX(-50%) translateY(0) scale(1, 1) !important;
+    opacity: 1 !important;
+    width: 168px !important;
+    min-width: 168px !important;
+    max-width: 168px !important;
+    height: 30px !important;
+    padding: 0 16px !important;
+}
+
+/* Rentrée liquide dans la barre à 100% : EXACTEMENT l'arrivée en inversé, un tout petit peu plus rapide */
+body:not(.site-revealed) #nav-show.sub-nav-retract {
+    top: 16px !important;
+    transform: translateX(-50%) translateY(0) scale(0.60, 1.40) !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    max-width: 32px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+
+    /* Inversion exacte du timing de l'arrivée mais fluide et sans stall de filtre */
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease !important;
+}
+
+body:not(.site-revealed) #nav-show.sub-nav-retract .nav-show-roller,
+body:not(.site-revealed) #nav-show.sub-nav-retract .nav-show-item {
+    opacity: 0 !important;
+    transition: 0.2s ease !important;
+}
+
+body:not(.site-revealed) #nav-show .background,
+body:not(.site-revealed) #nav-show .shadow,
+body:not(.site-revealed) #nav-show .border {
+    border-radius: 999px !important;
+}
+
+/* ── Rouleau de texte façon Minuteur Apple (cylindre 3D avec flou cinétique) ── */
+#nav-show .nav-show-roller {
+    display: none;
+    position: relative;
+    z-index: 10;
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+    overflow: hidden;
+    perspective: 260px;
+    pointer-events: none;
+    align-items: center;
+    justify-content: center;
+}
+
+body:not(.site-revealed) #nav-show .nav-show-roller {
+    display: flex;
+}
+
+body.site-revealed #nav-show .nav-show-roller {
+    display: none !important;
+}
+
+#nav-show .nav-show-item {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-white);
+    white-space: nowrap;
+    pointer-events: none;
+    will-change: transform, opacity, filter;
+}
+
+/* Texte actif visible bien net au centre */
+#nav-show .nav-show-item.is-visible {
+    transform: translateY(0) rotateX(0deg);
+    opacity: 1;
+    filter: blur(0px) !important;
+    -webkit-filter: blur(0px) !important;
+}
+
+/* Roulement vers le haut avec flou cinétique (motion blur prononcé) */
+#nav-show .nav-show-item.roll-out {
+    animation: navTextRollOut 0.3s cubic-bezier(0.2, 0.8, 0.3, 1) forwards !important;
+}
+
+/* Arrivée par le bas avec flou cinétique initial (motion blur prononcé) */
+#nav-show .nav-show-item.roll-in {
+    animation: navTextRollIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+@keyframes navTextRollOut {
+    0% {
+        transform: translateY(0) rotateX(0deg);
+        opacity: 1;
+        filter: blur(0px);
+        -webkit-filter: blur(0px);
+    }
+
+    35% {
+        opacity: 0.80;
+        filter: blur(3.5px);
+        -webkit-filter: blur(3.5px);
+    }
+
+    100% {
+        transform: translateY(-110%) rotateX(42deg);
+        opacity: 0;
+        filter: blur(7.5px);
+        -webkit-filter: blur(7.5px);
+    }
+}
+
+@keyframes navTextRollIn {
+    0% {
+        transform: translateY(110%) rotateX(-42deg);
+        opacity: 0;
+        filter: blur(7.5px);
+        -webkit-filter: blur(7.5px);
+    }
+
+    40% {
+        opacity: 0.90;
+        filter: blur(2.5px);
+        -webkit-filter: blur(2.5px);
+    }
+
+    100% {
+        transform: translateY(0) rotateX(0deg);
+        opacity: 1;
+        filter: blur(0px);
+        -webkit-filter: blur(0px);
+    }
+}
+
+/* ── Capsule Internal Progress Elements (Haute visibilité & élégance) ── */
+.nav-loader-capsule {
+    display: none;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.nav-loader-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-width: 228px;
+    height: 100%;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+    will-change: opacity, filter, transform;
+    transition: 0.2s ease;
+}
+
+.nav-loader-complete {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0;
+    filter: none;
+    -webkit-filter: none;
+    transform: scale(0.60);
+    pointer-events: none;
+    will-change: opacity, transform;
+    transition: 0.7s ease;
+}
+
+.nav-loader-complete .complete-icon {
+    flex-shrink: 0;
+    color: var(--accent-green);
+    filter: drop-shadow(0 0 8px rgba(52, 199, 89, 0.7));
+}
+
+.nav-loader-complete .complete-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-white);
+    letter-spacing: 0.3px;
+    line-height: 1;
+    white-space: nowrap;
+    user-select: none;
+    text-shadow: 0 1px 4px var(--shadow-text);
+}
+
+.nav-loader-track {
+    flex: 1;
+    height: 6px;
+    background: var(--pill-bg-hover);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+    position: relative;
+}
+
+.nav-loader-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #eeff00 0%, #00c8ff 50%, #ff00d4 100%);
+    border-radius: var(--radius-pill);
+    transform-origin: left center;
+    transform: scaleX(0);
+    will-change: transform;
+    box-shadow: 0 0 14px rgba(0, 200, 255, 0.65), 0 0 6px rgba(238, 255, 0, 0.8);
+    position: relative;
+}
+
+.nav-loader-fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.45) 50%, transparent 100%);
+    animation: loaderShimmer 4s infinite ease;
+}
+
+@keyframes loaderShimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(200%);
+    }
+}
+
+.nav-loader-label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.nav-loader-percent {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-white);
+    letter-spacing: 0.5px;
+    font-variant-numeric: tabular-nums;
+    min-width: 35px;
+    text-align: right;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.35), 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+@keyframes sproutPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.22);
+    }
+}
+

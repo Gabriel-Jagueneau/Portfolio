@@ -1,0 +1,153 @@
+#experience {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(36px, 5vh, 64px);
+    padding: 12vh max(6vw, calc((100vw - var(--section-max-w)) / 2));
+    width: 100vw;
+    box-sizing: border-box;
+
+    & .block {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        & .mainer {
+            font-size: clamp(20px, 1.8vw, 24px);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-white);
+        }
+
+        & .descri {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-top: -6px;
+        }
+
+        &.student {
+            --card-spotlight: rgba(0, 174, 255, 0.45);
+        }
+
+        &.entrepreneur {
+            --card-spotlight: rgba(52, 199, 89, 0.45);
+        }
+
+        &.dev {
+            --card-spotlight: rgba(238, 255, 0, 0.45);
+        }
+
+        &.other {
+            --card-spotlight: rgba(255, 0, 242, 0.45);
+        }
+
+        & .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            width: 100%;
+            padding: 4px 0;
+
+            & .card {
+                position: relative;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 14px;
+                border-radius: var(--radius-md);
+                background: var(--glass-border);
+                border: none;
+                box-shadow: var(--shadow-sm);
+                overflow: hidden;
+                cursor: pointer;
+                transition: var(--hover-transition);
+
+                &>.bg {
+                    position: absolute;
+                    inset: 1.5px;
+                    border-radius: 13px;
+                    background: rgba(28, 30, 36, 0.8);
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                    pointer-events: none;
+                    z-index: 2;
+                    transition: background var(--hover-transition);
+                }
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    border-radius: inherit;
+                    background: radial-gradient(500px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+                            var(--card-spotlight),
+                            transparent 40%);
+                    opacity: 1;
+                    z-index: 1;
+                    pointer-events: none;
+                    transition: opacity var(--hover-transition);
+                }
+
+                & .card-icon,
+                & img {
+                    position: relative;
+                    width: 32px;
+                    height: 32px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: transparent;
+                    border: none;
+                    flex-shrink: 0;
+                    object-fit: contain;
+                    padding: 0;
+                    color: var(--text-white);
+                    z-index: 4;
+                }
+
+                & .card-icon svg {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                & .info {
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 3px;
+                    min-width: 0;
+                    z-index: 4;
+
+                    & .name {
+                        font-size: 14.5px;
+                        font-weight: 600;
+                        color: var(--text-white);
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    & .desc {
+                        font-size: 12px;
+                        color: var(--text-secondary);
+                        line-height: 1.35;
+
+                        & span {
+                            display: inline-block;
+                            font-size: 11px;
+                            font-weight: 600;
+                            padding: 1px 6px;
+                            border-radius: 6px;
+                            background: var(--pill-bg);
+                            color: var(--text-white);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

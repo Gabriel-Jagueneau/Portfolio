@@ -1,0 +1,208 @@
+#projects {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(32px, 5vh, 56px);
+    padding: 12vh max(6vw, calc((100vw - var(--section-max-w)) / 2));
+    width: 100vw;
+    box-sizing: border-box;
+
+    & .cards {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 24px;
+        width: 100%;
+
+        & .carder {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: var(--hover-transition);
+
+            &.bento-large,
+            &.bento-span-6 {
+                grid-column: span 6;
+                min-height: 260px;
+            }
+
+            &.bento-medium,
+            &.bento-span-4 {
+                grid-column: span 4;
+                min-height: 230px;
+            }
+
+            &.bento-span-5 {
+                grid-column: span 5;
+                min-height: 260px;
+            }
+
+            &.bento-span-7 {
+                grid-column: span 7;
+                min-height: 260px;
+            }
+
+            &.bento-span-8 {
+                grid-column: span 8;
+                min-height: 270px;
+            }
+
+            &.bento-span-12 {
+                grid-column: span 12;
+                min-height: 280px;
+            }
+
+            & .bg {
+                pointer-events: none;
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                z-index: 0;
+                transition: 0.5s ease;
+            }
+
+            & .head {
+                pointer-events: none;
+                position: relative;
+                z-index: 3;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+
+                & .name {
+                    padding: 8px 14px;
+                    font-size: 15px;
+                    font-weight: 700;
+                    color: var(--text-white);
+                    background: var(--pill-bg);
+                    border: 1px solid var(--pill-border);
+                    border-radius: var(--radius-md);
+                    backdrop-filter: var(--glass-blur);
+                    -webkit-backdrop-filter: var(--glass-blur);
+                    transition: ease 0.5s;
+                }
+
+                & .see-website {
+                    padding: 8px;
+                    border-radius: var(--radius-md);
+                    background: var(--pill-bg);
+                    border: 1px solid var(--pill-border);
+                    backdrop-filter: var(--glass-blur);
+                    -webkit-backdrop-filter: var(--glass-blur);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: 0.5s ease;
+
+                    & .button {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        & svg {
+                            stroke: var(--text-primary);
+                            transition: 0.25s ease;
+                        }
+                    }
+                }
+            }
+
+            & .desc {
+                pointer-events: none;
+                position: relative;
+                z-index: 3;
+                margin: 10px;
+                padding: 12px 16px;
+                border-radius: var(--radius-md);
+                background: var(--glass-bg);
+                border: 1px solid var(--glass-border);
+                backdrop-filter: var(--glass-blur);
+                -webkit-backdrop-filter: var(--glass-blur);
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                box-shadow: var(--shadow-md);
+                transition: 0.4s ease;
+
+                & .knoledge {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 6px;
+
+                    & .comp {
+                        font-size: 11px;
+                        font-weight: 600;
+                        padding: 2px 10px;
+                        border-radius: var(--radius-pill);
+                        background: var(--pill-bg);
+                        border: 1px solid var(--pill-border);
+                        color: var(--text-primary);
+                    }
+                }
+
+                & .text {
+                    font-size: 13px;
+                    line-height: 1.45;
+                    color: var(--text-secondary);
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    height: calc(1.45em * 3);
+                    min-height: calc(1.45em * 3);
+                    max-height: calc(1.45em * 3);
+                }
+            }
+
+            &:hover {
+                cursor: pointer;
+                border-radius: var(--radius-lg-hover);
+
+                & .bg {
+                    transform: scale(1.02);
+                }
+
+                &::after {
+                    background: linear-gradient(180deg, rgba(18, 20, 24, 0.35) 0%, rgba(18, 20, 24, 0.1) 50%, rgba(18, 20, 24, 0.25) 100%);
+                    backdrop-filter: blur(0px);
+                    -webkit-backdrop-filter: blur(0px);
+                }
+
+                & .head {
+                    & .name {
+                        border-radius: var(--radius-md-hover);
+                    }
+
+                    & .see-website {
+                        border-radius: var(--radius-md-hover);
+                    }
+                }
+
+                & .see-website {
+                    & .button svg {
+                        stroke: url(#portfolio-gradient);
+                    }
+                }
+
+                & .desc {
+                    opacity: 0;
+                    transform: translateY(20px);
+                    filter: blur(15px);
+                    pointer-events: none;
+                }
+            }
+        }
+    }
+}
+

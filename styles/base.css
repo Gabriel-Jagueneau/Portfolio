@@ -1,0 +1,129 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: default;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    color: aliceblue;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: rgb(25, 25, 25);
+}
+
+header {
+    position: fixed;
+    z-index: 10000;
+    width: 100vw;
+    padding: 1vh 2vh;
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(25px);
+}
+
+section {
+    min-height: 100vh;
+    width: 100vw;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+}
+
+/* -- global -- */
+
+.highlight {
+    font-weight: 600;
+    background: var(--brand-gradient-45);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.highlight-ang {
+    font-weight: 600;
+    background: var(--brand-gradient-45);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.highlight-ang2 {
+    font-weight: 600;
+    background: var(--brand-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.box-blur {
+    background-color: var(--glass-bg);
+    border: 1px var(--glass-border) solid;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* -- Main pages -- */
+
+#experience .title,
+#projects .title,
+#about .title,
+#contact .title {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    & .main {
+        position: relative;
+        font-size: clamp(28px, 2.5vw, 36px);
+        font-weight: 700;
+        letter-spacing: -0.015em;
+        width: fit-content;
+        padding-bottom: 4px;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            width: 100%;
+            border-radius: 90px;
+            background: var(--brand-gradient);
+        }
+    }
+
+    & .desc {
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--text-secondary);
+        font-style: italic;
+    }
+}
+
+.real-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+
+    & .webgl-tree-canvas {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        pointer-events: none;
+    }
+}
+

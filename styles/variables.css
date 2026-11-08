@@ -1,0 +1,54 @@
+:root {
+    /* ─── Base Palette & Typography ─── */
+    --bg-main: #191919;
+    --text-white: #ffffff;
+    --text-primary: rgb(240, 248, 255);
+    --text-secondary: rgba(240, 248, 255, 0.68);
+    --text-muted: rgba(240, 248, 255, 0.45);
+
+    /* ─── Category & Brand Accent Colors ─── */
+    --accent-blue: #00aeff;
+    --accent-green: #34c759;
+    --accent-yellow: #eeff00;
+    --accent-magenta: #ff00f2;
+    --accent-cyan: #38bdf8;
+    --accent-indigo: #007aff;
+
+    /* ─── Unified Glass Surfaces & Borders ─── */
+    --glass-bg: rgba(34, 36, 42, 0.35);
+    --glass-bg-hover: rgba(46, 49, 58, 0.50);
+    --glass-border: rgba(255, 255, 255, 0.02);
+    --glass-border-hover: rgba(255, 255, 255, 0.18);
+    --glass-blur: blur(20px);
+
+    /* ─── Pills, Badges & Chips ─── */
+    --pill-bg: rgba(255, 255, 255, 0.06);
+    --pill-bg-hover: rgba(255, 255, 255, 0.14);
+    --pill-border: rgba(255, 255, 255, 0.09);
+    --pill-border-hover: rgba(255, 255, 255, 0.22);
+
+    /* ─── Unified Shadows ─── */
+    --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 14px 38px rgba(0, 0, 0, 0.45);
+    --shadow-text: rgba(0, 0, 0, 0.5);
+
+    /* ─── Brand Gradients ─── */
+    --brand-gradient: linear-gradient(90deg, var(--accent-yellow) 0%, var(--accent-cyan) 48%, var(--accent-magenta) 100%);
+    --brand-gradient-45: linear-gradient(45deg, var(--accent-yellow), var(--accent-blue), var(--accent-magenta));
+    --brand-gradient-soft: linear-gradient(45deg, rgba(238, 255, 0, 0.18), rgba(0, 174, 255, 0.18), rgba(255, 0, 242, 0.18));
+
+    /* ─── Harmonized Radii ─── */
+    --radius-lg: 20px;
+    --radius-lg-hover: 24px;
+    --radius-md: 14px;
+    --radius-md-hover: 18px;
+    --radius-sm: 8px;
+    --radius-pill: 90px;
+
+    /* ─── Motion & Layout Constraints ─── */
+    --hover-scale: scale(1.015);
+    --hover-transition: 0.3s ease;
+    --section-max-w: 1320px;
+}
+

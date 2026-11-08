@@ -1,0 +1,157 @@
+/* -- animations -- */
+
+@keyframes cardEntrance {
+    0% {
+        opacity: 0;
+        transform: scale(0.6) translateY(30px);
+    }
+
+    70% {
+        opacity: 1;
+        transform: scale(1.03) translateY(-3px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes animateBubble {
+
+    0%,
+    100% {
+        transform: translate(0px, 0px)
+    }
+
+    50% {
+        transform: translate(-5px, 5px)
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 10% 80%;
+    }
+
+    50% {
+        background-position: 80% 10%;
+    }
+
+    100% {
+        background-position: 10% 80%;
+    }
+}
+
+@keyframes gradientRotate {
+    0% {
+        background-position: 10% 80%;
+    }
+
+    50% {
+        background-position: 80% 10%;
+    }
+
+    100% {
+        background-position: 10% 80%;
+    }
+}
+
+@keyframes wave {
+    0% {
+        background-position-x: 0px;
+    }
+
+    100% {
+        background-position-x: 1000px;
+    }
+}
+
+@keyframes wave2 {
+    0% {
+        background-position-x: 0px;
+    }
+
+    100% {
+        background-position-x: -1000px;
+    }
+}
+
+@keyframes animate-to-big-1 {
+    0% {
+        transform: translateX(-50%) translateY(-80px) scale(1);
+        opacity: 1;
+        filter: blur(0px);
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(-60vh) scale(10);
+        opacity: 0;
+        filter: blur(5px);
+    }
+}
+
+@keyframes animate-to-big-2 {
+    0% {
+        transform: translateX(-50%) translateY(-40px) scale(1);
+        opacity: 1;
+        filter: blur(0px);
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(-60vh) scale(10);
+        opacity: 0;
+        filter: blur(5px);
+    }
+}
+
+@keyframes scroll-left-right {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes falling {
+
+    0% {
+        -webkit-transform:
+            translate3d(300, 0, 0) rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform:
+            translate3d(-350px, 700px, 0) rotate(90deg);
+        opacity: 0;
+    }
+}
+
+@keyframes falling3 {
+    0% {
+        -webkit-transform:
+            translate3d(0, 0, 0) rotate(-20deg);
+    }
+
+    100% {
+        -webkit-transform:
+            translate3d(-230px, 640px, 0) rotate(-70deg);
+        opacity: 0;
+    }
+}
+
+@keyframes falling2 {
+    0% {
+        -webkit-transform:
+            translate3d(0, 0, 0) rotate(90deg);
+    }
+
+    100% {
+        -webkit-transform:
+            translate3d(-400px, 680px, 0) rotate(0deg);
+        opacity: 0;
+    }
+}
+

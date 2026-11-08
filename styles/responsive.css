@@ -1,0 +1,1025 @@
+/* -- phone adapt -- */
+
+@media only screen and (width < 1100px) {
+    #navBar {
+        & .title {
+            display: none;
+        }
+
+        & .cetegories {
+            position: relative;
+
+            & .container {
+                width: 75vw;
+
+                & .sub {
+                    padding: 0.75vw 1.5vw;
+                    font-size: 15px;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        & .contact {
+            & .links-logo {
+                height: 30px;
+            }
+        }
+    }
+
+    #nav-show {
+        display: none;
+    }
+
+    #home {
+        & .quick-desc {
+            width: min(85vw, 620px);
+            gap: 2.2vh;
+
+            & .names {
+                font-size: clamp(42px, 5.5vw, 54px);
+            }
+
+            & .description {
+                font-size: clamp(14px, 1.8vw, 16px);
+            }
+
+            & .hero-actions {
+                gap: 14px;
+            }
+        }
+
+        & .image-zone {
+            display: none;
+        }
+    }
+
+    #experience,
+    #projects,
+    #about,
+    #contact {
+        padding: 8vh 6vw;
+    }
+
+    #projects {
+        & .cards {
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+
+            & .carder.bento-large,
+            & .carder.bento-medium,
+            & .carder[class*="bento-span-"] {
+                grid-column: span 6;
+                min-height: 240px;
+            }
+
+            & .carder.bento-span-12 {
+                grid-column: span 12;
+            }
+        }
+    }
+
+    #about {
+        & .secondary {
+            font-size: 22px;
+        }
+    }
+
+    #contact .head {
+        width: 100%;
+        max-width: 680px;
+    }
+
+    #contact .feet {
+        justify-content: center;
+    }
+
+    #footer {
+        & .air {
+            height: 100px;
+            background-size: 1000px 100px;
+        }
+    }
+}
+
+@media only screen and (width < 850px) {
+
+    #experience .title,
+    #projects .title,
+    #about .title,
+    #contact .title {
+        & .main {
+            font-size: clamp(26px, 4vw, 32px);
+        }
+
+        & .desc {
+            font-size: 14px;
+        }
+    }
+
+    body.site-revealed .webgl-tree-canvas {
+        filter: blur(14px) brightness(0.62);
+        mask-image: none;
+        -webkit-mask-image: none;
+    }
+
+    #home {
+        display: flex;
+        align-items: center;
+
+        & .quick-desc {
+            width: 85vw;
+        }
+    }
+
+    #experience {
+        gap: 24px;
+
+        & .block {
+            gap: 14px;
+
+            & .mainer {
+                font-size: 22px;
+            }
+        }
+
+        & .block .cards {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+
+            & .card {
+                padding: 10px 12px;
+                gap: 12px;
+
+                & .card-icon,
+                & img {
+                    width: 30px;
+                    height: 30px;
+                    background: transparent;
+                    border: none;
+                    padding: 0;
+                }
+
+                & .info {
+                    & .name {
+                        font-size: 14.5px;
+                    }
+
+                    & .desc {
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+    }
+
+    #projects {
+        gap: 24px;
+
+        & .cards {
+            grid-template-columns: 1fr;
+            gap: 18px;
+
+            & .carder.bento-large,
+            & .carder.bento-medium,
+            & .carder[class*="bento-span-"] {
+                grid-column: span 1;
+                min-height: 230px;
+            }
+        }
+    }
+
+    #about {
+        gap: 28px;
+
+        & .contained {
+            width: 100%;
+
+            & .line {
+                mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+                -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+            }
+
+            & .parags {
+                width: 100%;
+
+                & .inner {
+                    gap: 20px;
+
+                    & .date {
+                        width: 68px;
+                        font-size: 12.5px;
+                        padding: 6px 8px;
+                    }
+
+                    & .parag {
+                        padding: 16px 20px;
+
+                        & .bigger {
+                            font-size: 18px;
+                        }
+
+                        & .smaller {
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+
+        & .secondary {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        & .diplomas {
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+
+            & .diploma .container {
+                padding: 18px;
+                gap: 14px;
+
+                & .ttle {
+                    font-size: 16px;
+                }
+
+                & .infos .info {
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+
+    #contact {
+        gap: 20px;
+        width: 100%;
+        box-sizing: border-box;
+
+        & .head {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        & .body {
+            font-size: 16px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        & .feet {
+            width: 100%;
+            max-width: 600px;
+            justify-content: center;
+
+            & .card {
+                flex: 0 1 calc(50% - 12px);
+                min-width: 240px;
+            }
+        }
+    }
+
+    #footer {
+        & .air {
+            height: 100px;
+            background-size: 1000px 100px;
+        }
+
+        & .container {
+            & .totop {
+                font-size: 40px;
+            }
+
+            & .text {
+                font-size: 16px;
+            }
+        }
+
+        & .scrolled-bottom {
+            transform: translateX(-50%) translateY(-40px);
+        }
+
+        & .animating {
+            animation: animate-to-big-2 0.4s forwards linear;
+        }
+    }
+}
+
+@media only screen and (width < 600px) {
+    #navBar {
+        & .title {
+            display: none;
+        }
+
+        & .cetegories {
+            position: relative;
+
+            & .container {
+                width: 90vw;
+
+                & .sub {
+                    padding: 0.75vw 2vw;
+                    font-size: 15px;
+                    font-weight: 500;
+                }
+            }
+        }
+
+        & .contact {
+            display: none;
+        }
+    }
+
+    #experience .title,
+    #projects .title,
+    #about .title,
+    #contact .title {
+        & .main {
+            font-size: 26px;
+        }
+
+        & .desc {
+            font-size: 14px;
+        }
+    }
+
+    #experience,
+    #projects,
+    #about,
+    #contact {
+        padding: 6vh 4vw;
+    }
+
+    #home {
+        & .quick-desc {
+            width: 90vw;
+            gap: 1.8vh;
+
+            & .names {
+                font-size: clamp(36px, 9vw, 46px);
+            }
+
+            & .description {
+                font-size: clamp(13px, 3.4vw, 15px);
+            }
+
+            & .hero-actions {
+                gap: 12px;
+                margin-top: 4px;
+
+                & .hero-btn {
+                    padding: 11px 20px;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+
+    #experience {
+        & .block {
+            & .mainer {
+                font-size: 22px;
+            }
+
+            & .descri {
+                font-size: 13px;
+            }
+        }
+
+        & .block .cards {
+            grid-template-columns: 1fr;
+            gap: 12px;
+
+            & .card {
+                padding: 10px 12px;
+                gap: 12px;
+
+                & .card-icon,
+                & img {
+                    width: 28px;
+                    height: 28px;
+                    background: transparent;
+                    border: none;
+                    padding: 0;
+                }
+
+                & .info {
+                    & .name {
+                        font-size: 14.5px;
+                    }
+
+                    & .desc {
+                        font-size: 12px;
+
+                        & span {
+                            font-size: 11px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #projects {
+        & .cards {
+            grid-template-columns: 1fr;
+            gap: 16px;
+
+            & .carder.bento-large,
+            & .carder.bento-medium,
+            & .carder[class*="bento-span-"] {
+                grid-column: span 1;
+                min-height: 220px;
+            }
+
+            & .carder {
+                & .head {
+                    padding: 12px 14px;
+
+                    & .name {
+                        font-size: 14px;
+                    }
+
+                    & .see-website {
+                        & .button {
+                            font-size: 15px;
+                        }
+                    }
+                }
+
+                & .desc {
+                    padding: 12px 16px;
+
+                    & .knoledge {
+                        & .comp {
+                            font-size: 10.5px;
+                            padding: 2px 8px;
+                        }
+                    }
+
+                    & .text {
+                        font-size: 12.5px;
+                    }
+                }
+            }
+        }
+    }
+
+    #about {
+        & .contained {
+            & .line {
+                left: 28px;
+                mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+                -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+            }
+
+            & .parags {
+                width: 100%;
+
+                & .inner {
+                    gap: 14px;
+
+                    & .date {
+                        width: 58px;
+                        font-size: 12px;
+                        padding: 5px 6px;
+                    }
+
+                    &::after {
+                        left: 28px;
+                        top: 14px;
+                        width: 6px;
+                        height: 6px;
+                    }
+
+                    & .parag {
+                        padding: 14px 16px;
+
+                        & .text {
+                            font-size: 14px;
+                        }
+
+                        & .bigger {
+                            font-size: 18px;
+                        }
+
+                        & .smaller {
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+
+        & .secondary {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        & .diplomas {
+            grid-template-columns: 1fr;
+            gap: 14px;
+
+            & .diploma .container {
+                padding: 16px;
+
+                & .ttle {
+                    font-size: 15px;
+
+                    & .logo {
+                        & img {
+                            height: 18px;
+                        }
+
+                        & a {
+                            font-size: 12px;
+                        }
+                    }
+                }
+
+                & .infos {
+                    & .info {
+                        & .logo {
+                            font-size: 16px;
+                        }
+
+                        & .name {
+                            font-size: 12.5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #contact {
+        padding: 40px 20px 60px !important;
+        gap: 20px;
+        width: 100%;
+        box-sizing: border-box;
+
+        & .head {
+            width: 100%;
+            max-width: 480px;
+            padding: 20px 16px;
+            border-radius: 18px;
+            gap: 18px;
+
+            & .top {
+                flex-direction: column !important;
+                text-align: center;
+                align-items: center;
+                gap: 12px;
+                width: 100%;
+
+                & .photo-de-profile {
+                    height: 90px;
+                    width: 90px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                & .info {
+                    align-items: center;
+                    text-align: center;
+                    width: 100%;
+
+                    & .name {
+                        font-size: 24px;
+                        text-align: center;
+                        margin: 0 auto;
+                    }
+
+                    & .work {
+                        font-size: 13.5px;
+                        color: var(--text-secondary);
+                        font-style: italic;
+                        text-align: center;
+                        line-height: 1.4;
+                    }
+                }
+            }
+
+            & .bottom {
+                gap: 8px;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+
+                & .info {
+                    padding: 7px 12px;
+                    border-radius: 12px;
+                    gap: 6px;
+
+                    & .logo,
+                    .service,
+                    .type {
+                        font-size: 12.5px;
+                    }
+
+                    & .image {
+                        height: 18px;
+                    }
+                }
+            }
+        }
+
+        & .body {
+            width: 100%;
+            max-width: 480px;
+            box-sizing: border-box;
+            padding: 14px 18px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 14.5px;
+            line-height: 1.5;
+            text-wrap: wrap !important;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        & .feet {
+            width: 100%;
+            max-width: 480px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+
+            & .card {
+                width: 100%;
+                max-width: 440px;
+                box-sizing: border-box;
+                padding: 12px 16px;
+                border-radius: 16px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 14px;
+
+                & .links-logo,
+                & .links-logo-badge {
+                    width: 42px;
+                    height: 42px;
+                    border-radius: 12px;
+                    flex-shrink: 0;
+                }
+
+                & .infos {
+                    gap: 6px;
+                    flex: 1;
+                    min-width: 0;
+                    width: auto;
+
+                    & .name {
+                        width: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 4px 10px;
+                        border-radius: 8px;
+                        box-sizing: border-box;
+
+                        & .company {
+                            font-size: 16px;
+                            font-weight: 600;
+                        }
+
+                        & .see-website {
+                            & .button {
+                                font-size: 18px;
+                            }
+                        }
+                    }
+
+                    & .username {
+                        gap: 6px;
+                        display: flex;
+                        align-items: center;
+                        padding-left: 4px;
+
+                        & .logo {
+                            font-size: 13px;
+                        }
+
+                        & .namer {
+                            font-size: 12px;
+                            color: var(--text-secondary);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #footer {
+        margin-top: 8vh;
+
+        & .text {
+            font-weight: 500;
+            font-size: 14px;
+        }
+    }
+}
+
+@media only screen and (width < 450px) {
+    #navBar {
+        display: none;
+    }
+
+    #experience .title,
+    #projects .title,
+    #about .title,
+    #contact .title {
+        & .main {
+            font-size: 24px;
+        }
+
+        & .desc {
+            font-size: 13px;
+        }
+    }
+
+    #home {
+        & .quick-desc {
+            width: 92vw;
+            gap: 1.6vh;
+
+            & .names {
+                font-size: clamp(32px, 8.8vw, 40px);
+                line-height: 1.15;
+            }
+
+            & .description {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+
+            & .hero-actions {
+                width: 100%;
+                gap: 10px;
+                margin-top: 4px;
+
+                & .hero-btn {
+                    flex: 1 1 auto;
+                    min-width: 120px;
+                    padding: 10px 16px;
+                    font-size: 13.5px;
+                }
+            }
+        }
+    }
+
+    #experience {
+        padding: 5vh 4vw;
+
+        & .block {
+            margin-top: 12px;
+
+            & .mainer {
+                font-size: 20px;
+            }
+
+            & .descri {
+                font-size: 12px;
+                margin-bottom: 8px;
+            }
+        }
+
+        & .block .cards {
+            gap: 10px;
+            width: 100%;
+
+            & .card {
+                padding: 8px 10px;
+                gap: 10px;
+
+                & .card-icon,
+                & img {
+                    width: 26px;
+                    height: 26px;
+                    background: transparent;
+                    border: none;
+                    padding: 0;
+                }
+
+                & .info {
+                    padding: 0;
+
+                    & .name {
+                        font-size: 13.5px;
+                    }
+
+                    & .desc {
+                        font-size: 11px;
+
+                        & span {
+                            font-size: 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #projects {
+        padding: 5vh 4vw;
+
+        & .cards {
+            gap: 14px;
+
+            & .carder.bento-large,
+            & .carder.bento-medium,
+            & .carder[class*="bento-span-"] {
+                min-height: 200px;
+            }
+
+            & .carder {
+                & .head {
+                    padding: 10px 12px;
+
+                    & .name {
+                        font-size: 13.5px;
+                    }
+                }
+
+                & .desc {
+                    padding: 10px 12px;
+
+                    & .knoledge {
+                        & .comp {
+                            font-size: 10px;
+                            padding: 2px 8px;
+                        }
+                    }
+
+                    & .text {
+                        font-size: 11.5px;
+                    }
+                }
+            }
+        }
+    }
+
+    #about {
+        padding: 5vh 4vw;
+
+        & .contained {
+            & .line {
+                left: 25px;
+            }
+
+            & .parags {
+                & .inner {
+                    gap: 12px;
+
+                    & .date {
+                        width: 50px;
+                        font-size: 11px;
+                        padding: 4px 4px;
+                    }
+
+                    &::after {
+                        left: 25px;
+                        top: 12px;
+                        width: 6px;
+                        height: 6px;
+                    }
+
+                    & .parag {
+                        padding: 12px 14px;
+
+                        & .text {
+                            font-size: 13px;
+                        }
+
+                        & .bigger {
+                            font-size: 17px;
+                        }
+
+                        & .smaller {
+                            font-size: 11.5px;
+                        }
+
+                        & .events {
+                            gap: 5px;
+                        }
+                    }
+                }
+            }
+        }
+
+        & .diplomas {
+            gap: 12px;
+
+            & .diploma .container {
+                padding: 14px;
+                font-size: 12px;
+                gap: 10px;
+
+                & .ttle {
+                    font-size: 14px;
+                }
+
+                & .infos {
+                    & .info {
+                        & .logo {
+                            font-size: 15px;
+                        }
+
+                        & .name {
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #contact {
+        padding: 30px 16px 50px !important;
+        gap: 16px;
+
+        & .head {
+            padding: 16px 12px;
+            border-radius: 16px;
+
+            & .top {
+                & .photo-de-profile {
+                    height: 76px;
+                    width: 76px;
+                }
+
+                & .info {
+                    & .name {
+                        font-size: 22px;
+                    }
+
+                    & .work {
+                        font-size: 12.5px;
+                    }
+                }
+            }
+
+            & .bottom {
+                gap: 6px;
+
+                & .info {
+                    padding: 6px 10px;
+
+                    & .logo,
+                    .service,
+                    .type {
+                        font-size: 11.5px;
+                    }
+                }
+            }
+        }
+
+        & .body {
+            font-size: 13.5px;
+            padding: 12px 14px;
+        }
+
+        & .feet {
+            gap: 10px;
+
+            & .card {
+                padding: 10px 12px;
+                gap: 10px;
+
+                & .links-logo,
+                & .links-logo-badge {
+                    width: 38px;
+                    height: 38px;
+                }
+
+                & .infos {
+                    & .name {
+                        & .company {
+                            font-size: 14.5px;
+                        }
+
+                        & .see-website .button {
+                            font-size: 15px;
+                        }
+                    }
+
+                    & .username {
+                        & .namer {
+                            font-size: 11.5px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
