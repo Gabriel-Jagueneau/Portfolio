@@ -324,4 +324,7 @@ body.site-revealed #home .cards:not(.cards-hidden) .cardage:nth-child(4) {
             transition: 0.65s ease;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+        }
+    }
+}
 

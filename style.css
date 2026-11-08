@@ -1,0 +1,14 @@
+/* ─── Antigravity Modular Stylesheet Architecture ─────────────────────────── */
+@import url('./styles/variables.css');
+@import url('./styles/base.css');
+@import url('./styles/preloader.css');
+@import url('./styles/nav.css');
+@import url('./styles/home.css');
+@import url('./styles/mac-ui.css');
+@import url('./styles/about.css');
+@import url('./styles/experience.css');
+@import url('./styles/projects.css');
+@import url('./styles/contact.css');
+@import url('./styles/footer.css');
+@import url('./styles/animations.css');
+@import url('./styles/responsive.css');

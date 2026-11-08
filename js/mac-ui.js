@@ -1,5 +1,5 @@
 // ─── macOS UI — Ultra-Realistic & 100% Interactive Operating System ───────────────
-// - Authentic macOS Sonoma / Sequoia design language with complete interactive ecosystem.
+// - Authentic macOS Golden Gate 27 design language with complete interactive ecosystem.
 // - Interactive Top Menu Bar (Apple Menu, Contextual Menus, Battery, Wi-Fi, Control Center, Spotlight).
 // - Interactive Control Center with live Brightness, Volume, Dark Mode & AirDrop toggles.
 // - Interactive Spotlight Search (⌘ Space) for searching apps, contacts, and live calculator math.
@@ -9,10 +9,10 @@
 //     2. Safari: Real address bar, multiple interactive tabs (Portfolio, AgroTech AI, GitHub, LinkedIn).
 //     3. VS Code: Multi-tab file explorer, editable code, interactive "▶ Run" console execution.
 //     4. Music: Animated waveform equalizer, seekable progress scrubber, volume slider, playlist queue.
-//     5. System Settings: Live Dark/Light theme toggle, Accent colors, Wi-Fi/BT switches, M3 Pro specs.
+//     5. System Settings: Live Dark/Light theme toggle, Accent colors, Wi-Fi/BT switches, M4 Pro specs.
 //     6. Terminal: zsh with command history, fastfetch / neofetch, matrix rain, whoami, projects, help.
 //     7. Calculator: Authentic macOS standard calculator with clickable buttons and keyboard support.
-//     8. About This Mac: Authentic modal dialog with M3 Pro chip icon and storage breakdown.
+//     8. About This Mac: Authentic modal dialog with M4 Pro chip icon and storage breakdown.
 
 import { setMacInteractiveMode } from './cards-physics.js';
 
@@ -396,7 +396,7 @@ const appDefinitions = {
     render: (win) => `
       <div class="app-terminal" id="term-container-${win.id}">
         <p class="term-login">Last login: ${new Date().toLocaleDateString()} on ttys001</p>
-        <p class="term-welcome">Welcome to macOS Sonoma 14.5. Type <span class="term-highlight">'help'</span> or <span class="term-highlight">'fastfetch'</span>.</p>
+        <p class="term-welcome">Welcome to macOS Golden Gate 27.1. Type <span class="term-highlight">'help'</span> or <span class="term-highlight">'fastfetch'</span>.</p>
         <div class="term-output" id="term-out-${win.id}">
           <p><span class="term-prompt">gabriel@macbook</span> <span class="term-path">~/Portfolio</span> % <span class="term-cmd">fastfetch</span></p>
           <div class="term-fastfetch">
@@ -412,11 +412,11 @@ const appDefinitions = {
             <div class="term-fastfetch-info">
               <p><strong style="color:#58a6ff;">Gabriel Jagueneau</strong> @ MacBook Pro</p>
               <p>-------------------------</p>
-              <p><span class="term-key">OS:</span> macOS Sonoma 14.5 (Darwin 23.5.0)</p>
-              <p><span class="term-key">Host:</span> MacBookPro18,3 (14-inch, 2024)</p>
-              <p><span class="term-key">CPU:</span> Apple M3 Pro (12 Cores)</p>
-              <p><span class="term-key">GPU:</span> Apple M3 Pro (18-core GPU)</p>
-              <p><span class="term-key">Memory:</span> 18 GB Unified LPDDR5</p>
+              <p><span class="term-key">OS:</span> macOS Golden Gate 27.1 (Darwin 27.0.0)</p>
+              <p><span class="term-key">Host:</span> MacBookPro19,1 (14-inch, 2026)</p>
+              <p><span class="term-key">CPU:</span> Apple M4 Pro (14 Cores)</p>
+              <p><span class="term-key">GPU:</span> Apple M4 Pro (20-core GPU)</p>
+              <p><span class="term-key">Memory:</span> 24 GB Unified LPDDR5X</p>
               <p><span class="term-key">Role:</span> Agronomy Engineer & Full-Stack Dev</p>
             </div>
           </div>
@@ -498,10 +498,11 @@ const appDefinitions = {
               <div class="term-fastfetch-info">
                 <p><strong style="color:#58a6ff;">Gabriel Jagueneau</strong> @ MacBook Pro</p>
                 <p>-------------------------</p>
-                <p><span class="term-key">OS:</span> macOS Sonoma 14.5 (Darwin 23.5.0)</p>
-                <p><span class="term-key">Host:</span> MacBookPro18,3 (14-inch, 2024)</p>
-                <p><span class="term-key">CPU:</span> Apple M3 Pro (12 Cores)</p>
-                <p><span class="term-key">Memory:</span> 18 GB Unified LPDDR5</p>
+                <p><span class="term-key">OS:</span> macOS Golden Gate 27.1 (Darwin 27.0.0)</p>
+                <p><span class="term-key">Host:</span> MacBookPro19,1 (14-inch, 2026)</p>
+                <p><span class="term-key">CPU:</span> Apple M4 Pro (14 Cores)</p>
+                <p><span class="term-key">GPU:</span> Apple M4 Pro (20-core GPU)</p>
+                <p><span class="term-key">Memory:</span> 24 GB Unified LPDDR5X</p>
               </div>
             </div>`;
         } else if (lower === 'matrix') {
@@ -1774,13 +1775,13 @@ const appDefinitions = {
               <div class="about-mac-hero">
                 <div class="apple-logo-badge">${SVG_ICONS.apple}</div>
                 <div class="about-mac-title">MacBook Pro 14"</div>
-                <div class="about-mac-sub">Apple M3 Pro • 18 GB Unified Memory</div>
-                <div class="about-mac-os">macOS Sonoma 14.5</div>
+                <div class="about-mac-sub">Apple M4 Pro • 24 GB Unified Memory</div>
+                <div class="about-mac-os">macOS Golden Gate 27.1</div>
               </div>
               <div class="settings-card-group" style="margin-top:8px;">
-                <div class="card-row"><span class="card-row-title">About</span><span style="color:rgba(255,255,255,0.55); font-size:5.5px;">MacBookPro18,3 ›</span></div>
-                <div class="card-row"><span class="card-row-title">Software Update</span><span style="color:#34c759; font-size:5.5px;">macOS 14.5 Up to date ›</span></div>
-                <div class="card-row"><span class="card-row-title">Storage</span><span>512 GB SSD (342 GB Available) ›</span></div>
+                <div class="card-row"><span class="card-row-title">About</span><span style="color:rgba(255,255,255,0.55); font-size:5.5px;">MacBookPro19,1 ›</span></div>
+                <div class="card-row"><span class="card-row-title">Software Update</span><span style="color:#34c759; font-size:5.5px;">macOS 27.1 Up to date ›</span></div>
+                <div class="card-row"><span class="card-row-title">Storage</span><span>1 TB SSD (684 GB Available) ›</span></div>
                 <div class="card-row"><span class="card-row-title">AirDrop & Handoff</span><span style="color:rgba(255,255,255,0.55); font-size:5.5px;">Contacts Only ›</span></div>
                 <div class="card-row"><span class="card-row-title">Date & Time</span><span style="color:rgba(255,255,255,0.55); font-size:5.5px;">Set Automatically ›</span></div>
               </div>
@@ -2464,13 +2465,13 @@ function showAboutMacModal() {
       <div class="modal-close-btn" id="modal-close-about">✕</div>
       <div class="modal-apple-badge">${SVG_ICONS.apple}</div>
       <h3>MacBook Pro</h3>
-      <p class="modal-sub">14-inch, 2024</p>
+      <p class="modal-sub">14-inch, 2026</p>
       <div class="modal-specs-list">
-        <div class="spec-row"><span>Chip:</span> <strong>Apple M3 Pro (12-core)</strong></div>
-        <div class="spec-row"><span>Memory:</span> <strong>18 GB Unified Memory</strong></div>
-        <div class="spec-row"><span>Graphics:</span> <strong>Integrated 18-core GPU</strong></div>
-        <div class="spec-row"><span>Serial Number:</span> <strong>GJ77X92026M3P</strong></div>
-        <div class="spec-row"><span>macOS:</span> <strong>Sonoma 14.5</strong></div>
+        <div class="spec-row"><span>Chip:</span> <strong>Apple M4 Pro (14-core)</strong></div>
+        <div class="spec-row"><span>Memory:</span> <strong>24 GB Unified Memory</strong></div>
+        <div class="spec-row"><span>Graphics:</span> <strong>Apple M4 Pro (20-core GPU)</strong></div>
+        <div class="spec-row"><span>Serial Number:</span> <strong>GJ27-GOLDEN-GATE</strong></div>
+        <div class="spec-row"><span>macOS:</span> <strong>Golden Gate 27.1</strong></div>
       </div>
       <div class="modal-actions">
         <button class="mac-dialog-btn primary" id="modal-more-info">More Info...</button>
@@ -2632,12 +2633,84 @@ export function setInteractive(active) {
   }
 }
 
-let isMacFullscreen = false;
+let isMacCinemaMode = false;
+let cinemaScrollOrigin = 0;
+
+function ensureCinemaControls() {
+  if (!document.getElementById('mac-cinema-backdrop')) {
+    const backdrop = document.createElement('div');
+    backdrop.id = 'mac-cinema-backdrop';
+    backdrop.className = 'mac-cinema-backdrop';
+    backdrop.setAttribute('aria-label', 'Close macOS Focus Mode');
+    backdrop.addEventListener('click', () => setMacCinemaMode(false));
+    document.body.appendChild(backdrop);
+  }
+
+  if (!document.getElementById('mac-cinema-exit')) {
+    const exitBtn = document.createElement('div');
+    exitBtn.id = 'mac-cinema-exit';
+    exitBtn.className = 'mac-cinema-exit';
+    exitBtn.setAttribute('title', 'Press Escape to exit macOS');
+    exitBtn.innerHTML = `
+      <span class="esc-badge">ESC</span>
+      <span class="exit-label">Quitter macOS</span>
+      <span class="close-icon">✕</span>
+    `;
+    exitBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setMacCinemaMode(false);
+    });
+    document.body.appendChild(exitBtn);
+  }
+}
+
+export function setMacCinemaMode(enable) {
+  if (isMacCinemaMode === enable) return;
+  isMacCinemaMode = Boolean(enable);
+
+  ensureCinemaControls();
+
+  const body = document.body;
+  const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
+  const macContainer = document.getElementById('imagurrrr');
+
+  if (isMacCinemaMode) {
+    cinemaScrollOrigin = window.scrollY;
+    body.classList.add('mac-cinema-active');
+    if (cardsSpinner) cardsSpinner.classList.add('cards-hidden');
+    if (macContainer) {
+      macContainer._savedAos = macContainer.getAttribute('data-aos');
+      macContainer.removeAttribute('data-aos');
+      macContainer.style.setProperty('transform', 'none', 'important');
+    }
+    setInteractive(true);
+
+    if (openWindows.size === 0) {
+      spawnOrFocusWindow('Terminal');
+    }
+  } else {
+    body.classList.remove('mac-cinema-active');
+    if (cardsSpinner) cardsSpinner.classList.remove('cards-hidden');
+    if (macContainer) {
+      if (macContainer._savedAos) macContainer.setAttribute('data-aos', macContainer._savedAos);
+      macContainer.style.removeProperty('transform');
+    }
+    closeAllPopovers();
+    setInteractive(false);
+  }
+}
 
 export function toggleMacFullscreen(force) {
-  // Zoom on Mac has been removed: user interacts directly with the compact version
-  isMacFullscreen = false;
-  document.body.classList.remove('mac-fullscreen-mode');
+  if (typeof force === 'boolean') {
+    setMacCinemaMode(force);
+  } else {
+    setMacCinemaMode(!isMacCinemaMode);
+  }
+}
+
+if (typeof window !== 'undefined') {
+  window.setMacCinemaMode = setMacCinemaMode;
+  window.toggleMacFullscreen = toggleMacFullscreen;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -2693,6 +2766,7 @@ function initDock() {
       e.stopPropagation();
       const appName = item.getAttribute('data-app');
       if (appName === 'Fullscreen') {
+        toggleMacFullscreen();
         return;
       }
       if (appName && appDefinitions[appName]) {
@@ -2706,7 +2780,9 @@ function initDock() {
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      if (isMacInteractive) {
+      if (isMacCinemaMode) {
+        setMacCinemaMode(false);
+      } else if (isMacInteractive) {
         setInteractive(false);
         const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
         if (cardsSpinner) cardsSpinner.classList.remove('cards-hidden');
@@ -2740,48 +2816,54 @@ function initDock() {
 
 function initInteractiveListeners() {
   const macScreen = document.querySelector('#imagurrrr .inside') || document.querySelector('.macos-container');
-  const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
+  const macDevice = document.querySelector('#imagurrrr .device');
 
-  function hideCards() {
-    if (cardsSpinner && !cardsSpinner.classList.contains('cards-hidden')) {
-      cardsSpinner.classList.add('cards-hidden');
-    }
-  }
-
-  function showCards() {
-    if (cardsSpinner && cardsSpinner.classList.contains('cards-hidden')) {
-      cardsSpinner.classList.remove('cards-hidden');
-    }
-  }
-
-  // Clicking specifically on the Mac screen: hide cards and focus macOS
+  // Clicking specifically on the Mac screen: open Cinema mode if in compact mode
   if (macScreen) {
-    macScreen.addEventListener('click', () => {
-      hideCards();
-      setInteractive(true);
-    }, true);
-
-    macScreen.addEventListener('mousedown', () => {
-      hideCards();
-      setInteractive(true);
-    }, true);
+    macScreen.addEventListener('click', (e) => {
+      if (!isMacCinemaMode) {
+        setMacCinemaMode(true);
+      }
+    });
   }
 
-  // Clicking outside the Mac screen (including on the laptop image or cards): bring back cards and unfocus
+  if (macDevice) {
+    macDevice.style.cursor = 'pointer';
+    macDevice.addEventListener('click', (e) => {
+      if (!isMacCinemaMode) {
+        setMacCinemaMode(true);
+      }
+    });
+  }
+
+  // Smooth scroll exit: if user scrolls away by more than 160px, smoothly exit Cinema mode without trapping
+  window.addEventListener('scroll', () => {
+    if (isMacCinemaMode) {
+      if (Math.abs(window.scrollY - cinemaScrollOrigin) > 160) {
+        setMacCinemaMode(false);
+      }
+    }
+  }, { passive: true });
+
+  // Clicking outside the Mac screen when not in cinema mode: unfocus
   document.addEventListener('click', (e) => {
+    if (isMacCinemaMode) return;
     const isInsideScreen = Boolean(e.target.closest('#imagurrrr .inside') || e.target.closest('.macos-container'));
     if (!isInsideScreen) {
-      showCards();
       setInteractive(false);
+      const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
+      if (cardsSpinner) cardsSpinner.classList.remove('cards-hidden');
     }
   });
 
   document.addEventListener('mousedown', (e) => {
+    if (isMacCinemaMode) return;
     const isInsideScreen = Boolean(e.target.closest('#imagurrrr .inside') || e.target.closest('.macos-container'));
     const isCard = Boolean(e.target.closest('.cardage'));
     if (!isInsideScreen && !isCard) {
-      showCards();
       setInteractive(false);
+      const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
+      if (cardsSpinner) cardsSpinner.classList.remove('cards-hidden');
     }
   });
 }
