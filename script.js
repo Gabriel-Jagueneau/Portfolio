@@ -1,14 +1,16 @@
-import { initWebGLTree }      from './js/tree-3d.js?v=53';
-import { initializeOrbits }  from './js/cards-physics.js?v=34';
-import { observeScroll }     from './js/nav.js?v=4';
+import { initWebGLTree }      from './js/tree-3d.js';
+import { initializeOrbits }  from './js/cards-physics.js';
+import { observeScroll }     from './js/nav.js';
 import { initFooter }        from './js/footer.js';
-import { initCardHover }     from './js/card-hover.js?v=2';
+import { initCardHover }     from './js/card-hover.js';
 import { initConfetti }      from './js/confetti.js';
-import { initMacUI }         from './js/mac-ui.js?v=31';
-import { initDynamicDates }  from './js/dynamic-dates.js?v=1';
+import { initMacUI }         from './js/mac-ui.js';
+import { initDynamicDates }  from './js/dynamic-dates.js';
+import { initBentoGrid }     from './js/bento-grid.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initDynamicDates();
+  initBentoGrid();
   initializeOrbits();
   observeScroll();
   initFooter();
