@@ -22,7 +22,10 @@ import { setMacInteractiveMode } from './cards-physics.js';
 const SVG_ICONS = {
   apple: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.66-1.06 1.73-.93 2.76 1 .08 2.02-.51 2.64-1.26z"/></svg>`,
   search: `<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="10.5" cy="10.5" r="7"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>`,
-  controlCenter: `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2zm0 8h16a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2zm0 8h16a2 2 0 0 0 2-2v0a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2z"/></svg>`,
+  controlCenter: `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M6 3C4.34 3 3 4.34 3 6C3 7.66 4.34 9 6 9H18C19.66 9 21 7.66 21 6C21 4.34 19.66 3 18 3H6ZM18 7.5C18.83 7.5 19.5 6.83 19.5 6C19.5 5.17 18.83 4.5 18 4.5C17.17 4.5 16.5 5.17 16.5 6C16.5 6.83 17.17 7.5 18 7.5ZM6 15C4.34 15 3 16.34 3 18C3 19.66 4.34 21 6 21H18C19.66 21 21 19.66 21 18C21 16.34 19.66 15 18 15H6ZM6 19.5C6.83 19.5 7.5 18.83 7.5 18C7.5 17.17 6.83 16.5 6 16.5C5.17 16.5 4.5 17.17 4.5 18C4.5 18.83 5.17 19.5 6 19.5Z"/></svg>`,
+  shield: `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+  sidebar: `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>`,
+  history: `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"/></svg>`,
   wifi: `<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4C7.31 4 3.07 5.9 0 8.98l1.42 1.42C4.16 7.66 7.87 6 12 6s7.84 1.66 10.58 4.4L24 8.98C20.93 5.9 16.69 4 12 4zm0 4.5c-3.5 0-6.68 1.42-9.01 3.73l1.42 1.42C6.46 11.6 9.07 10.5 12 10.5s5.54 1.1 7.59 3.15l1.42-1.42C18.68 9.92 15.5 8.5 12 8.5zm0 4.5c-2.28 0-4.34.92-5.86 2.44l1.42 1.42c1.16-1.16 2.74-1.86 4.44-1.86s3.28.7 4.44 1.86l1.42-1.42C16.34 13.92 14.28 13 12 13zm0 4.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>`,
   wifiOff: `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>`,
   bluetooth: `<svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M14.24 12.01l4.7-4.7a1 1 0 0 0 0-1.42l-6-6A1 1 0 0 0 11 .6V9.58L6.41 5A1 1 0 0 0 5 6.41L10.59 12 5 17.59A1 1 0 1 0 6.41 19L11 14.41v8.99a1 1 0 0 0 1.94.71l6-6a1 1 0 0 0 0-1.42l-4.7-4.69zM13 3.41l3.29 3.3L13 10.01V3.41zm0 17.18v-6.6l3.29 3.3L13 20.59z"/></svg>`,
@@ -370,13 +373,25 @@ let activePopover = null;
 const openWindows = new Map();
 
 function setActiveApp(appName) {
-  if (activeAppNameEl) activeAppNameEl.textContent = appName || 'Finder';
+  if (activeAppNameEl) {
+    const displayNames = {
+      "Code": "Visual Studio Code",
+      "VSCode": "Visual Studio Code",
+      "Terminal": "Terminal",
+      "Finder": "Finder",
+      "Safari": "Safari",
+      "Music": "Music",
+      "Calculator": "Calculator",
+      "Settings": "Settings"
+    };
+    activeAppNameEl.textContent = displayNames[appName] || appName || 'Finder';
+  }
 }
 
 function updateDockDots() {
   document.querySelectorAll('.dock .dock-item[data-app]').forEach(item => {
     const appName = item.getAttribute('data-app');
-    const isOpen = openWindows.has(appName);
+    const isOpen = openWindows.has(appName) || (appName === 'VSCode' && (openWindows.has('Code') || openWindows.has('VSCode'))) || (appName === 'Code' && (openWindows.has('Code') || openWindows.has('VSCode')));
     item.classList.toggle('has-running-window', isOpen);
   });
 }
@@ -693,190 +708,366 @@ const appDefinitions = {
 
   // ── 3. Safari (Apple Web Engine UI) ──
   "Safari": {
-    title: "Safari — Gabriel Jagueneau Portfolio",
+    title: "Safari — Start Page",
     widthPct: 78, heightPct: 72,
     render: (win) => `
       <div class="app-safari">
         <header class="safari-header">
           <div class="safari-nav-group">
-            <button class="safari-nav-btn" id="safari-back-${win.id}" title="Back">‹</button>
+            <button class="safari-nav-btn" id="safari-sidebar-btn-${win.id}" title="Toggle Sidebar">${SVG_ICONS.sidebar}</button>
+            <button class="safari-nav-btn" id="safari-back-${win.id}" title="Back" disabled>‹</button>
             <button class="safari-nav-btn" id="safari-forward-${win.id}" title="Forward" disabled>›</button>
           </div>
           <div class="safari-address">
-            <span class="lock-icon">${SVG_ICONS.lock}</span>
-            <span class="safari-protocol">https://</span>
-            <input type="text" class="safari-addr-input" id="safari-addr-${win.id}" value="gjagueneau.fr" spellcheck="false" />
+            <span class="safari-shield-icon" title="Privacy Report: Protected">${SVG_ICONS.shield}</span>
+            <span class="lock-icon" id="safari-lock-${win.id}" style="display:none;">${SVG_ICONS.lock}</span>
+            <input type="text" class="safari-addr-input" id="safari-addr-${win.id}" value="Search or enter website name" spellcheck="false" />
             <button class="safari-reload-btn" id="safari-reload-${win.id}" title="Reload">↻</button>
           </div>
           <div class="safari-actions-right">
-            <span class="safari-act-btn" title="Share">↗</span>
-            <span class="safari-act-btn" title="New Tab">+</span>
+            <span class="safari-act-btn" id="safari-share-${win.id}" title="Share">↗</span>
+            <span class="safari-act-btn" id="safari-newtab-${win.id}" title="New Tab">+</span>
           </div>
         </header>
-        <div class="safari-tab-bar" id="safari-tabs-${win.id}">
-          <div class="safari-tab active" data-url="https://gjagueneau.fr">
-            <span class="tab-icon">${SVG_ICONS.sparkle}</span>
-            <span class="tab-title">Portfolio</span>
-          </div>
-          <div class="safari-tab" data-url="https://gjagueneau.fr/agrotech">
-            <span class="tab-icon">${SVG_ICONS.leaf}</span>
-            <span class="tab-title">AgroTech AI</span>
-          </div>
-          <div class="safari-tab" data-url="https://github.com/Gabriel-Jagueneau">
-            <span class="tab-icon">${SVG_ICONS.github}</span>
-            <span class="tab-title">GitHub</span>
-          </div>
-          <div class="safari-tab" data-url="https://linkedin.com/in/gabriel-jagueneau">
-            <span class="tab-icon">${SVG_ICONS.linkedin}</span>
-            <span class="tab-title">LinkedIn</span>
-          </div>
+
+        <div class="safari-favorites-bar">
+          <div class="fav-pill" data-target="start"><span class="fav-icon">★</span> Start Page</div>
+          <div class="fav-pill" data-target="portfolio"><span class="fav-icon">💼</span> Portfolio</div>
+          <div class="fav-pill" data-target="agrotech"><span class="fav-icon">🌱</span> AgroTech AI</div>
+          <div class="fav-pill" data-target="github"><span class="fav-icon">🐙</span> GitHub</div>
+          <div class="fav-pill" data-target="linkedin"><span class="fav-icon">👔</span> LinkedIn</div>
+          <div class="fav-pill" data-target="bsa"><span class="fav-icon">🏫</span> Bordeaux Agro</div>
         </div>
+
         <main class="safari-body" id="safari-viewport-${win.id}">
-          <!-- Dynamic Content -->
+          <!-- Content dynamically rendered -->
         </main>
       </div>`,
     setup: (win) => {
       const addrInput = win.el.querySelector(`#safari-addr-${win.id}`);
       const viewport = win.el.querySelector(`#safari-viewport-${win.id}`);
       const reloadBtn = win.el.querySelector(`#safari-reload-${win.id}`);
-      const tabs = win.el.querySelectorAll('.safari-tab');
+      const backBtn = win.el.querySelector(`#safari-back-${win.id}`);
+      const forwardBtn = win.el.querySelector(`#safari-forward-${win.id}`);
+      const lockIcon = win.el.querySelector(`#safari-lock-${win.id}`);
+      const favPills = win.el.querySelectorAll('.safari-favorites-bar .fav-pill');
 
-      function syncActiveTab(url) {
-        tabs.forEach(tab => {
-          const tabUrl = tab.getAttribute('data-url');
-          if (url.includes('github') && tabUrl.includes('github')) tab.classList.add('active');
-          else if (url.includes('linkedin') && tabUrl.includes('linkedin')) tab.classList.add('active');
-          else if ((url.includes('agrotech') || url.includes('agronomy')) && tabUrl.includes('agrotech')) tab.classList.add('active');
-          else if (!url.includes('github') && !url.includes('linkedin') && !url.includes('agrotech') && tabUrl === 'https://gjagueneau.fr') tab.classList.add('active');
-          else tab.classList.remove('active');
+      let history = ['start'];
+      let historyIdx = 0;
+
+      function updateNavButtons() {
+        if (backBtn) backBtn.disabled = historyIdx <= 0;
+        if (forwardBtn) forwardBtn.disabled = historyIdx >= history.length - 1;
+      }
+
+      function renderStartPage() {
+        if (lockIcon) lockIcon.style.display = 'none';
+        if (addrInput) addrInput.value = 'Search or enter website name';
+        win.el.querySelector('.window-title').textContent = 'Safari — Start Page';
+
+        viewport.innerHTML = `
+          <div class="safari-start-page">
+            <h3 class="safari-section-heading">Favorites</h3>
+            <div class="safari-favs-grid">
+              <div class="safari-fav-item" data-page="portfolio">
+                <div class="fav-icon-box" style="background: linear-gradient(135deg, #0284c7, #2563eb);">
+                  <span style="font-size:18px;">💼</span>
+                </div>
+                <span>Portfolio</span>
+              </div>
+              <div class="safari-fav-item" data-page="agrotech">
+                <div class="fav-icon-box" style="background: linear-gradient(135deg, #16a34a, #059669);">
+                  <span style="font-size:18px;">🌱</span>
+                </div>
+                <span>AgroTech AI</span>
+              </div>
+              <div class="safari-fav-item" data-page="github">
+                <div class="fav-icon-box" style="background:#24292e;">
+                  <span style="display:inline-flex;color:#fff;">${SVG_ICONS.github}</span>
+                </div>
+                <span>GitHub</span>
+              </div>
+              <div class="safari-fav-item" data-page="linkedin">
+                <div class="fav-icon-box" style="background:#0077b5;">
+                  <span style="display:inline-flex;color:#fff;">${SVG_ICONS.linkedin}</span>
+                </div>
+                <span>LinkedIn</span>
+              </div>
+              <div class="safari-fav-item" data-page="bsa">
+                <div class="fav-icon-box" style="background: linear-gradient(135deg, #ea580c, #c2410c);">
+                  <span style="font-size:18px;">🏫</span>
+                </div>
+                <span>BSA School</span>
+              </div>
+              <div class="safari-fav-item" data-page="projects">
+                <div class="fav-icon-box" style="background: linear-gradient(135deg, #9333ea, #7c3aed);">
+                  <span style="font-size:18px;">📁</span>
+                </div>
+                <span>Projects</span>
+              </div>
+            </div>
+
+            <div class="safari-privacy-card">
+              <div class="shield-icon">${SVG_ICONS.shield}</div>
+              <div class="privacy-text">
+                <strong>Privacy Report</strong>
+                <small>In the last 30 days, Safari prevented 52 trackers from profiling you across websites.</small>
+              </div>
+            </div>
+
+            <h3 class="safari-section-heading" style="margin-top:4px;">Frequently Visited & Notes</h3>
+            <div class="safari-reading-grid">
+              <div class="reading-card" data-page="agrotech">
+                <div class="reading-meta">
+                  <strong>Deep Learning on Foliar Pathology Models</strong>
+                  <small>Bordeaux Sciences Agro • Computer vision sensor processing</small>
+                </div>
+                <span class="reading-arrow">›</span>
+              </div>
+              <div class="reading-card" data-page="portfolio">
+                <div class="reading-meta">
+                  <strong>Gabriel Jagueneau — Full-Stack & Agronomy Profile</strong>
+                  <small>React, Three.js 3D WebGL Tree, Node.js & Supabase</small>
+                </div>
+                <span class="reading-arrow">›</span>
+              </div>
+            </div>
+          </div>`;
+
+        viewport.querySelectorAll('[data-page]').forEach(el => {
+          el.addEventListener('click', () => {
+            const page = el.getAttribute('data-page');
+            navigateTo(page);
+          });
         });
       }
 
-      function loadUrl(url) {
-        if (!viewport) return;
-        viewport.style.opacity = '0.35';
-        const displayUrl = url.replace(/^https?:\/\//, '');
-        if (addrInput) addrInput.value = displayUrl;
-        syncActiveTab(url);
+      function renderWebPage(page) {
+        if (!settingsState.wifi) {
+          if (lockIcon) lockIcon.style.display = 'none';
+          viewport.innerHTML = `
+            <div class="safari-offline-wrap">
+              <div class="safari-offline-icon">${SVG_ICONS.wifiOff}</div>
+              <h2 class="safari-offline-title">You Are Not Connected to the Internet</h2>
+              <p class="safari-offline-desc">Safari cannot open "${page}" because your Mac's Wi-Fi is turned off.</p>
+              <div class="safari-offline-actions">
+                <button class="safari-link-btn" id="safari-enable-wifi-btn">Turn On Wi-Fi</button>
+              </div>
+            </div>`;
+          viewport.querySelector('#safari-enable-wifi-btn')?.addEventListener('click', () => {
+            updateWifiSystemState(true);
+            renderWebPage(page);
+          });
+          return;
+        }
 
-        setTimeout(() => {
-          viewport.style.opacity = '1';
+        if (lockIcon) lockIcon.style.display = 'inline-flex';
 
-          if (!settingsState.wifi) {
-            viewport.innerHTML = `
-              <div class="safari-offline-wrap">
-                <div class="safari-offline-icon">${SVG_ICONS.wifiOff}</div>
-                <h2 class="safari-offline-title">You Are Not Connected to the Internet</h2>
-                <p class="safari-offline-desc">Safari cannot open "${displayUrl}" because your Mac's Wi-Fi is turned off.</p>
-                <div class="safari-offline-actions">
-                  <button class="safari-link-btn" id="safari-enable-wifi-btn">Turn On Wi-Fi</button>
-                  <button class="safari-link-btn secondary" id="safari-retry-btn">Try Again</button>
+        if (page === 'agrotech') {
+          if (addrInput) addrInput.value = 'gjagueneau.fr/agrotech';
+          win.el.querySelector('.window-title').textContent = 'Safari — AgroTech AI Research';
+          viewport.innerHTML = `
+            <div class="safari-page-container">
+              <div class="web-hero-banner" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(14, 165, 233, 0.2)); border: 0.5px solid rgba(34, 197, 94, 0.35);">
+                <span class="web-badge" style="background:#16a34a; color:#fff;">AgTech AI • 2026</span>
+                <h2>Plant Pathology & Foliar Diagnostic Models</h2>
+                <p>Real-time edge computer vision paired with Sentinel-2 satellite vegetative vigor tracking and IoT soil metrics.</p>
+              </div>
+              <div class="web-card-columns">
+                <div class="web-card">
+                  <h4>${SVG_ICONS.aiChip} Vision Deficiencies</h4>
+                  <p>Neural model identifying nitrogen, magnesium and potassium deficiencies directly from leaf RGB telemetry with 94.2% precision.</p>
                 </div>
-              </div>`;
-
-            win.el.querySelector('#safari-enable-wifi-btn')?.addEventListener('click', () => {
-              updateWifiSystemState(true);
-              loadUrl(url);
-            });
-            win.el.querySelector('#safari-retry-btn')?.addEventListener('click', () => {
-              loadUrl(url);
-            });
-            return;
-          }
-
-          if (url.includes('agrotech') || url.includes('agronomy')) {
-            viewport.innerHTML = `
-              <div class="safari-page-wrap">
-                <div class="safari-brand-badge" style="background:rgba(34, 197, 94, 0.2); border-color:#22c55e; color:#4ade80;"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> AGTECH RESEARCH</div>
-                <h1 class="safari-hero-title" style="background: linear-gradient(90deg, #34c759, #00aeff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AgroTech AI & Precision Farming</h1>
-                <p class="safari-hero-desc">Bordeaux Sciences Agro research project: computer-vision foliar diagnosis, Sentinel-2 satellite NDVI indexation, and real-time IoT soil tension telemetry.</p>
-                <div class="safari-feature-grid">
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.aiChip}</span> AI Foliar Diagnosis</strong><small>Deep learning detection of mineral deficiencies and crop pathology.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.satellite}</span> Remote Sensing & GIS</strong><small>Satellite NDVI mapping, soil moisture monitoring, and vegetative vigor indexation.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.smartphone}</span> Connected Field Telemetry</strong><small>Microclimate sensors, automated irrigation recommendations, and alert dispatch.</small></div>
+                <div class="web-card">
+                  <h4>${SVG_ICONS.satellite} GIS NDVI Indexing</h4>
+                  <p>Multi-spectral satellite processing calculating NDVI / NDRE indexes across plots to optimize precision nitrogen spraying.</p>
                 </div>
-                <div class="safari-action-links">
-                  <button class="safari-link-btn secondary" id="safari-view-code-agrotech">View Python Models in VS Code</button>
+                <div class="web-card">
+                  <h4>${SVG_ICONS.smartphone} IoT Sensor Mesh</h4>
+                  <p>Capacitive soil tension probes reporting volumetric water content via LoRaWAN with automatic irrigation triggers.</p>
                 </div>
-              </div>`;
-            win.el.querySelector('#safari-view-code-agrotech')?.addEventListener('click', () => spawnOrFocusWindow('Code'));
-          } else if (url.includes('github')) {
-            viewport.innerHTML = `
-              <div class="safari-page-wrap">
-                <div class="safari-brand-badge" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.25); color:#fff;"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.github}</span> GITHUB PROFILE</div>
-                <h1 class="safari-hero-title">@Gabriel-Jagueneau</h1>
-                <p class="safari-hero-desc">Open-source repositories, biological simulations in Python, Three.js WebGL interfaces, and interactive software.</p>
-                <div class="safari-feature-grid">
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.box}</span> Portfolio-2026</strong><small>Three.js 3D WebGL Tree, Physics Engine & macOS UI.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> agrotech-engine</strong><small>Python, NumPy, Plant pathology vision model & IoT API.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.flask}</span> agronomy-tipe</strong><small>Crop growth modeling and differential equations.</small></div>
+              </div>
+              <div class="web-page-actions">
+                <button class="safari-link-btn" id="safari-open-code-btn">Open Models in VS Code</button>
+                <button class="safari-link-btn secondary" id="safari-return-start">Back to Start Page</button>
+              </div>
+            </div>`;
+          viewport.querySelector('#safari-open-code-btn')?.addEventListener('click', () => spawnOrFocusWindow('VSCode'));
+          viewport.querySelector('#safari-return-start')?.addEventListener('click', () => navigateTo('start'));
+        } else if (page === 'github') {
+          if (addrInput) addrInput.value = 'github.com/Gabriel-Jagueneau';
+          win.el.querySelector('.window-title').textContent = 'Safari — GitHub @Gabriel-Jagueneau';
+          viewport.innerHTML = `
+            <div class="safari-page-container">
+              <div class="github-profile-header">
+                <div class="gh-avatar">GJ</div>
+                <div>
+                  <h2 style="margin:0; font-size:14px; color:#fff;">Gabriel-Jagueneau</h2>
+                  <p style="margin:2px 0; font-size:9px; color:rgba(255,255,255,0.6);">Agronomy Engineer Student & Multi-Stack Developer</p>
                 </div>
-                <div class="safari-action-links">
-                  <button class="safari-link-btn" onclick="window.open('https://github.com/Gabriel-Jagueneau', '_blank')">Open GitHub Profile <span style="display:inline-flex; margin-left:3px;">${SVG_ICONS.externalLink}</span></button>
+              </div>
+              <div class="github-repo-list">
+                <div class="gh-repo-card">
+                  <div class="repo-title"><span>📦</span> <strong>GabPortfolio</strong> <span class="repo-badge">Public</span></div>
+                  <p>Personal 2026 portfolio built with Three.js 3D WebGL Tree, Bento dynamic cards and native macOS desktop emulator.</p>
+                  <div class="repo-footer"><span>JavaScript</span> • <span>★ 12</span> • <span>Updated today</span></div>
                 </div>
-              </div>`;
-          } else if (url.includes('linkedin')) {
-            viewport.innerHTML = `
-              <div class="safari-page-wrap">
-                <div class="safari-brand-badge" style="background:rgba(0, 119, 181, 0.2); border-color:#0077b5; color:#38bdf8;"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.briefcase}</span> PROFESSIONAL PROFILE</div>
-                <h1 class="safari-hero-title">Gabriel Jagueneau</h1>
-                <p class="safari-hero-desc">Agronomy Engineering Student (Bordeaux Sciences Agro) • Full-Stack Developer • Passionate about DeepTech & AgTech.</p>
-                <div class="safari-feature-grid">
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.graduationCap}</span> Academic Background</strong><small>CPGE BCPST followed by Bordeaux National Agronomy Engineering School.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.rocket}</span> Engineering & Innovation</strong><small>Biological modeling, connected sensors, and high-impact web architectures.</small></div>
+                <div class="gh-repo-card">
+                  <div class="repo-title"><span>🌱</span> <strong>agrotech-vision-models</strong> <span class="repo-badge">Public</span></div>
+                  <p>PyTorch deep learning architecture for foliar disease classification on viticulture and cereal crops.</p>
+                  <div class="repo-footer"><span>Python</span> • <span>★ 28</span> • <span>MIT License</span></div>
                 </div>
-                <div class="safari-action-links">
-                  <button class="safari-link-btn" onclick="window.open('https://linkedin.com/in/gabriel-jagueneau', '_blank')">Connect on LinkedIn <span style="display:inline-flex; margin-left:3px;">${SVG_ICONS.externalLink}</span></button>
+              </div>
+              <div class="web-page-actions">
+                <button class="safari-link-btn" onclick="window.open('https://github.com/Gabriel-Jagueneau', '_blank')">Open on GitHub.com ↗</button>
+                <button class="safari-link-btn secondary" id="safari-gh-return">Return</button>
+              </div>
+            </div>`;
+          viewport.querySelector('#safari-gh-return')?.addEventListener('click', () => navigateTo('start'));
+        } else if (page === 'linkedin') {
+          if (addrInput) addrInput.value = 'linkedin.com/in/gabriel-jagueneau';
+          win.el.querySelector('.window-title').textContent = 'Safari — LinkedIn Profile';
+          viewport.innerHTML = `
+            <div class="safari-page-container">
+              <div class="linkedin-card-box">
+                <div class="li-banner"></div>
+                <div class="li-body">
+                  <div class="li-avatar">GJ</div>
+                  <h2 style="margin:0; font-size:13px; color:#fff;">Gabriel Jagueneau</h2>
+                  <p style="margin:2px 0; font-size:9px; color:#0077b5; font-weight:600;">Student-Entrepreneur & Future Agronomy Engineer</p>
+                  <p style="margin:4px 0; font-size:8.5px; color:rgba(255,255,255,0.7); line-height:1.4;">
+                    Double profile bridging biology & high-performance computing. Developing AI solutions for sustainable agriculture while creating intuitive software products.
+                  </p>
+                  <div class="web-page-actions" style="margin-top:10px;">
+                    <button class="safari-link-btn" onclick="window.open('https://linkedin.com/in/gabriel-jagueneau', '_blank')">Connect on LinkedIn ↗</button>
+                    <button class="safari-link-btn secondary" id="safari-li-return">Return</button>
+                  </div>
                 </div>
-              </div>`;
-          } else {
-            viewport.innerHTML = `
-              <div class="safari-page-wrap">
-                <div class="safari-brand-badge"><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.sparkle}</span> OFFICIAL 2026 PORTFOLIO</div>
-                <h1 class="safari-hero-title">Gabriel Jagueneau</h1>
-                <p class="safari-hero-desc">Agronomy Engineer & Full-Stack Developer. Explore my interactive workspace, AgTech research, and technical stack.</p>
-                <div class="safari-feature-grid">
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.leaf}</span> Agronomy & Modeling</strong><small>IoT sensors, foliar image processing & data analysis.</small></div>
-                  <div class="safari-f-card"><strong><span style="display:inline-flex; vertical-align:middle; margin-right:3px;">${SVG_ICONS.codeTag}</span> Full-Stack Engineering</strong><small>Reactive applications (React, Python, Node.js, 3D WebGL, Supabase).</small></div>
+              </div>
+            </div>`;
+          viewport.querySelector('#safari-li-return')?.addEventListener('click', () => navigateTo('start'));
+        } else if (page === 'bsa') {
+          if (addrInput) addrInput.value = 'agro-bordeaux.fr';
+          win.el.querySelector('.window-title').textContent = 'Safari — Bordeaux Sciences Agro';
+          viewport.innerHTML = `
+            <div class="safari-page-container">
+              <div class="web-hero-banner" style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.25), rgba(194, 65, 12, 0.15)); border: 0.5px solid rgba(234, 88, 12, 0.35);">
+                <span class="web-badge" style="background:#ea580c; color:#fff;">Engineering School</span>
+                <h2>Bordeaux Sciences Agro (BSA)</h2>
+                <p>National Higher School of Agronomic Sciences of Bordeaux Aquitaine. Specialization in digital agriculture, precision farming, and biological resource engineering.</p>
+              </div>
+              <div class="web-card-columns">
+                <div class="web-card">
+                  <h4>🎓 Academic Training</h4>
+                  <p>Rigorous CPGE BCPST preparation followed by MSc in Agronomy & Digital Crop Management.</p>
                 </div>
-                <div class="safari-action-links">
-                  <button class="safari-link-btn" id="safari-open-term">Launch Terminal</button>
-                  <button class="safari-link-btn secondary" id="safari-open-code">VS Code Editor</button>
+                <div class="web-card">
+                  <h4>🔬 Research & Labs</h4>
+                  <p>In-field experimental vineyard data, foliar diagnostics, and automated telemetry integrations.</p>
                 </div>
-              </div>`;
-
-            win.el.querySelector('#safari-open-term')?.addEventListener('click', () => spawnOrFocusWindow('Terminal'));
-            win.el.querySelector('#safari-open-code')?.addEventListener('click', () => spawnOrFocusWindow('Code'));
-          }
-        }, 120);
+              </div>
+              <div class="web-page-actions">
+                <button class="safari-link-btn secondary" id="safari-bsa-return">Back to Start Page</button>
+              </div>
+            </div>`;
+          viewport.querySelector('#safari-bsa-return')?.addEventListener('click', () => navigateTo('start'));
+        } else {
+          // Portfolio / Projects
+          if (addrInput) addrInput.value = 'gjagueneau.fr';
+          win.el.querySelector('.window-title').textContent = 'Safari — Gabriel Jagueneau Portfolio';
+          viewport.innerHTML = `
+            <div class="safari-page-container">
+              <div class="web-hero-banner" style="background: linear-gradient(135deg, rgba(37, 99, 235, 0.25), rgba(124, 58, 237, 0.2)); border: 0.5px solid rgba(37, 99, 235, 0.35);">
+                <span class="web-badge" style="background:#2563eb; color:#fff;">Interactive Experience</span>
+                <h2>Gabriel Jagueneau — Portfolio 2026</h2>
+                <p>Welcome to my interactive environment. Discover my career, agronomy innovations, and multi-stack software applications.</p>
+              </div>
+              <div class="web-card-columns">
+                <div class="web-card">
+                  <h4>🌲 3D WebGL Tree</h4>
+                  <p>Custom procedural 3D tree grown through interactive milestone stages with smooth leaf animations.</p>
+                </div>
+                <div class="web-card">
+                  <h4>⚡ Bento Grid</h4>
+                  <p>Dynamic responsive bento cards with fluid hover spotlight effects and 3-line balanced descriptions.</p>
+                </div>
+              </div>
+              <div class="web-page-actions">
+                <button class="safari-link-btn" id="safari-open-term-btn">Launch Terminal</button>
+                <button class="safari-link-btn" id="safari-open-code-btn2">Launch VS Code</button>
+                <button class="safari-link-btn secondary" id="safari-port-return">Start Page</button>
+              </div>
+            </div>`;
+          viewport.querySelector('#safari-open-term-btn')?.addEventListener('click', () => spawnOrFocusWindow('Terminal'));
+          viewport.querySelector('#safari-open-code-btn2')?.addEventListener('click', () => spawnOrFocusWindow('VSCode'));
+          viewport.querySelector('#safari-port-return')?.addEventListener('click', () => navigateTo('start'));
+        }
       }
 
-      tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          const url = tab.getAttribute('data-url');
-          if (url) loadUrl(url);
+      function navigateTo(page, addToHistory = true) {
+        if (addToHistory) {
+          if (historyIdx < history.length - 1) {
+            history = history.slice(0, historyIdx + 1);
+          }
+          history.push(page);
+          historyIdx = history.length - 1;
+        }
+        updateNavButtons();
+
+        favPills.forEach(p => {
+          p.classList.toggle('active', p.getAttribute('data-target') === page);
         });
+
+        if (page === 'start') {
+          renderStartPage();
+        } else {
+          renderWebPage(page);
+        }
+      }
+
+      favPills.forEach(p => {
+        p.addEventListener('click', () => {
+          const t = p.getAttribute('data-target');
+          if (t) navigateTo(t);
+        });
+      });
+
+      backBtn?.addEventListener('click', () => {
+        if (historyIdx > 0) {
+          historyIdx--;
+          navigateTo(history[historyIdx], false);
+        }
+      });
+
+      forwardBtn?.addEventListener('click', () => {
+        if (historyIdx < history.length - 1) {
+          historyIdx++;
+          navigateTo(history[historyIdx], false);
+        }
       });
 
       addrInput?.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-          let val = addrInput.value.trim();
-          if (!val.startsWith('http')) val = 'https://' + val;
-          loadUrl(val);
+          let val = addrInput.value.toLowerCase().trim();
+          if (val.includes('git')) navigateTo('github');
+          else if (val.includes('link')) navigateTo('linkedin');
+          else if (val.includes('agro') || val.includes('tech')) navigateTo('agrotech');
+          else if (val.includes('bsa') || val.includes('bordeaux')) navigateTo('bsa');
+          else if (val.includes('start') || val === '') navigateTo('start');
+          else navigateTo('portfolio');
         }
       });
 
       reloadBtn?.addEventListener('click', () => {
         reloadBtn.style.transform = 'rotate(360deg)';
         reloadBtn.style.transition = 'transform 0.4s ease';
-        loadUrl(addrInput ? addrInput.value : 'https://gjagueneau.fr');
+        navigateTo(history[historyIdx], false);
         setTimeout(() => { reloadBtn.style.transform = 'none'; reloadBtn.style.transition = 'none'; }, 400);
       });
 
-      loadUrl('https://gjagueneau.fr');
+      navigateTo('start');
     }
   },
-
   // ── 4. VS Code (Modern One Dark Pro IDE) ──
   "Code": {
     title: "developer.js — Visual Studio Code",
@@ -1791,6 +1982,16 @@ const appDefinitions = {
 
       renderCategory('wifi');
 
+      const searchInput = win.el.querySelector('.settings-search-input');
+      searchInput?.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        navItems.forEach(item => {
+          const text = item.textContent.toLowerCase();
+          const matches = !query || text.includes(query);
+          item.style.display = matches ? 'flex' : 'none';
+        });
+      });
+
       navItems.forEach(item => {
         item.addEventListener('click', () => {
           navItems.forEach(n => n.classList.remove('active'));
@@ -1809,10 +2010,14 @@ const appDefinitions = {
   }
 };
 
+appDefinitions["VSCode"] = appDefinitions["Code"];
+appDefinitions["vscode"] = appDefinitions["Code"];
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // Window Manager & Lifecycle
 // ═══════════════════════════════════════════════════════════════════════════════
 export function spawnOrFocusWindow(appName) {
+  closeAllPopovers();
   if (!desktop || !appDefinitions[appName]) return;
 
   const existing = openWindows.get(appName);
