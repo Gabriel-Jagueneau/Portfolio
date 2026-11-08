@@ -1,49 +1,51 @@
 // ─── Card Hover Spotlight Effect ─────────────────────────────────────────────
-// Tracks mouse position globally on the body and updates --mouse-x / --mouse-y CSS vars
-// strictly for cards and spotlight elements that are currently visible on screen.
+// Updates --mouse-x and --mouse-y on all visible spotlight elements and cards,
+// creating a fluid multi-card radial gradient halo with zero layout thrashing.
 
 export function initCardHover() {
-  const elements = Array.from(document.querySelectorAll(".card, .hero-btn"));
-  const visibleElements = new Set();
-
-  if (typeof IntersectionObserver !== 'undefined') {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          visibleElements.add(entry.target);
-        } else {
-          visibleElements.delete(entry.target);
-        }
-      });
-    }, { rootMargin: '60px' });
-
-    elements.forEach(el => observer.observe(el));
-  } else {
-    // Fallback: all elements
-    elements.forEach(el => visibleElements.add(el));
-  }
-
-  let lastEvent = null;
+  const selector = ".card, .carder, .hero-btn, .diploma, .parag, #contact .head, #contact .body, #contact .bottom .info";
   let rafPending = false;
+  let lastEvent = null;
 
-  function updateElements() {
+  function update() {
     rafPending = false;
     if (!lastEvent) return;
 
-    for (const el of visibleElements) {
+    const clientX = lastEvent.clientX;
+    const clientY = lastEvent.clientY;
+    const windowH = window.innerHeight;
+
+    const elements = document.querySelectorAll(selector);
+    for (let i = 0; i < elements.length; i++) {
+      const el = elements[i];
+      // Skip elements that are not rendered (e.g. inactive tab or hidden section)
+      if (el.offsetParent === null) continue;
+
       const rect = el.getBoundingClientRect();
-      el.style.setProperty("--mouse-x", `${lastEvent.clientX - rect.left}px`);
-      el.style.setProperty("--mouse-y", `${lastEvent.clientY - rect.top}px`);
+      // Only process elements currently in or adjacent to the viewport
+      if (rect.bottom < -150 || rect.top > windowH + 150) continue;
+
+      el.style.setProperty("--mouse-x", `${clientX - rect.left}px`);
+      el.style.setProperty("--mouse-y", `${clientY - rect.top}px`);
     }
   }
 
-  const handleMouseMove = event => {
+  const handleMouseMove = (event) => {
     lastEvent = event;
     if (!rafPending) {
       rafPending = true;
-      requestAnimationFrame(updateElements);
+      requestAnimationFrame(update);
     }
   };
 
-  window.addEventListener('mousemove', handleMouseMove, { passive: true });
+  const handleScrollOrResize = () => {
+    if (lastEvent && !rafPending) {
+      rafPending = true;
+      requestAnimationFrame(update);
+    }
+  };
+
+  window.addEventListener("mousemove", handleMouseMove, { passive: true });
+  window.addEventListener("scroll", handleScrollOrResize, { passive: true });
+  window.addEventListener("resize", handleScrollOrResize, { passive: true });
 }
