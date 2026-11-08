@@ -253,273 +253,49 @@
                                     <!-- Finder -->
                                     <div class="dock-item" data-app="Finder" title="Finder">
                                         <div class="dock-tooltip">Finder</div>
-                                        <svg viewBox="0 0 64 64" class="dock-icon" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                                <linearGradient id="finder-bg" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#5ac8fa" />
-                                                    <stop offset="100%" stop-color="#0062e0" />
-                                                </linearGradient>
-                                                <linearGradient id="finder-face-r" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#ffffff" />
-                                                    <stop offset="100%" stop-color="#d4e6f9" />
-                                                </linearGradient>
-                                                <filter id="finder-shadow" x="-10%" y="-10%" width="120%" height="120%">
-                                                    <feDropShadow dx="0" dy="1" stdDeviation="1" flood-opacity="0.3" />
-                                                </filter>
-                                            </defs>
-                                            <rect width="64" height="64" rx="14.5" fill="url(#finder-bg)" />
-                                            <rect width="64" height="64" rx="14.5" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.75" />
-                                            <g filter="url(#finder-shadow)">
-                                                <path d="M32 9 C43 9 52 18 52 30 C52 42 43 51 32 51 Z" fill="url(#finder-face-r)" />
-                                                <path d="M32 9 C21 9 12 18 12 30 C12 42 21 51 32 51 Z" fill="#1d75f2" />
-                                                <path d="M32 9 L32 28 C35 28 36.5 32 32 34 L32 51" stroke="#004fc4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-                                                <ellipse cx="22" cy="27" rx="3" ry="4.5" fill="#ffffff" />
-                                                <circle cx="22.8" cy="27.5" r="2.2" fill="#003e9c" />
-                                                <ellipse cx="42" cy="27" rx="3" ry="4.5" fill="#004fc4" />
-                                                <circle cx="41.2" cy="27.5" r="2.2" fill="#ffffff" />
-                                                <path d="M21 39 C25 46 39 46 43 39" stroke="#004fc4" stroke-width="2.4" stroke-linecap="round" fill="none" />
-                                            </g>
-                                        </svg>
+                                        <img src="images/mac-icons/finder.png" alt="Finder" class="dock-icon" draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
                                     <!-- Safari -->
                                     <div class="dock-item" data-app="Safari" title="Safari">
                                         <div class="dock-tooltip">Safari</div>
-                                        <svg viewBox="0 0 64 64" class="dock-icon" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                                <linearGradient id="safari-bg" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#ffffff" />
-                                                    <stop offset="100%" stop-color="#e6f0fa" />
-                                                </linearGradient>
-                                                <radialGradient id="safari-dial" cx="50%" cy="50%" r="50%">
-                                                    <stop offset="0%" stop-color="#00c6ff" />
-                                                    <stop offset="65%" stop-color="#0072ff" />
-                                                    <stop offset="100%" stop-color="#0048ba" />
-                                                </radialGradient>
-                                                <linearGradient id="safari-needle-n" x1="0" y1="0" x2="1" y2="1">
-                                                    <stop offset="0%" stop-color="#ff3b30" />
-                                                    <stop offset="100%" stop-color="#d70015" />
-                                                </linearGradient>
-                                                <linearGradient id="safari-needle-s" x1="0" y1="0" x2="1" y2="1">
-                                                    <stop offset="0%" stop-color="#ffffff" />
-                                                    <stop offset="100%" stop-color="#cbd5e1" />
-                                                </linearGradient>
-                                                <filter id="safari-needle-shadow">
-                                                    <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-opacity="0.35" />
-                                                </filter>
-                                            </defs>
-                                            <rect width="64" height="64" rx="14.5" fill="url(#safari-bg)" />
-                                            <rect width="64" height="64" rx="14.5" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="0.75" />
-                                            <circle cx="32" cy="32" r="23" fill="url(#safari-dial)" />
-                                            <g stroke="rgba(255,255,255,0.75)" stroke-width="0.8" stroke-linecap="round">
-                                                <line x1="32" y1="11" x2="32" y2="14" />
-                                                <line x1="32" y1="50" x2="32" y2="53" />
-                                                <line x1="11" y1="32" x2="14" y2="32" />
-                                                <line x1="50" y1="32" x2="53" y2="32" />
-                                                <line x1="17.2" y1="17.2" x2="19.3" y2="19.3" />
-                                                <line x1="44.7" y1="44.7" x2="46.8" y2="46.8" />
-                                                <line x1="44.7" y1="19.3" x2="46.8" y2="17.2" />
-                                                <line x1="17.2" y1="46.8" x2="19.3" y2="44.7" />
-                                            </g>
-                                            <g filter="url(#safari-needle-shadow)" transform="rotate(45, 32, 32)">
-                                                <polygon points="32,10 35.5,32 32,30 28.5,32" fill="url(#safari-needle-n)" />
-                                                <polygon points="32,54 35.5,32 32,34 28.5,32" fill="url(#safari-needle-s)" />
-                                                <circle cx="32" cy="32" r="3.2" fill="#ffffff" stroke="#94a3b8" stroke-width="0.8" />
-                                                <circle cx="32" cy="32" r="1.2" fill="#d70015" />
-                                            </g>
-                                        </svg>
+                                        <img src="images/mac-icons/safari.png" alt="Safari" class="dock-icon" draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
                                     <!-- Terminal -->
                                     <div class="dock-item" data-app="Terminal" title="Terminal">
                                         <div class="dock-tooltip">Terminal</div>
-                                        <svg viewBox="0 0 64 64" class="dock-icon" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                                <linearGradient id="term-bg" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#2a2e39" />
-                                                    <stop offset="100%" stop-color="#11141c" />
-                                                </linearGradient>
-                                                <linearGradient id="term-glow" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#34d399" />
-                                                    <stop offset="100%" stop-color="#10b981" />
-                                                </linearGradient>
-                                                <filter id="prompt-glow" x="-20%" y="-20%" width="140%" height="140%">
-                                                    <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#10b981" flood-opacity="0.6" />
-                                                </filter>
-                                            </defs>
-                                            <rect width="64" height="64" rx="14.5" fill="url(#term-bg)" />
-                                            <rect width="64" height="64" rx="14.5" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.75" />
-                                            <rect x="7" y="7" width="50" height="50" rx="10" fill="#090c13" />
-                                            <rect x="7" y="7" width="50" height="50" rx="10" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1" />
-                                            <rect x="7" y="7" width="50" height="12" rx="10" fill="rgba(255,255,255,0.04)" />
-                                            <circle cx="14" cy="13" r="2.2" fill="#ff5f56" />
-                                            <circle cx="20.5" cy="13" r="2.2" fill="#ffbd2e" />
-                                            <circle cx="27" cy="13" r="2.2" fill="#27c93f" />
-                                            <g filter="url(#prompt-glow)">
-                                                <path d="M16 26 L26 34 L16 42" fill="none" stroke="url(#term-glow)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-                                                <line x1="31" y1="42" x2="45" y2="42" stroke="url(#term-glow)" stroke-width="3" stroke-linecap="round" />
-                                            </g>
-                                        </svg>
+                                        <img src="images/mac-icons/terminal.png" alt="Terminal" class="dock-icon" draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
-                                    <!-- VS Code -->
-                                    <div class="dock-item" data-app="Code" title="Visual Studio Code">
+                                    <!-- Visual Studio Code -->
+                                    <div class="dock-item" data-app="VSCode" title="Visual Studio Code">
                                         <div class="dock-tooltip">VS Code</div>
-                                        <svg viewBox="0 0 64 64" class="dock-icon" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                                <linearGradient id="vsc-bg" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#1e2433" />
-                                                    <stop offset="100%" stop-color="#0f131c" />
-                                                </linearGradient>
-                                                <linearGradient id="vsc-ribbon-back" x1="0" y1="0" x2="1" y2="1">
-                                                    <stop offset="0%" stop-color="#0065a9" />
-                                                    <stop offset="100%" stop-color="#004f85" />
-                                                </linearGradient>
-                                                <linearGradient id="vsc-ribbon-front" x1="0" y1="0" x2="1" y2="1">
-                                                    <stop offset="0%" stop-color="#29b6f6" />
-                                                    <stop offset="100%" stop-color="#0288d1" />
-                                                </linearGradient>
-                                                <linearGradient id="vsc-ribbon-right" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#0288d1" />
-                                                    <stop offset="100%" stop-color="#01579b" />
-                                                </linearGradient>
-                                                <filter id="vsc-shadow">
-                                                    <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.4" />
-                                                </filter>
-                                            </defs>
-                                            <rect width="64" height="64" rx="14.5" fill="url(#vsc-bg)" />
-                                            <rect width="64" height="64" rx="14.5" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.75" />
-                                            <g filter="url(#vsc-shadow)">
-                                                <path d="M47 13 L36 23 L25 14 L21 16 L21 21 L32 30 L21 39 L21 44 L25 46 L36 37 L47 47 C49 48 51 47 51 44 L51 16 C51 13 49 12 47 13 Z" fill="url(#vsc-ribbon-back)" />
-                                                <path d="M47 13 C49 12 51 13 51 16 L51 44 C51 47 49 48 47 47 L36 37 L36 23 Z" fill="url(#vsc-ribbon-right)" />
-                                                <path d="M25 14 L47 32 L36 41 L15 25 C13 23 13 20 15 18 L21 14 C22 13 24 13 25 14 Z" fill="url(#vsc-ribbon-front)" />
-                                                <path d="M25 46 L47 28 L36 19 L15 35 C13 37 13 40 15 42 L21 46 C22 47 24 47 25 46 Z" fill="url(#vsc-ribbon-front)" opacity="0.95" />
-                                            </g>
-                                        </svg>
+                                        <img src="images/mac-icons/vscode.png" alt="Visual Studio Code" class="dock-icon" draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
-                                    <!-- Music -->
+                                    <!-- Apple Music -->
                                     <div class="dock-item" data-app="Music" title="Music">
                                         <div class="dock-tooltip">Music</div>
-                                        <svg viewBox="0 0 64 64" class="dock-icon" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                                <linearGradient id="music-bg" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#ff3366" />
-                                                    <stop offset="50%" stop-color="#fa233b" />
-                                                    <stop offset="100%" stop-color="#c80829" />
-                                                </linearGradient>
-                                                <radialGradient id="music-shine" cx="50%" cy="10%" r="70%">
-                                                    <stop offset="0%" stop-color="rgba(255,255,255,0.4)" />
-                                                    <stop offset="100%" stop-color="rgba(255,255,255,0)" />
-                                                </radialGradient>
-                                                <filter id="music-note-shadow">
-                                                    <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.3)" />
-                                                </filter>
-                                            </defs>
-                                            <rect width="64" height="64" rx="14.5" fill="url(#music-bg)" />
-                                            <rect width="64" height="64" rx="14.5" fill="url(#music-shine)" />
-                                            <rect width="64" height="64" rx="14.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="0.75" />
-                                            <g filter="url(#music-note-shadow)" fill="#ffffff">
-                                                <ellipse cx="22" cy="43" rx="6.5" ry="4.8" transform="rotate(-20, 22, 43)" />
-                                                <ellipse cx="43" cy="38" rx="6.5" ry="4.8" transform="rotate(-20, 43, 38)" />
-                                                <rect x="26" y="16" width="3.4" height="27" rx="1" />
-                                                <rect x="47" y="11" width="3.4" height="27" rx="1" />
-                                                <polygon points="26,16 50.4,11 50.4,17.5 26,22.5" />
-                                            </g>
-                                        </svg>
+                                        <img src="images/mac-icons/music.png" alt="Music" class="dock-icon" draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
                                     <!-- Calculator -->
                                     <div class="dock-item" data-app="Calculator" title="Calculator">
                                         <div class="dock-tooltip">Calculator</div>
-                                        <svg viewBox="0 0 64 64" class="dock-icon" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                                <linearGradient id="calc-bg" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#3c3c43" />
-                                                    <stop offset="100%" stop-color="#1c1c1e" />
-                                                </linearGradient>
-                                                <linearGradient id="calc-orange" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#ff9f0a" />
-                                                    <stop offset="100%" stop-color="#f57c00" />
-                                                </linearGradient>
-                                                <linearGradient id="calc-light-btn" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#8e8e93" />
-                                                    <stop offset="100%" stop-color="#636366" />
-                                                </linearGradient>
-                                                <linearGradient id="calc-dark-btn" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#505054" />
-                                                    <stop offset="100%" stop-color="#3a3a3c" />
-                                                </linearGradient>
-                                            </defs>
-                                            <rect width="64" height="64" rx="14.5" fill="url(#calc-bg)" />
-                                            <rect width="64" height="64" rx="14.5" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.75" />
-                                            <rect x="10" y="10" width="44" height="13" rx="3.5" fill="#141416" />
-                                            <text x="50" y="20.5" fill="#ffffff" font-size="9" font-weight="600" font-family="-apple-system,system-ui" text-anchor="end">27.1</text>
-                                            <circle cx="16" cy="32" r="4.6" fill="url(#calc-light-btn)" />
-                                            <circle cx="27" cy="32" r="4.6" fill="url(#calc-light-btn)" />
-                                            <circle cx="38" cy="32" r="4.6" fill="url(#calc-light-btn)" />
-                                            <circle cx="49" cy="32" r="4.6" fill="url(#calc-orange)" />
-                                            <text x="49" y="34.5" fill="#fff" font-size="8" font-weight="600" text-anchor="middle">÷</text>
-                                            <circle cx="16" cy="44" r="4.6" fill="url(#calc-dark-btn)" />
-                                            <circle cx="27" cy="44" r="4.6" fill="url(#calc-dark-btn)" />
-                                            <circle cx="38" cy="44" r="4.6" fill="url(#calc-dark-btn)" />
-                                            <circle cx="49" cy="44" r="4.6" fill="url(#calc-orange)" />
-                                            <text x="49" y="46.5" fill="#fff" font-size="8" font-weight="600" text-anchor="middle">×</text>
-                                            <rect x="11.4" y="51.5" width="20.2" height="9.2" rx="4.6" fill="url(#calc-dark-btn)" />
-                                            <circle cx="38" cy="56" r="4.6" fill="url(#calc-dark-btn)" />
-                                            <circle cx="49" cy="56" r="4.6" fill="url(#calc-orange)" />
-                                            <text x="49" y="58.5" fill="#fff" font-size="8" font-weight="600" text-anchor="middle">=</text>
-                                        </svg>
+                                        <img src="images/mac-icons/calculator.png" alt="Calculator" class="dock-icon" draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
                                     <!-- System Settings -->
                                     <div class="dock-item" data-app="Settings" title="System Settings">
                                         <div class="dock-tooltip">Settings</div>
-                                        <svg viewBox="0 0 64 64" class="dock-icon" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                                <linearGradient id="gear-bg" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#b0b5be" />
-                                                    <stop offset="50%" stop-color="#8a909b" />
-                                                    <stop offset="100%" stop-color="#646a76" />
-                                                </linearGradient>
-                                                <linearGradient id="metal-teeth" x1="0" y1="0" x2="1" y2="1">
-                                                    <stop offset="0%" stop-color="#ffffff" />
-                                                    <stop offset="100%" stop-color="#cfd5df" />
-                                                </linearGradient>
-                                                <filter id="gear-shadow">
-                                                    <feDropShadow dx="0" dy="1.5" stdDeviation="2" flood-color="rgba(0,0,0,0.35)" />
-                                                </filter>
-                                            </defs>
-                                            <rect width="64" height="64" rx="14.5" fill="url(#gear-bg)" />
-                                            <rect width="64" height="64" rx="14.5" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.75" />
-                                            <g filter="url(#gear-shadow)" transform="translate(32, 32)">
-                                                <g fill="url(#metal-teeth)">
-                                                    <rect x="-3" y="-22" width="6" height="7" rx="1.5" />
-                                                    <rect x="-3" y="15" width="6" height="7" rx="1.5" />
-                                                    <rect x="-22" y="-3" width="7" height="6" rx="1.5" />
-                                                    <rect x="15" y="-3" width="7" height="6" rx="1.5" />
-                                                    <rect x="-3" y="-22" width="6" height="7" rx="1.5" transform="rotate(30)" />
-                                                    <rect x="-3" y="-22" width="6" height="7" rx="1.5" transform="rotate(60)" />
-                                                    <rect x="-3" y="-22" width="6" height="7" rx="1.5" transform="rotate(120)" />
-                                                    <rect x="-3" y="-22" width="6" height="7" rx="1.5" transform="rotate(150)" />
-                                                    <rect x="-3" y="-22" width="6" height="7" rx="1.5" transform="rotate(210)" />
-                                                    <rect x="-3" y="-22" width="6" height="7" rx="1.5" transform="rotate(240)" />
-                                                    <rect x="-3" y="-22" width="6" height="7" rx="1.5" transform="rotate(300)" />
-                                                    <rect x="-3" y="-22" width="6" height="7" rx="1.5" transform="rotate(330)" />
-                                                    <circle r="17" fill="url(#metal-teeth)" />
-                                                </g>
-                                                <circle r="11.5" fill="#6f7581" />
-                                                <circle r="10" fill="url(#gear-bg)" />
-                                                <circle r="5.5" fill="url(#metal-teeth)" />
-                                                <circle r="3" fill="#3d424b" />
-                                            </g>
-                                        </svg>
+                                        <img src="images/mac-icons/settings.png" alt="System Settings" class="dock-icon" draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
@@ -528,28 +304,7 @@
                                     <!-- Trash -->
                                     <div class="dock-item" title="Trash" data-app="Trash">
                                         <div class="dock-tooltip">Trash</div>
-                                        <svg viewBox="0 0 64 64" class="dock-icon" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                                <linearGradient id="trash-glass" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="rgba(255,255,255,0.4)" />
-                                                    <stop offset="100%" stop-color="rgba(200,215,230,0.15)" />
-                                                </linearGradient>
-                                                <linearGradient id="trash-metal" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="0%" stop-color="#e2e8f0" />
-                                                    <stop offset="100%" stop-color="#94a3b8" />
-                                                </linearGradient>
-                                            </defs>
-                                            <g transform="translate(0, 2)">
-                                                <ellipse cx="32" cy="18" rx="18" ry="4.5" fill="none" stroke="url(#trash-metal)" stroke-width="2.5" />
-                                                <path d="M15 18 L18.5 49 C19 53 23 55 32 55 C41 55 45 53 45.5 49 L49 18" fill="url(#trash-glass)" stroke="url(#trash-metal)" stroke-width="1.8" />
-                                                <line x1="20" y1="20" x2="22.5" y2="50" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" />
-                                                <line x1="26" y1="22" x2="27.5" y2="52" stroke="rgba(255,255,255,0.45)" stroke-width="1.2" />
-                                                <line x1="32" y1="22.5" x2="32" y2="53" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" />
-                                                <line x1="38" y1="22" x2="36.5" y2="52" stroke="rgba(255,255,255,0.45)" stroke-width="1.2" />
-                                                <line x1="44" y1="20" x2="41.5" y2="50" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" />
-                                                <path d="M16.8 34 Q32 39 47.2 34" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" />
-                                            </g>
-                                        </svg>
+                                        <img src="images/mac-icons/trash.png" alt="Trash" class="dock-icon" draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
