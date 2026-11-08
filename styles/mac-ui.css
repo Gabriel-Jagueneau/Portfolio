@@ -97,7 +97,7 @@
                         }
 
                         & .top-bar {
-                            height: clamp(17px, 3.76%, 26px);
+                            height: 22px;
                             background: rgba(30, 32, 44, 0.75);
                             backdrop-filter: blur(25px);
                             -webkit-backdrop-filter: blur(25px);
@@ -105,8 +105,8 @@
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
-                            padding: 0 8px;
-                            font-size: 6.5px;
+                            padding: 0 10px;
+                            font-size: 9px;
                             color: rgba(255, 255, 255, 0.9);
                             box-sizing: border-box;
                             -webkit-font-smoothing: antialiased;
@@ -115,26 +115,31 @@
                             & .left-side {
                                 display: flex;
                                 align-items: center;
-                                gap: 3px;
-                                max-width: calc(50% - 40px);
+                                gap: 4px;
+                                max-width: calc(55% - 40px);
                                 overflow: hidden;
                                 white-space: nowrap;
 
                                 & .apple-logo {
-                                    font-size: 7.5px;
-                                    margin-right: 3px;
+                                    font-size: 11px;
+                                    margin-right: 5px;
                                     cursor: pointer;
                                     opacity: 0.95;
                                     display: flex;
                                     align-items: center;
+
+                                    & svg {
+                                        width: 11px;
+                                        height: 11px;
+                                    }
                                 }
 
                                 & .menu-item {
-                                    padding: 0 3px;
-                                    border-radius: 2px;
+                                    padding: 1px 5px;
+                                    border-radius: 3px;
                                     cursor: default;
                                     opacity: 0.85;
-                                    font-size: 6.5px;
+                                    font-size: 9px;
                                     transition: 0.2s ease;
 
                                     &:hover {
@@ -152,11 +157,16 @@
                             & .right-side {
                                 display: flex;
                                 align-items: center;
-                                gap: 4px;
-                                font-size: 6.5px;
+                                gap: 7px;
+                                font-size: 9px;
                                 max-width: calc(50% - 40px);
                                 justify-content: flex-end;
                                 white-space: nowrap;
+
+                                & svg {
+                                    width: 11px;
+                                    height: 11px;
+                                }
 
                                 & .menu-status {
                                     display: flex;
@@ -180,6 +190,7 @@
                                     opacity: 0.9;
                                     font-weight: 500;
                                     white-space: nowrap;
+                                    font-size: 9px;
                                 }
                             }
                         }
@@ -206,8 +217,8 @@
                             background: rgba(28, 29, 36, 0.94);
                             backdrop-filter: blur(35px);
                             -webkit-backdrop-filter: blur(35px);
-                            border-radius: 6px;
-                            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 0.5px rgba(255, 255, 255, 0.1);
+                            border-radius: 8px;
+                            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(255, 255, 255, 0.14);
                             overflow: hidden;
                             display: flex;
                             flex-direction: column;
@@ -218,24 +229,24 @@
                             &.active-window {
                                 z-index: 10;
                                 opacity: 1;
-                                box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 0 0.5px rgba(255, 255, 255, 0.22);
+                                box-shadow: 0 16px 44px rgba(0, 0, 0, 0.8), 0 0 0 0.5px rgba(255, 255, 255, 0.24);
 
                                 & .window-header .dots .dot {
                                     opacity: 1;
                                 }
 
                                 & .window-header .window-title {
-                                    color: rgba(255, 255, 255, 0.9);
+                                    color: rgba(255, 255, 255, 0.95);
                                 }
                             }
 
                             & .window-header {
-                                height: 16px;
+                                height: 22px;
                                 background: rgba(255, 255, 255, 0.04);
                                 border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
                                 display: flex;
                                 align-items: center;
-                                padding: 0 5px;
+                                padding: 0 8px;
                                 position: relative;
                                 cursor: grab;
                                 box-sizing: border-box;
@@ -249,20 +260,20 @@
                                     left: 0;
                                     right: 0;
                                     text-align: center;
-                                    font-size: 6.5px;
+                                    font-size: 9.5px;
                                     font-weight: 500;
-                                    color: rgba(255, 255, 255, 0.6);
+                                    color: rgba(255, 255, 255, 0.65);
                                     pointer-events: none;
                                     white-space: nowrap;
                                     overflow: hidden;
                                     text-overflow: ellipsis;
-                                    padding: 0 30px;
+                                    padding: 0 35px;
                                     transition: 0.2s ease;
                                 }
 
                                 & .dots {
                                     display: flex;
-                                    gap: 3.5px;
+                                    gap: 5px;
                                     align-items: center;
                                     z-index: 2;
 
@@ -271,8 +282,8 @@
                                     }
 
                                     & .dot {
-                                        width: 6px;
-                                        height: 6px;
+                                        width: 8px;
+                                        height: 8px;
                                         border-radius: 50%;
                                         cursor: pointer;
                                         box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.25);
@@ -280,11 +291,11 @@
                                         align-items: center;
                                         justify-content: center;
                                         position: relative;
-                                        opacity: 0.65;
+                                        opacity: 0.75;
                                         transition: 0.2s ease;
 
                                         &::after {
-                                            font-size: 4.5px;
+                                            font-size: 5.5px;
                                             font-weight: 800;
                                             line-height: 1;
                                             color: rgba(0, 0, 0, 0.7);
@@ -340,9 +351,9 @@
                                     background: rgba(16, 17, 22, 0.96);
                                     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
                                     color: #e6edf3;
-                                    font-size: 6px;
-                                    line-height: 1.3;
-                                    padding: 4px 6px;
+                                    font-size: 8.5px;
+                                    line-height: 1.45;
+                                    padding: 8px 10px;
                                     overflow-y: auto;
                                     box-sizing: border-box;
                                     display: flex;
@@ -350,7 +361,7 @@
 
                                     & .term-login {
                                         color: rgba(255, 255, 255, 0.4);
-                                        margin-bottom: 2px;
+                                        margin-bottom: 3px;
                                     }
 
                                     & .term-welcome {
@@ -424,8 +435,8 @@
                                             outline: none;
                                             color: #fff;
                                             font-family: inherit;
-                                            font-size: 6px;
-                                            line-height: 1.3;
+                                            font-size: 8.5px;
+                                            line-height: 1.45;
                                             padding: 0;
                                             caret-color: #58a6ff;
                                         }
@@ -440,46 +451,46 @@
                                     display: flex;
                                     background: rgba(22, 24, 32, 0.94);
                                     color: #e1e4e8;
-                                    font-size: 6.5px;
+                                    font-size: 8.5px;
                                     box-sizing: border-box;
                                     overflow: hidden;
 
                                     & .finder-sidebar {
-                                        width: 68px;
+                                        width: 95px;
                                         flex-shrink: 0;
                                         background: rgba(14, 15, 22, 0.7);
                                         border-right: 0.5px solid rgba(255, 255, 255, 0.08);
-                                        padding: 4px 3px;
+                                        padding: 6px 4px;
                                         display: flex;
                                         flex-direction: column;
-                                        gap: 1px;
+                                        gap: 2px;
                                         box-sizing: border-box;
 
                                         & .finder-section-title {
-                                            font-size: 5px;
+                                            font-size: 7.5px;
                                             font-weight: 700;
                                             text-transform: uppercase;
                                             color: rgba(255, 255, 255, 0.35);
-                                            padding: 2px 3px 1px;
+                                            padding: 3px 5px 2px;
                                             letter-spacing: 0.4px;
                                         }
 
                                         & .finder-item {
                                             display: flex;
                                             align-items: center;
-                                            gap: 3px;
-                                            padding: 2px 4px;
-                                            border-radius: 3px;
+                                            gap: 5px;
+                                            padding: 3px 6px;
+                                            border-radius: 4px;
                                             color: rgba(255, 255, 255, 0.75);
                                             cursor: pointer;
-                                            font-size: 6px;
+                                            font-size: 8.5px;
                                             transition: 0.2s ease;
 
                                             & .finder-item-icon {
                                                 display: flex;
                                                 align-items: center;
                                                 justify-content: center;
-                                                font-size: 7px;
+                                                font-size: 9px;
 
                                                 &.blue {
                                                     color: #007aff;
@@ -561,8 +572,8 @@
                                             & .finder-breadcrumbs {
                                                 display: flex;
                                                 align-items: center;
-                                                gap: 3px;
-                                                font-size: 6px;
+                                                gap: 4px;
+                                                font-size: 8.5px;
                                                 font-weight: 600;
                                                 color: #fff;
 
@@ -576,16 +587,16 @@
                                             & .finder-search-box {
                                                 display: flex;
                                                 align-items: center;
-                                                gap: 3px;
+                                                gap: 4px;
                                                 background: rgba(255, 255, 255, 0.08);
                                                 border: 0.5px solid rgba(255, 255, 255, 0.12);
-                                                border-radius: 3px;
-                                                padding: 1px 4px;
-                                                height: 12px;
+                                                border-radius: 4px;
+                                                padding: 2px 6px;
+                                                height: 18px;
                                                 box-sizing: border-box;
 
                                                 & .search-icon {
-                                                    font-size: 6px;
+                                                    font-size: 8px;
                                                     opacity: 0.5;
                                                     display: flex;
                                                     align-items: center;
@@ -596,14 +607,14 @@
                                                     background: transparent;
                                                     outline: none;
                                                     color: #fff;
-                                                    font-size: 4.8px;
+                                                    font-size: 8px;
                                                     font-family: inherit;
-                                                    width: 45px;
+                                                    width: 65px;
                                                     padding: 0;
 
                                                     &::placeholder {
                                                         color: rgba(255, 255, 255, 0.35);
-                                                        font-size: 4.8px;
+                                                        font-size: 8px;
                                                     }
                                                 }
                                             }
@@ -611,10 +622,10 @@
 
                                         & .finder-content {
                                             flex: 1;
-                                            padding: 6px 4px;
+                                            padding: 10px 8px;
                                             display: grid;
-                                            grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
-                                            gap: 6px 4px;
+                                            grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
+                                            gap: 10px 6px;
                                             align-content: start;
                                             overflow-y: auto;
                                             box-sizing: border-box;
@@ -624,31 +635,31 @@
                                                 flex-direction: column;
                                                 align-items: center;
                                                 text-align: center;
-                                                padding: 3px 2px;
-                                                border-radius: 4px;
-                                                gap: 2px;
+                                                padding: 4px 3px;
+                                                border-radius: 5px;
+                                                gap: 3px;
                                                 cursor: pointer;
                                                 transition: 0.2s ease;
 
                                                 & .finder-svg-wrap {
-                                                    width: 22px;
-                                                    height: 22px;
+                                                    width: 32px;
+                                                    height: 32px;
                                                     display: flex;
                                                     align-items: center;
                                                     justify-content: center;
                                                     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
 
                                                     & svg {
-                                                        width: 18px;
-                                                        height: 18px;
+                                                        width: 26px;
+                                                        height: 26px;
                                                     }
                                                 }
 
                                                 & .finder-name-label {
-                                                    font-size: 5.5px;
+                                                    font-size: 8.5px;
                                                     color: rgba(255, 255, 255, 0.9);
-                                                    line-height: 1.1;
-                                                    max-width: 42px;
+                                                    line-height: 1.15;
+                                                    max-width: 58px;
                                                     overflow: hidden;
                                                     text-overflow: ellipsis;
                                                     white-space: nowrap;
@@ -670,13 +681,13 @@
                                         }
 
                                         & .finder-footer {
-                                            height: 11px;
+                                            height: 16px;
                                             border-top: 0.5px solid rgba(255, 255, 255, 0.06);
                                             background: rgba(0, 0, 0, 0.25);
                                             display: flex;
                                             align-items: center;
                                             justify-content: center;
-                                            font-size: 5.5px;
+                                            font-size: 8px;
                                             color: rgba(255, 255, 255, 0.45);
                                         }
                                     }
@@ -696,30 +707,30 @@
 
                                     /* ── Unified toolbar: tabs + address bar in one row (Sonoma style) ── */
                                     & .safari-header {
-                                        height: 20px;
-                                        min-height: 20px;
+                                        height: 24px;
+                                        min-height: 24px;
                                         flex-shrink: 0;
-                                        padding: 0 5px;
+                                        padding: 0 8px;
                                         background: rgba(32, 33, 40, 0.97);
                                         border-bottom: 0.5px solid rgba(255, 255, 255, 0.09);
                                         display: flex;
                                         align-items: center;
-                                        gap: 4px;
+                                        gap: 6px;
                                         box-sizing: border-box;
 
                                         & .safari-nav-group {
                                             display: flex;
-                                            gap: 2px;
+                                            gap: 3px;
                                             flex-shrink: 0;
 
                                             & .safari-nav-btn {
-                                                width: 13px;
-                                                height: 13px;
-                                                border-radius: 3px;
+                                                width: 16px;
+                                                height: 16px;
+                                                border-radius: 4px;
                                                 border: none;
                                                 background: rgba(255, 255, 255, 0.07);
                                                 color: rgba(255, 255, 255, 0.75);
-                                                font-size: 8px;
+                                                font-size: 10px;
                                                 font-weight: 300;
                                                 cursor: pointer;
                                                 display: flex;
@@ -744,15 +755,15 @@
                                         & .safari-address {
                                             flex: 1;
                                             min-width: 0;
-                                            height: 14px;
-                                            min-height: 14px;
+                                            height: 18px;
+                                            min-height: 18px;
                                             background: rgba(255, 255, 255, 0.07);
                                             border: 0.5px solid rgba(255, 255, 255, 0.14);
-                                            border-radius: 4px;
+                                            border-radius: 5px;
                                             display: flex;
                                             align-items: center;
-                                            padding: 0 5px;
-                                            gap: 3px;
+                                            padding: 0 6px;
+                                            gap: 5px;
                                             box-sizing: border-box;
                                             transition: 0.2s ease;
 
@@ -763,7 +774,7 @@
                                             }
 
                                             & .lock-icon {
-                                                font-size: 6px;
+                                                font-size: 8px;
                                                 opacity: 0.85;
                                                 display: flex;
                                                 align-items: center;
@@ -772,7 +783,7 @@
                                             }
 
                                             & .safari-protocol {
-                                                font-size: 5px;
+                                                font-size: 7.5px;
                                                 color: rgba(255, 255, 255, 0.38);
                                                 flex-shrink: 0;
                                             }
@@ -784,7 +795,7 @@
                                                 background: transparent;
                                                 outline: none;
                                                 color: #fff;
-                                                font-size: 5px;
+                                                font-size: 8.5px;
                                                 font-family: inherit;
                                                 padding: 0;
                                             }
@@ -794,7 +805,7 @@
                                                 background: transparent;
                                                 color: rgba(255, 255, 255, 0.5);
                                                 cursor: pointer;
-                                                font-size: 7.5px;
+                                                font-size: 9px;
                                                 padding: 0;
                                                 flex-shrink: 0;
                                                 line-height: 1;
@@ -851,12 +862,12 @@
                                             background: transparent;
                                             border: none;
                                             border-right: 0.5px solid rgba(255, 255, 255, 0.08);
-                                            padding: 0 5px;
+                                            padding: 0 8px;
                                             display: flex;
                                             align-items: center;
                                             justify-content: center;
-                                            gap: 3px;
-                                            font-size: 5.5px;
+                                            gap: 5px;
+                                            font-size: 8.5px;
                                             color: rgba(255, 255, 255, 0.6);
                                             cursor: pointer;
                                             transition: 0.2s ease;
@@ -907,10 +918,10 @@
                                         }
 
                                         & .safari-brand-badge {
-                                            font-size: 5px;
+                                            font-size: 7.5px;
                                             font-weight: 700;
-                                            padding: 2px 6px;
-                                            border-radius: 8px;
+                                            padding: 3px 8px;
+                                            border-radius: 10px;
                                             background: rgba(0, 174, 255, 0.15);
                                             border: 0.5px solid rgba(0, 174, 255, 0.3);
                                             color: #38bdf8;
@@ -918,16 +929,16 @@
                                         }
 
                                         & .safari-hero-title {
-                                            font-size: 11px;
+                                            font-size: 15px;
                                             font-weight: 800;
                                             color: #fff;
                                             margin: 0;
                                         }
 
                                         & .safari-hero-desc {
-                                            font-size: 6.5px;
+                                            font-size: 9px;
                                             color: var(--text-secondary);
-                                            line-height: 1.3;
+                                            line-height: 1.35;
                                             max-width: 95%;
                                             margin: 0;
                                         }
@@ -950,14 +961,14 @@
                                                 gap: 2px;
 
                                                 & strong {
-                                                    font-size: 6px;
+                                                    font-size: 8.5px;
                                                     color: #fff;
                                                 }
 
                                                 & small {
-                                                    font-size: 5.5px;
+                                                    font-size: 7.5px;
                                                     color: rgba(255, 255, 255, 0.55);
-                                                    line-height: 1.2;
+                                                    line-height: 1.25;
                                                 }
                                             }
                                         }
@@ -970,11 +981,11 @@
                                             & .safari-link-btn {
                                                 background: #007aff;
                                                 color: #fff;
-                                                font-size: 6px;
+                                                font-size: 8.5px;
                                                 font-weight: 600;
                                                 border: none;
-                                                border-radius: 4px;
-                                                padding: 3px 8px;
+                                                border-radius: 5px;
+                                                padding: 4px 10px;
                                                 cursor: pointer;
                                                 transition: 0.2s ease;
 
@@ -1037,24 +1048,24 @@
                                     background: #1e1e24;
                                     color: #abb2bf;
                                     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-                                    font-size: 8px;
+                                    font-size: 8.5px;
                                     box-sizing: border-box;
                                     overflow: hidden;
 
                                     & .code-activity-bar {
-                                        width: 18px;
+                                        width: 24px;
                                         flex-shrink: 0;
                                         background: #18181b;
                                         border-right: 0.5px solid rgba(255, 255, 255, 0.06);
                                         display: flex;
                                         flex-direction: column;
                                         align-items: center;
-                                        padding: 4px 0;
-                                        gap: 6px;
+                                        padding: 6px 0;
+                                        gap: 8px;
                                         box-sizing: border-box;
 
                                         & .act-icon {
-                                            font-size: 8px;
+                                            font-size: 11px;
                                             opacity: 0.45;
                                             cursor: pointer;
                                             transition: 0.2s ease;
@@ -1071,7 +1082,7 @@
                                     }
 
                                     & .code-sidebar {
-                                        width: 68px;
+                                        width: 95px;
                                         flex-shrink: 0;
                                         background: #1e1e24;
                                         border-right: 0.5px solid rgba(255, 255, 255, 0.06);
@@ -1080,30 +1091,30 @@
                                         box-sizing: border-box;
 
                                         & .code-section-header {
-                                            font-size: 5px;
+                                            font-size: 7.5px;
                                             font-weight: 700;
                                             color: rgba(255, 255, 255, 0.4);
-                                            padding: 3px 4px;
+                                            padding: 4px 6px;
                                             letter-spacing: 0.3px;
                                             display: flex;
                                             align-items: center;
-                                            gap: 2px;
+                                            gap: 3px;
                                         }
 
                                         & .code-file-list {
                                             display: flex;
                                             flex-direction: column;
-                                            gap: 1px;
-                                            padding: 0 2px;
+                                            gap: 2px;
+                                            padding: 0 3px;
 
                                             & .code-file {
                                                 display: flex;
                                                 align-items: center;
-                                                gap: 3px;
-                                                padding: 2px 3px;
-                                                border-radius: 2px;
+                                                gap: 4px;
+                                                padding: 3px 6px;
+                                                border-radius: 3px;
                                                 cursor: pointer;
-                                                font-size: 5.5px;
+                                                font-size: 8.5px;
                                                 color: var(--text-secondary);
                                                 transition: 0.2s ease;
 
@@ -1231,17 +1242,17 @@
                                             overflow: hidden;
 
                                             & .code-gutter {
-                                                width: 16px;
+                                                width: 22px;
                                                 background: #1a1d24;
                                                 color: rgba(255, 255, 255, 0.25);
                                                 font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-                                                font-size: 5px;
-                                                padding: 4px 2px;
+                                                font-size: 8px;
+                                                padding: 6px 3px;
                                                 text-align: right;
                                                 user-select: none;
                                                 display: flex;
                                                 flex-direction: column;
-                                                line-height: 1.35;
+                                                line-height: 1.45;
                                                 overflow: hidden;
                                                 box-sizing: border-box;
                                             }
@@ -1255,9 +1266,9 @@
                                                 outline: none;
                                                 color: #abb2bf;
                                                 font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-                                                font-size: 5px;
-                                                line-height: 1.35;
-                                                padding: 4px 6px;
+                                                font-size: 8.5px;
+                                                line-height: 1.45;
+                                                padding: 6px 8px;
                                                 box-sizing: border-box;
                                                 resize: none;
                                                 white-space: pre;
@@ -1342,33 +1353,33 @@
                                     overflow: hidden;
 
                                     & .music-sidebar {
-                                        width: 65px;
+                                        width: 90px;
                                         flex-shrink: 0;
                                         background: rgba(20, 10, 18, 0.85);
                                         border-right: 0.5px solid rgba(255, 255, 255, 0.08);
-                                        padding: 5px 3px;
+                                        padding: 6px 4px;
                                         display: flex;
                                         flex-direction: column;
-                                        gap: 1px;
+                                        gap: 2px;
                                         box-sizing: border-box;
 
                                         & .music-side-header {
-                                            font-size: 5px;
+                                            font-size: 7.5px;
                                             font-weight: 700;
                                             text-transform: uppercase;
                                             color: rgba(255, 255, 255, 0.35);
                                             letter-spacing: 0.4px;
-                                            padding: 2px 3px 1px;
+                                            padding: 3px 5px 2px;
                                         }
 
                                         & .music-side-item {
                                             display: flex;
                                             align-items: center;
-                                            gap: 3px;
-                                            font-size: 5.5px;
+                                            gap: 4px;
+                                            font-size: 8.5px;
                                             color: var(--text-secondary);
-                                            padding: 2px 4px;
-                                            border-radius: 3px;
+                                            padding: 3px 6px;
+                                            border-radius: 4px;
                                             cursor: pointer;
                                             transition: 0.2s ease;
 
@@ -1425,7 +1436,7 @@
                                                 gap: 1px;
 
                                                 & .music-track {
-                                                    font-size: 6.5px;
+                                                    font-size: 9.5px;
                                                     font-weight: 700;
                                                     color: #fff;
                                                     white-space: nowrap;
@@ -1434,7 +1445,7 @@
                                                 }
 
                                                 & .music-artist {
-                                                    font-size: 5.5px;
+                                                    font-size: 8px;
                                                     color: rgba(255, 255, 255, 0.6);
                                                 }
 
@@ -1667,29 +1678,29 @@
 
                                     /* ── Sidebar ── */
                                     & .settings-sidebar {
-                                        width: 86px;
+                                        width: 115px;
                                         flex-shrink: 0;
                                         background: rgba(0, 0, 0, 0.28);
                                         border-right: 0.5px solid rgba(255, 255, 255, 0.08);
-                                        padding: 4px 3px;
+                                        padding: 6px 4px;
                                         display: flex;
                                         flex-direction: column;
-                                        gap: 3px;
+                                        gap: 4px;
                                         box-sizing: border-box;
                                         overflow-y: auto;
 
                                         & .settings-search {
                                             display: flex;
                                             align-items: center;
-                                            gap: 3px;
+                                            gap: 4px;
                                             background: rgba(255, 255, 255, 0.08);
-                                            border-radius: 3px;
-                                            padding: 1px 4px;
-                                            height: 12px;
+                                            border-radius: 4px;
+                                            padding: 2px 6px;
+                                            height: 18px;
                                             box-sizing: border-box;
 
                                             & .search-icon {
-                                                font-size: 5.5px;
+                                                font-size: 8px;
                                                 opacity: 0.5;
                                             }
 
@@ -1698,14 +1709,14 @@
                                                 border: none;
                                                 outline: none;
                                                 color: #fff;
-                                                font-size: 4.8px;
+                                                font-size: 8px;
                                                 font-family: inherit;
                                                 width: 100%;
                                                 padding: 0;
 
                                                 &::placeholder {
                                                     color: rgba(255, 255, 255, 0.35);
-                                                    font-size: 4.8px;
+                                                    font-size: 8px;
                                                 }
                                             }
                                         }
@@ -1728,14 +1739,14 @@
                                             }
 
                                             & .user-avatar {
-                                                width: 14px;
-                                                height: 14px;
+                                                width: 22px;
+                                                height: 22px;
                                                 border-radius: 50%;
                                                 background: linear-gradient(135deg, #007aff, #5856d6);
                                                 display: flex;
                                                 align-items: center;
                                                 justify-content: center;
-                                                font-size: 5.5px;
+                                                font-size: 9px;
                                                 font-weight: 700;
                                                 color: #fff;
                                                 flex-shrink: 0;
@@ -1748,7 +1759,7 @@
                                                 flex: 1;
 
                                                 & .user-name {
-                                                    font-size: 5.5px;
+                                                    font-size: 8.5px;
                                                     font-weight: 600;
                                                     color: #fff;
                                                     white-space: nowrap;
@@ -1757,7 +1768,7 @@
                                                 }
 
                                                 & .user-sub {
-                                                    font-size: 4.5px;
+                                                    font-size: 7.5px;
                                                     color: rgba(255, 255, 255, 0.45);
                                                     white-space: nowrap;
                                                     overflow: hidden;
@@ -1779,11 +1790,11 @@
                                             & .settings-nav-item {
                                                 display: flex;
                                                 align-items: center;
-                                                gap: 3.5px;
-                                                padding: 2px 3.5px;
-                                                border-radius: 3.5px;
+                                                gap: 5px;
+                                                padding: 3px 5px;
+                                                border-radius: 4px;
                                                 cursor: pointer;
-                                                font-size: 5.5px;
+                                                font-size: 8.5px;
                                                 color: rgba(255, 255, 255, 0.85);
                                                 transition: 0.2s ease;
 
@@ -2484,7 +2495,7 @@
 
                         & .dock-container {
                             position: absolute;
-                            bottom: 4px;
+                            bottom: 5px;
                             left: 0;
                             right: 0;
                             display: flex;
@@ -2495,21 +2506,21 @@
 
                             & .dock {
                                 pointer-events: auto;
-                                background: rgba(200, 210, 230, 0.18);
+                                background: rgba(200, 210, 230, 0.22);
                                 backdrop-filter: blur(32px) saturate(200%) brightness(1.08);
                                 -webkit-backdrop-filter: blur(32px) saturate(200%) brightness(1.08);
-                                padding: 5px;
-                                border-radius: 11px;
+                                padding: 5px 8px;
+                                border-radius: 13px;
                                 display: flex;
                                 align-items: flex-end;
-                                gap: 5px;
-                                height: 32px;
+                                gap: 6px;
+                                height: 40px;
                                 box-sizing: border-box;
                                 border: 0.5px solid rgba(255, 255, 255, 0.38);
 
                                 & .dock-item {
-                                    width: 22px;
-                                    height: 22px;
+                                    width: 28px;
+                                    height: 28px;
                                     display: flex;
                                     flex-direction: column;
                                     align-items: center;
@@ -2519,10 +2530,10 @@
                                     flex-shrink: 0;
 
                                     & .dock-icon {
-                                        width: 22px;
-                                        height: 22px;
-                                        border-radius: 5px;
-                                        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+                                        width: 28px;
+                                        height: 28px;
+                                        border-radius: 6.5px;
+                                        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
                                         pointer-events: none;
                                         transform-origin: bottom center;
                                         will-change: transform;
@@ -2531,17 +2542,17 @@
                                     }
 
                                     &:hover .dock-icon {
-                                        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.55)) brightness(1.08);
+                                        filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.6)) brightness(1.08);
                                     }
 
                                     & .dock-dot {
-                                        width: 2px;
-                                        height: 2px;
+                                        width: 3px;
+                                        height: 3px;
                                         background: var(--text-white);
                                         border-radius: 50%;
                                         position: absolute;
-                                        bottom: -3.5px;
-                                        box-shadow: 0 0 2px rgba(255, 255, 255, 0.9);
+                                        bottom: -4px;
+                                        box-shadow: 0 0 3px rgba(255, 255, 255, 0.95);
                                         opacity: 0;
                                         transition: 0.25s ease;
                                     }
@@ -2553,19 +2564,19 @@
 
                                     & .dock-tooltip {
                                         position: absolute;
-                                        bottom: calc(100% + 8px);
+                                        bottom: calc(100% + 7px);
                                         left: 50%;
                                         transform: translateX(-50%) translateY(4px);
-                                        background: rgba(20, 22, 32, 0.82);
+                                        background: rgba(20, 22, 32, 0.85);
                                         backdrop-filter: blur(18px) saturate(160%);
                                         -webkit-backdrop-filter: blur(18px) saturate(160%);
                                         border: 0.5px solid rgba(255, 255, 255, 0.22);
                                         color: #f1f5f9;
-                                        font-size: 6.5px;
+                                        font-size: 8.5px;
                                         font-weight: 500;
                                         letter-spacing: 0.01em;
-                                        padding: 2px 5px;
-                                        border-radius: 4px;
+                                        padding: 3px 7px;
+                                        border-radius: 5px;
                                         white-space: nowrap;
                                         pointer-events: none;
                                         opacity: 0;
@@ -2795,19 +2806,19 @@
                                     flex: 1;
                                     display: flex;
                                     flex-direction: column;
-                                    gap: 3px;
+                                    gap: 4px;
 
                                     & .cc-tile {
                                         flex: 1;
                                         background: rgba(255, 255, 255, 0.06);
                                         border: 0.5px solid rgba(255, 255, 255, 0.08);
                                         border-radius: 6px;
-                                        padding: 3px 4px;
+                                        padding: 4px 6px;
                                         display: flex;
                                         align-items: center;
-                                        gap: 3px;
+                                        gap: 4px;
                                         cursor: pointer;
-                                        font-size: 5.5px;
+                                        font-size: 8px;
                                         transition: 0.2s ease;
 
                                         &.active {
@@ -2826,20 +2837,20 @@
                                 background: rgba(255, 255, 255, 0.06);
                                 border: 0.5px solid rgba(255, 255, 255, 0.08);
                                 border-radius: 6px;
-                                padding: 3px 4px;
+                                padding: 4px 6px;
                                 display: flex;
                                 flex-direction: column;
-                                gap: 2px;
+                                gap: 3px;
 
                                 & .slider-title {
-                                    font-size: 5px;
+                                    font-size: 7.5px;
                                     color: rgba(255, 255, 255, 0.6);
                                 }
 
                                 & .macos-slider.big {
                                     width: 100%;
-                                    height: 6px;
-                                    border-radius: 3px;
+                                    height: 8px;
+                                    border-radius: 4px;
                                 }
                             }
 
@@ -2847,19 +2858,19 @@
                                 background: rgba(255, 255, 255, 0.06);
                                 border: 0.5px solid rgba(255, 255, 255, 0.08);
                                 border-radius: 6px;
-                                padding: 3px 4px;
+                                padding: 4px 6px;
                                 display: flex;
                                 align-items: center;
-                                gap: 4px;
+                                gap: 6px;
 
                                 & .mini-cover {
-                                    width: 14px;
-                                    height: 14px;
-                                    border-radius: 3px;
+                                    width: 20px;
+                                    height: 20px;
+                                    border-radius: 4px;
                                     display: flex;
                                     align-items: center;
                                     justify-content: center;
-                                    font-size: 7px;
+                                    font-size: 9px;
                                 }
 
                                 & .mini-meta {
@@ -2869,14 +2880,14 @@
                                     flex-direction: column;
 
                                     & strong {
-                                        font-size: 5.5px;
+                                        font-size: 8px;
                                         white-space: nowrap;
                                         overflow: hidden;
                                         text-overflow: ellipsis;
                                     }
 
                                     & small {
-                                        font-size: 4.5px;
+                                        font-size: 7px;
                                         color: rgba(255, 255, 255, 0.5);
                                     }
                                 }
@@ -2885,10 +2896,10 @@
                                     background: rgba(255, 255, 255, 0.15);
                                     border: none;
                                     border-radius: 50%;
-                                    width: 12px;
-                                    height: 12px;
+                                    width: 16px;
+                                    height: 16px;
                                     color: #fff;
-                                    font-size: 6px;
+                                    font-size: 8px;
                                     cursor: pointer;
                                     display: flex;
                                     align-items: center;
@@ -2903,12 +2914,12 @@
                             top: 20%;
                             left: 50%;
                             transform: translateX(-50%);
-                            width: 160px;
+                            width: 240px;
                             background: rgba(30, 32, 42, 0.88);
                             backdrop-filter: blur(35px);
                             -webkit-backdrop-filter: blur(35px);
                             border: 0.5px solid rgba(255, 255, 255, 0.2);
-                            border-radius: 8px;
+                            border-radius: 10px;
                             box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8);
                             z-index: 2000;
                             overflow: hidden;
@@ -2917,8 +2928,8 @@
                             & .spotlight-search-bar {
                                 display: flex;
                                 align-items: center;
-                                gap: 4px;
-                                padding: 4px 6px;
+                                gap: 6px;
+                                padding: 6px 10px;
                                 border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
 
                                 & input {
@@ -2927,36 +2938,36 @@
                                     border: none;
                                     outline: none;
                                     color: #fff;
-                                    font-size: 5.5px;
+                                    font-size: 10px;
                                     font-family: inherit;
 
                                     &::placeholder {
                                         color: rgba(255, 255, 255, 0.4);
-                                        font-size: 5.5px;
+                                        font-size: 10px;
                                     }
                                 }
                             }
 
                             & .spotlight-results {
-                                max-height: 120px;
+                                max-height: 140px;
                                 overflow-y: auto;
-                                padding: 3px;
+                                padding: 4px;
                                 display: flex;
                                 flex-direction: column;
-                                gap: 1px;
+                                gap: 2px;
 
                                 & .spot-item {
                                     display: flex;
                                     justify-content: space-between;
                                     align-items: center;
-                                    padding: 4px 6px;
+                                    padding: 5px 8px;
                                     border-radius: 5px;
                                     cursor: pointer;
-                                    font-size: 8px;
+                                    font-size: 9px;
                                     color: rgba(255, 255, 255, 0.85);
 
                                     & small {
-                                        font-size: 6.5px;
+                                        font-size: 7.5px;
                                         color: rgba(255, 255, 255, 0.4);
                                     }
 
@@ -3191,20 +3202,20 @@
 
                             & .calc-display {
                                 flex-shrink: 0;
-                                min-height: 38px;
-                                padding: 4px 8px 2px 8px;
+                                min-height: 48px;
+                                padding: 6px 10px 4px 10px;
                                 background: #1c1c1e;
                                 display: flex;
                                 flex-direction: column;
                                 align-items: flex-end;
                                 justify-content: flex-end;
-                                gap: 1px;
+                                gap: 2px;
 
                                 & .calc-expr {
-                                    font-size: 6.5px;
+                                    font-size: 8.5px;
                                     color: rgba(255, 255, 255, 0.35);
                                     font-weight: 300;
-                                    min-height: 8px;
+                                    min-height: 12px;
                                     letter-spacing: 0.2px;
                                     overflow: hidden;
                                     text-overflow: ellipsis;
@@ -3213,7 +3224,7 @@
                                 }
 
                                 & .calc-main-value {
-                                    font-size: 16px;
+                                    font-size: 22px;
                                     font-weight: 200;
                                     color: #fff;
                                     letter-spacing: -0.5px;
@@ -3237,7 +3248,7 @@
                                 & .calc-btn {
                                     border: none;
                                     border-radius: 0;
-                                    font-size: 8.5px;
+                                    font-size: 11px;
                                     font-weight: 400;
                                     cursor: pointer;
                                     display: flex;
@@ -3339,22 +3350,22 @@
                         & .term-fastfetch {
                             display: flex;
                             align-items: center;
-                            gap: 8px;
+                            gap: 12px;
                             background: rgba(0, 0, 0, 0.25);
-                            padding: 4px 6px;
-                            border-radius: 4px;
-                            margin: 2px 0;
+                            padding: 6px 8px;
+                            border-radius: 6px;
+                            margin: 4px 0;
 
                             & .term-ascii-logo {
-                                font-size: 5px;
+                                font-size: 7.5px;
                                 color: #fff;
-                                line-height: 1;
+                                line-height: 1.15;
                                 margin: 0;
                             }
 
                             & .term-fastfetch-info {
-                                font-size: 7.5px;
-                                line-height: 1.3;
+                                font-size: 8.5px;
+                                line-height: 1.45;
 
                                 & .term-key {
                                     color: #58a6ff;
@@ -3449,502 +3460,6 @@
     50% {
         transform: translateY(-10px);
     }
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════════
-   macOS Golden Gate 27 — Cinema / Focus Mode & Dual-Scale Responsive Engine
-   ═══════════════════════════════════════════════════════════════════════════════ */
-
-/* ── Cinema Mode Backdrop ── */
-.mac-cinema-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(5, 7, 16, 0.78);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
-    z-index: 99990;
-    opacity: 0;
-    pointer-events: none;
-    cursor: zoom-out;
-    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-body.mac-cinema-active .mac-cinema-backdrop {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* ── Floating Exit Pill ── */
-.mac-cinema-exit {
-    position: fixed;
-    top: 24px;
-    right: 32px;
-    z-index: 100020;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 18px;
-    background: rgba(25, 30, 45, 0.72);
-    backdrop-filter: blur(24px) saturate(190%);
-    -webkit-backdrop-filter: blur(24px) saturate(190%);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 999px;
-    color: #f8fafc;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    opacity: 0;
-    transform: translateY(-12px);
-    pointer-events: none;
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08);
-    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s, box-shadow 0.2s;
-}
-
-.mac-cinema-exit .esc-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.6px;
-    padding: 2px 7px;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.14);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    color: #e2e8f0;
-}
-
-.mac-cinema-exit .exit-label {
-    letter-spacing: -0.1px;
-}
-
-.mac-cinema-exit .close-icon {
-    font-size: 11px;
-    opacity: 0.7;
-    margin-left: 2px;
-    transition: opacity 0.2s, transform 0.2s;
-}
-
-.mac-cinema-exit:hover {
-    background: rgba(45, 55, 80, 0.88);
-    border-color: rgba(255, 255, 255, 0.32);
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.15);
-}
-
-.mac-cinema-exit:hover .close-icon {
-    opacity: 1;
-    transform: scale(1.15);
-}
-
-body.mac-cinema-active .mac-cinema-exit {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-/* ── Navigation & Outer Layout during Cinema Mode ── */
-body.mac-cinema-active #navBar {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transform: translateY(-50px) !important;
-    transition: opacity 0.35s ease, transform 0.35s ease !important;
-}
-
-body.mac-cinema-active #cards-spinner,
-body.mac-cinema-active .cards {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transition: opacity 0.3s ease !important;
-}
-
-body.mac-cinema-active #home,
-body.mac-cinema-active #home .image-zone,
-body.mac-cinema-active #imagurrrr,
-body.mac-cinema-active #imagurrrr .imagur {
-    transform: none !important;
-    filter: none !important;
-    perspective: none !important;
-}
-
-body.mac-cinema-active #imagurrrr {
-    z-index: 100005 !important;
-}
-
-body.mac-cinema-active #imagurrrr .device {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transition: opacity 0.35s ease !important;
-}
-
-/* ── Expanding MacBook Screen into Cinema Focus Mode ── */
-body.mac-cinema-active #imagurrrr .inside {
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: min(94vw, 1360px) !important;
-    height: min(88vh, 850px) !important;
-    aspect-ratio: 16 / 10 !important;
-    z-index: 100010 !important;
-    border-radius: 18px !important;
-    box-shadow:
-        0 40px 140px -20px rgba(0, 0, 0, 0.95),
-        0 0 0 1px rgba(255, 255, 255, 0.2),
-        0 0 70px -10px rgba(251, 146, 60, 0.18) !important;
-    transition:
-        width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-        height 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-        border-radius 0.4s ease,
-        box-shadow 0.4s ease !important;
-}
-
-/* ── Dual-Scale Engine: Desktop proportions when Cinema Mode is Active ── */
-body.mac-cinema-active .inside .macos-container {
-    cursor: default !important;
-}
-
-/* Top Bar: 28px height, 13px crisp SF Pro font */
-body.mac-cinema-active .inside .top-bar {
-    height: 28px !important;
-    font-size: 13px !important;
-    padding: 0 14px !important;
-}
-
-body.mac-cinema-active .inside .top-bar .apple-logo {
-    font-size: 14px !important;
-    margin-right: 8px !important;
-}
-
-body.mac-cinema-active .inside .top-bar .apple-logo svg {
-    width: 14px !important;
-    height: 14px !important;
-}
-
-body.mac-cinema-active .inside .top-bar .menu-item {
-    font-size: 13px !important;
-    padding: 2px 7px !important;
-    border-radius: 4px !important;
-}
-
-body.mac-cinema-active .inside .top-bar .right-side {
-    font-size: 12.5px !important;
-    gap: 12px !important;
-}
-
-body.mac-cinema-active .inside .top-bar .right-side svg {
-    width: 14px !important;
-    height: 14px !important;
-}
-
-/* Dock: 62px height, 44px icons with smooth magnification */
-body.mac-cinema-active .inside .dock-container {
-    bottom: 10px !important;
-}
-
-body.mac-cinema-active .inside .dock {
-    height: 60px !important;
-    padding: 7px 12px !important;
-    border-radius: 18px !important;
-    gap: 9px !important;
-    border: 0.5px solid rgba(255, 255, 255, 0.4) !important;
-}
-
-body.mac-cinema-active .inside .dock .dock-item {
-    width: 44px !important;
-    height: 44px !important;
-}
-
-body.mac-cinema-active .inside .dock .dock-item .dock-icon {
-    width: 44px !important;
-    height: 44px !important;
-    border-radius: 10px !important;
-}
-
-body.mac-cinema-active .inside .dock .dock-dot {
-    width: 4px !important;
-    height: 4px !important;
-    bottom: -5px !important;
-}
-
-body.mac-cinema-active .inside .dock .dock-tooltip {
-    font-size: 12px !important;
-    padding: 4px 10px !important;
-    bottom: 64px !important;
-    border-radius: 6px !important;
-}
-
-body.mac-cinema-active .inside .dock .sep {
-    height: 36px !important;
-}
-
-/* Windows: authentic macOS window chrome */
-body.mac-cinema-active .inside .window {
-    border-radius: 12px !important;
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.18) !important;
-}
-
-body.mac-cinema-active .inside .window-header {
-    height: 34px !important;
-    padding: 0 12px !important;
-}
-
-body.mac-cinema-active .inside .window-title {
-    font-size: 13px !important;
-    font-weight: 500 !important;
-}
-
-body.mac-cinema-active .inside .dots {
-    gap: 8px !important;
-}
-
-body.mac-cinema-active .inside .dot {
-    width: 12px !important;
-    height: 12px !important;
-}
-
-/* Terminal: Ultra-crisp typography & fastfetch display */
-body.mac-cinema-active .inside .app-terminal {
-    font-size: 13px !important;
-    line-height: 1.55 !important;
-    padding: 14px !important;
-    overscroll-behavior: contain !important;
-}
-
-body.mac-cinema-active .inside .term-login {
-    font-size: 12px !important;
-    margin-bottom: 6px !important;
-}
-
-body.mac-cinema-active .inside .term-welcome {
-    font-size: 12.5px !important;
-    margin-bottom: 12px !important;
-}
-
-body.mac-cinema-active .inside .term-prompt,
-body.mac-cinema-active .inside .term-cmd,
-body.mac-cinema-active .inside .term-input {
-    font-size: 13px !important;
-}
-
-body.mac-cinema-active .inside .term-fastfetch {
-    margin: 10px 0 !important;
-    gap: 18px !important;
-}
-
-body.mac-cinema-active .inside .term-fastfetch-logo {
-    font-size: 11px !important;
-    line-height: 1.25 !important;
-}
-
-body.mac-cinema-active .inside .term-fastfetch-info {
-    font-size: 12.5px !important;
-    line-height: 1.55 !important;
-}
-
-/* Safari */
-body.mac-cinema-active .inside .app-safari {
-    font-size: 13px !important;
-    overscroll-behavior: contain !important;
-}
-
-body.mac-cinema-active .inside .safari-toolbar {
-    height: 38px !important;
-    padding: 0 12px !important;
-    gap: 10px !important;
-}
-
-body.mac-cinema-active .inside .safari-address-bar {
-    height: 28px !important;
-    font-size: 12.5px !important;
-    padding: 0 12px !important;
-}
-
-body.mac-cinema-active .inside .safari-tab-bar {
-    height: 32px !important;
-}
-
-body.mac-cinema-active .inside .safari-tab {
-    font-size: 12px !important;
-    padding: 0 14px !important;
-}
-
-body.mac-cinema-active .inside .safari-content {
-    font-size: 13px !important;
-    line-height: 1.6 !important;
-    overscroll-behavior: contain !important;
-}
-
-/* VS Code */
-body.mac-cinema-active .inside .app-vscode {
-    font-size: 12.5px !important;
-    overscroll-behavior: contain !important;
-}
-
-body.mac-cinema-active .inside .vscode-activity-bar {
-    width: 44px !important;
-}
-
-body.mac-cinema-active .inside .vscode-sidebar {
-    width: 190px !important;
-    font-size: 12px !important;
-}
-
-body.mac-cinema-active .inside .vscode-tab {
-    font-size: 12px !important;
-    padding: 6px 14px !important;
-}
-
-body.mac-cinema-active .inside .vscode-editor {
-    font-size: 12.5px !important;
-    line-height: 1.55 !important;
-    overscroll-behavior: contain !important;
-}
-
-body.mac-cinema-active .inside .vscode-line-num {
-    font-size: 11px !important;
-    width: 32px !important;
-}
-
-/* System Settings */
-body.mac-cinema-active .inside .app-settings {
-    font-size: 13px !important;
-    overscroll-behavior: contain !important;
-}
-
-body.mac-cinema-active .inside .settings-sidebar {
-    width: 190px !important;
-    font-size: 12.5px !important;
-}
-
-body.mac-cinema-active .inside .settings-nav-item {
-    font-size: 12.5px !important;
-    padding: 8px 12px !important;
-    gap: 8px !important;
-}
-
-body.mac-cinema-active .inside .about-mac-hero .apple-logo-badge svg {
-    width: 46px !important;
-    height: 46px !important;
-}
-
-body.mac-cinema-active .inside .about-mac-title {
-    font-size: 20px !important;
-}
-
-body.mac-cinema-active .inside .about-mac-sub {
-    font-size: 13px !important;
-}
-
-body.mac-cinema-active .inside .about-mac-os {
-    font-size: 12px !important;
-}
-
-body.mac-cinema-active .inside .card-row {
-    font-size: 13px !important;
-    padding: 10px 14px !important;
-}
-
-/* Music */
-body.mac-cinema-active .inside .app-music {
-    font-size: 13px !important;
-}
-
-body.mac-cinema-active .inside .music-art {
-    width: 78px !important;
-    height: 78px !important;
-}
-
-body.mac-cinema-active .inside .music-title {
-    font-size: 15px !important;
-}
-
-body.mac-cinema-active .inside .music-artist {
-    font-size: 13px !important;
-}
-
-body.mac-cinema-active .inside .music-track-item {
-    font-size: 12.5px !important;
-    padding: 8px 12px !important;
-}
-
-/* Calculator */
-body.mac-cinema-active .inside .app-calc {
-    font-size: 14px !important;
-}
-
-body.mac-cinema-active .inside .calc-display {
-    font-size: 32px !important;
-    padding: 12px 14px !important;
-    min-height: 56px !important;
-}
-
-body.mac-cinema-active .inside .calc-btn {
-    font-size: 18px !important;
-    height: 44px !important;
-    border-radius: 8px !important;
-}
-
-/* Popovers & Spotlight */
-body.mac-cinema-active .inside .mac-popover {
-    font-size: 13px !important;
-    border-radius: 10px !important;
-}
-
-body.mac-cinema-active .inside .mac-popover-item {
-    padding: 5px 12px !important;
-    font-size: 12.5px !important;
-}
-
-body.mac-cinema-active .inside .mac-spotlight-overlay {
-    width: 580px !important;
-    border-radius: 14px !important;
-}
-
-body.mac-cinema-active .inside .spotlight-search-box {
-    height: 50px !important;
-    padding: 0 16px !important;
-}
-
-body.mac-cinema-active .inside .spotlight-input {
-    font-size: 18px !important;
-}
-
-body.mac-cinema-active .inside .spotlight-item {
-    font-size: 13px !important;
-    padding: 8px 14px !important;
-}
-
-/* Modal Dialog (About Mac) */
-body.mac-cinema-active .inside .mac-modal-dialog .modal-card {
-    width: 360px !important;
-    padding: 24px !important;
-    border-radius: 14px !important;
-}
-
-body.mac-cinema-active .inside .modal-apple-badge svg {
-    width: 48px !important;
-    height: 48px !important;
-}
-
-body.mac-cinema-active .inside .modal-card h3 {
-    font-size: 20px !important;
-}
-
-body.mac-cinema-active .inside .modal-sub {
-    font-size: 13px !important;
-}
-
-body.mac-cinema-active .inside .modal-specs-list {
-    font-size: 12.5px !important;
-    line-height: 1.6 !important;
-}
-
-body.mac-cinema-active .inside .mac-dialog-btn {
-    font-size: 12.5px !important;
-    padding: 6px 14px !important;
 }
 
 @keyframes blink {

@@ -392,7 +392,7 @@ const appDefinitions = {
   // ── 1. Terminal (zsh) ──
   "Terminal": {
     title: "gabriel — zsh — 80×24",
-    widthPct: 44, heightPct: 44,
+    widthPct: 70, heightPct: 66,
     render: (win) => `
       <div class="app-terminal" id="term-container-${win.id}">
         <p class="term-login">Last login: ${new Date().toLocaleDateString()} on ttys001</p>
@@ -550,7 +550,7 @@ const appDefinitions = {
   // ── 2. Finder (Native macOS Glass Design) ──
   "Finder": {
     title: "Gabriel — Portfolio — Finder",
-    widthPct: 48, heightPct: 46,
+    widthPct: 70, heightPct: 66,
     render: (win) => `
       <div class="app-finder">
         <aside class="finder-sidebar">
@@ -694,7 +694,7 @@ const appDefinitions = {
   // ── 3. Safari (Apple Web Engine UI) ──
   "Safari": {
     title: "Safari — Gabriel Jagueneau Portfolio",
-    widthPct: 54, heightPct: 50,
+    widthPct: 78, heightPct: 72,
     render: (win) => `
       <div class="app-safari">
         <header class="safari-header">
@@ -880,7 +880,7 @@ const appDefinitions = {
   // ── 4. VS Code (Modern One Dark Pro IDE) ──
   "Code": {
     title: "developer.js — Visual Studio Code",
-    widthPct: 60, heightPct: 54,
+    widthPct: 80, heightPct: 74,
     render: (win) => `
       <div class="app-code">
         <aside class="code-activity-bar">
@@ -1038,7 +1038,7 @@ const appDefinitions = {
   // ── 5. Apple Music (Authentic macOS Player) ──
   "Music": {
     title: "Apple Music — Now Playing",
-    widthPct: 46, heightPct: 46,
+    widthPct: 62, heightPct: 62,
     render: (win) => {
       const track = musicTracks[currentTrackIdx];
       const mins = Math.floor(musicCurrentSec / 60);
@@ -1242,7 +1242,7 @@ const appDefinitions = {
   // ── 6. Calculator (Apple Native Logic) ──
   "Calculator": {
     title: "Calculator",
-    widthPct: 22, heightPct: 36,
+    widthPct: 34, heightPct: 62,
     render: (win) => `
       <div class="app-calculator" id="calc-app-${win.id}">
         <div class="calc-display" id="calc-disp-${win.id}">
@@ -1434,7 +1434,7 @@ const appDefinitions = {
   // ── 7. System Settings ──
   "Settings": {
     title: "System Settings",
-    widthPct: 48, heightPct: 48,
+    widthPct: 72, heightPct: 70,
     render: (win) => `
       <div class="app-settings-macos">
         <aside class="settings-sidebar">
@@ -2633,83 +2633,11 @@ export function setInteractive(active) {
   }
 }
 
-let isMacCinemaMode = false;
-let cinemaScrollOrigin = 0;
-
-function ensureCinemaControls() {
-  if (!document.getElementById('mac-cinema-backdrop')) {
-    const backdrop = document.createElement('div');
-    backdrop.id = 'mac-cinema-backdrop';
-    backdrop.className = 'mac-cinema-backdrop';
-    backdrop.setAttribute('aria-label', 'Close macOS Focus Mode');
-    backdrop.addEventListener('click', () => setMacCinemaMode(false));
-    document.body.appendChild(backdrop);
-  }
-
-  if (!document.getElementById('mac-cinema-exit')) {
-    const exitBtn = document.createElement('div');
-    exitBtn.id = 'mac-cinema-exit';
-    exitBtn.className = 'mac-cinema-exit';
-    exitBtn.setAttribute('title', 'Press Escape to exit macOS');
-    exitBtn.innerHTML = `
-      <span class="esc-badge">ESC</span>
-      <span class="exit-label">Quitter macOS</span>
-      <span class="close-icon">✕</span>
-    `;
-    exitBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      setMacCinemaMode(false);
-    });
-    document.body.appendChild(exitBtn);
-  }
-}
-
-export function setMacCinemaMode(enable) {
-  if (isMacCinemaMode === enable) return;
-  isMacCinemaMode = Boolean(enable);
-
-  ensureCinemaControls();
-
-  const body = document.body;
-  const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
-  const macContainer = document.getElementById('imagurrrr');
-
-  if (isMacCinemaMode) {
-    cinemaScrollOrigin = window.scrollY;
-    body.classList.add('mac-cinema-active');
-    if (cardsSpinner) cardsSpinner.classList.add('cards-hidden');
-    if (macContainer) {
-      macContainer._savedAos = macContainer.getAttribute('data-aos');
-      macContainer.removeAttribute('data-aos');
-      macContainer.style.setProperty('transform', 'none', 'important');
-    }
-    setInteractive(true);
-
-    if (openWindows.size === 0) {
-      spawnOrFocusWindow('Terminal');
-    }
-  } else {
-    body.classList.remove('mac-cinema-active');
-    if (cardsSpinner) cardsSpinner.classList.remove('cards-hidden');
-    if (macContainer) {
-      if (macContainer._savedAos) macContainer.setAttribute('data-aos', macContainer._savedAos);
-      macContainer.style.removeProperty('transform');
-    }
-    closeAllPopovers();
-    setInteractive(false);
-  }
-}
-
 export function toggleMacFullscreen(force) {
-  if (typeof force === 'boolean') {
-    setMacCinemaMode(force);
-  } else {
-    setMacCinemaMode(!isMacCinemaMode);
-  }
+  // Mac stays in-place inside laptop frame
 }
 
 if (typeof window !== 'undefined') {
-  window.setMacCinemaMode = setMacCinemaMode;
   window.toggleMacFullscreen = toggleMacFullscreen;
 }
 
@@ -2780,9 +2708,7 @@ function initDock() {
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      if (isMacCinemaMode) {
-        setMacCinemaMode(false);
-      } else if (isMacInteractive) {
+      if (isMacInteractive) {
         setInteractive(false);
         const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
         if (cardsSpinner) cardsSpinner.classList.remove('cards-hidden');
@@ -2816,54 +2742,48 @@ function initDock() {
 
 function initInteractiveListeners() {
   const macScreen = document.querySelector('#imagurrrr .inside') || document.querySelector('.macos-container');
-  const macDevice = document.querySelector('#imagurrrr .device');
+  const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
 
-  // Clicking specifically on the Mac screen: open Cinema mode if in compact mode
-  if (macScreen) {
-    macScreen.addEventListener('click', (e) => {
-      if (!isMacCinemaMode) {
-        setMacCinemaMode(true);
-      }
-    });
-  }
-
-  if (macDevice) {
-    macDevice.style.cursor = 'pointer';
-    macDevice.addEventListener('click', (e) => {
-      if (!isMacCinemaMode) {
-        setMacCinemaMode(true);
-      }
-    });
-  }
-
-  // Smooth scroll exit: if user scrolls away by more than 160px, smoothly exit Cinema mode without trapping
-  window.addEventListener('scroll', () => {
-    if (isMacCinemaMode) {
-      if (Math.abs(window.scrollY - cinemaScrollOrigin) > 160) {
-        setMacCinemaMode(false);
-      }
+  function hideCards() {
+    if (cardsSpinner && !cardsSpinner.classList.contains('cards-hidden')) {
+      cardsSpinner.classList.add('cards-hidden');
     }
-  }, { passive: true });
+  }
 
-  // Clicking outside the Mac screen when not in cinema mode: unfocus
+  function showCards() {
+    if (cardsSpinner && cardsSpinner.classList.contains('cards-hidden')) {
+      cardsSpinner.classList.remove('cards-hidden');
+    }
+  }
+
+  // Clicking specifically on the Mac screen: hide cards and interact in-place
+  if (macScreen) {
+    macScreen.addEventListener('click', () => {
+      hideCards();
+      setInteractive(true);
+    });
+
+    macScreen.addEventListener('mousedown', () => {
+      hideCards();
+      setInteractive(true);
+    });
+  }
+
+  // Clicking outside the Mac screen: bring back cards and unfocus
   document.addEventListener('click', (e) => {
-    if (isMacCinemaMode) return;
     const isInsideScreen = Boolean(e.target.closest('#imagurrrr .inside') || e.target.closest('.macos-container'));
     if (!isInsideScreen) {
+      showCards();
       setInteractive(false);
-      const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
-      if (cardsSpinner) cardsSpinner.classList.remove('cards-hidden');
     }
   });
 
   document.addEventListener('mousedown', (e) => {
-    if (isMacCinemaMode) return;
     const isInsideScreen = Boolean(e.target.closest('#imagurrrr .inside') || e.target.closest('.macos-container'));
     const isCard = Boolean(e.target.closest('.cardage'));
     if (!isInsideScreen && !isCard) {
+      showCards();
       setInteractive(false);
-      const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
-      if (cardsSpinner) cardsSpinner.classList.remove('cards-hidden');
     }
   });
 }
