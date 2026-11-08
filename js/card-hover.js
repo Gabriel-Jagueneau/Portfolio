@@ -1,48 +1,49 @@
 // ─── Card Hover Spotlight Effect ─────────────────────────────────────────────
-// Ultra-optimized: tracks mouse position strictly for the card currently under cursor.
-// Zero forced reflows: avoids looping over multiple elements per frame.
+// Tracks mouse position globally on the body and updates --mouse-x / --mouse-y CSS vars
+// strictly for cards and spotlight elements that are currently visible on screen.
 
 export function initCardHover() {
-  const selector = ".card, .hero-btn, .diploma, #about .parags .inner .parag, #contact .head, #contact .body, #contact .bottom .info";
-  let activeTarget = null;
-  let activeRect = null;
-  let rafPending = false;
-  let lastClientX = 0;
-  let lastClientY = 0;
+  const elements = Array.from(document.querySelectorAll(".card, .hero-btn"));
+  const visibleElements = new Set();
 
-  function update() {
+  if (typeof IntersectionObserver !== 'undefined') {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          visibleElements.add(entry.target);
+        } else {
+          visibleElements.delete(entry.target);
+        }
+      });
+    }, { rootMargin: '60px' });
+
+    elements.forEach(el => observer.observe(el));
+  } else {
+    // Fallback: all elements
+    elements.forEach(el => visibleElements.add(el));
+  }
+
+  let lastEvent = null;
+  let rafPending = false;
+
+  function updateElements() {
     rafPending = false;
-    if (activeTarget && activeRect) {
-      activeTarget.style.setProperty("--mouse-x", `${lastClientX - activeRect.left}px`);
-      activeTarget.style.setProperty("--mouse-y", `${lastClientY - activeRect.top}px`);
+    if (!lastEvent) return;
+
+    for (const el of visibleElements) {
+      const rect = el.getBoundingClientRect();
+      el.style.setProperty("--mouse-x", `${lastEvent.clientX - rect.left}px`);
+      el.style.setProperty("--mouse-y", `${lastEvent.clientY - rect.top}px`);
     }
   }
 
-  document.addEventListener('pointermove', (e) => {
-    const target = e.target.closest(selector);
-    if (!target) {
-      activeTarget = null;
-      activeRect = null;
-      return;
-    }
-
-    if (target !== activeTarget) {
-      activeTarget = target;
-      activeRect = target.getBoundingClientRect();
-    }
-
-    lastClientX = e.clientX;
-    lastClientY = e.clientY;
-
+  const handleMouseMove = event => {
+    lastEvent = event;
     if (!rafPending) {
       rafPending = true;
-      requestAnimationFrame(update);
+      requestAnimationFrame(updateElements);
     }
-  }, { passive: true });
+  };
 
-  window.addEventListener('scroll', () => {
-    if (activeTarget) {
-      activeRect = activeTarget.getBoundingClientRect();
-    }
-  }, { passive: true });
+  window.addEventListener('mousemove', handleMouseMove, { passive: true });
 }
