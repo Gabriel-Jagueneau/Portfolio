@@ -4814,13 +4814,14 @@ body.mac-fullscreen-mode {
                 gap: 28px;
 
                 & .date {
+                    position: relative;
                     width: 76px;
                     flex-shrink: 0;
                     padding: 5px;
-                    background: var(--pill-bg);
-                    border: 1px solid var(--pill-border);
-                    backdrop-filter: blur(4px);
-                    -webkit-backdrop-filter: blur(4px);
+                    background: var(--glass-bg);
+                    border: 1px solid var(--glass-border);
+                    backdrop-filter: var(--glass-blur);
+                    -webkit-backdrop-filter: var(--glass-blur);
                     border-radius: var(--radius-pill);
                     text-align: center;
                     font-weight: 600;
@@ -4828,8 +4829,33 @@ body.mac-fullscreen-mode {
                     letter-spacing: 0.02em;
                     color: var(--text-primary);
                     z-index: 2;
-                    box-shadow: var(--shadow-sm);
+                    box-shadow: var(--shadow-md);
+                    overflow: hidden;
+                    cursor: default;
                     transition: var(--hover-transition);
+
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        height: 100%;
+                        width: 100%;
+                        opacity: 0.05;
+                        transition: 0.5s ease;
+                        border-radius: inherit;
+                        pointer-events: none;
+                        background: radial-gradient(500px circle at var(--mouse-x) var(--mouse-y),
+                                aliceblue,
+                                transparent 40%);
+                    }
+
+                    &:hover {
+                        transform: var(--hover-scale);
+                        background-color: var(--glass-bg-hover);
+                        border-color: var(--glass-border-hover);
+                        box-shadow: var(--shadow-lg);
+                    }
                 }
 
                 &::after {
@@ -4849,10 +4875,16 @@ body.mac-fullscreen-mode {
                 }
 
                 &.timeline-current .date {
-                    background: rgba(0, 174, 255, 0.08);
-                    border-color: rgba(0, 174, 255, 0.28);
+                    background: rgba(0, 174, 255, 0.12);
+                    border-color: rgba(0, 174, 255, 0.35);
                     color: var(--text-white);
-                    box-shadow: 0 0 12px rgba(0, 174, 255, 0.18);
+                    box-shadow: 0 0 14px rgba(0, 174, 255, 0.22);
+
+                    &:hover {
+                        background: rgba(0, 174, 255, 0.20);
+                        border-color: rgba(0, 174, 255, 0.50);
+                        box-shadow: 0 0 20px rgba(0, 174, 255, 0.32);
+                    }
                 }
 
                 &.timeline-future .parag {
@@ -6326,8 +6358,6 @@ body.mac-fullscreen-mode {
                         width: 68px;
                         font-size: 12.5px;
                         padding: 6px 8px;
-                        background: var(--pill-bg);
-                        border: 1px solid var(--pill-border);
                     }
 
                     & .parag {
@@ -6601,8 +6631,6 @@ body.mac-fullscreen-mode {
                         width: 58px;
                         font-size: 12px;
                         padding: 5px 6px;
-                        background: var(--pill-bg);
-                        border: 1px solid var(--pill-border);
                     }
 
                     &::after {
