@@ -2383,98 +2383,218 @@ function initMenuInteractions() {
     });
   });
 
-  // Control Center Popover
+  // Control Center Popover (macOS Sonoma / Sequoia Authentic)
   ccBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
     if (activePopover) { closeAllPopovers(); return; }
-    const track = musicTracks[currentTrackIdx];
+    let track = musicTracks[currentTrackIdx];
 
     const html = `
       <div class="control-center-panel">
-        <div class="cc-row top-modules">
-          <div class="cc-module connectivity-box">
-            <div class="cc-toggle-item ${settingsState.wifi ? 'active' : ''}" id="cc-tog-wifi">
-              <span class="cc-icon-circle">${SVG_ICONS.wifi}</span>
-              <div><div class="cc-label">Wi-Fi</div><small>${settingsState.wifi ? 'Gabriel-5G' : 'Off'}</small></div>
+        <!-- Top Modules: 2 columns (Connectivity & Quick Controls) -->
+        <div class="cc-grid-top">
+          <div class="cc-card cc-connectivity">
+            <div class="cc-conn-row ${settingsState.wifi ? 'active' : ''}" id="cc-tog-wifi">
+              <span class="cc-round-icon">${SVG_ICONS.wifi}</span>
+              <div class="cc-conn-text">
+                <span class="cc-conn-title">Wi-Fi</span>
+                <span class="cc-conn-sub" id="cc-wifi-sub">${settingsState.wifi ? settingsState.wifiNetwork : 'Off'}</span>
+              </div>
+              <span class="cc-chevron">›</span>
             </div>
-            <div class="cc-toggle-item ${settingsState.bluetooth ? 'active' : ''}" id="cc-tog-bt">
-              <span class="cc-icon-circle">${SVG_ICONS.bluetooth}</span>
-              <div><div class="cc-label">Bluetooth</div><small>${settingsState.bluetooth ? 'On' : 'Off'}</small></div>
+            <div class="cc-conn-row ${settingsState.bluetooth ? 'active' : ''}" id="cc-tog-bt">
+              <span class="cc-round-icon">${SVG_ICONS.bluetooth}</span>
+              <div class="cc-conn-text">
+                <span class="cc-conn-title">Bluetooth</span>
+                <span class="cc-conn-sub" id="cc-bt-sub">${settingsState.bluetooth ? 'On' : 'Off'}</span>
+              </div>
+              <span class="cc-chevron">›</span>
             </div>
-            <div class="cc-toggle-item ${settingsState.airdrop ? 'active' : ''}" id="cc-tog-airdrop">
-              <span class="cc-icon-circle">${SVG_ICONS.airdrop}</span>
-              <div><div class="cc-label">AirDrop</div><small>${settingsState.airdrop ? 'Contacts' : 'Off'}</small></div>
+            <div class="cc-conn-row ${settingsState.airdrop ? 'active' : ''}" id="cc-tog-airdrop">
+              <span class="cc-round-icon">${SVG_ICONS.airdrop}</span>
+              <div class="cc-conn-text">
+                <span class="cc-conn-title">AirDrop</span>
+                <span class="cc-conn-sub" id="cc-ad-sub">${settingsState.airdrop ? 'Contacts Only' : 'Off'}</span>
+              </div>
+              <span class="cc-chevron">›</span>
             </div>
           </div>
-          <div class="cc-column right-tiles">
-            <div class="cc-tile ${settingsState.darkmode ? 'active' : ''}" id="cc-tog-dark">
-              <span class="tile-icon">${SVG_ICONS.moon}</span>
-              <span>Dark Mode</span>
+
+          <div class="cc-right-stack">
+            <div class="cc-card cc-tile ${settingsState.focusMode ? 'active' : ''}" id="cc-tog-focus">
+              <span class="cc-round-icon purple">${SVG_ICONS.moon}</span>
+              <div class="cc-tile-text">
+                <span class="cc-tile-title">Focus</span>
+                <span class="cc-tile-sub" id="cc-focus-sub">${settingsState.focusMode ? 'Do Not Disturb' : 'Off'}</span>
+              </div>
             </div>
-            <div class="cc-tile" id="cc-open-calc">
-              <span class="tile-icon">${SVG_ICONS.calculator}</span>
-              <span>Calculator</span>
+            <div class="cc-card cc-tile ${settingsState.darkmode ? 'active' : ''}" id="cc-tog-dark">
+              <span class="cc-round-icon blue">${SVG_ICONS.sun}</span>
+              <div class="cc-tile-text">
+                <span class="cc-tile-title">Dark Mode</span>
+                <span class="cc-tile-sub" id="cc-dark-sub">${settingsState.darkmode ? 'On' : 'Off'}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="cc-slider-card">
-          <div class="slider-title">Display (${settingsState.brightness}%)</div>
-          <input type="range" class="macos-slider big" id="cc-disp-slider" min="20" max="100" value="${settingsState.brightness}" />
-        </div>
-
-        <div class="cc-slider-card">
-          <div class="slider-title">Sound (${settingsState.soundVolume}%)</div>
-          <input type="range" class="macos-slider big" id="cc-sound-slider" min="0" max="100" value="${settingsState.soundVolume}" />
-        </div>
-
-        <div class="cc-now-playing-card">
-          <div class="mini-cover" style="background:${track.color};">${track.icon}</div>
-          <div class="mini-meta">
-            <strong>${track.title}</strong>
-            <small>${track.artist.split('•')[0]}</small>
+        <!-- Display Capsule Slider Card -->
+        <div class="cc-card cc-slider-box">
+          <div class="cc-slider-header">
+            <span class="cc-slider-title">Display</span>
+            <span class="cc-slider-value" id="cc-disp-val">${settingsState.brightness}%</span>
           </div>
-          <button class="cc-play-btn" id="cc-play-btn">${isMusicPlaying ? '⏸' : '▶'}</button>
+          <div class="cc-capsule-track">
+            <div class="cc-capsule-fill" id="cc-disp-fill" style="width: ${settingsState.brightness}%"></div>
+            <span class="cc-capsule-icon">${SVG_ICONS.sun}</span>
+            <input type="range" class="cc-capsule-input" id="cc-disp-slider" min="15" max="100" value="${settingsState.brightness}" />
+          </div>
+        </div>
+
+        <!-- Sound Capsule Slider Card -->
+        <div class="cc-card cc-slider-box">
+          <div class="cc-slider-header">
+            <span class="cc-slider-title">Sound</span>
+            <span class="cc-slider-value" id="cc-sound-val">${settingsState.soundVolume}%</span>
+          </div>
+          <div class="cc-capsule-track">
+            <div class="cc-capsule-fill" id="cc-sound-fill" style="width: ${settingsState.soundVolume}%"></div>
+            <span class="cc-capsule-icon">${SVG_ICONS.sound}</span>
+            <input type="range" class="cc-capsule-input" id="cc-sound-slider" min="0" max="100" value="${settingsState.soundVolume}" />
+          </div>
+        </div>
+
+        <!-- Now Playing Media Card -->
+        <div class="cc-card cc-now-playing-box">
+          <div class="cc-np-cover" id="cc-np-open-music" title="Open Music" style="background:${track.color};">
+            ${track.icon}
+          </div>
+          <div class="cc-np-meta" id="cc-np-meta" title="Open Music">
+            <div class="cc-np-title" id="cc-np-title">${track.title}</div>
+            <div class="cc-np-artist" id="cc-np-artist">${track.artist.split('•')[0]}</div>
+          </div>
+          <div class="cc-np-controls">
+            <button class="cc-np-btn" id="cc-np-prev" title="Previous Track">${SVG_ICONS.prev}</button>
+            <button class="cc-np-btn play-circle" id="cc-play-btn" title="${isMusicPlaying ? 'Pause' : 'Play'}">
+              ${isMusicPlaying ? SVG_ICONS.pause : SVG_ICONS.play}
+            </button>
+            <button class="cc-np-btn" id="cc-np-next" title="Next Track">${SVG_ICONS.next}</button>
+          </div>
         </div>
       </div>`;
 
     openPopover(ccBtn, html, 'cc-popover');
 
+    // Wi-Fi
     const wifiTog = document.getElementById('cc-tog-wifi');
     wifiTog?.addEventListener('click', () => {
       updateWifiSystemState(!settingsState.wifi);
+      wifiTog.classList.toggle('active', settingsState.wifi);
+      const sub = document.getElementById('cc-wifi-sub');
+      if (sub) sub.textContent = settingsState.wifi ? settingsState.wifiNetwork : 'Off';
     });
 
+    // Bluetooth
     const btTog = document.getElementById('cc-tog-bt');
     btTog?.addEventListener('click', () => {
       settingsState.bluetooth = !settingsState.bluetooth;
       btTog.classList.toggle('active', settingsState.bluetooth);
+      const sub = document.getElementById('cc-bt-sub');
+      if (sub) sub.textContent = settingsState.bluetooth ? 'On' : 'Off';
     });
 
+    // AirDrop
+    const adTog = document.getElementById('cc-tog-airdrop');
+    adTog?.addEventListener('click', () => {
+      settingsState.airdrop = !settingsState.airdrop;
+      adTog.classList.toggle('active', settingsState.airdrop);
+      const sub = document.getElementById('cc-ad-sub');
+      if (sub) sub.textContent = settingsState.airdrop ? 'Contacts Only' : 'Off';
+    });
+
+    // Focus / Do Not Disturb
+    const focusTog = document.getElementById('cc-tog-focus');
+    focusTog?.addEventListener('click', () => {
+      settingsState.focusMode = !settingsState.focusMode;
+      focusTog.classList.toggle('active', settingsState.focusMode);
+      const sub = document.getElementById('cc-focus-sub');
+      if (sub) sub.textContent = settingsState.focusMode ? 'Do Not Disturb' : 'Off';
+    });
+
+    // Dark Mode
     const darkTog = document.getElementById('cc-tog-dark');
     darkTog?.addEventListener('click', () => {
       settingsState.darkmode = !settingsState.darkmode;
       darkTog.classList.toggle('active', settingsState.darkmode);
+      const sub = document.getElementById('cc-dark-sub');
+      if (sub) sub.textContent = settingsState.darkmode ? 'On' : 'Off';
       document.querySelector('.macos-container')?.classList.toggle('light-mode', !settingsState.darkmode);
     });
 
-    document.getElementById('cc-open-calc')?.addEventListener('click', () => {
-      closeAllPopovers();
-      spawnOrFocusWindow('Calculator');
-    });
-
-    document.getElementById('cc-disp-slider')?.addEventListener('input', (e) => {
-      settingsState.brightness = Number(e.target.value);
+    // Sliders
+    const dispSlider = document.getElementById('cc-disp-slider');
+    const dispFill = document.getElementById('cc-disp-fill');
+    const dispVal = document.getElementById('cc-disp-val');
+    dispSlider?.addEventListener('input', (e) => {
+      const val = Number(e.target.value);
+      settingsState.brightness = val;
+      if (dispFill) dispFill.style.width = `${val}%`;
+      if (dispVal) dispVal.textContent = `${val}%`;
       const overlay = document.getElementById('mac-brightness-overlay');
-      if (overlay) overlay.style.opacity = `${(100 - settingsState.brightness) * 0.007}`;
+      if (overlay) overlay.style.opacity = `${(100 - val) * 0.007}`;
     });
 
-    document.getElementById('cc-sound-slider')?.addEventListener('input', (e) => {
-      settingsState.soundVolume = Number(e.target.value);
+    const soundSlider = document.getElementById('cc-sound-slider');
+    const soundFill = document.getElementById('cc-sound-fill');
+    const soundVal = document.getElementById('cc-sound-val');
+    soundSlider?.addEventListener('input', (e) => {
+      const val = Number(e.target.value);
+      settingsState.soundVolume = val;
+      if (soundFill) soundFill.style.width = `${val}%`;
+      if (soundVal) soundVal.textContent = `${val}%`;
     });
 
-    document.getElementById('cc-play-btn')?.addEventListener('click', () => {
+    // Music Card Controls
+    const playBtn = document.getElementById('cc-play-btn');
+    const npCover = document.getElementById('cc-np-open-music');
+    const npMeta = document.getElementById('cc-np-meta');
+    const npTitle = document.getElementById('cc-np-title');
+    const npArtist = document.getElementById('cc-np-artist');
+
+    function updateNowPlayingDisplay() {
+      track = musicTracks[currentTrackIdx];
+      if (npCover) {
+        npCover.style.background = track.color;
+        npCover.innerHTML = track.icon;
+      }
+      if (npTitle) npTitle.textContent = track.title;
+      if (npArtist) npArtist.textContent = track.artist.split('•')[0];
+    }
+
+    playBtn?.addEventListener('click', (ev) => {
+      ev.stopPropagation();
       isMusicPlaying = !isMusicPlaying;
+      if (playBtn) playBtn.innerHTML = isMusicPlaying ? SVG_ICONS.pause : SVG_ICONS.play;
+    });
+
+    document.getElementById('cc-np-prev')?.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      currentTrackIdx = (currentTrackIdx - 1 + musicTracks.length) % musicTracks.length;
+      updateNowPlayingDisplay();
+    });
+
+    document.getElementById('cc-np-next')?.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      currentTrackIdx = (currentTrackIdx + 1) % musicTracks.length;
+      updateNowPlayingDisplay();
+    });
+
+    npCover?.addEventListener('click', () => {
+      closeAllPopovers();
+      spawnOrFocusWindow('Music');
+    });
+
+    npMeta?.addEventListener('click', () => {
       closeAllPopovers();
       spawnOrFocusWindow('Music');
     });
