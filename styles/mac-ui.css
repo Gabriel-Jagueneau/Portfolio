@@ -120,6 +120,7 @@
                                 overflow: hidden;
                                 white-space: nowrap;
                                 flex-shrink: 0;
+                                min-width: 0;
 
                                 & .apple-logo {
                                     font-size: 11px;
@@ -171,6 +172,7 @@
                                 justify-content: flex-end;
                                 white-space: nowrap;
                                 flex-shrink: 0;
+                                min-width: 0;
 
                                 & .menu-item {
                                     padding: 1px 3px;

@@ -372,6 +372,34 @@ let activePopover = null;
 // Map of open windows: Map<appName, WindowInstance>
 const openWindows = new Map();
 
+function updateMenuBarLayout() {
+  const topBar = document.querySelector('.top-bar');
+  const leftSide = topBar?.querySelector('.left-side');
+  const rightSide = topBar?.querySelector('.right-side');
+  const windowItem = document.getElementById('mac-menu-item-window') || topBar?.querySelector('.menu-item[data-menu="window"]');
+  const helpItem = document.getElementById('mac-menu-item-help') || topBar?.querySelector('.menu-item[data-menu="help"]');
+  const batteryItem = document.getElementById('mac-menu-battery');
+
+  if (!topBar || !leftSide || !rightSide || !windowItem || !helpItem) return;
+
+  // 1. Temporarily return both Window and Help to the left side to measure natural fit
+  leftSide.appendChild(windowItem);
+  leftSide.appendChild(helpItem);
+
+  // Available width for left-side before reaching the notch curve
+  const barWidth = topBar.offsetWidth;
+  const notchSpacer = topBar.querySelector('.notch-center-spacer');
+  const spacerWidth = notchSpacer ? notchSpacer.offsetWidth : 110;
+  // Safety limit: comfortable margin before the notch curve begins
+  const safeLeftLimit = Math.floor((barWidth - spacerWidth) / 2) - 8;
+
+  // 2. If left side is crushed or touches the notch boundary, dynamically pass Window & Help across
+  if (leftSide.scrollWidth > safeLeftLimit) {
+    rightSide.insertBefore(helpItem, batteryItem || rightSide.firstChild);
+    rightSide.insertBefore(windowItem, helpItem);
+  }
+}
+
 function setActiveApp(appName) {
   if (activeAppNameEl) {
     const displayNames = {
@@ -385,6 +413,7 @@ function setActiveApp(appName) {
       "Settings": "Settings"
     };
     activeAppNameEl.textContent = displayNames[appName] || appName || 'Finder';
+    updateMenuBarLayout();
   }
 }
 
@@ -3157,6 +3186,13 @@ export function initMacUI() {
   initMenuInteractions();
   initInteractiveListeners();
   initDesktopObserver();
+  updateMenuBarLayout();
+
+  window.addEventListener('resize', updateMenuBarLayout);
+  const topBarEl = document.querySelector('.top-bar');
+  if (topBarEl && window.ResizeObserver) {
+    new ResizeObserver(() => updateMenuBarLayout()).observe(topBarEl);
+  }
 
   // Initial setup: spawn Terminal by default on start and begin gentle auto-spawn
   if (desktop && openWindows.size === 0) {
