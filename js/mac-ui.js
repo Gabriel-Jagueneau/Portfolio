@@ -2227,6 +2227,7 @@ function makeDraggable(win, instance) {
 
     e.preventDefault();
     focusWindow(instance);
+    win.classList.add('is-dragging');
 
     const startX = e.clientX;
     const startY = e.clientY;
@@ -2253,6 +2254,7 @@ function makeDraggable(win, instance) {
     }
 
     function onMouseUp() {
+      win.classList.remove('is-dragging');
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     }
