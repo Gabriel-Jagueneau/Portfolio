@@ -55,57 +55,33 @@ let isMacInteractive = false;
 
 export function getScreenCenter() {
   const cardsContainer = document.getElementById('cards-spinner') || zone;
-  const screenEl = document.querySelector('#imagurrrr .inside') || document.querySelector('.macos-container');
+  // Centre exact de l'objet 3D du Mac (châssis + écran complets) et non uniquement l'écran
+  const mac = document.getElementById('imagurrrr') || document.getElementById('macbook-3d') || document.querySelector('.image-container');
 
-  if (screenEl && cardsContainer) {
-    const screenRect = screenEl.getBoundingClientRect();
-    const containerRect = cardsContainer.getBoundingClientRect();
-    if (screenRect.width > 0 && screenRect.height > 0 && containerRect.width > 0) {
-      return {
-        centerX: (screenRect.left - containerRect.left) + screenRect.width * 0.5,
-        centerY: (screenRect.top - containerRect.top) + screenRect.height * 0.5
-      };
-    }
-  }
-
-  // Exact fallback based on Mac screen proportion (screen center is at 50% X and 46.5% Y)
-  const mac = document.getElementById('imagurrrr') || document.querySelector('.image-container');
   if (mac && cardsContainer) {
     const macRect = mac.getBoundingClientRect();
     const containerRect = cardsContainer.getBoundingClientRect();
-    if (containerRect.width > 0) {
+    if (macRect.width > 0 && macRect.height > 0 && containerRect.width > 0) {
       return {
         centerX: (macRect.left - containerRect.left) + macRect.width * 0.5,
-        centerY: (macRect.top - containerRect.top) + macRect.height * 0.465
+        centerY: (macRect.top - containerRect.top) + macRect.height * 0.5
       };
     }
   }
 
   const baseW = zone ? zone.offsetWidth || 560 : 560;
   const baseH = zone ? zone.offsetHeight || 350 : 350;
-  return { centerX: baseW * 0.5, centerY: baseH * 0.465 };
+  return { centerX: baseW * 0.5, centerY: baseH * 0.5 };
 }
 
 function getBaseOrbitRadius(rectWidth) {
-  const screenEl = document.querySelector('#imagurrrr .inside') || document.querySelector('.macos-container');
-  if (screenEl) {
-    const sw = screenEl.getBoundingClientRect().width;
-    if (sw > 100) {
-      return Math.max(220, Math.min(275, sw * 0.48));
-    }
-  }
-  const w = rectWidth || (zone ? zone.getBoundingClientRect().width : 560);
-  return Math.max(220, Math.min(265, w * 0.40));
+  const container = document.getElementById('imagurrrr') || document.querySelector('.image-container') || zone;
+  const w = rectWidth || (container ? container.getBoundingClientRect().width : 640);
+  return Math.max(220, Math.min(270, w * 0.36));
 }
 
 export function setMacInteractiveMode(active) {
   isMacInteractive = Boolean(active);
-  if (!zone) return;
-  const rect = zone.getBoundingClientRect();
-  const normalRadius = getBaseOrbitRadius(rect.width);
-  bodies.forEach(b => {
-    b.targetRadius = normalRadius;
-  });
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -119,8 +95,8 @@ export function initializeOrbits() {
   const n = allCards.length || 1;
 
   bodies = allCards.map((el, i) => {
-    const w = el.offsetWidth || 230;
-    const h = el.offsetHeight || 96;
+    const w = 230;
+    const h = 96;
     const mass = Math.max(1, PHYSICS.DENSITY * w * h);
 
     // Symmetrical 4-quadrant circular distribution (framing the laptop screen)
@@ -166,18 +142,14 @@ export function initializeOrbits() {
   resolveCollisions(20);
 }
 
-function updateDimensions() {
+export function updateDimensions() {
   if (!zone || !bodies.length) return;
   const rect = zone.getBoundingClientRect();
-  const normalRadius = getBaseOrbitRadius(rect.width);
-  const radius = isMacInteractive
-    ? normalRadius * 1.35
-    : normalRadius;
+  const radius = getBaseOrbitRadius(rect.width);
 
-  bodies.forEach((b, i) => {
-    const el = allCards[i];
-    b.w = el.offsetWidth || b.w;
-    b.h = el.offsetHeight || b.h;
+  bodies.forEach((b) => {
+    b.w = 230;
+    b.h = 96;
     b.mass = Math.max(1, PHYSICS.DENSITY * b.w * b.h);
     b.invMass = 1 / b.mass;
     b.targetRadius = radius;
@@ -399,9 +371,9 @@ function physicsLoop() {
       continue;
     }
 
-    // Advance orbit (only ticks when not in interactive mac mode)
-    const radiusLerp = isMacInteractive ? 0.05 : PHYSICS.ORBIT_RADIUS_LERP;
-    b.radius += (b.targetRadius - b.radius) * radiusLerp;
+    // Advance orbit with subtle radial expansion during disappearance
+    const activeRadius = isMacInteractive ? b.targetRadius * 1.15 : b.targetRadius;
+    b.radius += (activeRadius - b.radius) * (isMacInteractive ? 0.05 : PHYSICS.ORBIT_RADIUS_LERP);
 
     if (!isMacInteractive) {
       b.angle += PHYSICS.ORBIT_SPEED;
@@ -410,9 +382,8 @@ function physicsLoop() {
     // Orbit spring: F = K × (orbitTarget - position)
     const orbitX = centerX + b.radius * Math.cos(b.angle);
     const orbitY = centerY + b.radius * Math.sin(b.angle);
-    const springK = isMacInteractive ? 0.025 : PHYSICS.ORBIT_K;
-    b.vx += (orbitX - b.x) * springK;
-    b.vy += (orbitY - b.y) * springK;
+    b.vx += (orbitX - b.x) * PHYSICS.ORBIT_K;
+    b.vy += (orbitY - b.y) * PHYSICS.ORBIT_K;
 
     // Air drag
     b.vx *= PHYSICS.DRAG;
@@ -441,10 +412,6 @@ function physicsLoop() {
 
   // ── Write to DOM
   for (const b of bodies) {
-    if (b.el.offsetWidth > 50 && b.el.offsetWidth !== b.w) {
-      b.w = b.el.offsetWidth;
-      b.h = b.el.offsetHeight;
-    }
     b.el.style.left = (b.x - b.w * 0.5) + "px";
     b.el.style.top = (b.y - b.h * 0.5) + "px";
   }

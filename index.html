@@ -42,9 +42,16 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 
 <body id="body" class="notranslate">
+    <!-- Écran initial de la couleur du fond (durée 0.5s pour l'évaluation matérielle) -->
+    <div id="perf-init-curtain" class="perf-init-curtain"></div>
+    <script type="module">
+        import { initPerfOptimizer } from './js/perf-optimizer.js';
+        initPerfOptimizer();
+    </script>
     <!-- Pure Black Screen WebGL Preloader Overlay (Zero Text) -->
     <div id="preloader" class="preloader"></div>
     <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" aria-hidden="true" focusable="false">
@@ -141,14 +148,21 @@
     <section id="home">
 
         <div class="quick-desc">
-            <div class="names" data-aos="fade-down" data-aos-duration="1400">
-                <div class="name">Gabriel</div>
-                <div class="name">JAGUENEAU</div>
+            <div class="names">
+                <div class="name"><span class="hero-word" style="--w-i: 0;">Gabriel</span></div>
+                <div class="name"><span class="hero-word" style="--w-i: 1;">JAGUENEAU</span></div>
             </div>
-            <div class="description" data-aos="fade-up" data-aos-duration="1400">Future Agronomy Engineer,
-                Student-Entrepreneur and Multi-stack developer</div>
-            <div class="hero-actions" data-aos="fade-up" data-aos-duration="1400" data-aos-delay="200">
-                <a href="#projects" class="box-blur hero-btn">
+            <div class="description">
+                <span class="hero-word" style="--w-i: 2;">Future</span>
+                <span class="hero-word" style="--w-i: 3;">Agronomy</span>
+                <span class="hero-word" style="--w-i: 4;">Engineer,</span>
+                <span class="hero-word" style="--w-i: 5;">Student-Entrepreneur</span>
+                <span class="hero-word" style="--w-i: 6;">and</span>
+                <span class="hero-word" style="--w-i: 7;">Multi-stack</span>
+                <span class="hero-word" style="--w-i: 8;">developer</span>
+            </div>
+            <div class="hero-actions">
+                <a href="#projects" class="box-blur hero-btn hero-btn-stagger" style="--btn-i: 0;">
                     <span>Projects</span>
                     <svg class="hero-btn-arrow" viewBox="0 0 24 24" width="16" height="16" fill="none"
                         stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
@@ -156,12 +170,18 @@
                         <polyline points="12 5 19 12 12 19"></polyline>
                     </svg>
                 </a>
-                <a href="#contact" class="box-blur hero-btn contact-button">
+                <a href="#contact" class="box-blur hero-btn contact-button hero-btn-stagger" style="--btn-i: 1;">
                     <span>Contact</span>
                 </a>
             </div>
         </div>
         <div class="image-zone">
+            <!-- Halo lumineux immersif projeté par l'écran (Screen Atmosphere & Bloom) -->
+            <div class="mac-ambient-aura" aria-hidden="true">
+                <div class="aura-core"></div>
+                <div class="aura-spotlight"></div>
+            </div>
+
             <div class="cards" id="cards-spinner">
                 <div class="card cardage">
                     <div class="bg-cardage"></div>
@@ -188,11 +208,26 @@
                     <div class="note">You will see it's cool</div>
                 </div>
             </div>
-            <div id="imagurrrr" class="image-container">
+            <div id="imagurrrr" class="image-container" style="opacity: 0; filter: blur(28px);">
                 <div class="imagur">
-                    <img src="images/macbook.png" alt="" class="device">
-                    <div class="inside">
+                    <model-viewer id="macbook-3d" class="device macbook-3d-model"
+                        src="object/macbook_pro_m3_16_inch_2024.glb" loading="eager" reveal="auto"
+                        environment-image="neutral" shadow-intensity="0" interaction-prompt="none"
+                        camera-orbit="0deg 68deg 76%" camera-target="auto auto auto" field-of-view="auto" disable-zoom
+                        disable-pan disable-tap touch-action="none">
+                    </model-viewer>
+                    <!-- SVG Mask matériel précis du MacBook Pro M3 16" avec découpe du notch -->
+                    <svg width="0" height="0" style="position:absolute;pointer-events:none;" aria-hidden="true">
+                        <defs>
+                            <clipPath id="mac-screen-clip" clipPathUnits="userSpaceOnUse">
+                                <path d="M 12 0 H 425 a 5 5 0 0 1 5 5 v 7 a 5 5 0 0 0 5 5 h 90 a 5 5 0 0 0 5 -5 v -7 a 5 5 0 0 1 5 -5 H 948 a 12 12 0 0 1 12 12 V 600 H 0 V 12 a 12 12 0 0 1 12 -12 Z" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                    <div class="inside" style="opacity: 0; visibility: hidden; pointer-events: none;">
                         <div class="macos-container">
+                            <!-- Fond d'écran dynamique Paper Shaders / Wayglim -->
+                            <div data-wayglim="wl-1adua3k" class="mac-desktop-wallpaper" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;pointer-events:none;background:rgb(5, 5, 10);z-index:0;"></div>
                             <nav class="top-bar">
                                 <div class="left-side">
                                     <span class="apple-logo" id="mac-menu-apple" title="Apple Menu"><svg width="12"
@@ -208,7 +243,12 @@
                                     <span class="menu-item" data-menu="window" id="mac-menu-item-window">Window</span>
                                     <span class="menu-item" data-menu="help" id="mac-menu-item-help">Help</span>
                                 </div>
-                                <div class="notch-center-spacer"></div>
+                                <div class="notch-center-spacer">
+                                    <div class="mac-dynamic-island" id="mac-dynamic-island"
+                                        title="FaceTime HD Camera & Dynamic Island">
+                                        <span class="island-camera"></span>
+                                    </div>
+                                </div>
                                 <div class="right-side">
                                     <span class="menu-status battery" id="mac-menu-battery" title="Battery: 100%"><svg
                                             width="17" height="10" viewBox="0 0 26 12" fill="none"
@@ -254,49 +294,56 @@
                                     <!-- Finder -->
                                     <div class="dock-item" data-app="Finder" title="Finder">
                                         <div class="dock-tooltip">Finder</div>
-                                        <img src="images/mac-icons/finder.png" alt="Finder" class="dock-icon" draggable="false" />
+                                        <img src="images/mac-icons/finder.png" alt="Finder" class="dock-icon"
+                                            draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
                                     <!-- Safari -->
                                     <div class="dock-item" data-app="Safari" title="Safari">
                                         <div class="dock-tooltip">Safari</div>
-                                        <img src="images/mac-icons/safari.png" alt="Safari" class="dock-icon" draggable="false" />
+                                        <img src="images/mac-icons/safari.png" alt="Safari" class="dock-icon"
+                                            draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
                                     <!-- Terminal -->
                                     <div class="dock-item" data-app="Terminal" title="Terminal">
                                         <div class="dock-tooltip">Terminal</div>
-                                        <img src="images/mac-icons/terminal.png" alt="Terminal" class="dock-icon" draggable="false" />
+                                        <img src="images/mac-icons/terminal.png" alt="Terminal" class="dock-icon"
+                                            draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
                                     <!-- Visual Studio Code -->
                                     <div class="dock-item" data-app="VSCode" title="Visual Studio Code">
                                         <div class="dock-tooltip">VS Code</div>
-                                        <img src="images/mac-icons/vscode.png" alt="Visual Studio Code" class="dock-icon" draggable="false" />
+                                        <img src="images/mac-icons/vscode.png" alt="Visual Studio Code"
+                                            class="dock-icon" draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
                                     <!-- Apple Music -->
                                     <div class="dock-item" data-app="Music" title="Music">
                                         <div class="dock-tooltip">Music</div>
-                                        <img src="images/mac-icons/music.png" alt="Music" class="dock-icon" draggable="false" />
+                                        <img src="images/mac-icons/music.png" alt="Music" class="dock-icon"
+                                            draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
                                     <!-- Calculator -->
                                     <div class="dock-item" data-app="Calculator" title="Calculator">
                                         <div class="dock-tooltip">Calculator</div>
-                                        <img src="images/mac-icons/calculator.png" alt="Calculator" class="dock-icon" draggable="false" />
+                                        <img src="images/mac-icons/calculator.png" alt="Calculator" class="dock-icon"
+                                            draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
                                     <!-- System Settings -->
                                     <div class="dock-item" data-app="Settings" title="System Settings">
                                         <div class="dock-tooltip">Settings</div>
-                                        <img src="images/mac-icons/settings.png" alt="System Settings" class="dock-icon" draggable="false" />
+                                        <img src="images/mac-icons/settings.png" alt="System Settings" class="dock-icon"
+                                            draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
@@ -305,7 +352,8 @@
                                     <!-- Trash -->
                                     <div class="dock-item" title="Trash" data-app="Trash">
                                         <div class="dock-tooltip">Trash</div>
-                                        <img src="images/mac-icons/trash.png" alt="Trash" class="dock-icon" draggable="false" />
+                                        <img src="images/mac-icons/trash.png" alt="Trash" class="dock-icon"
+                                            draggable="false" />
                                         <span class="dock-dot"></span>
                                     </div>
 
@@ -1213,7 +1261,7 @@
         </div>
         <div class="body">
             <span>Hi, glad to meet</span>
-            <div id="confetti-generator" class="highlight">you !</div>
+            <div id="confetti-generator" class="highlight"><span class="confetti-inner">you !</span></div>
             <span>Contact me via my socials bellow !</span>
         </div>
         <div class="feet">
@@ -1389,6 +1437,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/wayglim.js"></script>
     <script type="module" src="script.js"></script>
 </body>
 

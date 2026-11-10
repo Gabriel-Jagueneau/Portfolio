@@ -3,7 +3,7 @@
 // creating a fluid multi-card radial gradient halo with zero layout thrashing.
 
 export function initCardHover() {
-  const selector = ".card, .carder, .hero-btn, .diploma, .parag, .date, #contact .head, #contact .body, #contact .bottom .info, #navBar";
+  const selector = ".card, .carder, .hero-btn, .diploma, .parag, .date, #contact .head, #contact .body, #contact .bottom .info, #navBar, .mac-ambient-aura";
   let rafPending = false;
   let lastEvent = null;
 

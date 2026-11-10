@@ -200,14 +200,39 @@
             font-weight: 700;
             font-size: 16px;
             cursor: pointer;
-            background: linear-gradient(45deg, var(--accent-yellow), var(--accent-blue), var(--accent-magenta));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            background: none;
+            -webkit-text-fill-color: initial;
 
-            &:hover {
+            & .confetti-inner {
+                display: inline-block;
+                background: linear-gradient(45deg, var(--accent-yellow), var(--accent-blue), var(--accent-magenta));
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                transition: transform 0.2s ease, filter 0.2s ease;
+                pointer-events: none;
+                transform-origin: center center;
+                will-change: transform, filter;
+            }
+
+            &:hover .confetti-inner {
                 transform: scale(1.15);
+            }
+
+            &.is-escalating .confetti-inner {
+                animation: confetti-escalate 2s linear forwards;
+            }
+
+            &.is-wild .confetti-inner {
+                animation: confetti-wild 0.055s infinite alternate ease-in-out;
+            }
+
+            &.is-calming .confetti-inner {
+                animation: confetti-calm 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
             }
         }
     }
@@ -335,6 +360,93 @@
                 stroke: url(#portfolio-gradient);
             }
         }
+    }
+}
+
+/* ─── Confetti Shake & Tremble Animations ─── */
+@keyframes confetti-escalate {
+    0%   { transform: scale(1.15) translate(0, 0) rotate(0deg); }
+    5%   { transform: scale(1.15) translate(-0.4px, 0.3px) rotate(-0.3deg); }
+    10%  { transform: scale(1.15) translate(0.5px, -0.3px) rotate(0.4deg); }
+    15%  { transform: scale(1.16) translate(-0.6px, -0.4px) rotate(-0.5deg); }
+    20%  { transform: scale(1.16) translate(0.7px, 0.5px) rotate(0.6deg); }
+    25%  { transform: scale(1.16) translate(-0.8px, 0.6px) rotate(-0.7deg); }
+    30%  { transform: scale(1.16) translate(0.9px, -0.7px) rotate(0.8deg); }
+    35%  { transform: scale(1.16) translate(-1.1px, -0.8px) rotate(-1.0deg); }
+    40%  { transform: scale(1.17) translate(1.2px, 0.8px) rotate(1.1deg); }
+    45%  { transform: scale(1.17) translate(-1.3px, 1.0px) rotate(-1.2deg); }
+    50%  { transform: scale(1.17) translate(1.5px, -1.0px) rotate(1.4deg); }
+    55%  { transform: scale(1.17) translate(-1.6px, -1.2px) rotate(-1.5deg); }
+    60%  { transform: scale(1.18) translate(1.8px, 1.2px) rotate(1.7deg); }
+    65%  { transform: scale(1.18) translate(-1.9px, 1.4px) rotate(-1.8deg); }
+    70%  { transform: scale(1.18) translate(2.1px, -1.4px) rotate(2.0deg); }
+    75%  { transform: scale(1.18) translate(-2.2px, -1.6px) rotate(-2.1deg); }
+    80%  { transform: scale(1.19) translate(2.3px, 1.6px) rotate(2.2deg); }
+    85%  { transform: scale(1.19) translate(-2.4px, 1.7px) rotate(-2.3deg); }
+    90%  { transform: scale(1.19) translate(2.5px, -1.8px) rotate(2.4deg); }
+    95%  { transform: scale(1.20) translate(-2.6px, -1.9px) rotate(-2.5deg); }
+    100% { transform: scale(1.20) translate(2.6px, 2.0px) rotate(2.5deg); }
+}
+
+@keyframes confetti-wild {
+    0% {
+        transform: scale(1.18) translate(-2.5px, -1.5px) rotate(-2.5deg);
+        filter: drop-shadow(0 0 5px rgba(238, 255, 0, 0.6));
+    }
+    20% {
+        transform: scale(1.20) translate(2.5px, 2px) rotate(3deg);
+        filter: drop-shadow(0 0 6px rgba(0, 174, 255, 0.7));
+    }
+    40% {
+        transform: scale(1.17) translate(-3px, 1.5px) rotate(-3deg);
+        filter: drop-shadow(0 0 7px rgba(255, 0, 242, 0.7));
+    }
+    60% {
+        transform: scale(1.19) translate(2px, -2px) rotate(2.5deg);
+        filter: drop-shadow(0 0 6px rgba(0, 255, 204, 0.7));
+    }
+    80% {
+        transform: scale(1.18) translate(3px, -1.5px) rotate(-2.5deg);
+        filter: drop-shadow(0 0 7px rgba(255, 51, 102, 0.7));
+    }
+    100% {
+        transform: scale(1.20) translate(-2px, 2.5px) rotate(2deg);
+        filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.6));
+    }
+}
+
+@keyframes confetti-calm {
+    0% {
+        transform: scale(1.18) translate(-2px, 1.5px) rotate(-2deg);
+        filter: drop-shadow(0 0 5px rgba(255, 0, 242, 0.5));
+    }
+    15% {
+        transform: scale(1.14) translate(1.8px, -1.2px) rotate(1.8deg);
+        filter: drop-shadow(0 0 4px rgba(0, 174, 255, 0.4));
+    }
+    30% {
+        transform: scale(1.10) translate(-1.2px, 1px) rotate(-1.2deg);
+        filter: drop-shadow(0 0 2px rgba(238, 255, 0, 0.3));
+    }
+    45% {
+        transform: scale(1.07) translate(0.9px, -0.7px) rotate(0.8deg);
+        filter: none;
+    }
+    60% {
+        transform: scale(1.04) translate(-0.5px, 0.4px) rotate(-0.5deg);
+        filter: none;
+    }
+    75% {
+        transform: scale(1.02) translate(0.3px, -0.2px) rotate(0.2deg);
+        filter: none;
+    }
+    90% {
+        transform: scale(1.01) translate(-0.1px, 0.1px) rotate(-0.1deg);
+        filter: none;
+    }
+    100% {
+        transform: scale(1) translate(0, 0) rotate(0deg);
+        filter: none;
     }
 }
 

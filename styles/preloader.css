@@ -1,3 +1,24 @@
+/* ─── Écran initial de benchmark et d'optimisation (0.5s couleur du background) ─── */
+.perf-init-curtain {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-main, rgb(25, 25, 25));
+    z-index: 10000000;
+    pointer-events: all;
+    opacity: 1;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s ease;
+    will-change: opacity;
+}
+
+.perf-init-curtain.curtain-hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
 /* ─── Pure Black WebGL 3D Tree Preloader & Reveal ─────────────────────────── */
 .preloader {
     position: fixed;
@@ -451,4 +472,284 @@ body.site-revealed #nav-show .nav-show-roller {
         transform: scale(1.22);
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Performance Tiers Optimizations (potato, low, medium, high)
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── POTATO TIER (Extreme Optimization) ── */
+html.perf-potato *,
+body.perf-potato * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+html.perf-potato header#navBar,
+html.perf-potato .card,
+html.perf-potato #nav-show,
+html.perf-potato .macos-container nav.top-bar,
+html.perf-potato .mac-app-window,
+html.perf-potato .dock-container {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(25, 27, 32, 0.96) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+}
+
+html.perf-potato .webgl-tree-canvas {
+    filter: none !important;
+    -webkit-filter: none !important;
+}
+
+html.perf-potato body.site-revealed .webgl-tree-canvas {
+    opacity: 0.35 !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+}
+
+html.perf-potato #home .hero-word,
+html.perf-potato #home .hero-btn-stagger {
+    filter: none !important;
+    -webkit-filter: none !important;
+}
+
+/* ── LOW TIER ── */
+html.perf-low header#navBar,
+html.perf-low .card,
+html.perf-low #nav-show,
+html.perf-low .macos-container nav.top-bar {
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+}
+
+html.perf-low body.site-revealed .webgl-tree-canvas {
+    filter: blur(6px) brightness(0.65) !important;
+    -webkit-filter: blur(6px) brightness(0.65) !important;
+}
+
+/* ── MEDIUM TIER ── */
+html.perf-medium header#navBar,
+html.perf-medium .card {
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+}
+
+html.perf-medium body.site-revealed .webgl-tree-canvas {
+    filter: blur(10px) brightness(0.60) !important;
+    -webkit-filter: blur(10px) brightness(0.60) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   Notification discrète de Performance & Menu Déroulant (Bas Droite)
+   Style 'Pill de date' (About Me) morphant en petit icône demi-arc de cercle
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.perf-badge-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    left: auto;
+    z-index: 99999;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    width: 192px;
+    height: 32px;
+    padding: 0 12px 0 0;
+    gap: 0;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-md);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+    user-select: none;
+    cursor: pointer;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+        width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        padding 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        background-color 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+    will-change: width, padding, opacity, transform;
+}
+
+/* Reflet spéculaire fluide identique aux pills About Me */
+.perf-badge-widget::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.05;
+    transition: 0.5s ease;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            aliceblue,
+            transparent 40%);
+}
+
+.perf-badge-widget.is-visible {
+    opacity: 0.92;
+    transform: translateY(0);
+}
+
+.perf-badge-widget:hover {
+    background-color: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow: var(--shadow-lg);
+    opacity: 1 !important;
+}
+
+/* Petit engrenage icon : centré à 100% dans la boîte 32x32 */
+.perf-badge-widget .perf-gear-wrapper,
+.perf-badge-widget .perf-arc-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+}
+
+.perf-badge-widget .perf-gear-icon {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: auto;
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.perf-badge-widget:hover .perf-gear-wrapper,
+.perf-badge-widget:hover .perf-arc-wrapper {
+    color: var(--text-primary);
+}
+
+.perf-badge-widget:hover .perf-gear-icon {
+    transform: rotate(45deg);
+}
+
+.perf-badge-widget .perf-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    opacity: 1;
+    transform: translateX(0);
+    overflow: hidden;
+    transition:
+        opacity 0.28s ease,
+        transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.perf-badge-widget .perf-title {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+/* Menu déroulant compact */
+.perf-badge-widget .perf-select-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.perf-badge-widget .perf-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding-right: 14px;
+    cursor: pointer;
+    outline: none;
+    line-height: 1;
+}
+
+.perf-badge-widget .perf-select option {
+    background: #181a20;
+    color: #f0f8ff;
+    font-size: 13px;
+    padding: 6px;
+}
+
+.perf-badge-widget .perf-select-arrow {
+    position: absolute;
+    right: 0;
+    pointer-events: none;
+    opacity: 0.65;
+    transition: opacity 0.2s ease;
+}
+
+.perf-badge-widget:hover .perf-select-arrow {
+    opacity: 1;
+}
+
+/* ── Morphing fluide en petit engrenage discret ── */
+.perf-badge-widget.is-folded:not(:hover) {
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.60;
+    box-shadow: var(--shadow-sm);
+}
+
+.perf-badge-widget.is-folded:not(:hover) .perf-content {
+    opacity: 0;
+    transform: translateX(10px);
+    pointer-events: none;
+}
+
+/* Déploiement ultra fluide au survol */
+.perf-badge-widget.is-folded:hover {
+    opacity: 1;
+    width: 192px;
+    padding: 0 12px 0 0;
+    justify-content: flex-start;
+    box-shadow: var(--shadow-lg);
+}
+
+.perf-badge-widget.is-folded:hover .perf-content {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+/* Sur potato tier : zéro blur */
+html.perf-potato .perf-badge-widget {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(22, 24, 29, 0.96) !important;
+}
+
+
 

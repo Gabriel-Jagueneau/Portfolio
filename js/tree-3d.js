@@ -28,26 +28,37 @@ export function initWebGLTree(onComplete) {
   const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
   camera.position.set(0, -3.8, 4.8);
 
-  // Adaptive Device Detection: Mobile & Low-Power Hardware
+  // Adaptive Device Detection & 4-Tier Performance Scaling (potato | low | medium | high)
+  const perfTier = (window.getPerfTier ? window.getPerfTier() : (window.__PERF_TIER__ || 'high'));
+  const isPotatoTier = perfTier === 'potato';
+  const isLowTier = perfTier === 'low';
+  const isMediumTier = perfTier === 'medium';
+  const isHighTier = perfTier === 'high';
+
   const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const isLowPower = isMobile ||
-                     (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
-                     (navigator.deviceMemory && navigator.deviceMemory <= 4);
+  const isLowPower = isPotatoTier || isLowTier || isMobile;
 
   const renderer = new THREE.WebGLRenderer({
     canvas,
     alpha: true,
-    antialias: !isMobile,
-    powerPreference: 'high-performance',
-    precision: isLowPower ? 'mediump' : 'highp'
+    antialias: isHighTier || (isMediumTier && !isMobile),
+    powerPreference: isPotatoTier ? 'low-power' : 'high-performance',
+    precision: isPotatoTier ? 'lowp' : (isLowTier ? 'mediump' : 'highp')
   });
   renderer.setSize(width, height);
 
   // Performance maximale : ombres portées dynamiques désactivées (économie colossale de passes GPU)
   renderer.shadowMap.enabled = false;
 
-  // Adaptive Pixel Ratio: clamp to 1.0 on mobile/low-power (prevents multi-million pixel buffers), max 1.25 on desktop
-  const targetPixelRatio = isLowPower ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.25);
+  // Adaptive Pixel Ratio selon le palier de performance :
+  // potato: 0.75 | low: 0.85 | medium: 1.0 | high: jusqu'à 1.25
+  const pixelRatios = {
+    potato: 0.75,
+    low: 0.85,
+    medium: 1.0,
+    high: Math.min(window.devicePixelRatio || 1, 1.25)
+  };
+  const targetPixelRatio = pixelRatios[perfTier] || 1.0;
   renderer.setPixelRatio(targetPixelRatio);
 
   // ─── 2. Photorealistic Botanical Lighting & Natural Radiance ───────────────
@@ -72,7 +83,7 @@ export function initWebGLTree(onComplete) {
 
   // ── Seasonal Lighting Configurations [0: Arbre tel quel, 1: Ajout fleurs, 2: Perte fleurs / Été, 3: Automne, 4: Hiver] ──
   const sunSeasonColors = [
-    new THREE.Color(0xfbf0dc), // 0 Home : Printemps doux et lumineux
+    new THREE.Color(0xfffdf0), // 0 Home : Printemps doux et lumineux (parfaitement calé avec l'intro)
     new THREE.Color(0xfff2de), // 1 About : Floraison printanière lumineuse
     new THREE.Color(0xfffdf2), // 2 Experience : Plein soleil estival
     new THREE.Color(0xffa84a), // 3 Projects : Lumière rasante ambrée d'automne
@@ -81,7 +92,7 @@ export function initWebGLTree(onComplete) {
   const sunSeasonIntensities = [1.35, 1.45, 1.65, 1.50, 1.25];
 
   const ambientSeasonColors = [
-    new THREE.Color(0x92b888), // 0 Printemps végétal lumineux
+    new THREE.Color(0xf5faeb), // 0 Home : Ambiance claire et naturelle (parfaitement calée avec l'intro)
     new THREE.Color(0xa2c896), // 1 Floraison
     new THREE.Color(0xfafef5), // 2 Été zénithal
     new THREE.Color(0xffecb8), // 3 Automne ambré
@@ -90,13 +101,13 @@ export function initWebGLTree(onComplete) {
   const ambientSeasonIntensities = [0.85, 0.95, 1.10, 0.95, 0.85];
 
   const rimSeasonColors = [
-    new THREE.Color(0x72c884), // 0 Printemps
+    new THREE.Color(0xa5d6a7), // 0 Home : Lumière de contour naturelle
     new THREE.Color(0x8ae096), // 1 Floraison
     new THREE.Color(0xa5d6a7), // 2 Été
     new THREE.Color(0xffb74d), // 3 Automne
     new THREE.Color(0x90caf9)  // 4 Hiver
   ];
-  const rimSeasonIntensities = [0.55, 0.68, 0.80, 0.90, 0.85];
+  const rimSeasonIntensities = [0.75, 0.75, 0.80, 0.90, 0.85];
 
   const hemiSkySeasonColors = [
     new THREE.Color(0x7fae84),
@@ -342,7 +353,15 @@ export function initWebGLTree(onComplete) {
   // ─── 4. Realistic Botanical Colors & Materials ─────────────────────────────
   const sproutGreenColor = new THREE.Color(0x66bb6a);     // Vibrant fresh seedling shoot
   const youngHazelBarkColor = new THREE.Color(0x825b42);  // Warm satiny hazel sapling bark
-  const barkDarkBrownColor = new THREE.Color(0x543628);   // Deep mature oak heartwood
+
+  const matureBarkSeasonColors = [
+    new THREE.Color(0x543628), // 0 Home : écorce chêne brun chaud et naturel (continuité parfaite)
+    new THREE.Color(0x583b2a), // 1 Floraison : écorce fraîche et sève printanière
+    new THREE.Color(0x4a2f1b), // 2 Été : chêne profond
+    new THREE.Color(0x60341c), // 3 Automne : chêne ambré flamboyant
+    new THREE.Color(0x463f3a)  // 4 Hiver : écorce ardoise patinée par le givre
+  ];
+  const barkDarkBrownColor = matureBarkSeasonColors[0];
 
   // Seasonal Interpolation Helpers (5 Phases : 0 Home, 1 About, 2 Experience, 3 Projects, 4 Contact)
   function interpolateSeasonColor(targetColor, palette, seasonVal) {
@@ -388,14 +407,6 @@ export function initWebGLTree(onComplete) {
     [new THREE.Color(0x4a942e), new THREE.Color(0x58aa38), new THREE.Color(0x387a22), new THREE.Color(0xb02e0e), new THREE.Color(0x82766e)],
     // Mat 6: Canopée vibrante -> Vert équilibré -> Vert intense ombragé -> Cuivre chaud -> Brun dormant
     [new THREE.Color(0x3b8022), new THREE.Color(0x48942a), new THREE.Color(0x2d6618), new THREE.Color(0x8c5020), new THREE.Color(0x685a4e)]
-  ];
-
-  const matureBarkSeasonColors = [
-    new THREE.Color(0x382318), // 0 Printemps : écorce chêne brun profond contrastée
-    new THREE.Color(0x3c271a), // 1 Floraison : écorce fraîche et sève printanière
-    new THREE.Color(0x4a2f1b), // 2 Été : chêne profond
-    new THREE.Color(0x60341c), // 3 Automne : chêne ambré flamboyant
-    new THREE.Color(0x463f3a)  // 4 Hiver : écorce ardoise patinée par le givre
   ];
 
   const leafMaterials = leafSeasonPalettes.map(palette => new THREE.MeshStandardMaterial({
@@ -560,24 +571,29 @@ export function initWebGLTree(onComplete) {
   function getGroundHeight(x, z) {
     const dist = Math.hypot(x, z);
     // Renflement naturel du collet racinaire et de l'humus au centre
-    const moundRise = Math.exp(-Math.pow(dist / 1.55, 2.0)) * 0.17;
-    // Micro-ondulations douces de sol forestier
+    const moundRise = Math.exp(-Math.pow(dist / 1.65, 2.0)) * 0.19;
+    // Buttes organiques au-dessus des racines maîtresses
     const theta = Math.atan2(z, x);
-    const hummock = 0.032 * Math.sin(dist * 2.1 + theta * 3.0) +
-                    0.018 * Math.cos(dist * 3.4 - theta * 2.0) +
-                    0.010 * Math.sin(x * 2.8 + z * 2.8);
+    const rootRidge = Math.exp(-Math.pow(dist / 2.3, 1.8)) * (
+      0.038 * Math.pow(Math.cos(theta * 2.0 + 0.35), 2) +
+      0.022 * Math.sin(theta * 3.0 - 0.5)
+    );
+    // Micro-ondulations douces de sol forestier naturel
+    const hummock = 0.028 * Math.sin(dist * 2.2 + theta * 3.0) +
+                    0.016 * Math.cos(dist * 3.6 - theta * 2.0) +
+                    0.012 * Math.sin(x * 2.6 + z * 2.6);
     // Pente douce en périphérie pour un fondu invisible
-    const edgeDip = (dist > 6.0) ? Math.pow((dist - 6.0) / 3.0, 2) * 0.08 : 0;
-    return -4.41 + moundRise + hummock - edgeDip;
+    const edgeDip = (dist > 5.8) ? Math.pow((dist - 5.8) / 3.2, 2) * 0.09 : 0;
+    return -4.41 + moundRise + rootRidge + hummock - edgeDip;
   }
 
   // ── 3D Sculpted Forest Floor Mound Geometry (Adieu le plan plat cartoon) ──
   let groundBasePositions = null;
   function createOrganicGroundGeometry() {
-    const rings = 36;
-    const radialSegs = 48;
-    const maxRadius = 9.0;
-    const minRadius = 0.06;
+    const rings = 44;
+    const radialSegs = 56;
+    const maxRadius = 9.2;
+    const minRadius = 0.05;
 
     const geo = new THREE.BufferGeometry();
     const pos = [];
@@ -590,7 +606,7 @@ export function initWebGLTree(onComplete) {
 
     for (let r = 1; r <= rings; r++) {
       const frac = r / rings;
-      const dist = minRadius + Math.pow(frac, 1.22) * (maxRadius - minRadius);
+      const dist = minRadius + Math.pow(frac, 1.20) * (maxRadius - minRadius);
 
       for (let s = 0; s < radialSegs; s++) {
         const theta = (s / radialSegs) * Math.PI * 2;
@@ -633,10 +649,10 @@ export function initWebGLTree(onComplete) {
     return geo;
   }
 
-  // ── Procedural Forest Humus & Soil Canvas Textures (Color + Bump) ──
+  // ── Procedural Forest Humus & Soil Canvas Textures (Color + Bump + Roughness) ──
   function createOrganicGroundTextures() {
-    const w = 512;
-    const h = 512;
+    const w = 1024;
+    const h = 1024;
     const cCanvas = document.createElement('canvas');
     cCanvas.width = w;
     cCanvas.height = h;
@@ -647,76 +663,125 @@ export function initWebGLTree(onComplete) {
     bumpCanvas.height = h;
     const bumpCtx = bumpCanvas.getContext('2d');
 
-    // 1) Fondu radial organique très doux vers les bords
-    const mainGrad = cCtx.createRadialGradient(256, 256, 15, 256, 256, 238);
-    mainGrad.addColorStop(0.00, 'rgba(255, 255, 255, 0.98)');
-    mainGrad.addColorStop(0.28, 'rgba(240, 240, 240, 0.92)');
-    mainGrad.addColorStop(0.52, 'rgba(215, 215, 215, 0.74)');
-    mainGrad.addColorStop(0.72, 'rgba(165, 165, 165, 0.44)');
-    mainGrad.addColorStop(0.86, 'rgba(110, 110, 110, 0.18)');
-    mainGrad.addColorStop(0.95, 'rgba(45, 45, 45, 0.04)');
-    mainGrad.addColorStop(1.00, 'rgba(0, 0, 0, 0.00)');
+    const roughCanvas = document.createElement('canvas');
+    roughCanvas.width = w;
+    roughCanvas.height = h;
+    const roughCtx = roughCanvas.getContext('2d');
 
-    cCtx.fillStyle = mainGrad;
-    cCtx.fillRect(0, 0, w, h);
-
-    // 2) Lobes organiques secondaires décentrés pour briser toute symétrie
-    const groundLobes = [
-      { cx: 295, cy: 225, r: 185, alpha: 0.35 },
-      { cx: 215, cy: 280, r: 190, alpha: 0.32 },
-      { cx: 275, cy: 300, r: 170, alpha: 0.28 },
-      { cx: 220, cy: 215, r: 175, alpha: 0.30 },
-      { cx: 320, cy: 270, r: 160, alpha: 0.25 }
-    ];
-
-    groundLobes.forEach(({ cx, cy, r, alpha }) => {
-      const lobeGrad = cCtx.createRadialGradient(cx, cy, 10, cx, cy, r);
-      lobeGrad.addColorStop(0.00, `rgba(240, 240, 240, ${alpha})`);
-      lobeGrad.addColorStop(0.55, `rgba(185, 185, 185, ${alpha * 0.42})`);
-      lobeGrad.addColorStop(0.85, `rgba(120, 120, 120, ${alpha * 0.12})`);
-      lobeGrad.addColorStop(1.00, 'rgba(0, 0, 0, 0.00)');
-
-      cCtx.fillStyle = lobeGrad;
-      cCtx.beginPath();
-      cCtx.arc(cx, cy, r, 0, Math.PI * 2);
-      cCtx.fill();
-    });
-
-    // 3) Relief tactile et bump de terreau forestier
-    bumpCtx.fillStyle = '#808080';
-    bumpCtx.fillRect(0, 0, w, h);
-
-    const bumpImg = bumpCtx.getImageData(0, 0, w, h);
-    const bPixels = bumpImg.data;
-    for (let i = 0; i < bPixels.length; i += 4) {
-      const n = (Math.random() - 0.5) * 42;
-      const v = Math.min(255, Math.max(0, 128 + n));
-      bPixels[i] = v;
-      bPixels[i + 1] = v;
-      bPixels[i + 2] = v;
+    // Pseudo-bruit FBM 2D pour l'humus, la texture granuleuse et la terre végétale
+    const pTable = new Uint8Array(512);
+    for (let i = 0; i < 256; i++) {
+      pTable[i] = pTable[i + 256] = Math.floor(Math.abs(Math.sin(i * 12.9898) * 43758.5453) % 256);
     }
-    bumpCtx.putImageData(bumpImg, 0, 0);
 
-    // 4) Micro-grains d'humus et granulométrie naturelle
-    for (let i = 0; i < 500; i++) {
+    function noise2D(x, y) {
+      const X = Math.floor(x) & 255;
+      const Y = Math.floor(y) & 255;
+      const xf = x - Math.floor(x);
+      const yf = y - Math.floor(y);
+      const u = xf * xf * (3.0 - 2.0 * xf);
+      const v = yf * yf * (3.0 - 2.0 * yf);
+      const a = pTable[X] + Y;
+      const b = pTable[X + 1] + Y;
+      const n00 = pTable[a] / 255.0;
+      const n10 = pTable[b] / 255.0;
+      const n01 = pTable[a + 1] / 255.0;
+      const n11 = pTable[b + 1] / 255.0;
+      return (n00 * (1 - u) + n10 * u) * (1 - v) + (n01 * (1 - u) + n11 * u) * v;
+    }
+
+    function fbm(x, y) {
+      return noise2D(x, y) * 0.50 +
+             noise2D(x * 2.1, y * 2.1) * 0.28 +
+             noise2D(x * 4.3, y * 4.3) * 0.15 +
+             noise2D(x * 8.7, y * 8.7) * 0.07;
+    }
+
+    const cImg = cCtx.createImageData(w, h);
+    const bImg = bumpCtx.createImageData(w, h);
+    const rImg = roughCtx.createImageData(w, h);
+    const cPix = cImg.data;
+    const bPix = bImg.data;
+    const rPix = rImg.data;
+
+    const cx = w * 0.5;
+    const cy = h * 0.5;
+    const maxR = w * 0.46;
+
+    for (let y = 0; y < h; y++) {
+      const dy = y - cy;
+      for (let x = 0; x < w; x++) {
+        const dx = x - cx;
+        const dist = Math.hypot(dx, dy);
+        const idx = (y * w + x) * 4;
+
+        if (dist > maxR * 1.08) {
+          cPix[idx + 3] = 0;
+          bPix[idx] = bPix[idx + 1] = bPix[idx + 2] = 128;
+          bPix[idx + 3] = 255;
+          rPix[idx] = rPix[idx + 1] = rPix[idx + 2] = 220;
+          rPix[idx + 3] = 255;
+          continue;
+        }
+
+        // Bruit fractal multi-échelle pour les variations de sol
+        const nx = x / 72.0;
+        const ny = y / 72.0;
+        const nFbm = fbm(nx, ny);
+        const micro = noise2D(x / 9.0, y / 9.0);
+
+        // Fondu radial doux avec lobes organiques et décroissance fractale
+        const angle = Math.atan2(dy, dx);
+        const lobeR = maxR * (0.86 + 0.12 * Math.cos(angle * 3.0 + 0.4) + 0.08 * Math.sin(angle * 5.0 - 0.2) + (nFbm - 0.5) * 0.14);
+        const normDist = dist / lobeR;
+        let alpha = 1.0;
+        if (normDist > 0.42) {
+          const tFade = Math.min(1.0, (normDist - 0.42) / 0.58);
+          alpha = Math.cos(tFade * Math.PI * 0.5);
+          alpha = Math.pow(alpha, 1.4);
+        }
+
+        // Ombres de contact (AO) sous le tronc et collet racinaire
+        const aoFactor = Math.min(1.0, 0.38 + Math.pow(dist / (w * 0.22), 1.6) * 0.62);
+
+        // Teintes d'humus forestier organique, terreau sombre et sous-bois naturel (moins saturé/flashy)
+        const soilTone = nFbm * 0.65 + micro * 0.35;
+        const rVal = Math.floor((125 + soilTone * 35) * aoFactor);
+        const gVal = Math.floor((132 + soilTone * 30) * aoFactor);
+        const bVal = Math.floor((108 + soilTone * 25) * aoFactor);
+
+        cPix[idx] = Math.min(255, rVal);
+        cPix[idx + 1] = Math.min(255, gVal);
+        cPix[idx + 2] = Math.min(255, bVal);
+        cPix[idx + 3] = Math.floor(Math.max(0, Math.min(255, alpha * 255)));
+
+        // Bump / Relief : mottes de terre, micro-crevasses et granulométrie
+        const bValCalc = Math.floor(128 + (nFbm - 0.5) * 78 + (micro - 0.5) * 38);
+        bPix[idx] = bPix[idx + 1] = bPix[idx + 2] = Math.min(255, Math.max(0, bValCalc));
+        bPix[idx + 3] = 255;
+
+        // Rugosité : terre humide plus soyeuse dans les creux, mottes plus mates
+        const rValCalc = Math.floor(188 + (micro - 0.5) * 44);
+        rPix[idx] = rPix[idx + 1] = rPix[idx + 2] = Math.min(255, Math.max(0, rValCalc));
+        rPix[idx + 3] = 255;
+      }
+    }
+
+    cCtx.putImageData(cImg, 0, 0);
+    bumpCtx.putImageData(bImg, 0, 0);
+    roughCtx.putImageData(rImg, 0, 0);
+
+    // Ajout de micro-débris organiques (brindilles, fragments de feuilles, particules d'humus)
+    cCtx.fillStyle = 'rgba(25, 18, 10, 0.26)';
+    for (let i = 0; i < 900; i++) {
       const a = Math.random() * Math.PI * 2;
-      const dist = Math.pow(Math.random(), 1.45) * 170;
-      const px = 256 + Math.cos(a) * dist;
-      const py = 256 + Math.sin(a) * dist;
-      const sz = 1.2 + Math.random() * 3.5;
-      const isHi = Math.random() > 0.48;
-
-      cCtx.fillStyle = isHi
-        ? `rgba(255, 255, 255, ${0.10 + Math.random() * 0.15})`
-        : `rgba(0, 0, 0, ${0.12 + Math.random() * 0.18})`;
+      const d = Math.pow(Math.random(), 1.35) * (maxR * 0.78);
+      const px = cx + Math.cos(a) * d;
+      const py = cy + Math.sin(a) * d;
+      const sz = 1.0 + Math.random() * 2.8;
       cCtx.beginPath();
       cCtx.arc(px, py, sz, 0, Math.PI * 2);
       cCtx.fill();
-
-      bumpCtx.fillStyle = isHi ? 'rgba(235, 235, 235, 0.40)' : 'rgba(20, 20, 20, 0.40)';
-      bumpCtx.beginPath();
-      bumpCtx.arc(px, py, sz, 0, Math.PI * 2);
-      bumpCtx.fill();
     }
 
     const colTex = new THREE.CanvasTexture(cCanvas);
@@ -731,30 +796,38 @@ export function initWebGLTree(onComplete) {
     bTex.minFilter = THREE.LinearMipmapLinearFilter;
     bTex.magFilter = THREE.LinearFilter;
 
-    return { color: colTex, bump: bTex };
+    const rTex = new THREE.CanvasTexture(roughCanvas);
+    rTex.wrapS = THREE.ClampToEdgeWrapping;
+    rTex.wrapT = THREE.ClampToEdgeWrapping;
+    rTex.minFilter = THREE.LinearMipmapLinearFilter;
+    rTex.magFilter = THREE.LinearFilter;
+
+    return { color: colTex, bump: bTex, rough: rTex };
   }
 
   const groundData = createOrganicGroundTextures();
   const groundTexture = groundData.color;
   const groundBumpTex = groundData.bump;
+  const groundRoughTex = groundData.rough;
 
-  // Couleurs de prairie forestière verte naturelle qui change de teinte et de relief selon les saisons :
+  // Couleurs de sol organique et prairie tempérée (teintes douces, naturelles et non flashy) :
   const groundSeasonColors = [
-    new THREE.Color(0x347c2a), // 0 Home : Prairie printanière verte naturelle, riche et vivante
-    new THREE.Color(0x3d8c32), // 1 About : Prairie printanière éclatante et fleurie
-    new THREE.Color(0x24621e), // 2 Experience : Vert sous-bois profond et estival
-    new THREE.Color(0x8a521e), // 3 Projects : Prairie automnale dorée, ocre ambré et terre cuite
-    new THREE.Color(0xe0edf6)  // 4 Contact : Manteau blanc givré et immaculé d'hiver
+    new THREE.Color(0x284a20), // 0 Home : Sous-bois printanier naturel, vert végétal doux et équilibré
+    new THREE.Color(0x2e5425), // 1 About : Prairie florissante tempérée et harmonieuse
+    new THREE.Color(0x1f3d19), // 2 Experience : Vert sous-bois ombragé et profond
+    new THREE.Color(0x6b441c), // 3 Projects : Humus automnal chaud, terre cuite et aiguilles mortes
+    new THREE.Color(0xc2d3de)  // 4 Contact : Manteau givré doux et minéral d'hiver
   ];
 
   const groundMat = new THREE.MeshStandardMaterial({
     color: groundSeasonColors[0].clone(),
     map: groundTexture,
     bumpMap: groundBumpTex,
-    bumpScale: 0.035,
+    bumpScale: 0.052,
+    roughnessMap: groundRoughTex,
     transparent: true,
     depthWrite: false,
-    roughness: 0.86,
+    roughness: 0.88,
     metalness: 0.01,
     side: THREE.DoubleSide
   });
@@ -764,38 +837,113 @@ export function initWebGLTree(onComplete) {
   groundMesh.receiveShadow = true;
   treeGroup.add(groundMesh);
 
-  // ── Realistic Arched Grass Blade Geometry (Rubans arqués naturels) ──
-  function createGrassBladeGeometry() {
+  // ── 3D Faceted Botanical Grass Clump Geometry (Touffes d'herbe réalistes avec nervure en V) ──
+  function createRealisticGrassClumpGeometry() {
     const geo = new THREE.BufferGeometry();
-    const segs = 4;
     const pos = [];
     const uvs = [];
+    const colors = [];
     const indices = [];
 
-    for (let i = 0; i <= segs; i++) {
-      const v = i / segs;
-      // Effilement réaliste de la tige vers la pointe
-      const w = 0.038 * (1.0 - v * 0.82);
-      const h = v * 0.44;
-      // Cambrure naturelle sous l'effet de la gravité (arc biologique)
-      const droop = Math.pow(v, 2.2) * 0.11;
+    // Chaque touffe est composée de 7 brins d'herbe rayonnants aux courbures botaniques réalistes
+    const bladeConfigs = [
+      { angle: 0.0,  h: 0.50, w: 0.038, droop: 0.08, arch: 0.04 }, // Brin central élancé
+      { angle: 0.9,  h: 0.44, w: 0.035, droop: 0.12, arch: 0.06 }, // Arc latéral droit
+      { angle: 1.8,  h: 0.38, w: 0.032, droop: 0.14, arch: 0.08 }, // Bas cambré
+      { angle: 2.7,  h: 0.46, w: 0.036, droop: 0.10, arch: 0.05 }, // Érigé arrière
+      { angle: 3.6,  h: 0.42, w: 0.034, droop: 0.13, arch: 0.07 }, // Arc latéral gauche
+      { angle: 4.5,  h: 0.36, w: 0.031, droop: 0.15, arch: 0.09 }, // Bas étalé
+      { angle: 5.4,  h: 0.40, w: 0.033, droop: 0.11, arch: 0.06 }  // Deuxième cercle
+    ];
 
-      pos.push(-w, h, droop);
-      pos.push(w, h, droop);
-      uvs.push(0, v, 1, v);
-    }
+    let vertOffset = 0;
+    const segs = 5;
 
-    for (let i = 0; i < segs; i++) {
-      const a = i * 2;
-      const b = a + 1;
-      const c = a + 2;
-      const d = a + 3;
-      indices.push(a, b, c);
-      indices.push(b, d, c);
-    }
+    bladeConfigs.forEach(({ angle, h, w, droop, arch }) => {
+      const cosA = Math.cos(angle);
+      const sinA = Math.sin(angle);
+      const foldDepth = w * 0.40; // Nervure en V pour réflexion 3D de la lumière
+
+      for (let i = 0; i <= segs; i++) {
+        const v = i / segs;
+        // Profil botanique : départ étroit au collet, renflement au tiers, effilement net à la pointe
+        const profile = Math.sin(v * Math.PI * 0.78);
+        const curW = w * (1.0 - v * 0.78) * (0.55 + 0.45 * profile);
+        const curH = v * h;
+        // Cambrure sous gravité : accélération parabolique vers la pointe
+        const curDroop = Math.pow(v, 2.2) * droop;
+        const curArch = Math.sin(v * Math.PI * 0.5) * arch;
+
+        // Déplacement 3D le long de l'angle du brin
+        const dx = cosA * (curDroop + curArch);
+        const dz = sinA * (curDroop + curArch);
+
+        // Vecteur normal perpendiculaire au plan du brin
+        const perpX = -sinA;
+        const perpZ = cosA;
+
+        // Dégradé botanique doux de racine à apex (teintes mates et naturelles, sans surexposition)
+        const rootR = 0.16, rootG = 0.26, rootB = 0.12;
+        const midR = 0.48, midG = 0.62, midB = 0.34;
+        const tipR = 0.68, tipG = 0.80, tipB = 0.46;
+
+        let cr, cg, cb;
+        if (v < 0.45) {
+          const t = v / 0.45;
+          cr = rootR + (midR - rootR) * t;
+          cg = rootG + (midG - rootG) * t;
+          cb = rootB + (midB - rootB) * t;
+        } else {
+          const t = (v - 0.45) / 0.55;
+          cr = midR + (tipR - midR) * t;
+          cg = midG + (tipG - midG) * t;
+          cb = midB + (tipB - midB) * t;
+        }
+
+        // Sommet 0 : Flanc gauche du brin
+        pos.push(
+          dx + perpX * curW - cosA * foldDepth * (1 - v),
+          curH,
+          dz + perpZ * curW - sinA * foldDepth * (1 - v)
+        );
+        uvs.push(0.0, v);
+        colors.push(cr * 0.88, cg * 0.88, cb * 0.88);
+
+        // Sommet 1 : Nervure centrale en V
+        pos.push(dx, curH, dz);
+        uvs.push(0.5, v);
+        colors.push(cr, cg, cb);
+
+        // Sommet 2 : Flanc droit du brin
+        pos.push(
+          dx - perpX * curW - cosA * foldDepth * (1 - v),
+          curH,
+          dz - perpZ * curW - sinA * foldDepth * (1 - v)
+        );
+        uvs.push(1.0, v);
+        colors.push(cr * 0.95, cg * 0.95, cb * 0.95);
+      }
+
+      // Triangles pour les 2 facettes du brin plié en V
+      for (let i = 0; i < segs; i++) {
+        const rowA = vertOffset + i * 3;
+        const rowB = vertOffset + (i + 1) * 3;
+
+        // Facette gauche (gauche -> centre)
+        indices.push(rowA, rowB, rowA + 1);
+        indices.push(rowA + 1, rowB, rowB + 1);
+
+        // Facette droite (centre -> droite)
+        indices.push(rowA + 1, rowB + 1, rowA + 2);
+        indices.push(rowA + 2, rowB + 1, rowB + 2);
+      }
+
+      vertOffset += (segs + 1) * 3;
+    });
 
     geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
     geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+    geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
     geo.setIndex(indices);
     geo.computeVertexNormals();
     return geo;
@@ -804,46 +952,47 @@ export function initWebGLTree(onComplete) {
   // Ground Flora: Grass, Moss, Clovers, Flowers & Fallen Leaves
   const groundBlades = [];
   const seasonalFloraGroups = [];
-  const grassGeo = createGrassBladeGeometry();
+  const grassGeo = createRealisticGrassClumpGeometry();
 
-  // Palettes saisonnières dédiées aux brins d'herbe [0: Printemps, 1: Floraison, 2: Été, 3: Automne, 4: Hiver] :
+  // Palettes saisonnières dédiées aux brins d'herbe (vert champêtre tempéré, désaturé et organique) :
   const grassSeasonPalettes = [
-    [new THREE.Color(0x6ec040), new THREE.Color(0x78cc46), new THREE.Color(0x2e7d32), new THREE.Color(0xd87a22), new THREE.Color(0xb4c8d8)],
-    [new THREE.Color(0x5cb838), new THREE.Color(0x66c440), new THREE.Color(0x1b5e20), new THREE.Color(0xc46b18), new THREE.Color(0xc2d4e2)],
-    [new THREE.Color(0x8ee055), new THREE.Color(0x96e85e), new THREE.Color(0x388e3c), new THREE.Color(0xe6922a), new THREE.Color(0xd0e0ee)],
-    [new THREE.Color(0x4fa632), new THREE.Color(0x58b238), new THREE.Color(0x256b24), new THREE.Color(0xb05a14), new THREE.Color(0xa8bccb)]
+    [new THREE.Color(0x3c6428), new THREE.Color(0x44722c), new THREE.Color(0x264c1c), new THREE.Color(0x945a1c), new THREE.Color(0x98aebd)],
+    [new THREE.Color(0x365c24), new THREE.Color(0x3e6a29), new THREE.Color(0x204218), new THREE.Color(0x884e16), new THREE.Color(0xa0b4c3)],
+    [new THREE.Color(0x426e2e), new THREE.Color(0x4a7a33), new THREE.Color(0x2a521e), new THREE.Color(0x9e6220), new THREE.Color(0xa8bcc9)],
+    [new THREE.Color(0x345922), new THREE.Color(0x3c6627), new THREE.Color(0x1e3c15), new THREE.Color(0x7c4412), new THREE.Color(0x90a4b3)]
   ];
 
   const grassMaterials = grassSeasonPalettes.map(p => new THREE.MeshStandardMaterial({
     color: p[0].clone(),
-    roughness: 0.50,
-    metalness: 0.02,
+    roughness: 0.65,
+    metalness: 0.0,
+    vertexColors: true,
     side: THREE.DoubleSide
   }));
 
-  // Densité de prairie abondante et luxuriante au sol (beaucoup plus d'herbe)
-  const grassBladeCount = isLowPower ? 320 : 750;
-  for (let i = 0; i < grassBladeCount; i++) {
+  // Densité de prairie abondante et luxuriante au sol (touffes d'herbe denses et réalistes)
+  const grassClumpCount = isPotatoTier ? 140 : (isLowTier ? 260 : (isMediumTier ? 420 : 580));
+  for (let i = 0; i < grassClumpCount; i++) {
     const gMat = grassMaterials[i % grassMaterials.length];
     const grass = new THREE.Mesh(grassGeo, gMat);
     grass.castShadow = false;
     grass.receiveShadow = false;
 
     // Répartition en touffes organiques plus denses autour du tronc et des racines
-    const clusterAngle = (i % 24) * (Math.PI * 2 / 24) + (Math.random() - 0.5) * 0.48;
-    const rad = 0.22 + Math.pow(Math.random(), 1.25) * 3.1;
+    const clusterAngle = (i % 28) * (Math.PI * 2 / 28) + (Math.random() - 0.5) * 0.45;
+    const rad = 0.22 + Math.pow(Math.random(), 1.22) * 3.25;
     const gx = Math.cos(clusterAngle) * rad;
     const gz = Math.sin(clusterAngle) * rad;
     const gy = getGroundHeight(gx, gz);
 
-    const hScale = 0.65 + Math.random() * 1.15;
-    const wScale = 0.70 + Math.random() * 0.70;
-    const distFade = rad < 1.3 ? 1.0 : Math.max(0.35, 1.0 - (rad - 1.3) / 1.95);
+    const hScale = 0.70 + Math.random() * 1.10;
+    const wScale = 0.75 + Math.random() * 0.65;
+    const distFade = rad < 1.4 ? 1.0 : Math.max(0.35, 1.0 - (rad - 1.4) / 1.95);
 
     grass.position.set(gx, gy, gz);
     grass.scale.set(wScale * distFade, hScale * distFade, wScale * distFade);
 
-    const tilt = 0.10 + Math.random() * 0.35;
+    const tilt = 0.08 + Math.random() * 0.25;
     grass.rotation.set(
       Math.sin(clusterAngle) * tilt,
       Math.random() * Math.PI * 2,
@@ -1469,9 +1618,9 @@ export function initWebGLTree(onComplete) {
       trunkMat.color.lerpColors(sproutGreenColor, youngHazelBarkColor, Math.min(1.0, hazelP * 1.3));
       trunkMat.roughness = THREE.MathUtils.lerp(0.35, 0.58, hazelP);
     } else {
-      const brownP = Math.min(1.0, (prog - 0.50) / 0.25);
-      trunkMat.color.lerpColors(youngHazelBarkColor, barkDarkBrownColor, brownP);
-      trunkMat.roughness = THREE.MathUtils.lerp(0.58, 0.85, brownP);
+      const brownP = Math.min(1.0, (prog - 0.50) / 0.50);
+      trunkMat.color.lerpColors(youngHazelBarkColor, matureBarkSeasonColors[0], brownP);
+      trunkMat.roughness = THREE.MathUtils.lerp(0.58, 0.82, brownP);
 
       if (!trunkMesh.isTextureMatured && prog >= 0.52) {
         trunkMat.map = matureBarkTexture;
@@ -1483,7 +1632,7 @@ export function initWebGLTree(onComplete) {
 
       if (prog >= 1.0 && isRevealed) {
         interpolateSeasonColor(trunkMat.color, matureBarkSeasonColors, currentSeason);
-        trunkMat.roughness = interpolateSeasonScalar([0.75, 0.78, 0.85, 0.82, 0.92], currentSeason);
+        trunkMat.roughness = interpolateSeasonScalar([0.82, 0.82, 0.85, 0.82, 0.92], currentSeason);
       }
     }
   }
@@ -1513,7 +1662,8 @@ export function initWebGLTree(onComplete) {
 
     // Natural overlap extends backward into the parent segment for a continuous seamless joint
     const overlap = Math.min(len * 0.18, rStart * 0.35);
-    const geo = new THREE.CylinderGeometry(rEnd, rStart, len + overlap, 20, 1, true);
+    const radialSegs = isPotatoTier ? 6 : (isLowTier ? 8 : (isMediumTier ? 14 : 20));
+    const geo = new THREE.CylinderGeometry(rEnd, rStart, len + overlap, radialSegs, 1, true);
     geo.translate(0, (len + overlap) * 0.5 - overlap, 0);
     geo.computeVertexNormals();
 
@@ -2514,6 +2664,12 @@ export function initWebGLTree(onComplete) {
     if (!branchObj || branchObj._hasFoliage) return;
     branchObj._hasFoliage = true;
 
+    // Mise à l'échelle du nombre de feuilles selon le palier de performance :
+    // potato: 20% | low: 45% | medium: 72% | high: 100%
+    const leafMult = isPotatoTier ? 0.20 : (isLowTier ? 0.45 : (isMediumTier ? 0.72 : 1.0));
+    bodyLeafCount = Math.max(1, Math.round(bodyLeafCount * leafMult));
+    bouquetCount = Math.max(1, Math.round(bouquetCount * leafMult));
+
     const bDir = branchObj.dir;
     const bStart = branchObj.start;
     const bEnd = branchObj.end;
@@ -3370,7 +3526,7 @@ export function initWebGLTree(onComplete) {
     setTimeout(() => {
       startSubNavLoading();
     }, 380);
-  }, 400);
+  }, 80);
 
   // ── Render Loop Lifecycle (The tree stays continuously visible across the entire site) ──
   let rafId = null;
@@ -3558,21 +3714,19 @@ export function initWebGLTree(onComplete) {
         interpolateSeasonColor(fallingLeafMats[f].color, leafSeasonPalettes[f % leafSeasonPalettes.length], currentSeason);
       }
 
-      if (isRevealed) {
-        interpolateSeasonColor(sunLight.color, sunSeasonColors, currentSeason);
-        sunLight.intensity = interpolateSeasonScalar(sunSeasonIntensities, currentSeason);
+      interpolateSeasonColor(sunLight.color, sunSeasonColors, currentSeason);
+      sunLight.intensity = interpolateSeasonScalar(sunSeasonIntensities, currentSeason);
 
-        interpolateSeasonColor(ambientLight.color, ambientSeasonColors, currentSeason);
-        ambientLight.intensity = interpolateSeasonScalar(ambientSeasonIntensities, currentSeason);
+      interpolateSeasonColor(ambientLight.color, ambientSeasonColors, currentSeason);
+      ambientLight.intensity = interpolateSeasonScalar(ambientSeasonIntensities, currentSeason);
 
-        interpolateSeasonColor(rimLight.color, rimSeasonColors, currentSeason);
-        rimLight.intensity = interpolateSeasonScalar(rimSeasonIntensities, currentSeason);
+      interpolateSeasonColor(rimLight.color, rimSeasonColors, currentSeason);
+      rimLight.intensity = interpolateSeasonScalar(rimSeasonIntensities, currentSeason);
 
-        interpolateSeasonColor(hemiLight.color, hemiSkySeasonColors, currentSeason);
-        interpolateSeasonColor(hemiLight.groundColor, hemiGroundSeasonColors, currentSeason);
+      interpolateSeasonColor(hemiLight.color, hemiSkySeasonColors, currentSeason);
+      interpolateSeasonColor(hemiLight.groundColor, hemiGroundSeasonColors, currentSeason);
 
-        interpolateSeasonColor(mossBounceLight.color, mossBounceSeasonColors, currentSeason);
-      }
+      interpolateSeasonColor(mossBounceLight.color, mossBounceSeasonColors, currentSeason);
     }
 
     // ── Déformation 3D & Configuration morphologique du sol selon les saisons ──
@@ -3785,13 +3939,6 @@ export function initWebGLTree(onComplete) {
       trunkThicknessFactor = 0.690 + 0.310 * ease;
     }
 
-    // ── Dynamic Pixel Ratio quand le site est révélé (épargne ~50% de shading GPU) ──
-    if (isRevealed && !isPixelRatioAdapted) {
-      isPixelRatioAdapted = true;
-      const backgroundPixelRatio = Math.min(targetPixelRatio, 0.85);
-      renderer.setPixelRatio(backgroundPixelRatio);
-    }
-
     // ── Update Continuous Botanical Trunk (Un Seul Polygone 3D Continu) ──
     if (progress < 1.0 || !isTrunkFinalized) {
       updateContinuousTrunk(progress, trunkThicknessFactor);
@@ -3834,9 +3981,10 @@ export function initWebGLTree(onComplete) {
             b.mat.color.copy(sproutGreenColor);
             b.mat.roughness = 0.38;
           } else if (progress >= b.turnBrownP) {
-            const brownP = Math.min(1.0, (progress - b.turnBrownP) / 0.22);
-            b.mat.color.lerpColors(youngHazelBarkColor, barkDarkBrownColor, brownP);
-            b.mat.roughness = THREE.MathUtils.lerp(0.58, 0.85, brownP);
+            const brownSpan = Math.max(0.18, 1.0 - b.turnBrownP);
+            const brownP = Math.min(1.0, (progress - b.turnBrownP) / brownSpan);
+            b.mat.color.lerpColors(youngHazelBarkColor, matureBarkSeasonColors[0], brownP);
+            b.mat.roughness = THREE.MathUtils.lerp(0.38, 0.82, brownP);
 
             if (!b.isTextureMatured && progress >= 0.55) {
               b.mat.map = matureBarkTexture;
@@ -3851,10 +3999,12 @@ export function initWebGLTree(onComplete) {
       if (progress >= 1.0) areBranchesFinalized = true;
     } else if (Math.abs(currentSeason - lastSeasonForBark) > 0.005) {
       lastSeasonForBark = currentSeason;
+      interpolateSeasonColor(trunkMat.color, matureBarkSeasonColors, currentSeason);
+      trunkMat.roughness = interpolateSeasonScalar([0.82, 0.82, 0.85, 0.82, 0.92], currentSeason);
       branches.forEach((b) => {
         if (b.turnBrownP !== undefined) {
           interpolateSeasonColor(b.mat.color, matureBarkSeasonColors, currentSeason);
-          b.mat.roughness = interpolateSeasonScalar([0.75, 0.78, 0.85, 0.82, 0.92], currentSeason);
+          b.mat.roughness = interpolateSeasonScalar([0.82, 0.82, 0.85, 0.82, 0.92], currentSeason);
         }
       });
     }
@@ -4029,21 +4179,25 @@ export function initWebGLTree(onComplete) {
           l._needScaleInit = false;
         }
 
-        const rotOffset = l._unfoldRotOffset || 0;
-        l.mesh.rotation.z = l.origRot.z + flutter + rotOffset * 0.5;
-        l.mesh.rotation.x = l.origRot.x + twist + rotOffset;
+        if (!isPotatoTier || !isAdult || !isRevealed) {
+          const rotOffset = l._unfoldRotOffset || 0;
+          l.mesh.rotation.z = l.origRot.z + flutter + rotOffset * 0.5;
+          l.mesh.rotation.x = l.origRot.x + twist + rotOffset;
+        }
       });
     }
 
     // ── Ground Grass Blades Breeze Swaying & Winter Dormancy ──
     // En Hiver (contact) : l'herbe s'enfouit sous l'épais manteau neigeux
-    const grassWinterFactor = (currentSeason >= 2.8) ? Math.max(0.0001, 1.0 - (currentSeason - 2.8) / 0.95) : 1.0;
-    groundBlades.forEach((gb) => {
-      gb.mesh.rotation.z = gb.baseRotZ + Math.sin(elapsedSec * gb.swaySpeed + gb.phase) * (0.03 + windGust * 0.025);
-      if (gb.baseScaleY) {
-        gb.mesh.scale.set(gb.baseScaleXZ * grassWinterFactor, gb.baseScaleY * grassWinterFactor, gb.baseScaleXZ * grassWinterFactor);
-      }
-    });
+    if (!isPotatoTier) {
+      const grassWinterFactor = (currentSeason >= 2.8) ? Math.max(0.0001, 1.0 - (currentSeason - 2.8) / 0.95) : 1.0;
+      groundBlades.forEach((gb) => {
+        gb.mesh.rotation.z = gb.baseRotZ + Math.sin(elapsedSec * gb.swaySpeed + gb.phase) * (0.03 + windGust * 0.025);
+        if (gb.baseScaleY) {
+          gb.mesh.scale.set(gb.baseScaleXZ * grassWinterFactor, gb.baseScaleY * grassWinterFactor, gb.baseScaleXZ * grassWinterFactor);
+        }
+      });
+    }
 
     // ── Atmospheric Sunlit Pollen Motes Animation (Spring & Summer) ──
     if (progress >= 0.20) {

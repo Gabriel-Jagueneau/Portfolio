@@ -338,8 +338,22 @@ const calcState = {
   firstOperand: null,
   waitingForSecondOperand: false,
   operator: null,
-  clearAll: true
+  clearAll: true,
+  expressionHistory: ''
 };
+
+function formatCalcDisplay(val) {
+  if (val === 'Error' || val === 'Erreur') return 'Error';
+  return String(val).replace('.', ',');
+}
+
+function formatOpGlyph(op) {
+  if (op === '+') return '+';
+  if (op === '-') return '−';
+  if (op === '*') return '×';
+  if (op === '/') return '÷';
+  return op || '';
+}
 
 function formatCalcNumber(num) {
   if (num === 'Error' || num === 'Erreur' || isNaN(num)) return 'Error';
@@ -467,7 +481,7 @@ const appDefinitions = {
         </div>
         <form class="term-input-line" id="term-form-${win.id}">
           <span class="term-prompt">gabriel@macbook</span> <span class="term-path">~/Portfolio</span> %&nbsp;
-          <input type="text" class="term-cli-input" id="term-input-${win.id}" autocomplete="off" spellcheck="false" autofocus />
+          <input type="text" class="term-cli-input" id="term-input-${win.id}" autocomplete="off" spellcheck="false" />
         </form>
       </div>`,
     setup: (win) => {
@@ -483,6 +497,21 @@ const appDefinitions = {
       container.addEventListener('click', () => input.focus());
 
       input.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const val = input.value.trim().toLowerCase();
+          if (!val) return;
+          const available = ['help', 'whoami', 'skills', 'projects', 'fastfetch', 'neofetch', 'matrix', 'contact', 'ls', 'cat', 'open', 'clear', 'date', 'sudo'];
+          const match = available.find(c => c.startsWith(val));
+          if (match) {
+            input.value = match;
+            playMacSound('click');
+          } else {
+            playMacSound('error');
+          }
+          return;
+        }
+
         if (e.key === 'ArrowUp') {
           if (history.length && histIdx < history.length - 1) {
             histIdx++;
@@ -1459,40 +1488,52 @@ const appDefinitions = {
     }
   },
 
-  // ── 6. Calculator (Apple Native Logic) ──
+  // ── 6. Calculator (macOS Sequoia Native Replica) ──
   "Calculator": {
-    title: "Calculator",
-    widthPct: 34, heightPct: 62,
+    title: "",
+    widthPct: 24, heightPct: 68,
     render: (win) => `
-      <div class="app-calculator" id="calc-app-${win.id}">
+      <div class="app-calculator app-calculator-sequoia" id="calc-app-${win.id}">
         <div class="calc-display" id="calc-disp-${win.id}">
-          <div class="calc-expr" id="calc-expr-${win.id}"></div>
-          <div class="calc-main-value" id="calc-val-${win.id}">${calcState.displayValue.replace('.', ',')}</div>
+          <div class="calc-expr" id="calc-expr-${win.id}">${calcState.expressionHistory || ''}</div>
+          <div class="calc-main-value" id="calc-val-${win.id}">${formatCalcDisplay(calcState.displayValue)}</div>
         </div>
         <div class="calc-grid">
-          <button class="calc-btn fn" id="calc-clear-btn-${win.id}" data-action="clear">${calcState.displayValue === '0' || calcState.clearAll ? 'AC' : 'C'}</button>
-          <button class="calc-btn fn" data-action="sign">±</button>
-          <button class="calc-btn fn" data-action="percent">%</button>
+          <!-- Row 1 -->
+          <button class="calc-btn fn backspace-btn" data-action="backspace" title="Delete">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+              <line x1="18" y1="9" x2="12" y2="15"/>
+              <line x1="12" y1="9" x2="18" y2="15"/>
+            </svg>
+          </button>
+          <button class="calc-btn fn clear-btn" id="calc-clear-btn-${win.id}" data-action="clear">${calcState.displayValue === '0' || calcState.clearAll ? 'AC' : 'C'}</button>
+          <button class="calc-btn fn percent-btn" data-action="percent">%</button>
           <button class="calc-btn op ${calcState.operator === '/' && calcState.waitingForSecondOperand ? 'active' : ''}" data-action="op" data-val="/">÷</button>
 
+          <!-- Row 2 -->
           <button class="calc-btn num" data-val="7">7</button>
           <button class="calc-btn num" data-val="8">8</button>
           <button class="calc-btn num" data-val="9">9</button>
           <button class="calc-btn op ${calcState.operator === '*' && calcState.waitingForSecondOperand ? 'active' : ''}" data-action="op" data-val="*">×</button>
 
+          <!-- Row 3 -->
           <button class="calc-btn num" data-val="4">4</button>
           <button class="calc-btn num" data-val="5">5</button>
           <button class="calc-btn num" data-val="6">6</button>
           <button class="calc-btn op ${calcState.operator === '-' && calcState.waitingForSecondOperand ? 'active' : ''}" data-action="op" data-val="-">−</button>
 
+          <!-- Row 4 -->
           <button class="calc-btn num" data-val="1">1</button>
           <button class="calc-btn num" data-val="2">2</button>
           <button class="calc-btn num" data-val="3">3</button>
           <button class="calc-btn op ${calcState.operator === '+' && calcState.waitingForSecondOperand ? 'active' : ''}" data-action="op" data-val="+">+</button>
 
+          <!-- Row 5 -->
+          <button class="calc-btn num sign-btn" data-action="sign">⁺∕₋</button>
           <button class="calc-btn num zero" data-val="0">0</button>
-          <button class="calc-btn num" data-val=".">,</button>
-          <button class="calc-btn op" data-action="equals">=</button>
+          <button class="calc-btn num comma-btn" data-val=".">,</button>
+          <button class="calc-btn op equals-btn" data-action="equals">=</button>
         </div>
       </div>`,
     setup: (win) => {
@@ -1502,9 +1543,15 @@ const appDefinitions = {
       const grid = win.el.querySelector('.calc-grid');
 
       function updateCalcUI() {
-        if (valEl) valEl.textContent = calcState.displayValue.replace('.', ',');
+        if (valEl) {
+          valEl.textContent = formatCalcDisplay(calcState.displayValue);
+          const len = String(calcState.displayValue).length;
+          if (len > 9) valEl.style.fontSize = '22px';
+          else if (len > 6) valEl.style.fontSize = '26px';
+          else valEl.style.fontSize = '34px';
+        }
         if (exprEl) {
-          exprEl.textContent = calcState.firstOperand !== null && calcState.operator ? `${calcState.firstOperand} ${calcState.operator}` : '';
+          exprEl.textContent = calcState.expressionHistory || '';
         }
         if (clearBtn) {
           clearBtn.textContent = calcState.displayValue === '0' || calcState.clearAll ? 'AC' : 'C';
@@ -1516,9 +1563,11 @@ const appDefinitions = {
       }
 
       function handleCalcInput(action, val) {
+        playMacSound('click');
+
         if (action === 'num') {
           if (val === '.' || val === ',') {
-            if (calcState.waitingForSecondOperand || calcState.displayValue === 'Erreur') {
+            if (calcState.waitingForSecondOperand || calcState.displayValue === 'Error') {
               calcState.displayValue = '0.';
               calcState.waitingForSecondOperand = false;
             } else if (!calcState.displayValue.includes('.')) {
@@ -1526,7 +1575,7 @@ const appDefinitions = {
             }
             calcState.clearAll = false;
           } else if (val >= '0' && val <= '9') {
-            if (calcState.waitingForSecondOperand || calcState.displayValue === '0' || calcState.displayValue === 'Erreur') {
+            if (calcState.waitingForSecondOperand || calcState.displayValue === '0' || calcState.displayValue === 'Error') {
               calcState.displayValue = String(val);
               calcState.waitingForSecondOperand = false;
             } else {
@@ -1535,6 +1584,12 @@ const appDefinitions = {
               }
             }
             calcState.clearAll = false;
+          }
+        } else if (action === 'backspace') {
+          if (calcState.displayValue.length > 1 && calcState.displayValue !== 'Error' && !calcState.waitingForSecondOperand) {
+            calcState.displayValue = calcState.displayValue.slice(0, -1);
+          } else {
+            calcState.displayValue = '0';
           }
         } else if (action === 'clear') {
           if (calcState.displayValue !== '0' && !calcState.clearAll) {
@@ -1546,14 +1601,15 @@ const appDefinitions = {
             calcState.operator = null;
             calcState.waitingForSecondOperand = false;
             calcState.clearAll = true;
+            calcState.expressionHistory = '';
           }
         } else if (action === 'sign') {
-          if (calcState.displayValue !== '0' && calcState.displayValue !== 'Erreur') {
+          if (calcState.displayValue !== '0' && calcState.displayValue !== 'Error') {
             const num = parseFloat(calcState.displayValue);
             calcState.displayValue = formatCalcNumber(-num);
           }
         } else if (action === 'percent') {
-          if (calcState.displayValue !== 'Erreur') {
+          if (calcState.displayValue !== 'Error') {
             const current = parseFloat(calcState.displayValue);
             if (calcState.firstOperand !== null && calcState.operator) {
               calcState.displayValue = formatCalcNumber((calcState.firstOperand * current) / 100);
@@ -1565,13 +1621,16 @@ const appDefinitions = {
           const inputValue = parseFloat(calcState.displayValue);
           if (calcState.operator && calcState.waitingForSecondOperand) {
             calcState.operator = val;
+            calcState.expressionHistory = `${formatCalcNumber(calcState.firstOperand)}${formatOpGlyph(val)}`;
           } else {
             if (calcState.firstOperand === null && !isNaN(inputValue)) {
               calcState.firstOperand = inputValue;
+              calcState.expressionHistory = `${formatCalcNumber(inputValue)}${formatOpGlyph(val)}`;
             } else if (calcState.operator && calcState.firstOperand !== null) {
               const result = performCalc(calcState.operator, calcState.firstOperand, inputValue);
               calcState.displayValue = formatCalcNumber(result);
-              calcState.firstOperand = result === 'Erreur' ? null : result;
+              calcState.firstOperand = result === 'Error' ? null : result;
+              calcState.expressionHistory = `${formatCalcNumber(result)}${formatOpGlyph(val)}`;
             }
             calcState.waitingForSecondOperand = true;
             calcState.operator = val;
@@ -1579,7 +1638,10 @@ const appDefinitions = {
         } else if (action === 'equals') {
           const inputValue = parseFloat(calcState.displayValue);
           if (calcState.operator && calcState.firstOperand !== null) {
+            const prevA = calcState.firstOperand;
+            const prevOp = calcState.operator;
             const result = performCalc(calcState.operator, calcState.firstOperand, inputValue);
+            calcState.expressionHistory = `${formatCalcNumber(prevA)}${formatOpGlyph(prevOp)}${formatCalcNumber(inputValue)}`;
             calcState.displayValue = formatCalcNumber(result);
             calcState.firstOperand = null;
             calcState.operator = null;
@@ -1632,12 +1694,7 @@ const appDefinitions = {
           handleCalcInput('clear');
         } else if (e.key === 'Backspace') {
           e.preventDefault();
-          if (calcState.displayValue.length > 1 && calcState.displayValue !== 'Erreur') {
-            calcState.displayValue = calcState.displayValue.slice(0, -1);
-          } else {
-            calcState.displayValue = '0';
-          }
-          updateCalcUI();
+          handleCalcInput('backspace');
         } else if (e.key === '%') {
           e.preventDefault();
           handleCalcInput('percent');
@@ -2062,7 +2119,7 @@ export function spawnOrFocusWindow(appName) {
   const winId = ++windowCounter;
 
   const win = document.createElement('div');
-  win.className = 'window active-window';
+  win.className = `window window-${appName.toLowerCase()} active-window`;
   win.setAttribute('data-app-name', appName);
 
   const desktopW = desktop.offsetWidth || 500;
@@ -2094,14 +2151,24 @@ export function spawnOrFocusWindow(appName) {
     prevBounds: { width: `${app.widthPct}%`, height: `${app.heightPct}%`, left: `${posX}px`, top: `${posY}px` }
   };
 
+  const isCalc = appName === 'Calculator';
   win.innerHTML = `
-    <div class="window-header">
+    <div class="window-header ${isCalc ? 'window-header-calc' : ''}">
       <div class="dots">
         <span class="dot close" title="Close"></span>
         <span class="dot minimize" title="Minimize"></span>
-        <span class="dot maximize" title="Maximize"></span>
+        <span class="dot maximize ${isCalc ? 'disabled' : ''}" title="${isCalc ? '' : 'Maximize'}"></span>
       </div>
-      <span class="window-title">${app.title}</span>
+      ${isCalc ? `
+        <div class="calc-header-controls">
+          <div class="calc-header-pill" title="Toggle Sidebar">
+            <svg width="14" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="4"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+          </div>
+          <div class="calc-header-mode" title="Calculator Mode">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="3.5"/><line x1="8" y1="6" x2="16" y2="6" stroke-width="2.5"/><circle cx="8" cy="11" r="1.2" fill="currentColor"/><circle cx="12" cy="11" r="1.2" fill="currentColor"/><circle cx="16" cy="11" r="1.2" fill="currentColor"/><circle cx="8" cy="15" r="1.2" fill="currentColor"/><circle cx="12" cy="15" r="1.2" fill="currentColor"/><circle cx="16" cy="15" r="1.2" fill="currentColor"/><circle cx="8" cy="19" r="1.2" fill="currentColor"/><circle cx="12" cy="19" r="1.2" fill="currentColor"/><circle cx="16" cy="19" r="1.2" fill="currentColor"/></svg>
+          </div>
+        </div>
+      ` : `<span class="window-title">${app.title}</span>`}
     </div>
     <div class="window-content">${app.render(instance)}</div>
   `;
@@ -2265,10 +2332,137 @@ function makeDraggable(win, instance) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+//  Native macOS Web Audio Synthesizer (Zero Audio Assets)
+// ═══════════════════════════════════════════════════════════════════════════════
+export function playMacSound(type = 'click') {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    const now = ctx.currentTime;
+
+    if (type === 'click') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(1100, now);
+      osc.frequency.exponentialRampToValueAtTime(350, now + 0.035);
+      gain.gain.setValueAtTime(0.04, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+      osc.start(now);
+      osc.stop(now + 0.035);
+    } else if (type === 'pop') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(350, now);
+      osc.frequency.exponentialRampToValueAtTime(850, now + 0.06);
+      gain.gain.setValueAtTime(0.06, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+      osc.start(now);
+      osc.stop(now + 0.06);
+    } else if (type === 'error') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(160, now);
+      osc.frequency.setValueAtTime(130, now + 0.08);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+      osc.start(now);
+      osc.stop(now + 0.16);
+    }
+  } catch (_) {}
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  macOS Notification Center & Interactive Widgets Panel
+// ═══════════════════════════════════════════════════════════════════════════════
+let notificationCenterEl = null;
+
+export function toggleNotificationCenter() {
+  playMacSound('pop');
+  const macContainer = document.querySelector('.macos-container');
+  if (!macContainer) return;
+
+  if (!notificationCenterEl) {
+    notificationCenterEl = document.createElement('div');
+    notificationCenterEl.className = 'mac-notification-center';
+
+    const now = new Date();
+    const curYear = now.getFullYear();
+    const curMonth = now.getMonth();
+    const curDate = now.getDate();
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const firstDay = new Date(curYear, curMonth, 1).getDay();
+    const totalDays = new Date(curYear, curMonth + 1, 0).getDate();
+
+    let calDaysHtml = '<div class="cal-day-name">S</div><div class="cal-day-name">M</div><div class="cal-day-name">T</div><div class="cal-day-name">W</div><div class="cal-day-name">T</div><div class="cal-day-name">F</div><div class="cal-day-name">S</div>';
+    for (let i = 0; i < firstDay; i++) {
+      calDaysHtml += '<div></div>';
+    }
+    for (let d = 1; d <= totalDays; d++) {
+      const isToday = d === curDate ? 'today' : '';
+      calDaysHtml += `<div class="cal-day-num ${isToday}">${d}</div>`;
+    }
+
+    notificationCenterEl.innerHTML = `
+      <div class="mac-widget-card calendar-widget">
+        <div class="cal-header">
+          <span>${monthNames[curMonth]} ${curYear}</span>
+          <span style="color:#ff3b30;"></span>
+        </div>
+        <div class="cal-grid">
+          ${calDaysHtml}
+        </div>
+      </div>
+
+      <div class="mac-widget-card weather-widget">
+        <div class="weather-top">
+          <div>
+            <div class="weather-city">Bordeaux Sciences Agro</div>
+            <div class="weather-temp">18°</div>
+          </div>
+          <span style="font-size:24px;">⛅</span>
+        </div>
+        <div class="weather-desc">Partly Cloudy • Humidity 62%</div>
+        <div class="weather-hilow">H: 21° &nbsp; L: 13° &nbsp; AQI: 28 (Good)</div>
+      </div>
+
+      <div class="mac-widget-card battery-widget">
+        <div class="bat-title">Batteries</div>
+        <div class="bat-row">
+          <span>💻 MacBook Pro 16"</span>
+          <span class="bat-pill">100%</span>
+        </div>
+        <div class="bat-row">
+          <span>🎧 AirPods Pro (2nd gen)</span>
+          <span class="bat-pill">94%</span>
+        </div>
+      </div>
+
+      <div class="mac-widget-card quicknote-widget">
+        <div class="note-title">📝 Quick Note</div>
+        <textarea spellcheck="false" placeholder="Type quick notes, ideas, agronomy models...">Field telemetry: Sentinel-2 NDVI index stable. Next run: IoT soil moisture validation with Bordeaux Agro.</textarea>
+      </div>
+    `;
+
+    macContainer.appendChild(notificationCenterEl);
+    notificationCenterEl.addEventListener('mousedown', (e) => e.stopPropagation());
+    notificationCenterEl.addEventListener('click', (e) => e.stopPropagation());
+  }
+
+  const isOpen = notificationCenterEl.classList.contains('is-open');
+  if (isOpen) {
+    notificationCenterEl.classList.remove('is-open');
+  } else {
+    notificationCenterEl.classList.add('is-open');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // Menu Bar Dropdowns & Overlays (Apple Menu, Popovers, Control Center, Spotlight)
 // ═══════════════════════════════════════════════════════════════════════════════
 function closeAllPopovers() {
   document.querySelectorAll('.mac-popover').forEach(p => p.remove());
+  if (notificationCenterEl) notificationCenterEl.classList.remove('is-open');
   activePopover = null;
 }
 
@@ -2693,6 +2887,16 @@ function initMenuInteractions() {
     });
   });
 
+  const clockBtn = document.getElementById('mac-menu-item-time');
+  if (clockBtn) {
+    clockBtn.style.cursor = 'pointer';
+    clockBtn.title = 'Notification Center';
+    clockBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleNotificationCenter();
+    });
+  }
+
   document.addEventListener('click', () => closeAllPopovers());
 }
 
@@ -2955,6 +3159,11 @@ export function setInteractive(active) {
     container.classList.toggle('is-interactive', isMacInteractive);
   }
 
+  const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
+  if (cardsSpinner) {
+    cardsSpinner.classList.toggle('cards-hidden', isMacInteractive);
+  }
+
   if (isMacInteractive) {
     // User is interacting: stop auto-spawn and cancel auto-dismiss on all open windows
     if (autoSpawnTimer) {
@@ -3097,48 +3306,73 @@ function initDock() {
 }
 
 function initInteractiveListeners() {
-  const macScreen = document.querySelector('#imagurrrr .inside') || document.querySelector('.macos-container');
-  const cardsSpinner = document.getElementById('cards-spinner') || document.querySelector('.cards');
+  const screenContainer = document.getElementById('inside-screen') || document.querySelector('.inside');
 
-  function hideCards() {
-    if (cardsSpinner && !cardsSpinner.classList.contains('cards-hidden')) {
-      cardsSpinner.classList.add('cards-hidden');
+  function isInsideScreen(e) {
+    // 1. Check composedPath for any Mac screen elements (survives innerHTML replacements/deletions)
+    const path = typeof e.composedPath === 'function' ? e.composedPath() : [];
+    for (let i = 0; i < path.length; i++) {
+      const el = path[i];
+      if (el && el instanceof Element) {
+        if (
+          el.id === 'inside-screen' ||
+          el.classList?.contains('inside') ||
+          el.classList?.contains('macos-container') ||
+          el.classList?.contains('mac-dynamic-island') ||
+          el.classList?.contains('mac-popover') ||
+          el.classList?.contains('mac-spotlight-modal') ||
+          el.classList?.contains('mac-dialog-overlay') ||
+          el.classList?.contains('mac-notification-center') ||
+          el.closest?.('#inside-screen, .inside, .macos-container')
+        ) {
+          return true;
+        }
+      }
     }
+
+    // 2. Check DOM tree of e.target if still connected
+    if (e.target && e.target instanceof Element) {
+      if (e.target.closest('#inside-screen, .inside, .macos-container, .mac-dynamic-island, .mac-popover, .mac-spotlight-modal, .mac-dialog-overlay, .mac-notification-center')) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
-  function showCards() {
-    if (cardsSpinner && cardsSpinner.classList.contains('cards-hidden')) {
-      cardsSpinner.classList.remove('cards-hidden');
-    }
-  }
-
-  // Clicking specifically on the Mac screen: hide cards and interact in-place
-  if (macScreen) {
-    macScreen.addEventListener('click', () => {
-      hideCards();
-      setInteractive(true);
+  // Clicking / mousedown directly on the Mac screen ensures interactive mode is active
+  if (screenContainer) {
+    screenContainer.addEventListener('click', () => {
+      if (!isMacInteractive) setInteractive(true);
     });
 
-    macScreen.addEventListener('mousedown', () => {
-      hideCards();
-      setInteractive(true);
+    screenContainer.addEventListener('mousedown', () => {
+      if (!isMacInteractive) setInteractive(true);
     });
   }
 
-  // Clicking outside the Mac screen: bring back cards and unfocus
+  // Outside click / mousedown:
+  // - Clicking strictly on the screen activates interactive mode (closes orbit cards)
+  // - Clicking outside the screen (on 3D keyboard/chassis or background) deactivates interactive mode (re-opens cards)
+  // - Clicking on an orbit card (.cardage) does not reset interactive mode
   document.addEventListener('click', (e) => {
-    const isInsideScreen = Boolean(e.target.closest('#imagurrrr .inside') || e.target.closest('.macos-container'));
-    if (!isInsideScreen) {
-      showCards();
+    if (isInsideScreen(e)) {
+      if (!isMacInteractive) setInteractive(true);
+      return;
+    }
+    const isCard = Boolean(e.target && e.target instanceof Element && e.target.closest('.cardage'));
+    if (!isCard) {
       setInteractive(false);
     }
   });
 
   document.addEventListener('mousedown', (e) => {
-    const isInsideScreen = Boolean(e.target.closest('#imagurrrr .inside') || e.target.closest('.macos-container'));
-    const isCard = Boolean(e.target.closest('.cardage'));
-    if (!isInsideScreen && !isCard) {
-      showCards();
+    if (isInsideScreen(e)) {
+      if (!isMacInteractive) setInteractive(true);
+      return;
+    }
+    const isCard = Boolean(e.target && e.target instanceof Element && e.target.closest('.cardage'));
+    if (!isCard) {
       setInteractive(false);
     }
   });

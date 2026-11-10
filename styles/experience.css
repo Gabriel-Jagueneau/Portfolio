@@ -85,7 +85,7 @@
                     background: radial-gradient(500px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
                             var(--card-spotlight),
                             transparent 40%);
-                    opacity: 1;
+                    opacity: 0.8;
                     z-index: 1;
                     pointer-events: none;
                     transition: opacity var(--hover-transition);
@@ -150,4 +150,3 @@
         }
     }
 }
-
