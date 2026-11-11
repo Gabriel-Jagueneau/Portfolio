@@ -232,6 +232,7 @@
             font-weight: 600;
         }
 
+        & .formations,
         & .diplomas {
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 16px;
@@ -516,6 +517,7 @@
             font-weight: 600;
         }
 
+        & .formations,
         & .diplomas {
             grid-template-columns: 1fr;
             gap: 14px;
@@ -917,6 +919,7 @@
             }
         }
 
+        & .formations,
         & .diplomas {
             gap: 12px;
 

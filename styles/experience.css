@@ -29,18 +29,22 @@
         }
 
         &.student {
+            --spotlight-color: #00aeff;
             --card-spotlight: rgba(0, 174, 255, 0.45);
         }
 
         &.entrepreneur {
+            --spotlight-color: #34c759;
             --card-spotlight: rgba(52, 199, 89, 0.45);
         }
 
         &.dev {
+            --spotlight-color: #eeff00;
             --card-spotlight: rgba(238, 255, 0, 0.45);
         }
 
         &.other {
+            --spotlight-color: #ff00f2;
             --card-spotlight: rgba(255, 0, 242, 0.45);
         }
 
@@ -104,13 +108,21 @@
                     flex-shrink: 0;
                     object-fit: contain;
                     padding: 0;
-                    color: var(--text-white);
+                    color: var(--spotlight-color, var(--card-spotlight));
                     z-index: 4;
                 }
 
                 & .card-icon svg {
                     width: 24px;
                     height: 24px;
+                    color: var(--spotlight-color, var(--card-spotlight));
+                    stroke: currentColor;
+                    transition: filter 0.25s ease, transform 0.25s ease;
+                }
+
+                &:hover .card-icon svg {
+                    filter: drop-shadow(0 0 6px var(--spotlight-color, var(--card-spotlight)));
+                    transform: scale(1.08);
                 }
 
                 & .info {
