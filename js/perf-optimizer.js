@@ -35,23 +35,14 @@ export function evaluateHardwarePerformance() {
   const saveData = navigator.connection?.saveData === true;
 
   // 1. Possibilité de forcer un niveau via URL (?perf=potato | ?perf=low | ?perf=medium | ?perf=high | ?perf=auto)
-  // ou via localStorage ('gab_perf_tier')
+  // ou via localStorage ('gab_perf_tier'). Par défaut : 'auto'.
   const urlParams = new URLSearchParams(window.location.search);
-  const forcedPerf = urlParams.get('perf') || localStorage.getItem('gab_perf_tier');
+  const forcedPerf = urlParams.get('perf') || localStorage.getItem('gab_perf_tier') || 'auto';
   if (['potato', 'low', 'medium', 'high'].includes(forcedPerf)) {
     return forcedPerf;
   }
 
-  // 2. Par défaut : sélection 'medium' pour tout nouvel utilisateur (sauf si auto demandé)
-  if (forcedPerf !== 'auto') {
-    // Sécurité pour machines extrêmement restreintes (software emulators ou économiseur de données actif)
-    if (saveData || (cores <= 2 && memory <= 2)) {
-      return 'potato';
-    }
-    return 'medium';
-  }
-
-  // 3. Analyse du GPU via WebGL
+  // 2. Analyse du GPU via WebGL & Micro-Benchmark (mode 'auto')
   let gpuRenderer = '';
   let drawDuration = 999;
   let supportsWebGL2 = false;
@@ -69,7 +60,7 @@ export function evaluateHardwarePerformance() {
         gpuRenderer = (gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || '').toLowerCase();
       }
 
-      // Détection immédiate des moteurs de rendu logiciel (CPU Software Emulators)
+      // Détection immédiate des moteurs de rendu logiciel purs (CPU Software Emulators)
       if (
         gpuRenderer.includes('swiftshader') ||
         gpuRenderer.includes('llvmpipe') ||
@@ -122,20 +113,42 @@ export function evaluateHardwarePerformance() {
     return 'potato';
   }
 
-  // 4. Calcul du score composite (0 à 100)
+  // 3. Calcul du score composite (calibré pour que la majorité des utilisateurs soient en MEDIUM, et très rarement POTATO)
   let score = 50;
 
   // Facteur CPU & RAM
-  if (cores >= 8) score += 20;
-  else if (cores >= 6) score += 12;
-  else if (cores <= 2) score -= 25;
-  else if (cores <= 4) score -= 10;
+  if (cores >= 12) score += 12;
+  else if (cores >= 8) score += 6;
+  else if (cores <= 2) score -= 18;
+  else if (cores <= 4) score -= 6;
 
-  if (memory >= 8) score += 15;
-  else if (memory <= 2) score -= 25;
-  else if (memory <= 4) score -= 10;
+  if (memory >= 16) score += 10;
+  else if (memory >= 8) score += 4;
+  else if (memory <= 2) score -= 16;
+  else if (memory <= 4) score -= 6;
 
-  // Facteur GPU Détecté
+  // Détection GPU
+  // GPU Très Haute Performance (cartes de jeu puissantes ou puces Apple Pro/Max/Ultra)
+  const isHighEndGPU =
+    gpuRenderer.includes('rtx 40') ||
+    gpuRenderer.includes('rtx 3080') ||
+    gpuRenderer.includes('rtx 3090') ||
+    gpuRenderer.includes('rx 7800') ||
+    gpuRenderer.includes('rx 7900') ||
+    gpuRenderer.includes('rx 6800') ||
+    gpuRenderer.includes('rx 6900') ||
+    gpuRenderer.includes('m1 pro') ||
+    gpuRenderer.includes('m1 max') ||
+    gpuRenderer.includes('m1 ultra') ||
+    gpuRenderer.includes('m2 pro') ||
+    gpuRenderer.includes('m2 max') ||
+    gpuRenderer.includes('m2 ultra') ||
+    gpuRenderer.includes('m3 pro') ||
+    gpuRenderer.includes('m3 max') ||
+    gpuRenderer.includes('m4 pro') ||
+    gpuRenderer.includes('m4 max');
+
+  // GPU Dédié standard ou Apple Silicon standard (M1/M2/M3 de base, GTX, RTX entrée de gamme, Radeon classique)
   const isDedicatedOrApple =
     gpuRenderer.includes('apple') ||
     gpuRenderer.includes('nvidia') ||
@@ -145,27 +158,44 @@ export function evaluateHardwarePerformance() {
     gpuRenderer.includes('radeon') ||
     gpuRenderer.includes('rx ');
 
-  const isOldIntel =
+  // GPU ancien ou intégré très faible
+  const isOldOrWeakGPU =
     gpuRenderer.includes('intel hd') ||
-    gpuRenderer.includes('intel uhd') ||
-    gpuRenderer.includes('mali-400') ||
-    gpuRenderer.includes('adreno 3');
+  gpuRenderer.includes('intel uhd 6') ||
+    gpuRenderer.includes('mali-4') ||
+    gpuRenderer.includes('mali-g3') ||
+    gpuRenderer.includes('adreno 3') ||
+    gpuRenderer.includes('adreno 505') ||
+    gpuRenderer.includes('adreno 506');
 
-  if (isDedicatedOrApple) score += 25;
-  if (isOldIntel) score -= 20;
-  if (supportsWebGL2) score += 10;
+  if (isHighEndGPU) {
+    score += 18;
+  } else if (isDedicatedOrApple) {
+    score += 8;
+  }
 
-  // Facteur Micro-Benchmark GPU
-  if (drawDuration < 5.0) score += 15;
-  else if (drawDuration > 25.0) score -= 25;
-  else if (drawDuration > 15.0) score -= 10;
+  if (isOldOrWeakGPU) score -= 16;
+  if (supportsWebGL2) score += 4;
+  else score -= 8;
 
-  if (isMobile) score -= 15;
+  // Facteur Micro-Benchmark GPU (mesure réelle de fluidité)
+  if (drawDuration < 2.5) score += 12;
+  else if (drawDuration < 6.0) score += 5;
+  else if (drawDuration > 35.0) score -= 25;
+  else if (drawDuration > 20.0) score -= 12;
 
-  // 5. Attribution du palier
-  if (score < 35) return 'potato';
-  if (score < 60) return 'low';
-  if (score < 80) return 'medium';
+  // Mobile & Économie de données (doux pour ne pas punir les smartphones récents)
+  if (isMobile) score -= 8;
+  if (saveData) score -= 12;
+
+  // 4. Attribution du palier
+  // - High (>= 108) : Réservé aux stations de travail fixes et GPU de bureau très puissants (RTX 4080/4090, 16+ cœurs)
+  // - Medium (42 à 107) : La très grande majorité des utilisateurs (MacBooks, ordinateurs portables, bons smartphones)
+  // - Low (20 à 41) : Appareils plus modestes ou anciens
+  // - Potato (< 20) : Extrêmement rare (moteurs logiciels purs type SwiftShader, pannes WebGL, GPU archaïques)
+  if (score < 20) return 'potato';
+  if (score < 42) return 'low';
+  if (score < 108) return 'medium';
   return 'high';
 }
 
@@ -197,64 +227,64 @@ export function initPerfOptimizer(onReady) {
   window.__PERF_TIER__ = currentTier;
   window.getPerfTier = () => currentTier;
   window.setPerfTier = (newTier) => {
-    if (['potato', 'low', 'medium', 'high'].includes(newTier)) {
-      localStorage.setItem('gab_perf_tier', newTier);
-      window.location.reload();
-    }
-  };
+      if (['potato', 'low', 'medium', 'high', 'auto'].includes(newTier)) {
+        localStorage.setItem('gab_perf_tier', newTier);
+        window.location.reload();
+      }
+    };
 
-  console.log(
-    `%c[PerfOptimizer] Mode: ${currentTier.toUpperCase()}`,
-    'background: #191919; color: #00aeff; font-weight: bold; padding: 4px 10px; border: 1px solid #00aeff; border-radius: 6px;'
-  );
+    console.log(
+      `%c[PerfOptimizer] Mode: ${currentTier.toUpperCase()}`,
+      'background: #191919; color: #00aeff; font-weight: bold; padding: 4px 10px; border: 1px solid #00aeff; border-radius: 6px;'
+    );
 
-  // 3. Gestion de l'écran initial de la couleur du fond (durée exacte : 0.5s depuis le load)
-  const remaining = Math.max(0, 500 - performance.now());
+    // 3. Gestion de l'écran initial de la couleur du fond (durée exacte : 0.5s depuis le load)
+    const remaining = Math.max(0, 500 - performance.now());
 
-  setTimeout(() => {
-    const curtain = document.getElementById('perf-init-curtain');
-    if (curtain) {
-      curtain.classList.add('curtain-hidden');
-      setTimeout(() => {
-        curtain.remove();
-      }, 500);
-    }
+    setTimeout(() => {
+      const curtain = document.getElementById('perf-init-curtain');
+      if (curtain) {
+        curtain.classList.add('curtain-hidden');
+        setTimeout(() => {
+          curtain.remove();
+        }, 500);
+      }
 
-    isReady = true;
-    if (typeof onReady === 'function') {
-      onReady(currentTier);
-    }
-    injectPerfBadge(currentTier);
-    window.dispatchEvent(new CustomEvent('perfOptimizerReady', { detail: { tier: currentTier } }));
-  }, remaining);
-}
+      isReady = true;
+      if (typeof onReady === 'function') {
+        onReady(currentTier);
+      }
+      injectPerfBadge(currentTier);
+      window.dispatchEvent(new CustomEvent('perfOptimizerReady', { detail: { tier: currentTier } }));
+    }, remaining);
+  }
 
-/**
- * Injecte la notification discrète avec menu déroulant en bas à droite
- * (style pill de date 'About Me' qui se replie en petit icône demi-arc de cercle)
- */
-export function injectPerfBadge(tier) {
-  if (document.getElementById('perf-badge-widget')) return;
-  if (!document.body) return;
+  /**
+   * Injecte la notification discrète avec menu déroulant en bas à droite
+   * (style pill de date 'About Me' qui se replie en petit icône demi-arc de cercle)
+   */
+  export function injectPerfBadge(tier) {
+    if (document.getElementById('perf-badge-widget')) return;
+    if (!document.body) return;
 
-  const savedTier = localStorage.getItem('gab_perf_tier') || 'medium';
-  const isAuto = savedTier === 'auto';
+    const savedTier = localStorage.getItem('gab_perf_tier') || 'auto';
+    const isAuto = savedTier === 'auto';
 
-  const tierLabels = {
-    potato: 'Potato',
-    low: 'Low',
-    medium: 'Medium',
-    high: 'High'
-  };
+    const tierLabels = {
+      potato: 'Potato',
+      low: 'Low',
+      medium: 'Medium',
+      high: 'High'
+    };
 
-  const widget = document.createElement('div');
-  widget.id = 'perf-badge-widget';
-  widget.className = `perf-badge-widget perf-tier-${tier} date`;
-  widget.setAttribute('role', 'region');
-  widget.setAttribute('aria-label', 'Qualité graphique');
-  widget.setAttribute('title', 'Qualité graphique - Survoler pour modifier');
+    const widget = document.createElement('div');
+    widget.id = 'perf-badge-widget';
+    widget.className = `perf-badge-widget perf-tier-${tier} date`;
+    widget.setAttribute('role', 'region');
+    widget.setAttribute('aria-label', 'Qualité graphique');
+    widget.setAttribute('title', 'Qualité graphique - Survoler pour modifier');
 
-  widget.innerHTML = `
+    widget.innerHTML = `
     <div class="perf-gear-wrapper" aria-hidden="true">
       <svg class="perf-gear-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
@@ -265,76 +295,76 @@ export function injectPerfBadge(tier) {
       <span class="perf-title">Qualité :</span>
       <div class="perf-select-wrapper">
         <select id="perf-tier-select" class="perf-select" aria-label="Choisir la qualité graphique">
+          <option value="auto" ${isAuto ? 'selected' : ''}>Auto (${tierLabels[tier] || 'Medium'})</option>
           <option value="high" ${savedTier === 'high' ? 'selected' : ''}>High</option>
           <option value="medium" ${savedTier === 'medium' ? 'selected' : ''}>Medium</option>
           <option value="low" ${savedTier === 'low' ? 'selected' : ''}>Low</option>
           <option value="potato" ${savedTier === 'potato' ? 'selected' : ''}>Potato</option>
-          <option value="auto" ${isAuto ? 'selected' : ''}>Auto (${tierLabels[tier] || 'Medium'})</option>
         </select>
-        <svg class="perf-select-arrow" viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <polyline points="6 9 12 15 18 9"></polyline>
+        <svg class="perf-select-arrow" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 6l4 4 4-4"/>
         </svg>
       </div>
     </div>
   `;
 
-  document.body.appendChild(widget);
+    document.body.appendChild(widget);
 
-  const select = widget.querySelector('#perf-tier-select');
+    const select = widget.querySelector('#perf-tier-select');
 
-  // Clic sur l'icône : ouvre le focus pour permettre l'interaction
-  widget.addEventListener('click', (e) => {
-    if (e.target !== select && select) {
-      select.focus();
-    }
-  });
-
-  // Si on quitte le widget avec la souris, on retire le focus pour qu'il se referme impérativement
-  widget.addEventListener('mouseleave', () => {
-    if (select) {
-      select.blur();
-    }
-  });
-
-  // 1. Apparition fluide en pilule déployée pour afficher le résultat du benchmark
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      widget.classList.add('is-visible');
+    // Clic sur l'icône : ouvre le focus pour permettre l'interaction
+    widget.addEventListener('click', (e) => {
+      if (e.target !== select && select) {
+        select.focus();
+      }
     });
-  });
 
-  // 2. Repliage automatique en demi-arc de cercle discret après l'introduction (3.8s)
-  setTimeout(() => {
-    widget.classList.add('is-folded');
-  }, 3800);
+    // Si on quitte le widget avec la souris, on retire le focus pour qu'il se referme impérativement
+    widget.addEventListener('mouseleave', () => {
+      if (select) {
+        select.blur();
+      }
+    });
 
-  select.addEventListener('change', (e) => {
-    const val = e.target.value;
-    localStorage.setItem('gab_perf_tier', val);
-    // Nettoie l'URL sans query param pour recharger sans rien dans l'URL
-    if (window.location.search) {
-      window.history.replaceState(null, '', window.location.pathname);
-    }
-    window.location.reload();
-  });
-}
+    // 1. Apparition fluide en pilule déployée pour afficher le résultat du benchmark
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        widget.classList.add('is-visible');
+      });
+    });
 
-export function getPerfTier() {
-  return currentTier;
-}
+    // 2. Repliage automatique en demi-arc de cercle discret après l'introduction (3.8s)
+    setTimeout(() => {
+      widget.classList.add('is-folded');
+    }, 3800);
 
-export function isPotato() {
-  return currentTier === 'potato';
-}
+    select.addEventListener('change', (e) => {
+      const val = e.target.value;
+      localStorage.setItem('gab_perf_tier', val);
+      // Nettoie l'URL sans query param pour recharger sans rien dans l'URL
+      if (window.location.search) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+      window.location.reload();
+    });
+  }
 
-export function isLow() {
-  return currentTier === 'low';
-}
+  export function getPerfTier() {
+    return currentTier;
+  }
 
-export function isMedium() {
-  return currentTier === 'medium';
-}
+  export function isPotato() {
+    return currentTier === 'potato';
+  }
 
-export function isHigh() {
-  return currentTier === 'high';
-}
+  export function isLow() {
+    return currentTier === 'low';
+  }
+
+  export function isMedium() {
+    return currentTier === 'medium';
+  }
+
+  export function isHigh() {
+    return currentTier === 'high';
+  }

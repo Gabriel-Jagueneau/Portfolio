@@ -554,9 +554,9 @@ html.perf-medium body.site-revealed .webgl-tree-canvas {
     align-items: center;
     justify-content: flex-start;
     box-sizing: border-box;
-    width: 192px;
+    width: 216px;
     height: 32px;
-    padding: 0 12px 0 0;
+    padding: 0 10px 0 0;
     gap: 0;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
@@ -687,7 +687,7 @@ html.perf-medium body.site-revealed .webgl-tree-canvas {
     font-family: 'Space Grotesk', sans-serif;
     font-size: 13px;
     font-weight: 600;
-    padding-right: 14px;
+    padding-right: 15px;
     cursor: pointer;
     outline: none;
     line-height: 1;
@@ -702,14 +702,20 @@ html.perf-medium body.site-revealed .webgl-tree-canvas {
 
 .perf-badge-widget .perf-select-arrow {
     position: absolute;
-    right: 0;
+    right: 1px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
     pointer-events: none;
-    opacity: 0.65;
-    transition: opacity 0.2s ease;
+    opacity: 0.75;
+    color: var(--text-secondary);
+    transition: opacity 0.2s ease, color 0.2s ease;
 }
 
 .perf-badge-widget:hover .perf-select-arrow {
     opacity: 1;
+    color: var(--text-primary);
 }
 
 /* ── Morphing fluide en petit engrenage discret ── */
@@ -732,8 +738,8 @@ html.perf-medium body.site-revealed .webgl-tree-canvas {
 /* Déploiement ultra fluide au survol */
 .perf-badge-widget.is-folded:hover {
     opacity: 1;
-    width: 192px;
-    padding: 0 12px 0 0;
+    width: 216px;
+    padding: 0 10px 0 0;
     justify-content: flex-start;
     box-shadow: var(--shadow-lg);
 }
@@ -750,6 +756,3 @@ html.perf-potato .perf-badge-widget {
     -webkit-backdrop-filter: none !important;
     background: rgba(22, 24, 29, 0.96) !important;
 }
-
-
-
