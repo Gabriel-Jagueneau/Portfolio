@@ -316,11 +316,6 @@
                 &::after {
                     background: linear-gradient(180deg, rgba(8, 10, 14, 0.25) 0%, rgba(8, 10, 14, 0.08) 45%, rgba(8, 10, 14, 0.6) 100%);
                 }
-
-                & .see-website .button svg {
-                    stroke: var(--accent-cyan);
-                    transform: translate(2px, -2px);
-                }
             }
 
             & .head {
@@ -514,4 +509,3 @@
         }
     }
 }
-

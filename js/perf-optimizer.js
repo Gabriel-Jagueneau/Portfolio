@@ -2,16 +2,22 @@
 //  Performance Tier Optimizer (potato | low | medium | high)
 //
 // 1. Affiche un écran initial de la couleur du fond (durée : 0.5s).
-// 2. Évalue pendant ce laps de temps la puissance matérielle & GPU (micro-benchmark).
-// 3. Détermine le niveau d'optimisation (potato, low, medium, high - par défaut high).
-// 4. Applique les réglages et lève le rideau pour révéler l'arbre.
+// 2. Mesure la puissance GPU réelle (benchmark WebGL préchauffé & synchronisé),
+//    les capacités WebGL2, l'architecture GPU et la cadence rAF sur 0.5s.
+// 3. Détermine le niveau le plus juste tout en maximisant la qualité visuelle.
+// 4. Applique les réglages et lève le rideau pour révéler la scène 3D.
 // ═══════════════════════════════════════════════════════════════════════════════
 
-let currentTier = 'medium';
+let currentTier = 'high';
 let isEvaluated = false;
 let isInitializing = false;
 let isReady = false;
 let perfReadyPromise = null;
+let cachedBenchmarkResult = null;
+let lastPerfDiagnostics = null;
+
+const TIER_RANK = { potato: 0, low: 1, medium: 2, high: 3 };
+const TIER_ORDER = ['potato', 'low', 'medium', 'high'];
 
 export function waitForPerfReady() {
   if (isReady) return Promise.resolve(currentTier);
@@ -25,182 +31,408 @@ export function waitForPerfReady() {
   return perfReadyPromise;
 }
 
-/**
- * Détecte le profil de puissance matérielle (GPU, CPU, mémoire, latence de rendu)
- */
-export function evaluateHardwarePerformance() {
-  const cores = navigator.hardwareConcurrency || 4;
-  const memory = navigator.deviceMemory || 4; // en Go (si supporté)
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth <= 768;
-  const saveData = navigator.connection?.saveData === true;
-
-  // 1. Possibilité de forcer un niveau via URL (?perf=potato | ?perf=low | ?perf=medium | ?perf=high | ?perf=auto)
-  // ou via localStorage ('gab_perf_tier'). Par défaut : 'auto'.
-  const urlParams = new URLSearchParams(window.location.search);
-  const forcedPerf = urlParams.get('perf') || localStorage.getItem('gab_perf_tier') || 'auto';
-  if (['potato', 'low', 'medium', 'high'].includes(forcedPerf)) {
-    return forcedPerf;
-  }
-
-  // 2. Analyse du GPU via WebGL & Micro-Benchmark (mode 'auto')
-  let gpuRenderer = '';
-  let drawDuration = 999;
-  let supportsWebGL2 = false;
-
-  try {
-    const canvas = document.createElement('canvas');
-    canvas.width = 128;
-    canvas.height = 128;
-    const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
-    supportsWebGL2 = !!canvas.getContext('webgl2');
-
-    if (gl) {
-      const dbg = gl.getExtension('WEBGL_debug_renderer_info');
-      if (dbg) {
-        gpuRenderer = (gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || '').toLowerCase();
-      }
-
-      // Détection immédiate des moteurs de rendu logiciel purs (CPU Software Emulators)
-      if (
-        gpuRenderer.includes('swiftshader') ||
-        gpuRenderer.includes('llvmpipe') ||
-        gpuRenderer.includes('softpipe') ||
-        gpuRenderer.includes('software') ||
-        gpuRenderer.includes('microsoft basic render')
-      ) {
-        return 'potato';
-      }
-
-      // Micro-Benchmark de remplissage GPU (mesure réelle de latence)
-      const vs = gl.createShader(gl.VERTEX_SHADER);
-      gl.shaderSource(vs, 'attribute vec2 p; void main(){ gl_Position=vec4(p,0.,1.); }');
-      gl.compileShader(vs);
-
-      const fs = gl.createShader(gl.FRAGMENT_SHADER);
-      gl.shaderSource(
-        fs,
-        'precision mediump float; void main(){ vec2 uv=gl_FragCoord.xy/128.; float v=0.; for(int i=0;i<40;i++){ v+=sin(uv.x*float(i)+uv.y); } gl_FragColor=vec4(vec3(v*0.02),1.); }'
-      );
-      gl.compileShader(fs);
-
-      const prog = gl.createProgram();
-      gl.attachShader(prog, vs);
-      gl.attachShader(prog, fs);
-      gl.linkProgram(prog);
-      gl.useProgram(prog);
-
-      const buf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-      gl.bufferData(
-        gl.ARRAY_BUFFER,
-        new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
-        gl.STATIC_DRAW
-      );
-      const pLoc = gl.getAttribLocation(prog, 'p');
-      gl.enableVertexAttribArray(pLoc);
-      gl.vertexAttribPointer(pLoc, 2, gl.FLOAT, false, 0, 0);
-
-      // Mesure du temps d'exécution réel du draw pass
-      const t0 = performance.now();
-      for (let i = 0; i < 6; i++) {
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
-      }
-      gl.finish();
-      drawDuration = performance.now() - t0;
-    }
-  } catch (e) {
-    // WebGL indisponible ou erreur d'initialisation
-    return 'potato';
-  }
-
-  // 3. Calcul du score composite (calibré pour que la majorité des utilisateurs soient en MEDIUM, et très rarement POTATO)
-  let score = 50;
-
-  // Facteur CPU & RAM
-  if (cores >= 12) score += 12;
-  else if (cores >= 8) score += 6;
-  else if (cores <= 2) score -= 18;
-  else if (cores <= 4) score -= 6;
-
-  if (memory >= 16) score += 10;
-  else if (memory >= 8) score += 4;
-  else if (memory <= 2) score -= 16;
-  else if (memory <= 4) score -= 6;
-
-  // Détection GPU
-  // GPU Très Haute Performance (cartes de jeu puissantes ou puces Apple Pro/Max/Ultra)
-  const isHighEndGPU =
-    gpuRenderer.includes('rtx 40') ||
-    gpuRenderer.includes('rtx 3080') ||
-    gpuRenderer.includes('rtx 3090') ||
-    gpuRenderer.includes('rx 7800') ||
-    gpuRenderer.includes('rx 7900') ||
-    gpuRenderer.includes('rx 6800') ||
-    gpuRenderer.includes('rx 6900') ||
-    gpuRenderer.includes('m1 pro') ||
-    gpuRenderer.includes('m1 max') ||
-    gpuRenderer.includes('m1 ultra') ||
-    gpuRenderer.includes('m2 pro') ||
-    gpuRenderer.includes('m2 max') ||
-    gpuRenderer.includes('m2 ultra') ||
-    gpuRenderer.includes('m3 pro') ||
-    gpuRenderer.includes('m3 max') ||
-    gpuRenderer.includes('m4 pro') ||
-    gpuRenderer.includes('m4 max');
-
-  // GPU Dédié standard ou Apple Silicon standard (M1/M2/M3 de base, GTX, RTX entrée de gamme, Radeon classique)
-  const isDedicatedOrApple =
-    gpuRenderer.includes('apple') ||
-    gpuRenderer.includes('nvidia') ||
-    gpuRenderer.includes('geforce') ||
-    gpuRenderer.includes('rtx') ||
-    gpuRenderer.includes('gtx') ||
-    gpuRenderer.includes('radeon') ||
-    gpuRenderer.includes('rx ');
-
-  // GPU ancien ou intégré très faible
-  const isOldOrWeakGPU =
-    gpuRenderer.includes('intel hd') ||
-  gpuRenderer.includes('intel uhd 6') ||
-    gpuRenderer.includes('mali-4') ||
-    gpuRenderer.includes('mali-g3') ||
-    gpuRenderer.includes('adreno 3') ||
-    gpuRenderer.includes('adreno 505') ||
-    gpuRenderer.includes('adreno 506');
-
-  if (isHighEndGPU) {
-    score += 18;
-  } else if (isDedicatedOrApple) {
-    score += 8;
-  }
-
-  if (isOldOrWeakGPU) score -= 16;
-  if (supportsWebGL2) score += 4;
-  else score -= 8;
-
-  // Facteur Micro-Benchmark GPU (mesure réelle de fluidité)
-  if (drawDuration < 2.5) score += 12;
-  else if (drawDuration < 6.0) score += 5;
-  else if (drawDuration > 35.0) score -= 25;
-  else if (drawDuration > 20.0) score -= 12;
-
-  // Mobile & Économie de données (doux pour ne pas punir les smartphones récents)
-  if (isMobile) score -= 8;
-  if (saveData) score -= 12;
-
-  // 4. Attribution du palier
-  // - High (>= 108) : Réservé aux stations de travail fixes et GPU de bureau très puissants (RTX 4080/4090, 16+ cœurs)
-  // - Medium (42 à 107) : La très grande majorité des utilisateurs (MacBooks, ordinateurs portables, bons smartphones)
-  // - Low (20 à 41) : Appareils plus modestes ou anciens
-  // - Potato (< 20) : Extrêmement rare (moteurs logiciels purs type SwiftShader, pannes WebGL, GPU archaïques)
-  if (score < 20) return 'potato';
-  if (score < 42) return 'low';
-  if (score < 108) return 'medium';
-  return 'high';
+export function getPerfDiagnostics() {
+  return lastPerfDiagnostics;
 }
 
 /**
- * Initialise l'écran d'attente initial (0.5s couleur de fond) et déclenche l'évaluation
+ * Exécute un micro-benchmark GPU WebGL calibré avec passe de préchauffage (warm-up)
+ * pour exclure la compilation shader/driver, puis mesure 12 passes plein écran (256x256)
+ * synchronisées via readPixels. Le résultat est mis en cache pour la session.
+ */
+function runWebGLBenchmark() {
+  if (cachedBenchmarkResult) return cachedBenchmarkResult;
+
+  const fallback = {
+    ok: false,
+    supportsWebGL2: false,
+    gpuRenderer: '',
+    gpuVendor: '',
+    isSoftwareRenderer: false,
+    maxTextureSize: 0,
+    maxSamples: 0,
+    drawDuration: 999
+  };
+
+  let canvas = null;
+  let gl = null;
+  let vs = null;
+  let fs = null;
+  let prog = null;
+  let buf = null;
+
+  try {
+    canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 256;
+
+    const ctxOpts = {
+      powerPreference: 'high-performance',
+      antialias: false,
+      depth: false,
+      stencil: false
+    };
+
+    gl = canvas.getContext('webgl2', ctxOpts);
+    const supportsWebGL2 = !!gl;
+    if (!gl) {
+      gl = canvas.getContext('webgl', ctxOpts) || canvas.getContext('experimental-webgl', ctxOpts);
+    }
+
+    if (!gl) {
+      cachedBenchmarkResult = fallback;
+      return cachedBenchmarkResult;
+    }
+
+    let gpuRenderer = '';
+    let gpuVendor = '';
+    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    if (dbg) {
+      gpuRenderer = String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) || '').toLowerCase();
+      gpuVendor = String(gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL) || '').toLowerCase();
+    }
+
+    const maxTextureSize = Number(gl.getParameter(gl.MAX_TEXTURE_SIZE)) || 0;
+    const maxSamples = supportsWebGL2 ? (Number(gl.getParameter(gl.MAX_SAMPLES)) || 0) : 0;
+
+    const isSoftwareRenderer =
+      gpuRenderer.includes('swiftshader') ||
+      gpuRenderer.includes('llvmpipe') ||
+      gpuRenderer.includes('softpipe') ||
+      gpuRenderer.includes('software') ||
+      gpuRenderer.includes('microsoft basic render') ||
+      gpuRenderer.includes('gdi generic');
+
+    if (isSoftwareRenderer) {
+      cachedBenchmarkResult = {
+        ok: true,
+        supportsWebGL2,
+        gpuRenderer,
+        gpuVendor,
+        isSoftwareRenderer: true,
+        maxTextureSize,
+        maxSamples,
+        drawDuration: 999
+      };
+      const loseCtx = gl.getExtension('WEBGL_lose_context');
+      if (loseCtx) loseCtx.loseContext();
+      return cachedBenchmarkResult;
+    }
+
+    vs = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vs, 'attribute vec2 p; void main(){ gl_Position=vec4(p,0.,1.); }');
+    gl.compileShader(vs);
+
+    fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(
+      fs,
+      `precision mediump float;
+       uniform float uPass;
+       void main(){
+         vec2 uv = gl_FragCoord.xy / 256.0;
+         float v = uPass * 0.01;
+         for (int i = 0; i < 48; i++) {
+           float fi = float(i);
+           v += sin(uv.x * (fi + 1.0) + uv.y * 2.3 + uPass) * cos(uv.y * (fi * 0.5 + 1.0) - uPass);
+         }
+         gl_FragColor = vec4(vec3(fract(v * 0.02)), 1.0);
+       }`
+    );
+    gl.compileShader(fs);
+
+    if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS) || !gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
+      cachedBenchmarkResult = fallback;
+      return cachedBenchmarkResult;
+    }
+
+    prog = gl.createProgram();
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+      cachedBenchmarkResult = fallback;
+      return cachedBenchmarkResult;
+    }
+
+    gl.useProgram(prog);
+    gl.viewport(0, 0, 256, 256);
+
+    buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(
+      gl.ARRAY_BUFFER,
+      new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
+      gl.STATIC_DRAW
+    );
+
+    const pLoc = gl.getAttribLocation(prog, 'p');
+    gl.enableVertexAttribArray(pLoc);
+    gl.vertexAttribPointer(pLoc, 2, gl.FLOAT, false, 0, 0);
+
+    const uPassLoc = gl.getUniformLocation(prog, 'uPass');
+    const syncPixel = new Uint8Array(4);
+
+    // Passe de préchauffage (warm-up) hors chronomètre pour exclure la compilation driver/shader
+    for (let w = 0; w < 2; w++) {
+      if (uPassLoc) gl.uniform1f(uPassLoc, w * 0.13);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+    }
+    gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, syncPixel);
+
+    // Passe chronométrée (12 passes x 256x256 synchronisées GPU -> CPU)
+    const t0 = performance.now();
+    for (let i = 0; i < 12; i++) {
+      if (uPassLoc) gl.uniform1f(uPassLoc, i + 1.0);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+    }
+    gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, syncPixel);
+    const drawDuration = Math.max(0.01, performance.now() - t0);
+
+    cachedBenchmarkResult = {
+      ok: true,
+      supportsWebGL2,
+      gpuRenderer,
+      gpuVendor,
+      isSoftwareRenderer: false,
+      maxTextureSize,
+      maxSamples,
+      drawDuration
+    };
+    return cachedBenchmarkResult;
+  } catch (e) {
+    cachedBenchmarkResult = fallback;
+    return cachedBenchmarkResult;
+  } finally {
+    if (gl) {
+      try {
+        if (buf) gl.deleteBuffer(buf);
+        if (prog) gl.deleteProgram(prog);
+        if (vs) gl.deleteShader(vs);
+        if (fs) gl.deleteShader(fs);
+        const loseCtx = gl.getExtension('WEBGL_lose_context');
+        if (loseCtx) loseCtx.loseContext();
+      } catch (_) {
+        // Ignorer les erreurs de libération du contexte éphémère
+      }
+    }
+  }
+}
+
+/**
+ * Détecte le profil de puissance matérielle (GPU réel, capacités WebGL, CPU/RAM, cadence rAF)
+ */
+export function evaluateHardwarePerformance(frameMetrics = null) {
+  let savedPref = 'auto';
+  try {
+    savedPref = localStorage.getItem('gab_perf_tier') || 'auto';
+  } catch (_) {
+    savedPref = 'auto';
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const forcedPerf = urlParams.get('perf') || savedPref || 'auto';
+  if (['potato', 'low', 'medium', 'high'].includes(forcedPerf)) {
+    lastPerfDiagnostics = {
+      tier: forcedPerf,
+      source: urlParams.get('perf') ? 'url' : 'storage',
+      score: null,
+      drawDuration: cachedBenchmarkResult?.drawDuration ?? null,
+      medianFrameMs: frameMetrics?.medianFrameMs ?? null,
+      gpuRenderer: cachedBenchmarkResult?.gpuRenderer ?? ''
+    };
+    return forcedPerf;
+  }
+
+  const ua = navigator.userAgent || '';
+  const platform = navigator.platform || '';
+  const cores = typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency > 0
+    ? navigator.hardwareConcurrency
+    : null;
+  const memory = typeof navigator.deviceMemory === 'number' && navigator.deviceMemory > 0
+    ? navigator.deviceMemory
+    : null;
+  const isApplePlatform = /Macintosh|MacIntel|iPhone|iPad|iPod/i.test(ua) || /Mac/i.test(platform);
+  const maxTouchPoints = navigator.maxTouchPoints || 0;
+  const isMobile =
+    /Android|iPhone|iPad|iPod|Mobile/i.test(ua) ||
+    (/Macintosh/i.test(ua) && maxTouchPoints > 1) ||
+    (window.innerWidth > 0 && window.innerWidth <= 768 && maxTouchPoints > 0);
+  const saveData = navigator.connection?.saveData === true;
+
+  const bench = runWebGLBenchmark();
+  if (!bench.ok || bench.isSoftwareRenderer) {
+    lastPerfDiagnostics = {
+      tier: 'potato',
+      source: bench.isSoftwareRenderer ? 'software-renderer' : 'webgl-unavailable',
+      score: 0,
+      drawDuration: bench.drawDuration,
+      medianFrameMs: frameMetrics?.medianFrameMs ?? null,
+      gpuRenderer: bench.gpuRenderer
+    };
+    return 'potato';
+  }
+
+  const r = bench.gpuRenderer;
+
+  const isWeakOrLegacyGPU =
+    /\bintel.*hd\b/.test(r) ||
+    /uhd\s*(?:graphics\s*)?6\d{2}/.test(r) ||
+    /\bmali-(?:4\d+|t\d+|g3\d|g5[12])\b/.test(r) ||
+    /\badreno\s*(?:\(tm\)\s*)?(?:[34]\d{2}|50\d)\b/.test(r) ||
+    r.includes('powervr') ||
+    r.includes('videocore');
+
+  const isHighEndGPU = !isWeakOrLegacyGPU && (
+    /\brtx\s*(?:20|30|40|50)/.test(r) ||
+    /\bgtx\s*(?:1070|1080|1660)/.test(r) ||
+    r.includes('rx 5700') ||
+    /\brx\s*[6789]/.test(r) ||
+    r.includes('radeon pro') ||
+    r.includes('780m') ||
+    r.includes('880m') ||
+    r.includes('890m') ||
+    /intel.*arc/.test(r) ||
+    /apple\s+m[1-5]\b/.test(r) ||
+    (r.includes('apple gpu') && !isMobile)
+  );
+
+  const isCapableGPU = !isWeakOrLegacyGPU && (
+    r.includes('apple') ||
+    r.includes('nvidia') ||
+    r.includes('geforce') ||
+    r.includes('rtx') ||
+    r.includes('gtx') ||
+    r.includes('quadro') ||
+    r.includes('radeon') ||
+    r.includes('rx ') ||
+    /iris.*xe/.test(r) ||
+    /iris.*plus/.test(r) ||
+    /\badreno\s*(?:\(tm\)\s*)?(?:[78]\d{2}|x1)/.test(r) ||
+    r.includes('immortalis') ||
+    /\bmali-g7(?:10|15|20|25)/.test(r) ||
+    r.includes('xclipse')
+  );
+
+  const isMidGPU = !isWeakOrLegacyGPU && (
+    r.includes('iris') ||
+    /uhd\s*(?:graphics\s*)?7\d{2}/.test(r) ||
+    /\badreno\s*(?:\(tm\)\s*)?6\d{2}/.test(r) ||
+    /\bmali-g(?:57|68|[789]\d)\b/.test(r)
+  );
+
+  // Calcul du score composite (base 62) calibré sans pénaliser les masquages navigateur
+  let score = 62;
+
+  const d = bench.drawDuration;
+  if (d <= 2.5) score += 28;
+  else if (d <= 5.0) score += 20;
+  else if (d <= 8.5) score += 12;
+  else if (d <= 13.5) score += 2;
+  else if (d <= 20.0) score -= 12;
+  else if (d <= 32.0) score -= 26;
+  else score -= 42;
+
+  if (isHighEndGPU) score += 22;
+  else if (isCapableGPU) score += 14;
+  else if (isMidGPU) score += 5;
+
+  if (isWeakOrLegacyGPU) score -= 20;
+
+  if (bench.supportsWebGL2) score += 6;
+  else score -= 14;
+
+  if (bench.maxTextureSize >= 16384) score += 4;
+  else if (bench.maxTextureSize > 0 && bench.maxTextureSize < 4096) score -= 12;
+
+  if (bench.maxSamples >= 8) score += 3;
+  else if (bench.maxSamples >= 4) score += 1;
+
+  if (cores !== null) {
+    if (cores >= 10) score += 8;
+    else if (cores >= 8) score += 5;
+    else if (cores >= 6) score += 3;
+    else if (cores <= 2) score -= 16;
+    else if (cores <= 4 && !isApplePlatform) score -= 5;
+  }
+
+  if (memory !== null) {
+    if (memory >= 8) score += 6;
+    else if (memory <= 2) score -= 18;
+    else if (memory <= 3) score -= 8;
+  }
+
+  if (isMobile) score -= 8;
+  if (saveData) score -= 22;
+
+  if (frameMetrics && frameMetrics.sampleCount >= 4 && typeof frameMetrics.medianFrameMs === 'number') {
+    if (frameMetrics.medianFrameMs <= 10.0 && d <= 10.0) score += 6;
+    else if (frameMetrics.medianFrameMs <= 18.0 && d <= 12.0) score += 3;
+    else if (frameMetrics.medianFrameMs > 36.0) score -= 16;
+  }
+
+  let tier;
+  if (score >= 78) tier = 'high';
+  else if (score >= 48) tier = 'medium';
+  else if (score >= 24) tier = 'low';
+  else tier = 'potato';
+
+  // Garde-fou Maximisation Qualité : si le GPU répond rapidement sous WebGL2,
+  // ne pas brider même si le navigateur masque GPU / RAM / CPU (Safari, Firefox RFP)
+  if (!saveData && bench.supportsWebGL2 && !isWeakOrLegacyGPU) {
+    if ((!isMobile && d <= 6.0) || (isMobile && d <= 3.5)) {
+      tier = TIER_ORDER[Math.max(TIER_RANK[tier], TIER_RANK.high)];
+    } else if (d <= 11.0) {
+      tier = TIER_ORDER[Math.max(TIER_RANK[tier], TIER_RANK.medium)];
+    }
+  }
+
+  // Garde-fou Anti-Saccade : plafonne si le débit GPU ou la cadence rAF réelle décroche
+  if (d > 38.0) {
+    tier = TIER_ORDER[Math.min(TIER_RANK[tier], TIER_RANK.potato)];
+  } else if (d > 24.0) {
+    tier = TIER_ORDER[Math.min(TIER_RANK[tier], TIER_RANK.low)];
+  } else if (d > 15.0 || (isWeakOrLegacyGPU && d > 9.0)) {
+    tier = TIER_ORDER[Math.min(TIER_RANK[tier], TIER_RANK.medium)];
+  }
+
+  if (frameMetrics && frameMetrics.sampleCount >= 6 && frameMetrics.medianFrameMs > 38.0) {
+    tier = TIER_ORDER[Math.min(TIER_RANK[tier], TIER_RANK.medium)];
+  }
+
+  lastPerfDiagnostics = {
+    tier,
+    source: frameMetrics ? 'auto-bench+raf' : 'auto-bench',
+    score,
+    drawDuration: bench.drawDuration,
+    medianFrameMs: frameMetrics?.medianFrameMs ?? null,
+    sampleCount: frameMetrics?.sampleCount ?? 0,
+    gpuRenderer: bench.gpuRenderer,
+    gpuVendor: bench.gpuVendor,
+    supportsWebGL2: bench.supportsWebGL2,
+    maxTextureSize: bench.maxTextureSize,
+    maxSamples: bench.maxSamples,
+    cores,
+    memory,
+    isMobile,
+    saveData
+  };
+
+  return tier;
+}
+
+function applyTierState(tier) {
+  document.documentElement.dataset.perfTier = tier;
+  document.documentElement.classList.remove('perf-potato', 'perf-low', 'perf-medium', 'perf-high');
+  document.documentElement.classList.add(`perf-${tier}`);
+  if (document.body) {
+    document.body.classList.remove('perf-potato', 'perf-low', 'perf-medium', 'perf-high');
+    document.body.classList.add(`perf-${tier}`);
+  }
+  window.__PERF_TIER__ = tier;
+}
+
+/**
+ * Initialise l'écran d'attente initial (0.5s couleur de fond) et déclenche l'évaluation en 2 phases
  */
 export function initPerfOptimizer(onReady) {
   if (isInitializing) {
@@ -208,56 +440,92 @@ export function initPerfOptimizer(onReady) {
     return;
   }
   isInitializing = true;
-  const startTime = performance.now();
 
-  // 1. Détermine le niveau
+  // Helpers globaux en console
+  window.getPerfTier = () => currentTier;
+  window.getPerfDiagnostics = () => lastPerfDiagnostics;
+  window.setPerfTier = (newTier) => {
+    if (['potato', 'low', 'medium', 'high', 'auto'].includes(newTier)) {
+      localStorage.setItem('gab_perf_tier', newTier);
+      window.location.reload();
+    }
+  };
+
+  // Phase 1 : évaluation synchrone immédiate (GPU + capacités WebGL + matériel)
   currentTier = evaluateHardwarePerformance();
   isEvaluated = true;
+  applyTierState(currentTier);
 
-  // 2. Applique les classes CSS globales
-  document.documentElement.dataset.perfTier = currentTier;
-  document.documentElement.classList.remove('perf-potato', 'perf-low', 'perf-medium', 'perf-high');
-  document.documentElement.classList.add(`perf-${currentTier}`);
-  if (document.body) {
-    document.body.classList.remove('perf-potato', 'perf-low', 'perf-medium', 'perf-high');
-    document.body.classList.add(`perf-${currentTier}`);
+  // Phase 2 : pendant le rideau de 0.5s, mesure de la cadence d'affichage réelle (rAF)
+  const remaining = Math.max(0, 500 - performance.now());
+  const frameDeltas = [];
+  let prevTs = null;
+  let rafHandle = 0;
+  let settled = false;
+
+  if (remaining > 50 && document.visibilityState !== 'hidden' && typeof requestAnimationFrame === 'function') {
+    const sampleFrame = (ts) => {
+      if (settled) return;
+      if (prevTs !== null) {
+        const dt = ts - prevTs;
+        if (dt > 0 && dt < 250) {
+          frameDeltas.push(dt);
+        }
+      }
+      prevTs = ts;
+      rafHandle = requestAnimationFrame(sampleFrame);
+    };
+    rafHandle = requestAnimationFrame(sampleFrame);
   }
 
-  // Helper global en console
-  window.__PERF_TIER__ = currentTier;
-  window.getPerfTier = () => currentTier;
-  window.setPerfTier = (newTier) => {
-      if (['potato', 'low', 'medium', 'high', 'auto'].includes(newTier)) {
-        localStorage.setItem('gab_perf_tier', newTier);
-        window.location.reload();
-      }
-    };
+  setTimeout(() => {
+    settled = true;
+    if (rafHandle) cancelAnimationFrame(rafHandle);
 
+    let frameMetrics = null;
+    if (document.visibilityState !== 'hidden' && frameDeltas.length > 0) {
+      // Ignore la 1re frame susceptible d'inclure le layout/style initial
+      const usable = frameDeltas.length > 1 ? frameDeltas.slice(1) : frameDeltas;
+      if (usable.length > 0) {
+        const sorted = [...usable].sort((a, b) => a - b);
+        const mid = Math.floor(sorted.length / 2);
+        const medianFrameMs = sorted.length % 2 === 0
+          ? (sorted[mid - 1] + sorted[mid]) * 0.5
+          : sorted[mid];
+        frameMetrics = {
+          medianFrameMs,
+          sampleCount: usable.length
+        };
+      }
+    }
+
+    currentTier = evaluateHardwarePerformance(frameMetrics);
+    applyTierState(currentTier);
+
+    const diag = lastPerfDiagnostics || {};
+    const gpuStr = typeof diag.drawDuration === 'number' ? `${diag.drawDuration.toFixed(2)}ms` : 'n/a';
+    const rafStr = typeof diag.medianFrameMs === 'number' ? `${diag.medianFrameMs.toFixed(1)}ms` : 'n/a';
     console.log(
-      `%c[PerfOptimizer] Mode: ${currentTier.toUpperCase()}`,
+      `%c[PerfOptimizer] Mode: ${currentTier.toUpperCase()} | Score: ${diag.score ?? '-'} | GPU: ${gpuStr} | rAF: ${rafStr}`,
       'background: #191919; color: #00aeff; font-weight: bold; padding: 4px 10px; border: 1px solid #00aeff; border-radius: 6px;'
     );
 
-    // 3. Gestion de l'écran initial de la couleur du fond (durée exacte : 0.5s depuis le load)
-    const remaining = Math.max(0, 500 - performance.now());
+    const curtain = document.getElementById('perf-init-curtain');
+    if (curtain) {
+      curtain.classList.add('curtain-hidden');
+      setTimeout(() => {
+        curtain.remove();
+      }, 500);
+    }
 
-    setTimeout(() => {
-      const curtain = document.getElementById('perf-init-curtain');
-      if (curtain) {
-        curtain.classList.add('curtain-hidden');
-        setTimeout(() => {
-          curtain.remove();
-        }, 500);
-      }
-
-      isReady = true;
-      if (typeof onReady === 'function') {
-        onReady(currentTier);
-      }
-      injectPerfBadge(currentTier);
-      window.dispatchEvent(new CustomEvent('perfOptimizerReady', { detail: { tier: currentTier } }));
-    }, remaining);
-  }
+    isReady = true;
+    if (typeof onReady === 'function') {
+      onReady(currentTier);
+    }
+    injectPerfBadge(currentTier);
+    window.dispatchEvent(new CustomEvent('perfOptimizerReady', { detail: { tier: currentTier, diagnostics: lastPerfDiagnostics } }));
+  }, remaining);
+}
 
   /**
    * Injecte la notification discrète avec menu déroulant en bas à droite

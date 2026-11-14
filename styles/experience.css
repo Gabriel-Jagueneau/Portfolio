@@ -117,12 +117,6 @@
                     height: 24px;
                     color: var(--spotlight-color, var(--card-spotlight));
                     stroke: currentColor;
-                    transition: filter 0.25s ease, transform 0.25s ease;
-                }
-
-                &:hover .card-icon svg {
-                    filter: drop-shadow(0 0 6px var(--spotlight-color, var(--card-spotlight)));
-                    transform: scale(1.08);
                 }
 
                 & .info {

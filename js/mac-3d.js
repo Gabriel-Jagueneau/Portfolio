@@ -639,6 +639,1059 @@ function lockModelViewerInteraction(modelViewer) {
   });
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+//  3D Keyboard Interactive Hover Aura (Per-Key & Radial Backlight Halo)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ⚙️ PARAMÈTRES AJUSTABLES DE L'AURA & DES GOD RAYS DU CLAVIER 3D
+export const KEYBOARD_AURA_CONFIG = {
+  // 1. Rayons de détection et d'étendue du halo autour de la souris
+  keyRadius: 1.45,           // Rayon d'activation des touches voisines
+  radialRadius: 2.05,        // Rayon du halo diffus global autour du curseur
+  coreRadius: 0.95,          // Rayon du cœur lumineux directement sous la souris
+  keyPressDepth: 0.014,      // Enfoncement mécanique des touches au survol (0 = désactivé)
+
+  // 2. Faisceaux volumétriques "God Rays" droits centrés aux coins avec pont lumineux entre les pics
+  rayHeight: 0.88,           // Hauteur de montée des faisceaux au-dessus des touches (augmenter = monte plus haut)
+  raySpread: 0.025,          // Ouverture latérale très discrète pour garder les faisceaux droits
+  rayCrepuscularTilt: 0.045, // Inclinaison radiale légère (évite que les rayons penchent sur les bords)
+  rayBaseZ: -0.258,          // Hauteur d'ancrage de la base du rayon dans l'interstice entre les touches
+  rayBaseOpacity: 0.48,      // Opacité de la base brillante au pied de la touche (-20%)
+  rayTopOpacity: 0.0,        // Opacité au sommet du faisceau (0.0 = fondu complet en montant)
+  rayFalloffPower: 1.45,     // Courbe de diminution de l'opacité en montant (1.0 = linéaire, >1 = base dense + haut doux)
+  rayBrightness: 1.08,       // Intensité lumineuse à la base des God Rays (-20%)
+  rayCornerBoost: 1.55,      // Renforcement des faisceaux aux coins / intersections entre les touches
+  rayEdgeAttenuation: 0.28,  // Intensité douce du pont lumineux reliant deux pics le long de l'arête
+  rayEdgeBridgeHeight: 0.38, // Hauteur relative du voile lumineux entre deux pics (creux de la courbe)
+  rayMergedCornerScale: 1.18,// Élargissement quand ≥2 coins se touchent (1 seul faisceau unifié)
+  rayMergedCornerHeight: 1.10,// Hauteur supplémentaire quand ≥2 coins se touchent
+
+  // 3. Intensités des autres éléments du clavier & multiplicateur global (-20%)
+  globalIntensity: 1.0,      // Multiplicateur maître de la puissance lumineuse globale
+  bevelIntensity: 0.095,     // Lueur subtile sur le biseau inférieur des touches (plateau supérieur = toujours 0)
+  legendsIntensity: 0.44,    // Rétroéclairage blanc des lettres et symboles gravés
+  wellIntensity: 0.44,       // Halo lumineux au fond des interstices (puits du clavier)
+
+  // 4. Couleur de la lumière (RVB linéaire — blanc pur légèrement cristallin)
+  colorR: 0.97,
+  colorG: 0.99,
+  colorB: 1.04
+};
+
+const KEYBOARD_CORNER_COORDS = [
+  { x: -13.65, y: -9.64, z: -0.34 }, // Haut-Gauche (Esc)
+  { x: 13.65, y: -9.64, z: -0.34 }, // Haut-Droite (Touch ID)
+  { x: -13.65, y: 1.27, z: -0.34 }, // Bas-Gauche (Fn)
+  { x: 13.65, y: 1.27, z: -0.34 }  // Bas-Droite (Flèche Droite)
+];
+
+/** Échantillonne un point et sa normale sortante le long du périmètre arrondi d'une touche (t ∈ [0, 1]). */
+function evalRoundedKeyPerimeter(cx, cy, rx, ry, cr, t) {
+  const ix = Math.max(0.01, rx - cr);
+  const iy = Math.max(0.01, ry - cr);
+  const arcLen = 0.5 * Math.PI * cr;
+  const segments = [
+    { len: 2 * iy, fn: (u) => [cx + rx, cy - iy + u * 2 * iy, 1, 0] },
+    { len: arcLen, fn: (u) => { const a = u * Math.PI * 0.5; const c = Math.cos(a), s = Math.sin(a); return [cx + ix + cr * c, cy + iy + cr * s, c, s]; } },
+    { len: 2 * ix, fn: (u) => [cx + ix - u * 2 * ix, cy + ry, 0, 1] },
+    { len: arcLen, fn: (u) => { const a = (0.5 + u * 0.5) * Math.PI; const c = Math.cos(a), s = Math.sin(a); return [cx - ix + cr * c, cy + iy + cr * s, c, s]; } },
+    { len: 2 * iy, fn: (u) => [cx - rx, cy + iy - u * 2 * iy, -1, 0] },
+    { len: arcLen, fn: (u) => { const a = (1.0 + u * 0.5) * Math.PI; const c = Math.cos(a), s = Math.sin(a); return [cx - ix + cr * c, cy - iy + cr * s, c, s]; } },
+    { len: 2 * ix, fn: (u) => [cx - ix + u * 2 * ix, cy - ry, 0, -1] },
+    { len: arcLen, fn: (u) => { const a = (1.5 + u * 0.5) * Math.PI; const c = Math.cos(a), s = Math.sin(a); return [cx + ix + cr * c, cy - iy + cr * s, c, s]; } }
+  ];
+  const totalLen = segments.reduce((acc, s) => acc + s.len, 0);
+  let target = (((t % 1) + 1) % 1) * totalLen;
+  for (let i = 0; i < segments.length; i++) {
+    const seg = segments[i];
+    if (target <= seg.len || i === segments.length - 1) {
+      return seg.fn(seg.len > 1e-6 ? Math.min(1, target / seg.len) : 0);
+    }
+    target -= seg.len;
+  }
+  return segments[0].fn(0);
+}
+
+/** Construit le mesh volumétrique procédural des God Rays en fusionnant les coins adjacents. */
+function createKeyboardGodRays(keys, keycaps, BufferAttributeCtor, baseMaterial) {
+  const MeshCtor = keycaps.constructor;
+  const BufferGeometryCtor = keycaps.geometry.constructor;
+  if (!MeshCtor || !BufferGeometryCtor) return null;
+
+  const CURTAIN_SEGMENTS = 48;
+  const BLADE_HALF_W = 0.24;
+  const MERGE_DIST_SQ = 0.52 * 0.52;
+  const s45 = Math.SQRT1_2;
+  const vertices = [];
+  const indices = [];
+
+  const pushVertex = (kIdx, clIdx, ax, ay, ox, oy, nx, ny, u, v, isTop, cornerBoost, isBlade) => {
+    const idx = vertices.length;
+    vertices.push({ kIdx, clIdx, ax, ay, ox, oy, nx, ny, u, v, isTop, cornerBoost, isBlade });
+    return idx;
+  };
+
+  // 1. Collecte et fusion spatiale des coins de touches qui se touchent (<= 0.52 unité)
+  const cornerClusters = [];
+  const keyQuadClusters = new Array(keys.length);
+
+  for (let kIdx = 0; kIdx < keys.length; kIdx++) {
+    const k = keys[kIdx];
+    if (!k.isEmitter) continue;
+
+    const gapX = 0.045;
+    const gapY = k.hy < 0.5 ? 0.018 : 0.045;
+    const rx = k.hx + gapX;
+    const ry = k.hy + gapY;
+
+    // 4 coins externes ordonnés par quadrant : 0:(+x,+y), 1:(-x,+y), 2:(-x,-y), 3:(+x,-y)
+    const rawCorners = [
+      [k.cx + rx, k.cy + ry, s45, s45],
+      [k.cx - rx, k.cy + ry, -s45, s45],
+      [k.cx - rx, k.cy - ry, -s45, -s45],
+      [k.cx + rx, k.cy - ry, s45, -s45]
+    ];
+
+    const quads = new Array(4);
+    for (let q = 0; q < 4; q++) {
+      const [qx, qy, nx, ny] = rawCorners[q];
+      let bestCluster = null;
+      let bestDistSq = MERGE_DIST_SQ;
+
+      for (let c = 0; c < cornerClusters.length; c++) {
+        const cl = cornerClusters[c];
+        if (cl.keyIndices.includes(kIdx)) continue;
+        const dx = qx - cl.cx;
+        const dy = qy - cl.cy;
+        const dSq = dx * dx + dy * dy;
+        if (dSq <= bestDistSq) {
+          bestDistSq = dSq;
+          bestCluster = cl;
+        }
+      }
+
+      if (bestCluster) {
+        bestCluster.keyIndices.push(kIdx);
+        bestCluster.rawCount += 1;
+        bestCluster.sumX += qx;
+        bestCluster.sumY += qy;
+        bestCluster.sumNx += nx;
+        bestCluster.sumNy += ny;
+        bestCluster.cx = bestCluster.sumX / bestCluster.rawCount;
+        bestCluster.cy = bestCluster.sumY / bestCluster.rawCount;
+        bestCluster.outX = (bestCluster.sumNx / bestCluster.rawCount) * 0.25;
+        bestCluster.outY = (bestCluster.sumNy / bestCluster.rawCount) * 0.25;
+        bestCluster.touchCount = bestCluster.keyIndices.length;
+        quads[q] = bestCluster;
+      } else {
+        const cl = {
+          index: cornerClusters.length,
+          cx: qx,
+          cy: qy,
+          outX: nx * 0.25,
+          outY: ny * 0.25,
+          sumX: qx,
+          sumY: qy,
+          sumNx: nx,
+          sumNy: ny,
+          rawCount: 1,
+          keyIndices: [kIdx],
+          touchCount: 1,
+          currentGlow: 0
+        };
+        cornerClusters.push(cl);
+        quads[q] = cl;
+      }
+    }
+    keyQuadClusters[kIdx] = quads;
+  }
+
+  // 2. Couche A : Rideau continu reliant les pics entre eux (courbe douce le long des arêtes)
+  for (let kIdx = 0; kIdx < keys.length; kIdx++) {
+    const k = keys[kIdx];
+    if (!k.isEmitter) continue;
+
+    const gapX = 0.045;
+    const gapY = k.hy < 0.5 ? 0.018 : 0.045;
+    const rx = k.hx + gapX;
+    const ry = k.hy + gapY;
+    const cr = Math.min(0.14, rx * 0.35, ry * 0.35);
+    const ix = Math.max(0.01, rx - cr);
+    const iy = Math.max(0.01, ry - cr);
+    const cornerSpan = Math.min(0.32, Math.min(rx, ry) * 0.45);
+    const twoSpanSq = 2 * cornerSpan * cornerSpan;
+
+    const baseVert = vertices.length;
+    for (let s = 0; s <= CURTAIN_SEGMENTS; s++) {
+      const u = s / CURTAIN_SEGMENTS;
+      const [px, py, nx, ny] = evalRoundedKeyPerimeter(k.cx, k.cy, rx, ry, cr, u);
+      const dCorner = Math.hypot(
+        Math.max(0, ix - Math.abs(px - k.cx)),
+        Math.max(0, iy - Math.abs(py - k.cy))
+      );
+      const rawCorner = Math.exp(-(dCorner * dCorner) / twoSpanSq);
+      pushVertex(kIdx, -1, px, py, 0, 0, nx, ny, rawCorner, 0, 0, rawCorner, 0);
+      pushVertex(kIdx, -1, px, py, 0, 0, nx, ny, rawCorner, 1, 1, rawCorner, 0);
+    }
+    for (let s = 0; s < CURTAIN_SEGMENTS; s++) {
+      const b0 = baseVert + s * 2;
+      const t0 = b0 + 1;
+      const b1 = b0 + 2;
+      const t1 = b0 + 3;
+      indices.push(b0, b1, t0, t0, b1, t1);
+    }
+  }
+
+  // 3. Couche B : Un seul faisceau volumétrique unifié par cluster de coins qui se touchent
+  const bladeAxes = [
+    [1, 0],       // Lame face caméra (±X)
+    [s45, s45],   // Lame diagonale à 45° NE-SO
+    [-s45, s45]   // Lame diagonale à 45° NO-SE
+  ];
+  for (let c = 0; c < cornerClusters.length; c++) {
+    const cl = cornerClusters[c];
+    const leadKey = cl.keyIndices[0];
+    for (let b = 0; b < bladeAxes.length; b++) {
+      const ox = bladeAxes[b][0] * BLADE_HALF_W;
+      const oy = bladeAxes[b][1] * BLADE_HALF_W;
+      const vBL = pushVertex(leadKey, c, cl.cx, cl.cy, -ox, -oy, cl.outX, cl.outY, -1, 0, 0, 1.0, 1);
+      const vBR = pushVertex(leadKey, c, cl.cx, cl.cy, ox, oy, cl.outX, cl.outY, 1, 0, 0, 1.0, 1);
+      const vTR = pushVertex(leadKey, c, cl.cx, cl.cy, ox, oy, cl.outX, cl.outY, 1, 1, 1, 1.0, 1);
+      const vTL = pushVertex(leadKey, c, cl.cx, cl.cy, -ox, -oy, cl.outX, cl.outY, -1, 1, 1, 1.0, 1);
+      indices.push(vBL, vBR, vTR, vBL, vTR, vTL);
+    }
+  }
+
+  const count = vertices.length;
+  const posArr = new Float32Array(count * 3);
+  const colorArr = new Float32Array(count * 4);
+  const uvArr = new Float32Array(count * 3);
+  const keyIdx = new Uint16Array(count);
+  const clusterIdx = new Int16Array(count);
+  const anchorX = new Float32Array(count);
+  const anchorY = new Float32Array(count);
+  const offsetX = new Float32Array(count);
+  const offsetY = new Float32Array(count);
+  const outX = new Float32Array(count);
+  const outY = new Float32Array(count);
+  const isTop = new Uint8Array(count);
+  const cornerBoost = new Float32Array(count);
+  const bladeFlag = new Uint8Array(count);
+
+  const baseZ = KEYBOARD_AURA_CONFIG.rayBaseZ;
+  for (let i = 0; i < count; i++) {
+    const v = vertices[i];
+    keyIdx[i] = v.kIdx;
+    clusterIdx[i] = v.clIdx;
+    anchorX[i] = v.ax;
+    anchorY[i] = v.ay;
+    offsetX[i] = v.ox;
+    offsetY[i] = v.oy;
+    outX[i] = v.nx;
+    outY[i] = v.ny;
+    isTop[i] = v.isTop;
+    cornerBoost[i] = v.cornerBoost;
+    bladeFlag[i] = v.isBlade;
+
+    const cl = v.clIdx >= 0 ? cornerClusters[v.clIdx] : null;
+    const initScale = cl && cl.touchCount > 1
+      ? (1.0 + (KEYBOARD_AURA_CONFIG.rayMergedCornerScale - 1.0) * (1.0 + 0.15 * Math.min(2, cl.touchCount - 2)))
+      : 1.0;
+
+    posArr[i * 3] = v.ax + v.ox * initScale;
+    posArr[i * 3 + 1] = v.ay + v.oy * initScale;
+    posArr[i * 3 + 2] = baseZ;
+
+    uvArr[i * 3] = v.u;
+    uvArr[i * 3 + 1] = v.v;
+    uvArr[i * 3 + 2] = v.isBlade;
+  }
+
+  const geom = new BufferGeometryCtor();
+  const posAttr = new BufferAttributeCtor(posArr, 3);
+  const colorAttr = new BufferAttributeCtor(colorArr, 4);
+  const uvAttr = new BufferAttributeCtor(uvArr, 3);
+  geom.setAttribute('position', posAttr);
+  geom.setAttribute('color', colorAttr);
+  geom.setAttribute('aRayUV', uvAttr);
+  geom.setIndex(new BufferAttributeCtor(new Uint16Array(indices), 1));
+
+  const mat = baseMaterial.clone();
+  mat.name = 'keyboard-god-rays-mat';
+  mat.color.setHex(0xffffff);
+  mat.emissive.setHex(0x000000);
+  mat.map = null;
+  mat.normalMap = null;
+  mat.roughnessMap = null;
+  mat.metalnessMap = null;
+  mat.emissiveMap = null;
+  mat.aoMap = null;
+  mat.alphaMap = null;
+  mat.vertexColors = true;
+  mat.transparent = true;
+  mat.opacity = 1.0;
+  mat.alphaTest = 0;
+  mat.depthWrite = false;
+  mat.depthTest = true;
+  mat.blending = 2; // THREE.AdditiveBlending
+  mat.side = 2;     // THREE.DoubleSide
+
+  const uniforms = {
+    uRayFalloffPower: { value: KEYBOARD_AURA_CONFIG.rayFalloffPower },
+    uRayBaseOpacity: { value: KEYBOARD_AURA_CONFIG.rayBaseOpacity },
+    uRayTopOpacity: { value: KEYBOARD_AURA_CONFIG.rayTopOpacity },
+    uRayEdgeAttenuation: { value: KEYBOARD_AURA_CONFIG.rayEdgeAttenuation }
+  };
+
+  mat.customProgramCacheKey = () => 'mac-kb-godrays-volumetric-v2';
+  mat.onBeforeCompile = (shader) => {
+    shader.uniforms.uRayFalloffPower = uniforms.uRayFalloffPower;
+    shader.uniforms.uRayBaseOpacity = uniforms.uRayBaseOpacity;
+    shader.uniforms.uRayTopOpacity = uniforms.uRayTopOpacity;
+    shader.uniforms.uRayEdgeAttenuation = uniforms.uRayEdgeAttenuation;
+
+    shader.vertexShader = shader.vertexShader
+      .replace(
+        '#include <common>',
+        `#include <common>
+         attribute vec3 aRayUV;
+         varying vec3 vRayUV;`
+      )
+      .replace(
+        '#include <begin_vertex>',
+        `#include <begin_vertex>
+         vRayUV = aRayUV;`
+      );
+
+    const rayFragmentBody = `
+      #if defined( USE_COLOR_ALPHA )
+        vec4 rayCol = vColor;
+      #elif defined( USE_COLOR )
+        vec4 rayCol = vec4(vColor.rgb, 1.0);
+      #else
+        vec4 rayCol = vec4(1.0);
+      #endif
+      float rU = vRayUV.x;
+      float rV = clamp(vRayUV.y, 0.0, 1.0);
+      float bladeMode = vRayUV.z;
+
+      float vAtten;
+      float slitCore;
+      float hProfile;
+      if (bladeMode > 0.5) {
+        vAtten = pow(clamp(1.0 - rV, 0.0, 1.0), max(0.25, uRayFalloffPower)) * smoothstep(1.0, 0.72, rV);
+        slitCore = exp(-rV * 16.0) * 0.55;
+        hProfile = exp(-3.8 * rU * rU) * clamp(1.0 - rU * rU, 0.0, 1.0);
+      } else {
+        float cProx = clamp(rU, 0.0, 1.0);
+        float effFalloff = mix(max(0.25, uRayFalloffPower) * 1.55, max(0.25, uRayFalloffPower), cProx);
+        vAtten = pow(clamp(1.0 - rV, 0.0, 1.0), effFalloff) * smoothstep(1.0, 0.72, rV);
+        slitCore = exp(-rV * 12.0) * mix(0.38, 0.55, cProx);
+        hProfile = mix(uRayEdgeAttenuation, 0.88, pow(cProx, 1.25));
+      }
+
+      float heightOpacity = mix(uRayTopOpacity, uRayBaseOpacity, clamp(vAtten + slitCore * 0.35, 0.0, 1.0));
+      float rayAlpha = clamp(rayCol.a * heightOpacity * hProfile, 0.0, 1.0);
+      float beamEnergy = clamp(vAtten + slitCore, 0.0, 1.35);
+      gl_FragColor = vec4(rayCol.rgb * beamEnergy, rayAlpha);`;
+
+    shader.fragmentShader = shader.fragmentShader.replace(
+      '#include <common>',
+      `#include <common>
+       uniform float uRayFalloffPower;
+       uniform float uRayBaseOpacity;
+       uniform float uRayTopOpacity;
+       uniform float uRayEdgeAttenuation;
+       varying vec3 vRayUV;`
+    );
+
+    if (shader.fragmentShader.includes('#include <opaque_fragment>')) {
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <opaque_fragment>',
+        `#include <opaque_fragment>\n${rayFragmentBody}`
+      );
+    } else if (shader.fragmentShader.includes('#include <output_fragment>')) {
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <output_fragment>',
+        `#include <output_fragment>\n${rayFragmentBody}`
+      );
+    } else {
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <dithering_fragment>',
+        `${rayFragmentBody}\n#include <dithering_fragment>`
+      );
+    }
+  };
+  mat.needsUpdate = true;
+
+  const mesh = new MeshCtor(geom, mat);
+  mesh.name = 'keyboard-god-rays';
+  mesh.renderOrder = 25;
+  mesh.frustumCulled = false;
+  mesh.visible = false;
+
+  const host = keycaps.parent;
+  if (host && typeof host.add === 'function') {
+    host.add(mesh);
+  } else {
+    return null;
+  }
+
+  return {
+    mesh,
+    uniforms,
+    posAttr,
+    posArr,
+    colorAttr,
+    colorArr,
+    count,
+    keyIdx,
+    clusterIdx,
+    cornerClusters,
+    anchorX,
+    anchorY,
+    offsetX,
+    offsetY,
+    outX,
+    outY,
+    isTop,
+    cornerBoost,
+    bladeFlag
+  };
+}
+
+function setupKeyboardHoverAura(keyboardMeshes, threeScene, modelViewer) {
+  const { keycaps, touchIdCap, legends, skirts, touchIdSkirt, well } = keyboardMeshes;
+  if (!keycaps || !keycaps.geometry || !threeScene) return () => { };
+
+  // Permet aussi de modifier les réglages à chaud depuis la console via window.KEYBOARD_AURA_CONFIG
+  if (typeof window !== 'undefined') {
+    window.KEYBOARD_AURA_CONFIG = KEYBOARD_AURA_CONFIG;
+  }
+
+  const posAttr = keycaps.geometry.attributes.position;
+  if (!posAttr) return () => { };
+
+  const BufferAttribute = posAttr.constructor;
+  const Vector3 = keycaps.position.constructor;
+
+  // 1. Segmentation automatique des 80 îlots de touches physiques (Object_84) + Touch ID (Object_58)
+  const vCount = posAttr.count;
+  const posArr = posAttr.array;
+  const idxAttr = keycaps.geometry.index;
+  const parent = new Int32Array(vCount);
+  for (let i = 0; i < vCount; i++) parent[i] = i;
+
+  const find = (x) => {
+    while (parent[x] !== x) {
+      parent[x] = parent[parent[x]];
+      x = parent[x];
+    }
+    return x;
+  };
+  const union = (a, b) => {
+    const ra = find(a);
+    const rb = find(b);
+    if (ra !== rb) parent[ra] = rb;
+  };
+
+  // Soudure spatiale des sommets coïncidents
+  const coordMap = new Map();
+  for (let i = 0; i < vCount; i++) {
+    const x = posArr[i * 3];
+    const y = posArr[i * 3 + 1];
+    const z = posArr[i * 3 + 2];
+    const key = `${Math.round(x * 250)},${Math.round(y * 250)},${Math.round(z * 250)}`;
+    const prev = coordMap.get(key);
+    if (prev !== undefined) union(i, prev);
+    else coordMap.set(key, i);
+  }
+
+  if (idxAttr && idxAttr.array) {
+    const indices = idxAttr.array;
+    for (let i = 0; i < indices.length; i += 3) {
+      union(indices[i], indices[i + 1]);
+      union(indices[i + 1], indices[i + 2]);
+    }
+  }
+
+  const rootToKeyIdx = new Map();
+  const keys = [];
+  const keycapKeyIndices = new Uint16Array(vCount);
+
+  for (let i = 0; i < vCount; i++) {
+    const r = find(i);
+    let kIdx = rootToKeyIdx.get(r);
+    const vx = posArr[i * 3];
+    const vy = posArr[i * 3 + 1];
+    if (kIdx === undefined) {
+      kIdx = keys.length;
+      rootToKeyIdx.set(r, kIdx);
+      keys.push({
+        minX: vx, maxX: vx,
+        minY: vy, maxY: vy,
+        cx: vx, cy: vy,
+        hx: 0.5, hy: 0.5,
+        isEmitter: true,
+        hostIdx: -1,
+        currentGlow: 0,
+        targetGlow: 0,
+        currentPress: 0
+      });
+    } else {
+      const k = keys[kIdx];
+      if (vx < k.minX) k.minX = vx;
+      if (vx > k.maxX) k.maxX = vx;
+      if (vy < k.minY) k.minY = vy;
+      if (vy > k.maxY) k.maxY = vy;
+    }
+    keycapKeyIndices[i] = kIdx;
+  }
+
+  // Finalisation des boîtes englobantes (exclut les 2 ergots tactiles F/J de l'émission directe)
+  for (let i = 0; i < keys.length; i++) {
+    const k = keys[i];
+    k.cx = (k.minX + k.maxX) * 0.5;
+    k.cy = (k.minY + k.maxY) * 0.5;
+    k.hx = Math.max(0.05, (k.maxX - k.minX) * 0.5);
+    k.hy = Math.max(0.05, (k.maxY - k.minY) * 0.5);
+    k.isEmitter = k.hx >= 0.35 && k.hy >= 0.30;
+  }
+
+  // Rattache les ergots tactiles F/J à leur touche hôte pour conserver un enfoncement synchrone sans halo parasite
+  for (let i = 0; i < keys.length; i++) {
+    const k = keys[i];
+    if (k.isEmitter) continue;
+    let bestHost = -1;
+    let bestDistSq = Infinity;
+    for (let j = 0; j < keys.length; j++) {
+      const host = keys[j];
+      if (!host.isEmitter) continue;
+      const dx = Math.max(0, Math.abs(k.cx - host.cx) - host.hx);
+      const dy = Math.max(0, Math.abs(k.cy - host.cy) - host.hy);
+      const dSq = dx * dx + dy * dy;
+      if (dSq < bestDistSq) {
+        bestDistSq = dSq;
+        bestHost = j;
+      }
+    }
+    k.hostIdx = bestHost;
+  }
+
+  // Ajout de l'îlot Touch ID (Object_58) dans son logement déjà couvert par la touche #13 de Object_84
+  const touchIdKeyIdx = keys.length;
+  keys.push({
+    minX: 12.33, maxX: 13.26,
+    minY: -9.26, maxY: -8.33,
+    cx: 12.79, cy: -8.80,
+    hx: 0.47, hy: 0.47,
+    isEmitter: false,
+    hostIdx: -1,
+    currentGlow: 0,
+    targetGlow: 0,
+    currentPress: 0
+  });
+
+  // Fonction utilitaire associant un point (vx, vy) à sa touche émettrice la plus proche
+  const findNearestKeyIndex = (vx, vy) => {
+    let bestIdx = 0;
+    let bestDistSq = Infinity;
+    for (let k = 0; k < keys.length; k++) {
+      const key = keys[k];
+      if (!key.isEmitter && k !== touchIdKeyIdx) continue;
+      const dx = Math.max(0, Math.abs(vx - key.cx) - key.hx);
+      const dy = Math.max(0, Math.abs(vy - key.cy) - key.hy);
+      const dSq = dx * dx + dy * dy;
+      if (dSq === 0) return k;
+      if (dSq < bestDistSq) {
+        bestDistSq = dSq;
+        bestIdx = k;
+      }
+    }
+    return bestIdx;
+  };
+
+  // 2. Préparation des attributs par mesh du clavier :
+  //    On préserve à 100% la couleur et le PBR d'origine (mat.color, roughness, metalness, normalMap)
+  //    et on utilise l'attribut `color` (RGB stride 3) uniquement comme radiance émissive additionnelle
+  const attachAuraMaterial = (mesh, tag) => {
+    if (!mesh || !mesh.geometry || !mesh.material) return null;
+    const mat = mesh.material.clone();
+    mat.vertexColors = true;
+    mat.customProgramCacheKey = () => `mac-kb-aura-v5-${tag}`;
+    mat.onBeforeCompile = (shader) => {
+      // Neutralise diffuseColor *= vColor pour garder la couleur native exacte de la touche
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <color_fragment>',
+        ''
+      );
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <emissivemap_fragment>',
+        `#include <emissivemap_fragment>
+         #if defined( USE_COLOR ) || defined( USE_COLOR_ALPHA )
+           totalEmissiveRadiance += vColor.rgb;
+         #endif`
+      );
+    };
+    mat.needsUpdate = true;
+    mesh.material = mat;
+
+    const pAttr = mesh.geometry.attributes.position;
+    const nAttr = mesh.geometry.attributes.normal;
+    const count = pAttr.count;
+    const colorArr = new Float32Array(count * 3);
+    const colorAttr = new BufferAttribute(colorArr, 3);
+    mesh.geometry.setAttribute('color', colorAttr);
+
+    const origZ = new Float32Array(count);
+    for (let i = 0; i < count; i++) origZ[i] = pAttr.array[i * 3 + 2];
+
+    return {
+      mesh,
+      posAttr: pAttr,
+      posArr: pAttr.array,
+      origZ,
+      normArr: nAttr ? nAttr.array : null,
+      colorArr,
+      colorAttr,
+      count
+    };
+  };
+
+  // Masque définitivement Object_80 et Object_60 (normales inversées dans le GLB)
+  if (skirts) skirts.visible = false;
+  if (touchIdSkirt) touchIdSkirt.visible = false;
+
+  const keycapsData = attachAuraMaterial(keycaps, 'keycaps');
+  const touchIdCapData = attachAuraMaterial(touchIdCap, 'touchid-cap');
+  const legendsData = attachAuraMaterial(legends, 'legends');
+  const wellData = attachAuraMaterial(well, 'well');
+
+  // Mesh procédural propre pour les God Rays volumétriques sortant d'entre les touches
+  const baseRayMat = (legends && legends.material) || (skirts && skirts.material) || keycaps.material;
+  const godRays = createKeyboardGodRays(keys, keycaps, BufferAttribute, baseRayMat);
+
+  // Pré-calcul du facteur de chanfrein (rim/bevel) sur les touches principales (Object_84)
+  // Seule l'arête inférieure capte un discret reflet du rétroéclairage ; le plateau reste 100% noir natif
+  const keycapRimFactor = new Float32Array(vCount);
+  if (keycapsData) {
+    const nArr = keycapsData.normArr;
+    for (let i = 0; i < vCount; i++) {
+      const vz = posArr[i * 3 + 2];
+      let nx = 0, ny = 0;
+      if (nArr) {
+        nx = nArr[i * 3];
+        ny = nArr[i * 3 + 1];
+      }
+      const nHoriz = Math.hypot(nx, ny);
+      const zRim = Math.max(0, (vz - (-0.330)) * 10.5);
+      keycapRimFactor[i] = Math.min(1, Math.max(0, nHoriz - 0.16) * 1.35 + zRim);
+    }
+  }
+
+  // Association des sommets des légendes (Object_76) et du puits (Object_34) à leur touche
+  let legendsKeyIndices = null;
+  if (legendsData) {
+    legendsKeyIndices = new Uint16Array(legendsData.count);
+    const lPos = legendsData.posArr;
+    for (let i = 0; i < legendsData.count; i++) {
+      legendsKeyIndices[i] = findNearestKeyIndex(lPos[i * 3], lPos[i * 3 + 1]);
+    }
+  }
+
+  let wellKeyIndices = null;
+  if (wellData) {
+    wellKeyIndices = new Uint16Array(wellData.count);
+    const wPos = wellData.posArr;
+    for (let i = 0; i < wellData.count; i++) {
+      wellKeyIndices[i] = findNearestKeyIndex(wPos[i * 3], wPos[i * 3 + 1]);
+    }
+  }
+
+  // Au repos : émission 0.0 partout + God Rays masqués -> rendu 100% identique à l'original
+  const resetColorsToBase = () => {
+    if (keycapsData) {
+      keycapsData.colorArr.fill(0);
+      const p = keycapsData.posArr;
+      const oz = keycapsData.origZ;
+      for (let i = 0; i < keycapsData.count; i++) p[i * 3 + 2] = oz[i];
+      keycapsData.colorAttr.needsUpdate = true;
+      keycapsData.posAttr.needsUpdate = true;
+    }
+    if (touchIdCapData) {
+      touchIdCapData.colorArr.fill(0);
+      touchIdCapData.colorAttr.needsUpdate = true;
+    }
+    if (legendsData) {
+      legendsData.colorArr.fill(0);
+      const p = legendsData.posArr;
+      const oz = legendsData.origZ;
+      for (let i = 0; i < legendsData.count; i++) p[i * 3 + 2] = oz[i];
+      legendsData.colorAttr.needsUpdate = true;
+      legendsData.posAttr.needsUpdate = true;
+    }
+    if (wellData) {
+      wellData.colorArr.fill(0);
+      wellData.colorAttr.needsUpdate = true;
+    }
+    if (godRays) {
+      godRays.colorArr.fill(0);
+      godRays.colorAttr.needsUpdate = true;
+      godRays.mesh.visible = false;
+      for (let c = 0; c < godRays.cornerClusters.length; c++) {
+        godRays.cornerClusters[c].currentGlow = 0;
+      }
+    }
+  };
+
+  resetColorsToBase();
+
+  // 3. Suivi de la souris et projection homographique vers le plan 3D du clavier
+  let targetKx = 0;
+  let targetKy = -4.2;
+  let pointerKx = 0;
+  let pointerKy = -4.2;
+  let targetPresence = 0;
+  let auraPresence = 0;
+  let isAtRest = true;
+
+  const mapPointerToKeyboard = (clientX, clientY) => {
+    const rect = modelViewer.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return false;
+
+    const mx = clientX - rect.left;
+    const my = clientY - rect.top;
+    if (mx < -20 || mx > rect.width + 20 || my < -20 || my > rect.height + 20) {
+      return false;
+    }
+
+    keycaps.updateWorldMatrix(true, false);
+    const proj2D = KEYBOARD_CORNER_COORDS.map((c) => {
+      const v = new Vector3(c.x, c.y, c.z);
+      v.applyMatrix4(keycaps.matrixWorld);
+      v.project(threeScene.camera);
+      return {
+        x: (v.x * 0.5 + 0.5) * rect.width,
+        y: (-v.y * 0.5 + 0.5) * rect.height
+      };
+    });
+
+    const m = solvePerspectiveTransform(proj2D, KEYBOARD_CORNER_COORDS);
+    if (!m) return false;
+
+    const denom = m[3] * mx + m[7] * my + 1;
+    if (Math.abs(denom) < 1e-5) return false;
+
+    const kx = (m[0] * mx + m[4] * my + m[12]) / denom;
+    const ky = (m[1] * mx + m[5] * my + m[13]) / denom;
+
+    // Zone active du clavier avec une marge douce autour du périmètre des touches
+    const MARGIN_X = 1.65;
+    const MARGIN_Y = 1.45;
+    if (
+      kx >= -13.65 - MARGIN_X &&
+      kx <= 13.65 + MARGIN_X &&
+      ky >= -9.64 - MARGIN_Y &&
+      ky <= 1.27 + MARGIN_Y
+    ) {
+      targetKx = kx;
+      targetKy = ky;
+      return true;
+    }
+    return false;
+  };
+
+  window.addEventListener('pointermove', (e) => {
+    if (!document.body.classList.contains('site-revealed')) return;
+    const hit = mapPointerToKeyboard(e.clientX, e.clientY);
+    if (hit) {
+      if (targetPresence < 0.01) {
+        pointerKx = targetKx;
+        pointerKy = targetKy;
+      }
+      targetPresence = 1;
+    } else {
+      targetPresence = 0;
+    }
+  }, { passive: true });
+
+  document.documentElement.addEventListener('pointerleave', () => {
+    targetPresence = 0;
+  }, { passive: true });
+
+  // 4. Boucle de mise à jour temps réel (appelée à chaque frame de animateHingeOnScroll)
+  return function updateKeyboardAura(lidRotationAngle = 0) {
+    const cfg = KEYBOARD_AURA_CONFIG;
+    const lidOpenFactor = Math.max(0, Math.min(1, 1 - lidRotationAngle / 1.15));
+    const effectiveTarget = targetPresence * lidOpenFactor;
+
+    pointerKx += (targetKx - pointerKx) * 0.34;
+    pointerKy += (targetKy - pointerKy) * 0.34;
+    auraPresence += (effectiveTarget - auraPresence) * (effectiveTarget > auraPresence ? 0.24 : 0.14);
+
+    // Illumination et réponse mécanique par touche (radii lus en direct depuis KEYBOARD_AURA_CONFIG)
+    let maxKeyGlow = 0;
+    const keyR = Math.max(0.2, cfg.keyRadius);
+    const KEY_SIGMA_SQ = keyR * keyR;
+    const PRESS_SIGMA_SQ = Math.max(0.16, keyR * 0.5) ** 2;
+
+    for (let k = 0; k < keys.length; k++) {
+      const key = keys[k];
+      if (!key.isEmitter && key.hostIdx >= 0) {
+        key.currentGlow = keys[key.hostIdx].currentGlow;
+        key.currentPress = keys[key.hostIdx].currentPress;
+        continue;
+      }
+      const dx = Math.max(0, Math.abs(pointerKx - key.cx) - key.hx);
+      const dy = Math.max(0, Math.abs(pointerKy - key.cy) - key.hy);
+      const dSq = dx * dx + dy * dy;
+
+      const spatial = auraPresence > 0.002 ? Math.exp(-dSq / (2 * KEY_SIGMA_SQ)) * auraPresence : 0;
+      const directHit = (dSq < 0.08 ? 1.0 : 0.0) * auraPresence;
+      key.targetGlow = Math.min(1, spatial * 0.85 + directHit * 0.30);
+
+      const lerpRate = key.targetGlow > key.currentGlow ? 0.34 : 0.14;
+      key.currentGlow += (key.targetGlow - key.currentGlow) * lerpRate;
+      if (key.currentGlow < 0.001) key.currentGlow = 0;
+      if (key.currentGlow > maxKeyGlow) maxKeyGlow = key.currentGlow;
+
+      const pressTarget = Math.exp(-dSq / (2 * PRESS_SIGMA_SQ)) * auraPresence;
+      key.currentPress += (pressTarget - key.currentPress) * 0.28;
+    }
+
+    if (auraPresence < 0.002 && maxKeyGlow < 0.002) {
+      if (!isAtRest) {
+        resetColorsToBase();
+        isAtRest = true;
+        threeScene.queueRender();
+      }
+      return;
+    }
+
+    isAtRest = false;
+    const RADIAL_SIGMA_SQ = Math.max(0.25, cfg.radialRadius) ** 2;
+    const CORE_SIGMA_SQ = Math.max(0.15, cfg.coreRadius) ** 2;
+    const globalMul = cfg.globalIntensity ?? 1.0;
+
+    // A. Touches principales (Object_84) : plateau supérieur 100% noir natif + discret reflet sur le chanfrein
+    if (keycapsData) {
+      const c = keycapsData.colorArr;
+      const p = keycapsData.posArr;
+      const oz = keycapsData.origZ;
+      const nArr = keycapsData.normArr;
+
+      for (let i = 0; i < keycapsData.count; i++) {
+        const key = keys[keycapKeyIndices[i]];
+        const idx3 = i * 3;
+        p[idx3 + 2] = oz[i] + key.currentPress * cfg.keyPressDepth;
+
+        const kGlow = key.currentGlow;
+        const rim = keycapRimFactor[i];
+        if (!key.isEmitter || kGlow < 0.002 || rim < 0.10) {
+          c[idx3] = 0;
+          c[idx3 + 1] = 0;
+          c[idx3 + 2] = 0;
+          continue;
+        }
+
+        const vx = p[idx3];
+        const vy = p[idx3 + 1];
+        const dvx = pointerKx - vx;
+        const dvy = pointerKy - vy;
+        const vDistSq = dvx * dvx + dvy * dvy;
+
+        const radial = Math.exp(-vDistSq / (2 * RADIAL_SIGMA_SQ)) * auraPresence;
+        const core = Math.exp(-vDistSq / (2 * CORE_SIGMA_SQ)) * auraPresence;
+
+        let bevelCatch = 0.85;
+        if (nArr && vDistSq > 0.0001) {
+          const invDist = 1 / Math.sqrt(vDistSq);
+          const dot = (nArr[idx3] * dvx + nArr[idx3 + 1] * dvy) * invDist;
+          bevelCatch = 0.65 + Math.max(0, dot) * 0.90;
+        }
+
+        const rimIntensity = (kGlow * 0.35 + radial * 0.45 + core * 0.40) * (rim * rim) * bevelCatch * cfg.bevelIntensity * globalMul;
+        c[idx3] = rimIntensity * cfg.colorR;
+        c[idx3 + 1] = rimIntensity * cfg.colorG;
+        c[idx3 + 2] = rimIntensity * cfg.colorB;
+      }
+      keycapsData.colorAttr.needsUpdate = true;
+      keycapsData.posAttr.needsUpdate = true;
+    }
+
+    // B. Capuchon Touch ID (Object_58) : reste strictement de sa couleur noire d'origine
+    if (touchIdCapData) {
+      touchIdCapData.colorArr.fill(0);
+      touchIdCapData.colorAttr.needsUpdate = true;
+    }
+
+    // C. Légendes / caractères gravés sur les touches (Object_76) : rétroéclairage blanc Apple
+    if (legendsData && legendsKeyIndices) {
+      const c = legendsData.colorArr;
+      const p = legendsData.posArr;
+      const oz = legendsData.origZ;
+      for (let i = 0; i < legendsData.count; i++) {
+        const key = keys[legendsKeyIndices[i]];
+        const kGlow = key.currentGlow;
+        const idx3 = i * 3;
+        p[idx3 + 2] = oz[i] + key.currentPress * cfg.keyPressDepth;
+
+        if (kGlow < 0.002) {
+          c[idx3] = 0;
+          c[idx3 + 1] = 0;
+          c[idx3 + 2] = 0;
+          continue;
+        }
+
+        const vx = p[idx3];
+        const vy = p[idx3 + 1];
+        const vDistSq = (pointerKx - vx) ** 2 + (pointerKy - vy) ** 2;
+        const core = Math.exp(-vDistSq / (2 * CORE_SIGMA_SQ)) * auraPresence;
+        const boost = (kGlow * 0.60 + core * 0.75) * cfg.legendsIntensity * globalMul;
+
+        c[idx3] = boost * cfg.colorR;
+        c[idx3 + 1] = boost * cfg.colorG;
+        c[idx3 + 2] = boost * cfg.colorB;
+      }
+      legendsData.colorAttr.needsUpdate = true;
+      legendsData.posAttr.needsUpdate = true;
+    }
+
+    // D. Puits du clavier (Object_34) : halo dans le fond des fentes uniquement (z > -0.29)
+    if (wellData && wellKeyIndices) {
+      const c = wellData.colorArr;
+      const p = wellData.posArr;
+      const oz = wellData.origZ;
+      for (let i = 0; i < wellData.count; i++) {
+        const kGlow = keys[wellKeyIndices[i]].currentGlow;
+        const idx3 = i * 3;
+        if (kGlow < 0.002 || oz[i] <= -0.29) {
+          c[idx3] = 0;
+          c[idx3 + 1] = 0;
+          c[idx3 + 2] = 0;
+          continue;
+        }
+        const vx = p[idx3];
+        const vy = p[idx3 + 1];
+        const vDistSq = (pointerKx - vx) ** 2 + (pointerKy - vy) ** 2;
+        const radial = Math.exp(-vDistSq / (2 * RADIAL_SIGMA_SQ)) * auraPresence;
+        const core = Math.exp(-vDistSq / (2 * CORE_SIGMA_SQ)) * auraPresence;
+        const wellGlow = (kGlow * 0.45 + radial * 0.60 + core * 0.70) * cfg.wellIntensity * globalMul;
+
+        c[idx3] = wellGlow * cfg.colorR;
+        c[idx3 + 1] = wellGlow * cfg.colorG;
+        c[idx3 + 2] = wellGlow * cfg.colorB;
+      }
+      wellData.colorAttr.needsUpdate = true;
+    }
+
+    // E. Faisceaux volumétriques "God Rays" fusionnés aux coins avec atténuation sur les arêtes
+    if (godRays) {
+      godRays.mesh.visible = true;
+      godRays.uniforms.uRayFalloffPower.value = cfg.rayFalloffPower;
+      godRays.uniforms.uRayBaseOpacity.value = cfg.rayBaseOpacity;
+      godRays.uniforms.uRayTopOpacity.value = cfg.rayTopOpacity;
+      godRays.uniforms.uRayEdgeAttenuation.value = cfg.rayEdgeAttenuation;
+
+      const p = godRays.posArr;
+      const c = godRays.colorArr;
+      const {
+        keyIdx, clusterIdx, cornerClusters, anchorX, anchorY, offsetX, offsetY, outX, outY,
+        isTop, cornerBoost, bladeFlag, count
+      } = godRays;
+      const cornerExtra = Math.max(0, cfg.rayCornerBoost - 1.0);
+      const bridgeH = Math.max(0.15, Math.min(0.85, cfg.rayEdgeBridgeHeight ?? 0.38));
+      const mergedScaleExtra = Math.max(0, (cfg.rayMergedCornerScale ?? 1.18) - 1.0);
+      const mergedHeightExtra = Math.max(0, (cfg.rayMergedCornerHeight ?? 1.10) - 1.0);
+      const colR = cfg.colorR * cfg.rayBrightness * globalMul;
+      const colG = cfg.colorG * cfg.rayBrightness * globalMul;
+      const colB = cfg.colorB * cfg.rayBrightness * globalMul;
+
+      // Éclairement unifié de chaque groupe de coins qui se touchent (1 seul faisceau par intersection)
+      for (let ci = 0; ci < cornerClusters.length; ci++) {
+        const cl = cornerClusters[ci];
+        let maxG = 0;
+        let secG = 0;
+        const clKeys = cl.keyIndices;
+        for (let m = 0; m < clKeys.length; m++) {
+          const g = keys[clKeys[m]].currentGlow;
+          if (g > maxG) {
+            secG = maxG;
+            maxG = g;
+          } else if (g > secG) {
+            secG = g;
+          }
+        }
+        cl.currentGlow = Math.min(1.12, maxG + secG * 0.14);
+      }
+
+      for (let i = 0; i < count; i++) {
+        const clId = clusterIdx[i];
+        const cl = clId >= 0 ? cornerClusters[clId] : null;
+        const kGlow = cl ? cl.currentGlow : keys[keyIdx[i]].currentGlow;
+        const idx4 = i * 4;
+        if (kGlow < 0.002) {
+          c[idx4] = 0;
+          c[idx4 + 1] = 0;
+          c[idx4 + 2] = 0;
+          c[idx4 + 3] = 0;
+          continue;
+        }
+
+        const idx3 = i * 3;
+        const ax = anchorX[i];
+        const ay = anchorY[i];
+        let wScale = 1.0;
+        let hScale = 1.0;
+        if (cl && cl.touchCount > 1) {
+          const mult = 1.0 + 0.15 * Math.min(2, cl.touchCount - 2);
+          wScale = 1.0 + mergedScaleExtra * mult;
+          hScale = 1.0 + mergedHeightExtra * mult;
+        }
+        const ox = offsetX[i] * wScale;
+        const oy = offsetY[i] * wScale;
+        const dvx = ax - pointerKx;
+        const dvy = ay - pointerKy;
+        const vDistSq = dvx * dvx + dvy * dvy;
+
+        const radial = Math.exp(-vDistSq / (2 * RADIAL_SIGMA_SQ)) * auraPresence;
+        const core = Math.exp(-vDistSq / (2 * CORE_SIGMA_SQ)) * auraPresence;
+        const rayFactor = Math.min(1, kGlow * 0.72 + radial * 0.45 + core * 0.55);
+
+        if (isTop[i]) {
+          const dist = Math.sqrt(vDistSq);
+          const invDist = dist > 0.001 ? 1 / dist : 0;
+          const tiltMag = cfg.rayCrepuscularTilt * rayFactor * Math.min(1.0, dist * 0.45);
+          const spreadMag = cfg.raySpread * rayFactor * wScale;
+          const edgeHFactor = bladeFlag[i]
+            ? 1.0
+            : bridgeH + (0.86 - bridgeH) * Math.pow(cornerBoost[i], 1.35);
+          p[idx3] = ax + ox + outX[i] * spreadMag + dvx * invDist * tiltMag;
+          p[idx3 + 1] = ay + oy + outY[i] * spreadMag + dvy * invDist * tiltMag;
+          p[idx3 + 2] = cfg.rayBaseZ - cfg.rayHeight * hScale * rayFactor * edgeHFactor * (0.72 + core * 0.45);
+        } else {
+          p[idx3] = ax + ox;
+          p[idx3 + 1] = ay + oy;
+          p[idx3 + 2] = cfg.rayBaseZ;
+        }
+
+        const cScale = 1.0 + cornerBoost[i] * cornerExtra;
+        const edgeIntFactor = bladeFlag[i] ? 0.92 : 0.68;
+        const localIntensity = Math.min(1.0, (kGlow * 0.55 + radial * 0.55 + core * 0.65) * cScale * edgeIntFactor);
+
+        c[idx4] = colR;
+        c[idx4 + 1] = colG;
+        c[idx4 + 2] = colB;
+        c[idx4 + 3] = localIntensity;
+      }
+      godRays.posAttr.needsUpdate = true;
+      godRays.colorAttr.needsUpdate = true;
+    }
+
+    threeScene.queueRender();
+  };
+}
+
 export function initMac3D() {
   const modelViewer = document.getElementById('macbook-3d');
   if (!modelViewer) return;
@@ -657,14 +1710,31 @@ export function initMac3D() {
     );
     const threeScene = sceneSymbol ? modelViewer[sceneSymbol] : null;
 
+    const keyboardMeshes = {
+      keycaps: null,      // Object_84 (80 touches principales)
+      touchIdCap: null,   // Object_58 (capuchon Touch ID)
+      legends: null,      // Object_76 (lettres & symboles gravés)
+      skirts: null,       // Object_80 (jupes de rétroéclairage sous chaque touche)
+      touchIdSkirt: null, // Object_60 (anneau lumineux sous Touch ID)
+      well: null          // Object_34 (puits sombre du clavier)
+    };
+
     if (threeScene) {
       // 1. Application de la finition Space Grey / Midnight mat anti-reflet
       applyMidnightFinish(threeScene);
 
-      // 2. Recherche du nœud d'articulation de l'écran, du mesh d'affichage et des matériaux de coque
+      // 2. Recherche du nœud d'articulation de l'écran, du mesh d'affichage, du clavier et des matériaux de coque
       threeScene.traverse((obj) => {
         if (obj.name === 'VCQqxpxkUlzqcJI_62') {
           screenMesh = obj;
+        }
+        if (obj.isMesh) {
+          if (obj.name === 'Object_84') keyboardMeshes.keycaps = obj;
+          else if (obj.name === 'Object_58') keyboardMeshes.touchIdCap = obj;
+          else if (obj.name === 'Object_76') keyboardMeshes.legends = obj;
+          else if (obj.name === 'Object_80') keyboardMeshes.skirts = obj;
+          else if (obj.name === 'Object_60') keyboardMeshes.touchIdSkirt = obj;
+          else if (obj.name === 'Object_34') keyboardMeshes.well = obj;
         }
         if (obj.isMesh && (obj.name === 'Object_123' || (obj.material && obj.material.name === 'sfCQkHOWyrsLmor'))) {
           screenDisplayMesh = obj;
@@ -696,6 +1766,9 @@ export function initMac3D() {
         threeScene.queueRender();
       }
     }
+
+    // 3b. Aura lumineuse interactive sur les touches du clavier 3D au survol
+    const updateKeyboardAura = setupKeyboardHoverAura(keyboardMeshes, threeScene, modelViewer);
 
     const insideEl = document.querySelector('#imagurrrr .inside');
     const imageContainer = document.getElementById('imagurrrr');
@@ -950,6 +2023,7 @@ export function initMac3D() {
         }
 
         applyScreenRotation(currentRotation);
+        updateKeyboardAura(currentRotation);
 
         requestAnimationFrame(animateHingeOnScroll);
       }
